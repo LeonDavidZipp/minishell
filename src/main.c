@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/12 15:35:46 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/12 15:46:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ int	main(void)
 	char	*input;
 
 	signal_handler();
-	while (!SIGQUIT)
+	while (1)
 	{
-		input = readline((const char *)"chl#>");
+		input = readline("\033[0;36mchl #>	\033[0m");
 	}
 }
