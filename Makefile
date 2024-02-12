@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
+#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 17:35:39 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/12 18:00:56 by cgerling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,26 +15,20 @@ NAME := minishell
 CC := cc
 CFLAGS := -Wextra -Wall -Werror
 LDFLAGS := -lreadline
-LDFLAGS := -lreadline
 
 SOURCES := $(addprefix src/, \
 main.c \
 signal_handler.c)
-SOURCES := $(addprefix src/, \
-main.c \
-signal_handler.c)
+
 OBJECTS := $(SOURCES:.c=.o)
 
 LIBFT := lib/libft
-LIBFT_LIB := $(LIBFT)/libft.a
 
 all: $(NAME)
 
-$(LIBFT_LIB):
+$(NAME): $(OBJECTS)
 	make -C $(LIBFT)
-
-$(NAME): $(LIBFT_LIB) $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME) -L $(LIBFT) -lft
 
 clean:
 	make -C $(LIBFT) clean
