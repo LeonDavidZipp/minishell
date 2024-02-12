@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 15:42:23 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/12 17:47:32 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,9 +27,11 @@ $(NAME): $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME)
 
 clean:
+	make -C ./lib/libft clean
 	rm -f $(OBJECTS)
 	
 fclean: clean
+	make -C ./lib/libft fclean
 	rm -f $(NAME)
 
 re: fclean all
