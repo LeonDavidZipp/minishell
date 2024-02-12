@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 15:27:25 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/12 15:41:47 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME := minishell
 
 CC := cc
 CFLAGS := -Wextra -Wall -Werror
+LDFLAGS := -lreadline
 
 SOURCES := $(addprefix src/, \
 main.c \
@@ -23,7 +24,7 @@ OBJECTS := $(SOURCES:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJECTS)
-	$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME)
 
 clean:
 	rm -f $(OBJECTS)

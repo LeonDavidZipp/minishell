@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/12 15:28:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/12 15:35:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,6 @@ int	main(void)
 	signal_handler();
 	while (!SIGQUIT)
 	{
-		input = readline("chl#>");
+		input = readline((const char *)"chl#>");
 	}
 }
