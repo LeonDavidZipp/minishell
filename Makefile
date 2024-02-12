@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 16:04:39 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/12 17:35:39 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,11 @@ NAME := minishell
 CC := cc
 CFLAGS := -Wextra -Wall -Werror
 LDFLAGS := -lreadline
+LDFLAGS := -lreadline
 
+SOURCES := $(addprefix src/, \
+main.c \
+signal_handler.c)
 SOURCES := $(addprefix src/, \
 main.c \
 signal_handler.c)
