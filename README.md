@@ -10,6 +10,7 @@ leaks.
 
 https://reactive.so/post/42-a-comprehensive-guide-to-pipex
 https://achrafbelarif.medium.com/42cursus-minishell-29cd25f972e6
+https://github.com/zstenger93/42_minishell_tester
 
 ## Prerequisites
 ### Display Prompts
