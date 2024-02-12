@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 15:41:47 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/12 16:04:39 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,15 +21,23 @@ main.c \
 signal_handler.c)
 OBJECTS := $(SOURCES:.c=.o)
 
+LIBFT := lib/libft
+LIBFT_LIB := $(LIBFT)/libft.a
+
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
+$(LIBFT_LIB):
+	make -C $(LIBFT)
+
+$(NAME): $(LIBFT_LIB) $(OBJECTS)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME)
 
 clean:
+	make -C $(LIBFT) clean
 	rm -f $(OBJECTS)
 	
 fclean: clean
+	make -C $(LIBFT) fclean
 	rm -f $(NAME)
 
 re: fclean all
