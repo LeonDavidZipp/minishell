@@ -13,6 +13,10 @@ leaks.
 ### Parsing
 ### Pipes & Redirections
 ### Signal Handling
+#### - Handle ctrl-C, ctrl-D and ctrl-\
+  - ctrl-C displays a new prompt on a new line.
+  - ctrl-D exits the shell.
+  - ctrl-\ does nothing.
 ### Command Execution (includes file path handling)
 - NOT Handle single ", ', ;, \
 ### Built in Commands
@@ -25,10 +29,6 @@ leaks.
 - exit with no options
 ### Env Vars
 ### History
-### Handle ctrl-C, ctrl-D and ctrl-\
-- ctrl-C displays a new prompt on a new line.
-- ctrl-D exits the shell.
-- ctrl-\ does nothing.
 
 ## Bonus
 ### && and ||
