@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 14:20:48 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/12 15:27:25 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CC := cc
 CFLAGS := -Wextra -Wall -Werror
 
 SOURCES := $(addprefix src/, \
+main.c \
 signal_handler.c)
 OBJECTS := $(SOURCES:.c=.o)
 
