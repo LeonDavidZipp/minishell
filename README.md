@@ -1,2 +1,36 @@
-# minishell
+# Minishell
 Using preprogrammed shells is boring, how about we create our own?
+
+## Good to know
+- !!!one global variable!!!
+
+- The readline() function can cause memory leaks. You don’t have to fix them. But
+that doesn’t mean your own code, yes the code you wrote, can have memory
+leaks.
+
+## Prerequisites
+### Display Prompts
+### Parsing
+### Pipes & Redirections
+### Signal Handling
+### Command Execution (includes file path handling)
+- NOT Handle single ", ', ;, \
+### Built in Commands
+- echo with option -n
+- cd with only a relative or absolute path
+- pwd with no options
+- export with no options
+- unset with no options
+- env with no options or arguments
+- exit with no options
+### Env Vars
+### History
+### Handle ctrl-C, ctrl-D and ctrl-\
+- ctrl-C displays a new prompt on a new line.
+- ctrl-D exits the shell.
+- ctrl-\ does nothing.
+
+## Bonus
+### && and ||
+### * for currend working dir
+
