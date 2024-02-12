@@ -1,4 +1,1 @@
-[submodule "lib/libft"]
-	path = lib/libft
-	# url = git@github.com:LeonDavidZipp/libft.git
-	url = https://github.com/LeonDavidZipp/libft.git
+
