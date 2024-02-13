@@ -15,6 +15,9 @@ https://github.com/zstenger93/42_minishell_tester
 ## Prerequisites
 ### Display Prompts
 ### Parsing
+- operators: no surrounding spaces needed
+- commands: spaces needed
+- flags: no spaces needed, BUT if two flags are together and not immediately after (e.g. -la -> -l -a, NOT -l-a), space is needed between flags
 ### Pipes & Redirections
 ### Signal Handling
 #### - Handle ctrl-C, ctrl-D and ctrl-\
