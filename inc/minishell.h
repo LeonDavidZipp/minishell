@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/12 18:54:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/13 11:15:40 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-extern volatile sig_atomic_t	g_ctrl_c_pressed;
+extern volatile sig_atomic_t	g_signal;
 
 // signal handling
 void		signal_handler(void);

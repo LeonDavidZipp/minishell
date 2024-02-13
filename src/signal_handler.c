@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/12 19:33:30 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/13 11:34:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,4 @@ void	handle_ctrl_c(int signal)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	g_ctrl_c_pressed = 1;
 }
-
-// void	handle_ctrl_d(int signal)
-// {
-// 	(void)signal;
-// 	exit(0);
-// }
