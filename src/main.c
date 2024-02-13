@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 14:22:08 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/13 14:34:30 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,8 @@ static char	*get_input(void)
 	char	*input;
 
 	input = readline("\033[0;36mchl#>	\033[0m");
-	if (input == NULL || ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+	if (input == NULL)
 	{
-		if (input != NULL)
-		{
-			add_history(input);
-			free(input);
-		}
 		printf("exit\n");
 		exit(0);
 	}
@@ -47,6 +42,13 @@ static char	*get_input(void)
 	{
 		free(input);
 		return (NULL);
+	}
+	else if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+	{
+		add_history(input);
+		free(input);
+		printf("exit\n");
+		exit(0);
 	}
 	add_history(input);
 	return (input);
