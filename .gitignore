@@ -56,3 +56,6 @@ dkms.conf
 *.out
 .DS_Store
 .vscode/
+libtft.a
+minishell
+*.o
