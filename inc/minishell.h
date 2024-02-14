@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 16:14:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 16:02:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@
 # include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+# define PROMPT "\033[0;36mchl#>	\033[0m"
 
 typedef enum e_token
 {
@@ -53,9 +55,17 @@ typedef enum e_token
 
 typedef struct s_input
 {
+	char	*content;
 	int		type;
-	char	*str;
 }			t_input;
+
+typedef struct s_treenode
+{
+	char				*content;
+	int					type;
+	struct s_treenode	*left;
+	struct s_treenode	*right;
+}					t_treenode;
 
 // signal handling
 void		signal_handler(void);

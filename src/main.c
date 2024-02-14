@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 14:36:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 16:03:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ static char	*get_input(void)
 {
 	char	*input;
 
-	input = readline("\033[0;36mchl#>	\033[0m");
+	input = readline(PROMPT);
 	if (input == NULL)
 	{
 		printf("exit\n");
