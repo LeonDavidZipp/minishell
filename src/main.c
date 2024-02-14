@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 17:24:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 17:30:07 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,4 +59,32 @@ static char	*get_input(void)
 	}
 	add_history(input);
 	return (input);
+}
+
+static char	**init_environ(char **environ)
+{
+	int		i;
+	char	**env;
+
+	i = 0;
+	while (environ[i])
+		i++;
+	env = (char **)ft_calloc(i + 1, sizeof(char *));
+	if (!env)
+		return (NULL);
+	i = 0;
+	while (environ[i])
+	{
+		env[i] = ft_strdup(environ[i]);
+		if (!env[i])
+		{
+			while (i--)
+				free(env[i]);
+			free(env);
+			return (NULL);
+		}
+		i++;
+	}
+	env[i] = NULL;
+	return (env);
 }
