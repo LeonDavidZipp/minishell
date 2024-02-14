@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 14:50:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:51:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ int	main(void)
 {
 	t_input		inputs[7];
 	t_treenode	*root;
-
 	inputs[0].content = "echo";
 	inputs[0].type = BUILTIN_CMD;
 	inputs[1].content = "hello";
@@ -72,14 +71,12 @@ int	main(void)
 	inputs[5].type = BUILTIN_CMD;
 	inputs[6].content = NULL;
 	inputs[6].type = 0;
-
 	root = (t_treenode *)new_node(&inputs[0]);
 	root->left = (t_treenode *)new_node(&inputs[1]);
 	root->right = (t_treenode *)new_node(&inputs[2]);
 	root->right->left = (t_treenode *)new_node(&inputs[3]);
 	root->right->right = (t_treenode *)new_node(&inputs[4]);
 	root->right->right->left = (t_treenode *)new_node(&inputs[5]);
-
 	debug_printtree(root, 0);
 	return (0);
 }
