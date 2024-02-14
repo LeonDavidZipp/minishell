@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 12:51:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 14:43:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ typedef struct s_treenode
 {
 	char				*content;
 	int					type;
-	struct t_treenode	*left;
-	struct t_treenode	*right;
+	struct s_treenode	*left;
+	struct s_treenode	*right;
 }					t_treenode;
 
 // signal handling
