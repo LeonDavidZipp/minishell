@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 16:55:37 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/13 16:06:44 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:28:07 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,6 @@ void	ft_free_tab(char **tab)
 	free(tab);
 }
 
-void	handle_special_chars(char const *s, t_split *split)
-{
-	if (s[split->i] == '\'')
-		split->quote_1 = !split->quote_1;
-	else if (s[split->i] == '"')
-		split->quote_2 = !split->quote_2;
-}
-
 int	count_word(char const *s, char c)
 {
 	t_split	split;
@@ -100,7 +92,10 @@ int	count_word(char const *s, char c)
 	init_struct(&split);
 	while (s[split.i])
 	{
-		handle_special_chars(s, &split);
+		if (s[split.i] == '\'')
+			split.quote_1 = !split.quote_1;
+		if (s[split.i] == '"')
+			split.quote_2 = !split.quote_2;
 		if (s[split.i] == c && !split.quote_1 && !split.quote_2)
 		{
 			if (split.j)
