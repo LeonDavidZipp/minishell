@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 17:30:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 20:08:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,30 +61,31 @@ static char	*get_input(void)
 	return (input);
 }
 
-static char	**init_environ(char **environ)
+static t_env_var	*init_environ(char **environ)
 {
-	int		i;
-	char	**env;
+	char			**temp;
+	t_env_var		*env_var;
+	t_env_var		*prev;
+	t_env_var		*first;
 
-	i = 0;
-	while (environ[i])
-		i++;
-	env = (char **)ft_calloc(i + 1, sizeof(char *));
-	if (!env)
-		return (NULL);
-	i = 0;
-	while (environ[i])
+	first = NULL;
+	prev = NULL;
+	while (*environ)
 	{
-		env[i] = ft_strdup(environ[i]);
-		if (!env[i])
-		{
-			while (i--)
-				free(env[i]);
-			free(env);
+		temp = ft_split(*environ, '=');
+		env_var = (t_env_var *)malloc(sizeof(t_env_var));
+		if (!env_var || !temp)
 			return (NULL);
-		}
-		i++;
+		env_var->key = temp[0];
+		env_var->value = temp[1];
+		env_var->next = NULL;
+		free(temp);
+		if (prev)
+			prev->next = env_var;
+		else
+			first = env_var;
+		prev = env_var;
+		environ++;
 	}
-	env[i] = NULL;
-	return (env);
+	return (first);
 }
