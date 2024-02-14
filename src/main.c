@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 16:03:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 17:19:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,15 @@
 
 static char	*get_input(void);
 
-int	main(void)
+int	main(int argc, char **argv, char **environ)
 {
 	char	*input;
 
+	if (argc != 1)
+	{
+		printf("\033[0;31mUsage: ./minishell\033[0m\\n");
+		return (1);
+	}
 	signal_handler();
 	while (1)
 	{

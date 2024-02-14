@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 16:02:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 16:20:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include "../lib/libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
+# include <stdbool.h>
 # include <unistd.h>
 # include <sys/wait.h>
 # include <signal.h>
