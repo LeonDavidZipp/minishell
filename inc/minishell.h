@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 14:26:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/13 16:14:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,33 @@
 # include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+
+typedef enum e_token
+{
+	SEMICOLON,
+	ARG,
+	FLAG,
+	BUILTIN_CMD,
+	OTHER_CMD,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+	PIPE,
+	AND,
+	OR,
+	REDIR_OUT,
+	REDIR_IN,
+	REDIR_APPEND,
+	REDIR_INPUT,
+	HEREDOC,
+	ENV_VAR,
+	WILDCARD
+}			t_token;
+
+typedef struct s_input
+{
+	int		type;
+	char	*str;
+}			t_input;
 
 // signal handling
 void		signal_handler(void);
