@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 16:14:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/14 12:51:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,17 @@ typedef enum e_token
 
 typedef struct s_input
 {
+	char	*content;
 	int		type;
-	char	*str;
 }			t_input;
+
+typedef struct s_treenode
+{
+	char				*content;
+	int					type;
+	struct t_treenode	*left;
+	struct t_treenode	*right;
+}					t_treenode;
 
 // signal handling
 void		signal_handler(void);
