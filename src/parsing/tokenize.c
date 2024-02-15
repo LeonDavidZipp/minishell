@@ -6,53 +6,53 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/14 19:18:33 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/15 13:57:50 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../inc/minishell.h"
+// #include "../../inc/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
-// int	ft_strlen(const char *s)
-// {
-// 	int	i;
+int	ft_strlen(const char *s)
+{
+	int	i;
 
-// 	i = 0;
-// 	while (s[i] != '\0')
-// 		i++;
-// 	return (i);
-// }
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
+}
 
-// char	*ft_substr(char const *s, unsigned int start, size_t len)
-// {
-// 	unsigned int	i;
-// 	unsigned int	j;
-// 	char			*ptr;
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	unsigned int	i;
+	unsigned int	j;
+	char			*ptr;
 
-// 	if (s == NULL)
-// 		return (NULL);
-// 	if ((int)start >= ft_strlen(s))
-// 	{
-// 		ptr = malloc(1);
-// 		if (ptr == NULL)
-// 			return (NULL);
-// 		ptr[0] = '\0';
-// 		return (ptr);
-// 	}
-// 	if (len > ft_strlen(s) - start)
-// 		len = ft_strlen(s) - start;
-// 	ptr = malloc(len + 1);
-// 	if (ptr == NULL)
-// 		return (NULL);
-// 	i = start;
-// 	j = 0;
-// 	while (s[i] != '\0' && j < len)
-// 		ptr[j++] = s[i++];
-// 	ptr[j] = '\0';
-// 	return (ptr);
-// }
+	if (s == NULL)
+		return (NULL);
+	if ((int)start >= ft_strlen(s))
+	{
+		ptr = malloc(1);
+		if (ptr == NULL)
+			return (NULL);
+		ptr[0] = '\0';
+		return (ptr);
+	}
+	if (len > ft_strlen(s) - start)
+		len = ft_strlen(s) - start;
+	ptr = malloc(len + 1);
+	if (ptr == NULL)
+		return (NULL);
+	i = start;
+	j = 0;
+	while (s[i] != '\0' && j < len)
+		ptr[j++] = s[i++];
+	ptr[j] = '\0';
+	return (ptr);
+}
 
 int	is_whitespace(char c)
 {
@@ -146,8 +146,6 @@ int	new_input_length(char *input)
 					j++;
 			}
 		}
-		else
-			j++;
 		i++;
 	}
 	return (j);
@@ -160,12 +158,17 @@ char	*add_spaces(char *input)
 	int		j;
 	bool	in_quote;
 	bool	in_bracket;
+	int		length;
 
 	i = 0;
 	j = 0;
 	in_quote = false;
 	in_bracket = false;
-	new_input = malloc(sizeof(char) * (new_input_length(input) + 1));
+	length = ft_strlen(input);
+	printf("old length: %d\n", length);
+	length += new_input_length(input);
+	printf("new length: %d\n", length);
+	new_input = malloc(sizeof(char) * (length + 1));
 	if (!new_input)
 		return (NULL);
 	i = 0;
@@ -209,22 +212,24 @@ char	**tokenize(char *input)
 	int		k;
 	bool	in_quote;
 	bool	in_bracket;
+	int		amount;
 
 	i = 0;
 	j = 0;
 	k = 0;
 	in_quote = false;
 	in_bracket = false;
-	printf("%s\n\n\n", input);
+	printf("%s\n\n\n%d\n\n\n", input, ft_strlen(input));
 	new_input = add_spaces(input);
 	if (!new_input)
 		return (NULL);
-	printf("%s\n\n\n", new_input);
-	tokens = malloc(sizeof(char *) * count_tokens(new_input) + 1);
-	printf("%d\n\n\n", count_tokens(new_input));
+	printf("%s\n\n\n%d\n\n\n", new_input, ft_strlen(new_input));
+	amount = count_tokens(new_input);
+	printf("%d\n\n\n", amount);
+	tokens = malloc(sizeof(char *) * (amount + 1));
 	if (!tokens)
-		return (NULL);
-	while (k < count_tokens(new_input))
+		return (free(new_input), NULL);
+	while (k < amount)
 	{
 		while (new_input[i] && is_whitespace(new_input[i]) && !in_quote && !in_bracket)
 			i++;
@@ -236,17 +241,23 @@ char	**tokenize(char *input)
 		}
 		tokens[k] = ft_substr(new_input, i, j - i);
 		if (!tokens[k])
-			return (NULL);
+		{
+			while (k >= 0)
+				free(tokens[k--]);
+			free(tokens);
+			return (free(new_input), NULL);
+		}
 		i = j;
 		k++;
 	}
 	tokens[k] = NULL;
+	free(new_input);
 	return (tokens);
 }
 
 int main()
 {
-	char **str = tokenize("lala bla 'hallo du' \"hallo du $USER\" cat |ls (ich du) hallo > test << test2 'this is a  test longer test' \"even longer test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
+	char **str = tokenize("lala hall cat|ls bla cat|ls 'hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du' was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
 	for (int i = 0; str[i]; i++)
 	{
 		printf("%s\n", str[i]);
