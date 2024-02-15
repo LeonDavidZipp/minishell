@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:24:10 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 17:34:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/15 15:51:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ void	builtin_pwd(void)
 
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
-	{
 		perror("minishell");
-	}
 	else
 	{
 		printf("%s\n", pwd);
