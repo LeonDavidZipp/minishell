@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:16:01 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/15 13:23:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/15 13:25:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ t_env_var	*init_environ(char **environ)
 	return (first);
 }
 
-static t_env_var	*create_env_var(char **temp, t_env_var *prev)
+
+
+t_env_var	*new_env_var(char **temp, t_env_var *prev)
 {
 	t_env_var	*env_var;
 
