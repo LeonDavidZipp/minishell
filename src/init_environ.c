@@ -6,11 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:16:01 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 20:24:09 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/15 13:23:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+static t_env_var	*create_env_var(char **temp, t_env_var *prev);
+static void			free_env_vars(t_env_var *env_var);
 
 t_env_var	*init_environ(char **environ)
 {
@@ -29,7 +32,7 @@ t_env_var	*init_environ(char **environ)
 		env_var = create_env_var(temp, prev);
 		if (!env_var)
 			return (free_env_vars(first), NULL);
-		free(temp);
+		ft_free_2d_arr((void **)temp);
 		if (!prev)
 			first = env_var;
 		prev = env_var;
@@ -45,8 +48,15 @@ static t_env_var	*create_env_var(char **temp, t_env_var *prev)
 	env_var = (t_env_var *)malloc(sizeof(t_env_var));
 	if (!env_var)
 		return (NULL);
-	env_var->key = temp[0];
-	env_var->value = temp[1];
+	env_var->key = ft_strdup(temp[0]);
+	env_var->value = ft_strdup(temp[1]);
+	if (!env_var->key || !env_var->value)
+	{
+		free(env_var->key);
+		free(env_var->value);
+		free(env_var);
+		return (NULL);
+	}
 	env_var->next = NULL;
 	if (prev)
 		prev->next = env_var;
