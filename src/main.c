@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 14:36:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 13:41:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,17 @@
 
 static char	*get_input(void);
 
-int	main(void)
+int	main(int argc, char **argv, char **environ)
 {
 	char	*input;
 
+	(void)environ;
+	(void)argv;
+	if (argc != 1)
+	{
+		printf("\033[0;31mUsage: ./minishell\033[0m\n");
+		return (1);
+	}
 	signal_handler();
 	while (1)
 	{
@@ -32,10 +39,13 @@ static char	*get_input(void)
 {
 	char	*input;
 
-	input = readline("\033[0;36mchl#>	\033[0m");
+	input = readline(PROMPT);
 	if (input == NULL)
 	{
 		printf("exit\n");
+		// free memory!!!!!!!!!!!!!!!!
+		// free memory!!!!!!!!!!!!!!!!
+		// free memory!!!!!!!!!!!!!!!!
 		exit(0);
 	}
 	else if (ft_strlen(input) == 0)
@@ -48,6 +58,9 @@ static char	*get_input(void)
 		add_history(input);
 		free(input);
 		printf("exit\n");
+		// free memory!!!!!!!!!!!!!!!!
+		// free memory!!!!!!!!!!!!!!!!
+		// free memory!!!!!!!!!!!!!!!!
 		exit(0);
 	}
 	add_history(input);
