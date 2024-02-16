@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/15 17:40:56 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/16 17:41:42 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,31 +81,6 @@ int	ft_isalnum(int c)
 	return (1);
 }
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
-{
-	unsigned char	*dest;
-	unsigned char	*source;
-	size_t			i;
-
-	dest = (unsigned char *)dst;
-	source = (unsigned char *)src;
-	if (dst > src)
-	{
-		while (len-- > 0)
-			dest[len] = source[len];
-	}
-	else if (dst < src)
-	{
-		i = 0;
-		while (i < len)
-		{
-			dest[i] = source[i];
-			i++;
-		}
-	}
-	return ((void *)dst);
-}
-
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;
@@ -127,52 +102,6 @@ void	*ft_calloc(size_t count, size_t size)
 		total--;
 	}
 	return (ptr);
-}
-
-void	*ft_recalloc(void *ptr, size_t len, size_t data_size)
-{
-	void	*new_ptr;
-
-	if (!ptr)
-		return (ft_calloc(len, data_size));
-	if (len == 0 && ptr)
-	{
-		free(ptr);
-		return (malloc(0));
-	}
-	new_ptr = ft_calloc(len + 1, data_size);
-	if (!new_ptr)
-		return (NULL);
-	ft_memmove(new_ptr, ptr, len * data_size);
-	free(ptr);
-	return (new_ptr);
-}
-
-char	*expand_exit_code(char **str, int *j, int last_exit_code)
-{
-	char	*exit_code;
-	char	*tmp;
-	int		i;
-
-	exit_code = ft_itoa(last_exit_code);
-	if (!exit_code)
-		return (NULL);
-	i = 0;
-	while (exit_code[i])
-	{
-		if (*j == ft_strlen(*str))
-		{
-			tmp = ft_recalloc(*str, ft_strlen(*str) * 2, sizeof(char));
-			if (!tmp)
-				return (free(exit_code), NULL);
-			*str = tmp;
-		}
-		(*str)[*j] = exit_code[i];
-		(*j)++;
-		i++;
-	}
-	free(exit_code);
-	return (*str);
 }
 
 char	*ft_strndup(const char *s1, size_t n)
@@ -198,11 +127,174 @@ char	*ft_strndup(const char *s1, size_t n)
 	return (dest);
 }
 
+char	*expand_exit_code(char **str, int *j, int last_exit_code)
+{
+	char	*exit_code;
+	int		i;
+
+	exit_code = ft_itoa(last_exit_code);
+	if (!exit_code)
+		return (NULL);
+	i = 0;
+	while (exit_code[i])
+	{
+		(*str)[*j] = exit_code[i];
+		(*j)++;
+		i++;
+	}
+	free(exit_code);
+	return (*str);
+}
+
+int	is_whitespace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\0')
+		return (1);
+	return (0);
+}
+
+bool	match(char *pattern, char *string)
+{
+	while (*pattern && *string)
+	{
+		if (*pattern == '*')
+		{
+			while (*pattern == '*')
+				pattern++;
+			while (*string)
+			{
+				if (match(pattern, string))
+					return (true);
+				string++;
+			}
+			return (match(pattern, string));
+		}
+		else if (*pattern == *string)
+		{
+			pattern++;
+			string++;
+		}
+		else
+			return (false);
+	}
+	return (*pattern == *string);
+}
+
+char	*get_pattern(char *input, int *i, int *position)
+{
+	int		start;
+	int		end;
+	int		tmp;
+	char	*pattern;
+
+	tmp = *i;
+	start = 0;
+	end = 0;
+	while (*i > 0 && !is_whitespace(input[*i]))
+		(*i)--;
+	start = *i + 1;
+	*position = tmp - start;
+	*i = tmp;
+	while (input[*i] && !is_whitespace(input[*i]))
+		(*i)++;
+	end = *i;
+	pattern = ft_strndup(input + start, end - start);
+	if (!pattern)
+		return (NULL);
+	return (pattern);
+}
+
+int	env_var_size(char *input, int *i)
+{
+	int		start;
+	int		size;
+	char	*name;
+	char	*value;
+
+	start = *i;
+	while (ft_isalnum(input[*i]) || input[*i] == '_')
+		(*i)++;
+	name = ft_strndup(input + start, *i - start);
+	if (!name)
+		return (0);
+	value = getenv(name);
+	if (value)
+		size = ft_strlen(value);
+	else
+		size = 0;
+	free(name);
+	return (size);
+}
+
+int	dir_entry_size(char *input, int *i)
+{
+	char			*pattern;
+	int				position;
+	DIR				*dir;
+	struct dirent	*entry;
+	int				size;
+	bool			flag;
+
+	flag = false;
+	pattern = get_pattern(input, i, &position);
+	if (!pattern)
+		return (0);
+	dir = opendir(".");
+	if (dir == NULL)
+		return (0);
+	entry = readdir(dir);
+	size = 0;
+	while (entry != NULL)
+	{
+		if (match(pattern, entry->d_name))
+		{
+			if (!flag)
+			{
+				size -= position;
+				flag = true;
+			}
+			size += ft_strlen(entry->d_name) + 1; // maybe + 1 is wrong???
+		}
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	return (size);
+}
+
+int	get_new_size(char *input, int last_exit_code)
+{
+	int	i;
+	int	size;
+	int	start;
+
+	i = 0;
+	size = 0;
+	while (input[i])
+	{
+		if (input[i] == '$' && input[i + 1] == '?')
+		{
+			size += ft_numlen(last_exit_code);
+			i += 2;
+		}
+		else if (input[i] == '$')
+		{
+			i++;
+			size += env_var_size(input, &i);
+		}
+		else if (input[i] == '*')
+			size += dir_entry_size(input, &i);
+		else
+			size++;
+		i++;
+	}
+	return (size);
+}
+
+// expand: remove last space, fix size_function
 
 char	*expand(char *input, char **envp, int last_exit_code)
 {
 	char	*output;
-	char	*new_output;
 	bool	s_quotes;
 	bool	d_quotes;
 	int		i;
@@ -212,22 +304,17 @@ char	*expand(char *input, char **envp, int last_exit_code)
 
 	i = 0;
 	j = 0;
-	size = ft_strlen(input) + 1;
+	int test = ft_strlen(input);
+	printf("%d\n", test);
+	size = get_new_size(input, last_exit_code);
+	printf("%d\n", size);
 	s_quotes = false;
 	d_quotes = false;
-	output = malloc(sizeof(char) * size);
+	output = ft_calloc((size), sizeof(char));
 	if (!output)
 		return (NULL);
 	while (input[i])
 	{
-		if (j == size - 1)
-		{
-			size *= 2;
-			new_output = ft_recalloc(output, size, sizeof(char));
-			if (!new_output)
-				return (free(output), NULL);
-			output = new_output;
-		}
 		if (input[i] == '\'')
 			s_quotes = !s_quotes;
 		if (input[i] == '\"')
@@ -250,14 +337,6 @@ char	*expand(char *input, char **envp, int last_exit_code)
 				int k = 0;
 				while (value[k])
 				{
-					if (j == size - 1)
-					{
-						size *= 2;
-						new_output = ft_recalloc(output, size, sizeof(char));
-						if (!new_output)
-							return (free(output), free(name), NULL);
-						output = new_output;
-					}
 					output[j++] = value[k++];
 				}
 				free(name);
@@ -267,7 +346,37 @@ char	*expand(char *input, char **envp, int last_exit_code)
 		}
 		else if (input[i] == '*' && !s_quotes && !d_quotes)
 		{
-			// TODO: expand wildcard
+			DIR *dir;
+			struct dirent *entry;
+			char *pattern;
+			int	position;
+			bool	flag;
+
+			flag = false;
+			pattern = get_pattern(input, &i, &position);
+			if (!pattern)
+				return (free(output), NULL);
+			dir = opendir(".");
+			if (dir == NULL)
+				return (free(output), NULL);
+			entry = readdir(dir);
+			while (entry != NULL)
+			{
+				if (match(pattern, entry->d_name))
+				{
+					if (!flag)
+					{
+						j -= position;
+						flag = true;
+					}
+					int k = 0;
+					while (entry->d_name[k])
+						output[j++] = entry->d_name[k++];
+					output[j++] = ' ';
+				}
+				entry = readdir(dir);
+			}
+			closedir(dir);
 		}
 		else
 			output[j++] = input[i++];
@@ -276,10 +385,9 @@ char	*expand(char *input, char **envp, int last_exit_code)
 	return (output);
 }
 
-
 int main()
 {
-	char *input = "*.c";
+	char *input = "hello *.c";
 	char *output = expand(input, NULL, 1);
 	printf("%s\n", output);
 	free(output);

@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/15 13:57:50 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/16 14:45:11 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,9 +165,7 @@ char	*add_spaces(char *input)
 	in_quote = false;
 	in_bracket = false;
 	length = ft_strlen(input);
-	printf("old length: %d\n", length);
 	length += new_input_length(input);
-	printf("new length: %d\n", length);
 	new_input = malloc(sizeof(char) * (length + 1));
 	if (!new_input)
 		return (NULL);
@@ -219,13 +217,10 @@ char	**tokenize(char *input)
 	k = 0;
 	in_quote = false;
 	in_bracket = false;
-	printf("%s\n\n\n%d\n\n\n", input, ft_strlen(input));
 	new_input = add_spaces(input);
 	if (!new_input)
 		return (NULL);
-	printf("%s\n\n\n%d\n\n\n", new_input, ft_strlen(new_input));
 	amount = count_tokens(new_input);
-	printf("%d\n\n\n", amount);
 	tokens = malloc(sizeof(char *) * (amount + 1));
 	if (!tokens)
 		return (free(new_input), NULL);
