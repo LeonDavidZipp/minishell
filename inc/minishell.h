@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 14:34:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 16:14:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include <term.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 
 # define PROMPT "\033[0;36mchl#>	\033[0m"
 
@@ -81,5 +81,6 @@ void		signal_handler(void);
 // environment variables
 t_env_var	*init_environ(char **environ);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
+t_env_var	*copy_env_vars(t_env_var *env_vars);
 
 #endif
