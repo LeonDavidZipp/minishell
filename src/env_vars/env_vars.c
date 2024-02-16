@@ -6,13 +6,11 @@
 /*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 17:23:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 18:15:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-t_env_var		*new_env_var(char *key, char *value);
 
 void	update_env_vars(char *key, char *value, t_env_var **env_vars)
 {
