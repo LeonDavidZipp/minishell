@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:04:21 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 18:21:33 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 18:27:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,14 @@ char	**split_environ(char *environ)
 	return (key_value);
 }
 
-int	main(void)
-{
-	char *environ = "USER====1234==6";
-	char **result = split_environ(environ);
-	int i = 0;
-	while (result[i])
-	{
-		printf("val: |%s|\n", result[i]);
-		i++;
-	}
-}
+// int	main(void)
+// {
+// 	char *environ = "USER====1234==6";
+// 	char **result = split_environ(environ);
+// 	int i = 0;
+// 	while (result[i])
+// 	{
+// 		printf("val: |%s|\n", result[i]);
+// 		i++;
+// 	}
+// }
