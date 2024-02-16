@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 20:16:01 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/15 17:51:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 12:35:03 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,18 @@ t_env_var	*init_environ(char **environ)
 		temp = ft_split(*environ, '=');
 		if (!temp)
 			return (free_env_vars(first), NULL);
-		env_var = new_env_var(temp[0], temp[1], prev);
+		if (ft_null_terminated_arr_len((void **)temp) != 2)
+			env_var = new_env_var(temp[0], "", prev);
+		else
+			env_var = new_env_var(temp[0], temp[1], prev);
 		if (!env_var)
 			return (free_env_vars(first), NULL);
 		ft_free_2d_arr((void **)temp);
 		if (!prev)
-			{first = env_var; printf("env_var: %s, %s\n--------------\n", first->key, first->value);}
+			first = env_var;
 		prev = env_var;
-		printf("env_var: %s, %s\n", env_var->key, env_var->value);
 		environ++;
 	}
-	printf("\n----------\n2env_var: %s, %s\n", first->key, first->value);
 	return (first);
 }
 
@@ -131,27 +132,28 @@ void	free_env_vars(t_env_var *env_var)
 
 int	main(int argc, char **argv, char **environ)
 {
-	t_env_var	*env_var;
+    t_env_var	*env_var;
+    t_env_var	*temp;
 
-	(void)argc;
-	(void)argv;
-	env_var = init_environ(environ);
-	// printf("env_var: %s, %s\n", env_var->key, env_var->value);
-	// while (env_var)
-	// {
-	// 	printf("key: %s, value: %s\n", env_var->key, env_var->value);
-	// 	env_var = env_var->next;
-	// }
-	// printf("\n-----------\n");
-	if (!env_var)
-		return (1);
-	t_env_var	*temp = new_env_var("test", "test", env_var);
-	add_or_update_env_var(temp, &env_var);
-	// while (env_var)
-	// {
-	// 	printf("key: %s, value: %s\n", env_var->key, env_var->value);
-	// 	env_var = env_var->next;
-	// }
-	free_env_vars(env_var);
-	return (0);
+    (void)argc;
+    (void)argv;
+    env_var = init_environ(environ);
+	temp = env_var;
+    while (temp)
+    {
+        printf("key: %s, value: %s\n", temp->key, temp->value);
+        temp = temp->next;
+    }
+    printf("\n-----------\n\n");
+    t_env_var	*new_var = new_env_var("test", "test", env_var);
+	printf("\n\nnew_var->key: %s, new_var->value: %s\n\n", new_var->key, new_var->value);
+    add_or_update_env_var(new_var, &env_var);
+    temp = env_var;
+    while (temp)
+    {
+        printf("key: %s, value: %s\n", temp->key, temp->value);
+        temp = temp->next;
+    }
+    // free_env_vars(env_var);
+    return (0);
 }
