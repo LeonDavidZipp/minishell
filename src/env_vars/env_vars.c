@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 15:13:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 15:15:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 void			update_env_vars(char *key, char *value, t_env_var **env_vars);
 t_env_var		*new_env_var(char *key, char *value);
-void			free_env_vars(t_env_var *env_var);
 
 void	update_env_vars(char *key, char *value, t_env_var **env_vars)
 {
