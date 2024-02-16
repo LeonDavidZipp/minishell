@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/12 18:21:34 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/14 17:25:32 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LDFLAGS := -lreadline
 
 SOURCES := $(addprefix src/, \
 main.c \
-signal_handler.c)
+signal_handler.c \
+new_node.c)
 
 OBJECTS := $(SOURCES:.c=.o)
 

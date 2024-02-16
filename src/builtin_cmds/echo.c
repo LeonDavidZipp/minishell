@@ -1,27 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/14 15:24:10 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/15 15:51:21 by lzipp            ###   ########.fr       */
+/*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
+/*   Updated: 2024/02/14 17:33:54 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	builtin_pwd(void)
+void	builtin_echo(char *str, bool flag_was_set)
 {
-	char	*pwd;
-
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
-		perror("minishell");
-	else
-	{
-		printf("%s\n", pwd);
-		free(pwd);
-	}
+	printf("%s", str);
+	if (flag_was_set)
+		printf("\n");
 }
