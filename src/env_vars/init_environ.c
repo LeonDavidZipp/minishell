@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:04:21 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 18:27:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/17 11:17:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,13 @@ char	**split_environ(char *environ)
 	if (!key_value)
 		return (NULL);
 	len = 0;
-	while (environ[len] != '=')
+	while (environ[len] && environ[len] != '=')
 	{
+		if (ft_isspace(environ[len]))
+		{
+			free(key_value);
+			return (NULL);
+		}
 		len++;
 	}
 	key_value[0] = ft_substr(environ, 0, len);
