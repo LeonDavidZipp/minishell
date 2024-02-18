@@ -6,11 +6,10 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/16 14:45:11 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/18 17:31:36 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// #include "../../inc/minishell.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -80,38 +79,82 @@ void	handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket)
 		*in_bracket = false;
 }
 
-int	count_tokens(char *input)
+// int	count_tokens(char *input)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		amount;
+// 	bool	in_quote;
+// 	bool	in_bracket;
+
+// 	i = 0;
+// 	j = 0;
+// 	amount = 0;
+// 	in_quote = false;
+// 	in_bracket = false;
+// 	while (input[i])
+// 	{
+// 		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
+// 		if (input[i] && is_whitespace(input[i]) && !in_quote && !in_bracket)
+// 		{
+// 			if (j)
+// 				j = 0;
+// 		}
+// 		else
+// 		{
+// 			if (!j)
+// 			{
+// 				amount++;
+// 				j = 1;
+// 			}
+// 		}
+// 		i++;
+// 	}
+// 	return (amount);
+// }
+
+int count_tokens(char *input)
 {
 	int		i;
-	int		j;
 	int		amount;
 	bool	in_quote;
 	bool	in_bracket;
 
 	i = 0;
-	j = 0;
 	amount = 0;
 	in_quote = false;
 	in_bracket = false;
 	while (input[i])
 	{
-		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
-		if (input[i] && is_whitespace(input[i]) && !in_quote && !in_bracket)
+		while (input[i] && is_whitespace(input[i]) && !in_quote && !in_bracket)
+			i++;
+		if (input[i])
+			amount++;
+		while (input[i] && !is_whitespace(input[i]) || in_quote || in_bracket)
 		{
-			if (j)
-				j = 0;
+			handle_quotes_brackets(input[i], &in_quote, &in_bracket);
+			i++;
 		}
-		else
-		{
-			if (!j)
-			{
-				amount++;
-				j = 1;
-			}
-		}
-		i++;
 	}
 	return (amount);
+}
+
+void	noch_kein_name(char *input, int *j, int *i) // needs an actual name
+{
+	if (is_operator(input[*i], input[*i + 1]) == 2)
+	{
+		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+			(*j)++;
+		if (input[*i + 2] && !is_whitespace(input[*i + 2]))
+			(*j)++;
+	}
+	else
+	{
+		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+			(*j)++;
+		if (input[*i + 1] && !is_whitespace(input[*i + 1]))
+			(*j)++;
+	}
 }
 
 int	new_input_length(char *input)
@@ -129,26 +172,35 @@ int	new_input_length(char *input)
 	while (input[i])
 	{
 		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
-		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1]) && !in_quote && !in_bracket)
+		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
+			&& !in_quote && !in_bracket)
 		{
-			if (is_operator(input[i], input[i + 1]) == 2)
-			{
-				if (input[i - 1] && !is_whitespace(input[i - 1]))
-					j++;
-				if (input[i + 2] && !is_whitespace(input[i + 2]))
-					j++;
-			}
-			else
-			{
-				if (input[i - 1] && !is_whitespace(input[i - 1]))
-					j++;
-				if (input[i + 1] && !is_whitespace(input[i + 1]))
-					j++;
-			}
+			noch_kein_name(input, &j, &i);
 		}
 		i++;
 	}
 	return (j);
+}
+
+void	noch_kein_name_2(char *input, char *new_input, int *j, int *i) // needs an actual name
+{
+	if (is_operator(input[*i], input[*i + 1]) == 2)
+	{
+		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+			new_input[(*j)++] = ' ';
+		new_input[(*j)++] = input[(*i)++];
+		new_input[(*j)++] = input[(*i)++];
+		if (!is_whitespace(input[*i]))
+			new_input[(*j)++] = ' ';
+		}
+	else
+	{
+		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+			new_input[(*j)++] = ' ';
+		new_input[(*j)++] = input[(*i)++];
+		if (!is_whitespace(input[*i]))
+			new_input[(*j)++] = ' ';
+	}
 }
 
 char	*add_spaces(char *input)
@@ -158,42 +210,19 @@ char	*add_spaces(char *input)
 	int		j;
 	bool	in_quote;
 	bool	in_bracket;
-	int		length;
 
 	i = 0;
 	j = 0;
 	in_quote = false;
 	in_bracket = false;
-	length = ft_strlen(input);
-	length += new_input_length(input);
-	new_input = malloc(sizeof(char) * (length + 1));
+	new_input = malloc(sizeof(char) * ((ft_strlen(input) + new_input_length(input)) + 1));
 	if (!new_input)
 		return (NULL);
-	i = 0;
-	j = 0;
 	while (input[i])
 	{
 		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
 		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1]) && !in_quote && !in_bracket)
-		{
-			if (is_operator(input[i], input[i + 1]) == 2)
-			{
-				if (input[i - 1] && !is_whitespace(input[i - 1]))
-					new_input[j++] = ' ';
-				new_input[j++] = input[i++];
-				new_input[j++] = input[i++];
-				if (!is_whitespace(input[i]))
-					new_input[j++] = ' ';
-			}
-			else
-			{
-				if (input[i - 1] && !is_whitespace(input[i - 1]))
-					new_input[j++] = ' ';
-				new_input[j++] = input[i++];
-				if (!is_whitespace(input[i]))
-					new_input[j++] = ' ';
-			}
-		}
+			noch_kein_name_2(input, new_input, &j, &i);
 		else
 			new_input[j++] = input[i++];
 	}
@@ -252,7 +281,8 @@ char	**tokenize(char *input)
 
 int main()
 {
-	char **str = tokenize("lala hall cat|ls bla cat|ls 'hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du' was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
+	//char **str = tokenize("lala hall cat|ls bla cat|ls 'hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du' was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
+	char **str = tokenize("'$USER' $? ft_*.c hallo test <&&ls");
 	for (int i = 0; str[i]; i++)
 	{
 		printf("%s\n", str[i]);

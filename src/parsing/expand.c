@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/16 17:41:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/18 16:10:42 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include <stdbool.h>
 #include <dirent.h>
 #include <string.h>
+
+// version to expand before tokenization (probably won't use this)
 
 int	ft_strlen(const char *s)
 {
@@ -127,6 +129,13 @@ char	*ft_strndup(const char *s1, size_t n)
 	return (dest);
 }
 
+int	is_whitespace(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\0')
+		return (1);
+	return (0);
+}
+
 char	*expand_exit_code(char **str, int *j, int last_exit_code)
 {
 	char	*exit_code;
@@ -144,13 +153,6 @@ char	*expand_exit_code(char **str, int *j, int last_exit_code)
 	}
 	free(exit_code);
 	return (*str);
-}
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
 }
 
 bool	match(char *pattern, char *string)
