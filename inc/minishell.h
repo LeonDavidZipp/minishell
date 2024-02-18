@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 20:26:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 18:15:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,13 @@ typedef struct s_treenode
 
 // signal handling
 void		signal_handler(void);
+
+// environment variables
+char		**split_environ(char *environ);
+t_env_var	*init_environ(char **environ);
+t_env_var	*new_env_var(char *key, char *value);
+void		update_env_vars(char *key, char *value, t_env_var **env_vars);
+t_env_var	*copy_env_vars(t_env_var *env_vars);
+void		free_env_vars(t_env_var *env_var);
 
 #endif
