@@ -1,49 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_environ.c                                     :+:      :+:    :+:   */
+/*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 14:22:56 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 18:15:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
-
-void			update_env_vars(char *key, char *value, t_env_var **env_vars);
-t_env_var		*new_env_var(char *key, char *value);
-static void		free_env_vars(t_env_var *env_var);
-static void		update_links(t_env_var **first, t_env_var **prev,
-					t_env_var *env_var);
-
-t_env_var	*init_environ(char **environ)
-{
-	char			**temp;
-	t_env_var		*env_var;
-	t_env_var		*prev;
-	t_env_var		*first;
-
-	first = NULL;
-	prev = NULL;
-	while (*environ)
-	{
-		temp = ft_split(*environ, '=');
-		if (!temp)
-			return (free_env_vars(first), NULL);
-		if (ft_null_terminated_arr_len((void **)temp) != 2)
-			env_var = new_env_var(temp[0], "");
-		else
-			env_var = new_env_var(temp[0], temp[1]);
-		if (!env_var)
-			return (free_env_vars(first), NULL);
-		ft_free_2d_arr((void **)temp);
-		update_links(&first, &prev, env_var);
-		environ++;
-	}
-	return (first);
-}
+#include "../../inc/minishell.h"
 
 void	update_env_vars(char *key, char *value, t_env_var **env_vars)
 {
@@ -72,6 +39,21 @@ void	update_env_vars(char *key, char *value, t_env_var **env_vars)
 	temp->next = new_var;
 }
 
+t_env_var	*copy_env_vars(t_env_var *env_vars)
+{
+	t_env_var	*new_env_vars;
+	t_env_var	*temp;
+
+	new_env_vars = NULL;
+	temp = env_vars;
+	while (temp)
+	{
+		update_env_vars(temp->key, temp->value, &new_env_vars);
+		temp = temp->next;
+	}
+	return (new_env_vars);
+}
+
 t_env_var	*new_env_var(char *key, char *value)
 {
 	t_env_var	*env_var;
@@ -93,17 +75,32 @@ t_env_var	*new_env_var(char *key, char *value)
 	return (env_var);
 }
 
-static void	update_links(t_env_var **first, t_env_var **prev,
-				t_env_var *env_var)
+void	unset_env_var(char *key, t_env_var **env_vars)
 {
-	if (!*prev)
-		*first = env_var;
-	else
-		(*prev)->next = env_var;
-	*prev = env_var;
+	t_env_var	*temp;
+	t_env_var	*prev;
+
+	temp = *env_vars;
+	prev = NULL;
+	while (temp)
+	{
+		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
+		{
+			if (!prev)
+				*env_vars = temp->next;
+			else
+				prev->next = temp->next;
+			free(temp->key);
+			free(temp->value);
+			free(temp);
+			return ;
+		}
+		prev = temp;
+		temp = temp->next;
+	}
 }
 
-static void	free_env_vars(t_env_var *env_var)
+void	free_env_vars(t_env_var *env_var)
 {
 	t_env_var	*temp;
 
@@ -116,3 +113,29 @@ static void	free_env_vars(t_env_var *env_var)
 		env_var = temp;
 	}
 }
+
+// int	main(void)
+// {
+// 	t_env_var	*env_vars;
+// 	t_env_var	*new_env_vars;
+// 	t_env_var	*temp;
+
+// 	env_vars = NULL;
+// 	update_env_vars("key1", "value1", &env_vars);
+// 	update_env_vars("key2", "value2", &env_vars);
+// 	update_env_vars("key3", "value3", &env_vars);
+// 	update_env_vars("key4", "value4", &env_vars);
+// 	temp = env_vars;
+// 	while (temp)
+// 	{
+// 		printf("key: %s, value: %s\n", temp->key, temp->value);
+// 		temp = temp->next;
+// 	}
+// 	new_env_vars = copy_env_vars(env_vars);
+// 	temp = new_env_vars;
+// 	while (temp)
+// 	{
+// 		printf("key: %s, value: %s\n", temp->key, temp->value);
+// 		temp = temp->next;
+// 	}
+// }

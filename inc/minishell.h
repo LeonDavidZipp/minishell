@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 14:34:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 18:15:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@
 # include <term.h>
 # include <fcntl.h>
 # include <sys/ioctl.h>
-# include <readline/readline.h>
-# include <readline/history.h>
+// # include <readline/readline.h>
+// # include <readline/history.h>
 
 # define PROMPT "\033[0;36mchl#>	\033[0m"
 
@@ -79,7 +79,11 @@ typedef struct s_treenode
 void		signal_handler(void);
 
 // environment variables
+char		**split_environ(char *environ);
 t_env_var	*init_environ(char **environ);
+t_env_var	*new_env_var(char *key, char *value);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
+t_env_var	*copy_env_vars(t_env_var *env_vars);
+void		free_env_vars(t_env_var *env_var);
 
 #endif
