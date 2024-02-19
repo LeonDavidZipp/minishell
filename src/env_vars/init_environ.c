@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:04:21 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/19 17:15:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/19 17:30:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ t_env_var	*init_environ(char **environ)
 	prev = NULL;
 	while (*environ)
 	{
-		// temp = ft_split(*environ, '=');
 		temp = split_environ(*environ);
 		if (!temp)
 			return (free_env_vars(first), NULL);
