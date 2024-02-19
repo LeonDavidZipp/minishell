@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/18 16:10:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:15:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 #include <stdbool.h>
 #include <dirent.h>
 #include <string.h>
-
-// version to expand before tokenization (probably won't use this)
 
 int	ft_strlen(const char *s)
 {
@@ -136,23 +134,27 @@ int	is_whitespace(char c)
 	return (0);
 }
 
-char	*expand_exit_code(char **str, int *j, int last_exit_code)
+char	*ft_strdup(const char *s1)
 {
-	char	*exit_code;
+	char	*dest;
 	int		i;
 
-	exit_code = ft_itoa(last_exit_code);
-	if (!exit_code)
+	if (!s1)
 		return (NULL);
 	i = 0;
-	while (exit_code[i])
+	while (s1[i])
+		i++;
+	dest = (char *)malloc((i + 1) * sizeof (char));
+	if (!dest)
+		return (NULL);
+	i = 0;
+	while (s1[i])
 	{
-		(*str)[*j] = exit_code[i];
-		(*j)++;
+		dest[i] = s1[i];
 		i++;
 	}
-	free(exit_code);
-	return (*str);
+	dest[i] = '\0';
+	return (dest);
 }
 
 bool	match(char *pattern, char *string)
@@ -182,30 +184,6 @@ bool	match(char *pattern, char *string)
 	return (*pattern == *string);
 }
 
-char	*get_pattern(char *input, int *i, int *position)
-{
-	int		start;
-	int		end;
-	int		tmp;
-	char	*pattern;
-
-	tmp = *i;
-	start = 0;
-	end = 0;
-	while (*i > 0 && !is_whitespace(input[*i]))
-		(*i)--;
-	start = *i + 1;
-	*position = tmp - start;
-	*i = tmp;
-	while (input[*i] && !is_whitespace(input[*i]))
-		(*i)++;
-	end = *i;
-	pattern = ft_strndup(input + start, end - start);
-	if (!pattern)
-		return (NULL);
-	return (pattern);
-}
-
 int	env_var_size(char *input, int *i)
 {
 	int		start;
@@ -225,41 +203,6 @@ int	env_var_size(char *input, int *i)
 	else
 		size = 0;
 	free(name);
-	return (size);
-}
-
-int	dir_entry_size(char *input, int *i)
-{
-	char			*pattern;
-	int				position;
-	DIR				*dir;
-	struct dirent	*entry;
-	int				size;
-	bool			flag;
-
-	flag = false;
-	pattern = get_pattern(input, i, &position);
-	if (!pattern)
-		return (0);
-	dir = opendir(".");
-	if (dir == NULL)
-		return (0);
-	entry = readdir(dir);
-	size = 0;
-	while (entry != NULL)
-	{
-		if (match(pattern, entry->d_name))
-		{
-			if (!flag)
-			{
-				size -= position;
-				flag = true;
-			}
-			size += ft_strlen(entry->d_name) + 1; // maybe + 1 is wrong???
-		}
-		entry = readdir(dir);
-	}
-	closedir(dir);
 	return (size);
 }
 
@@ -283,115 +226,117 @@ int	get_new_size(char *input, int last_exit_code)
 			i++;
 			size += env_var_size(input, &i);
 		}
-		else if (input[i] == '*')
-			size += dir_entry_size(input, &i);
 		else
+		{
 			size++;
-		i++;
+			i++;
+		}
 	}
 	return (size);
 }
 
-// expand: remove last space, fix size_function
+int	exit_code(char **str, int *j, int last_exit_code)
+{
+	char	*exit_code;
+	int		i;
 
-char	*expand(char *input, char **envp, int last_exit_code)
+	exit_code = ft_itoa(last_exit_code);
+	if (!exit_code)
+		return (0);
+	i = 0;
+	while (exit_code[i])
+	{
+		(*str)[*j] = exit_code[i];
+		(*j)++;
+		i++;
+	}
+	free(exit_code);
+	return (1);
+}
+
+int	env_var(char *input, char **envp, char **output, int *j)
+{
+	char	*name;
+	char	*value;
+	int		i;
+	
+	i = 1;
+	while (ft_isalnum(input[i]) || input[i] == '_')
+		i++;
+	name = ft_strndup(input + 1, i - 1);
+	if (!name)
+		return (0);
+	value = getenv(name);
+	if (value)
+	{
+		i = 0;
+		while (value[i])
+			(*output)[(*j)++] = value[i++];
+		free(name);
+	}
+	else
+		free(name);
+	return (1);
+}
+
+char *handle_expansion(char *input, char **output, int *i, char **envp, int last_exit_code)
+{
+	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
+	{
+		if (!exit_code(output, &i[1], last_exit_code))
+			return (free(*output), NULL);
+		i[0] += 2;
+	}
+	else if (input[i[0]] == '$')
+	{
+		if (!env_var(input + i[0], envp, output, &i[1]))
+			return (free(*output), NULL);
+		i[2] = 1;
+		while (ft_isalnum(input[i[0] + i[2]]) || input[i[0] + i[2]] == '_')
+			i[2]++;
+		i[0] += i[2];
+	}
+	return (*output);
+}
+
+// last exit code should be in a struct, same as envp (they should be in the same struct otherwise they two parsing arguments which is shit)
+
+char	*handle_in_string_expansion(char *input, char **envp, int last_exit_code)
 {
 	char	*output;
-	bool	s_quotes;
-	bool	d_quotes;
-	int		i;
-	int		j;
-	int		start;
-	int		size;
+	int		i[3];
 
-	i = 0;
-	j = 0;
-	int test = ft_strlen(input);
-	printf("%d\n", test);
-	size = get_new_size(input, last_exit_code);
-	printf("%d\n", size);
-	s_quotes = false;
-	d_quotes = false;
-	output = ft_calloc((size), sizeof(char));
+	i[0] = 0;
+	i[1] = 0;
+	output = (char *)ft_calloc((get_new_size(input, last_exit_code) + 1), sizeof(char));
+	printf("%d\n", get_new_size(input, last_exit_code));
 	if (!output)
 		return (NULL);
-	while (input[i])
+	while (input[i[0]])
 	{
-		if (input[i] == '\'')
-			s_quotes = !s_quotes;
-		if (input[i] == '\"')
-			d_quotes = !d_quotes;
-		if (input[i] == '$' && input[i + 1] == '?' && !s_quotes)
+		if (input[i[0]] == '$')
 		{
-			expand_exit_code(&output, &j, last_exit_code);
-			i += 2;
-		}
-		else if (input[i] == '$' && !s_quotes)
-		{
-			i++;
-			start = i;
-			while (ft_isalnum(input[i]) || input[i] == '_')
-				i++;
-			char *name = ft_strndup(input + start, i - start);
-			char *value = getenv(name);
-			if (value)
-			{
-				int k = 0;
-				while (value[k])
-				{
-					output[j++] = value[k++];
-				}
-				free(name);
-			}
-			else
-				free(name);
-		}
-		else if (input[i] == '*' && !s_quotes && !d_quotes)
-		{
-			DIR *dir;
-			struct dirent *entry;
-			char *pattern;
-			int	position;
-			bool	flag;
-
-			flag = false;
-			pattern = get_pattern(input, &i, &position);
-			if (!pattern)
-				return (free(output), NULL);
-			dir = opendir(".");
-			if (dir == NULL)
-				return (free(output), NULL);
-			entry = readdir(dir);
-			while (entry != NULL)
-			{
-				if (match(pattern, entry->d_name))
-				{
-					if (!flag)
-					{
-						j -= position;
-						flag = true;
-					}
-					int k = 0;
-					while (entry->d_name[k])
-						output[j++] = entry->d_name[k++];
-					output[j++] = ' ';
-				}
-				entry = readdir(dir);
-			}
-			closedir(dir);
+			output = handle_expansion(input, &output, i, envp, last_exit_code);
+			if (!output)
+				return (NULL);
 		}
 		else
-			output[j++] = input[i++];
+			output[i[1]++] = input[i[0]++];
 	}
-	output[j] = '\0';
+	output[i[1]] = '\0';
 	return (output);
 }
 
-int main()
+int	main(int argc, char **argv, char **envp)
 {
-	char *input = "hello *.c";
-	char *output = expand(input, NULL, 1);
-	printf("%s\n", output);
-	free(output);
+	char	*input = "hello $HAALO your number is $?"; // testing
+	int		i = 0;
+
+	char *output = handle_in_string_expansion(input, envp, 0);
+	if (output)
+	{
+		printf("%s\n", output);
+		free(output);
+	}
 	return (0);
 }

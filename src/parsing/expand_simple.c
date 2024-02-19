@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_2.0.c                                       :+:      :+:    :+:   */
+/*   expand_simple.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/18 18:15:54 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:00:18 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -230,7 +230,7 @@ char	**expand_wildcard(char *input)
 	int				i;
 
 	i = 0;
-	output = (char **)ft_calloc(100, sizeof(char *)); // may need to change 100
+	output = (char **)ft_calloc(100, sizeof(char *)); // need to change 100
 	if (!output)
 		return (NULL);
 	dir = opendir(".");
@@ -252,7 +252,7 @@ char	**expand_wildcard(char *input)
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*input = "$USER";
+	char	*input = "*";
 	int		i = 0;
 	if (input[i] == '$' && input[i + 1] == '?')
 	{

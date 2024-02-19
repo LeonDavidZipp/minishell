@@ -6,51 +6,47 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/18 17:31:36 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/19 14:42:39 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#include "../../inc/minishell.h"
 
-int	ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
-	int	i;
+	size_t	len;
 
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
+	if (!s)
+		return (0);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	unsigned int	i;
-	unsigned int	j;
-	char			*ptr;
+	size_t	j;
+	size_t	s_len;
+	char	*res;
 
-	if (s == NULL)
+	if (!s)
 		return (NULL);
-	if ((int)start >= ft_strlen(s))
-	{
-		ptr = malloc(1);
-		if (ptr == NULL)
-			return (NULL);
-		ptr[0] = '\0';
-		return (ptr);
-	}
-	if (len > ft_strlen(s) - start)
-		len = ft_strlen(s) - start;
-	ptr = malloc(len + 1);
-	if (ptr == NULL)
-		return (NULL);
-	i = start;
 	j = 0;
-	while (s[i] != '\0' && j < len)
-		ptr[j++] = s[i++];
-	ptr[j] = '\0';
-	return (ptr);
+	s_len = ft_strlen(s);
+	while (j + start < s_len && s[j + start] && j < len)
+		j++;
+	res = (char *)malloc((j + 1) * sizeof(char));
+	if (!res)
+		return (NULL);
+	j = 0;
+	while (start < s_len && s[start] && len > 0)
+	{
+		res[j++] = s[start++];
+		len--;
+	}
+	res[j] = '\0';
+	return (res);
 }
 
 int	is_whitespace(char c)
@@ -79,41 +75,7 @@ void	handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket)
 		*in_bracket = false;
 }
 
-// int	count_tokens(char *input)
-// {
-// 	int		i;
-// 	int		j;
-// 	int		amount;
-// 	bool	in_quote;
-// 	bool	in_bracket;
-
-// 	i = 0;
-// 	j = 0;
-// 	amount = 0;
-// 	in_quote = false;
-// 	in_bracket = false;
-// 	while (input[i])
-// 	{
-// 		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
-// 		if (input[i] && is_whitespace(input[i]) && !in_quote && !in_bracket)
-// 		{
-// 			if (j)
-// 				j = 0;
-// 		}
-// 		else
-// 		{
-// 			if (!j)
-// 			{
-// 				amount++;
-// 				j = 1;
-// 			}
-// 		}
-// 		i++;
-// 	}
-// 	return (amount);
-// }
-
-int count_tokens(char *input)
+int	count_tokens(char *input)
 {
 	int		i;
 	int		amount;
@@ -139,7 +101,7 @@ int count_tokens(char *input)
 	return (amount);
 }
 
-void	noch_kein_name(char *input, int *j, int *i) // needs an actual name
+void	count_if_space_needed(char *input, int *j, int *i)
 {
 	if (is_operator(input[*i], input[*i + 1]) == 2)
 	{
@@ -175,14 +137,14 @@ int	new_input_length(char *input)
 		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
 			&& !in_quote && !in_bracket)
 		{
-			noch_kein_name(input, &j, &i);
+			count_if_space_needed(input, &j, &i);
 		}
 		i++;
 	}
 	return (j);
 }
 
-void	noch_kein_name_2(char *input, char *new_input, int *j, int *i) // needs an actual name
+void	check_if_space_needed(char *input, char *new_input, int *j, int *i)
 {
 	if (is_operator(input[*i], input[*i + 1]) == 2)
 	{
@@ -192,7 +154,7 @@ void	noch_kein_name_2(char *input, char *new_input, int *j, int *i) // needs an 
 		new_input[(*j)++] = input[(*i)++];
 		if (!is_whitespace(input[*i]))
 			new_input[(*j)++] = ' ';
-		}
+	}
 	else
 	{
 		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
@@ -215,14 +177,16 @@ char	*add_spaces(char *input)
 	j = 0;
 	in_quote = false;
 	in_bracket = false;
-	new_input = malloc(sizeof(char) * ((ft_strlen(input) + new_input_length(input)) + 1));
+	new_input = malloc(sizeof(char) * ((ft_strlen(input)
+					+ new_input_length(input)) + 1));
 	if (!new_input)
 		return (NULL);
 	while (input[i])
 	{
 		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
-		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1]) && !in_quote && !in_bracket)
-			noch_kein_name_2(input, new_input, &j, &i);
+		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
+			&& !in_quote && !in_bracket)
+			check_if_space_needed(input, new_input, &j, &i);
 		else
 			new_input[j++] = input[i++];
 	}
@@ -230,62 +194,81 @@ char	*add_spaces(char *input)
 	return (new_input);
 }
 
+static void	init_vars(int *count, bool *flags)
+{
+	count[0] = 0;
+	count[1] = 0;
+	count[2] = 0;
+	flags[0] = false;
+	flags[1] = false;
+}
+
+char *process_token(char *new_input, int *count, bool *flags, char **tokens)
+{
+	while (new_input[count[0]] && is_whitespace(new_input[count[0]])
+		&& !flags[0] && !flags[1])
+	{
+		count[0]++;
+	}
+	count[1] = count[0];
+	while ((new_input[count[1]] && (!is_whitespace(new_input[count[1]])
+				|| flags[0] || flags[1])))
+	{
+		handle_quotes_brackets(new_input[count[1]], &flags[0], &flags[1]);
+		count[1]++;
+	}
+	tokens[count[2]] = ft_substr(new_input, count[0], count[1] - count[0]);
+	if (!tokens[count[2]])
+	{
+		while (count[2] >= 0)
+			free(tokens[count[2]--]);
+		free(tokens);
+		return (free(new_input), NULL);
+	}
+	count[0] = count[1];
+	count[2]++;
+	return (new_input);
+}
+
 char	**tokenize(char *input)
 {
 	char	**tokens;
 	char	*new_input;
-	int		i;
-	int		j;
-	int		k;
-	bool	in_quote;
-	bool	in_bracket;
-	int		amount;
+	int		count[4];
+	bool	flags[2];
 
-	i = 0;
-	j = 0;
-	k = 0;
-	in_quote = false;
-	in_bracket = false;
+	init_vars(count, flags);
 	new_input = add_spaces(input);
 	if (!new_input)
 		return (NULL);
-	amount = count_tokens(new_input);
-	tokens = malloc(sizeof(char *) * (amount + 1));
+	count[3] = count_tokens(new_input);
+	tokens = malloc(sizeof(char *) * (count[3] + 1));
 	if (!tokens)
 		return (free(new_input), NULL);
-	while (k < amount)
+	while (count[2] < count[3])
 	{
-		while (new_input[i] && is_whitespace(new_input[i]) && !in_quote && !in_bracket)
-			i++;
-		j = i;
-		while ((new_input[j] && (!is_whitespace(new_input[j]) || in_quote || in_bracket)))
-		{
-			handle_quotes_brackets(new_input[j], &in_quote, &in_bracket);
-			j++;
-		}
-		tokens[k] = ft_substr(new_input, i, j - i);
-		if (!tokens[k])
-		{
-			while (k >= 0)
-				free(tokens[k--]);
-			free(tokens);
-			return (free(new_input), NULL);
-		}
-		i = j;
-		k++;
+		new_input = process_token(new_input, count, flags, tokens);
+		if (!new_input)
+			return (NULL);
 	}
-	tokens[k] = NULL;
+	tokens[count[2]] = NULL;
 	free(new_input);
 	return (tokens);
 }
 
 int main()
 {
-	//char **str = tokenize("lala hall cat|ls bla cat|ls 'hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du' was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
-	char **str = tokenize("'$USER' $? ft_*.c hallo test <&&ls");
+	//char **str = tokenize("lala hall cat|ls bla cat|ls hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
+	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? ft_*.c hallo test <&&ls 'another$USER' \"'moretext'\"more\"\" $? more*.c more test <&&more 'yetanother$USER' \"'evenmoretext'\"evenmore\"\" $? evenmore*.c evenmore test <&&evenmore");
+	//char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? ft_*.c hallo test <&&ls");
 	for (int i = 0; str[i]; i++)
 	{
 		printf("%s\n", str[i]);
 	}
+	for (int i = 0; str[i]; i++)
+	{
+		free(str[i]);
+	}
+	free(str);
 	return 0;
 }
