@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 16:39:14 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/19 17:17:54 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,27 @@ char	*expand_var(char *input, char **envp)
 	return (NULL);
 }
 
+int	size(char *input)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	int				i;
+
+	i = 0;
+	dir = opendir(".");
+	if (dir == NULL)
+		return (0);
+	entry = readdir(dir);
+	while (entry != NULL)
+	{
+		if (match(input, entry->d_name))
+			i++;
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	return (i);
+}
+
 char	**expand_wildcard(char *input)
 {
 	DIR				*dir;
@@ -113,7 +134,7 @@ char	**expand_wildcard(char *input)
 	int				i;
 
 	i = 0;
-	output = (char **)ft_calloc(100, sizeof(char *)); // need to change 100
+	output = (char **)ft_calloc((size(input) + 1), sizeof(char *));
 	if (!output)
 		return (NULL);
 	dir = opendir(".");
