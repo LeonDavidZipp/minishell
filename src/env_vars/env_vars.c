@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 16:11:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 18:15:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
-
-void			update_env_vars(char *key, char *value, t_env_var **env_vars);
-t_env_var		*new_env_var(char *key, char *value);
+#include "../../inc/minishell.h"
 
 void	update_env_vars(char *key, char *value, t_env_var **env_vars)
 {
@@ -117,21 +114,28 @@ void	free_env_vars(t_env_var *env_var)
 	}
 }
 
-int	main(void)
-{
-	t_env_var	*env_vars;
-	t_env_var	*new_env_vars;
-	t_env_var	*temp;
+// int	main(void)
+// {
+// 	t_env_var	*env_vars;
+// 	t_env_var	*new_env_vars;
+// 	t_env_var	*temp;
 
-	env_vars = NULL;
-	update_env_vars("key1", "value1", &env_vars);
-	update_env_vars("key2", "value2", &env_vars);
-	update_env_vars("key3", "value3", &env_vars);
-	update_env_vars("key4", "value4", &env_vars);
-	new_env_vars = copy_env_vars(env_vars);
-	temp = new_env_vars;
-	while (temp)
-	{
-		printf("key: %s, value: %s\n", temp->key, temp->value);
-		temp = temp->next;
-	}
+// 	env_vars = NULL;
+// 	update_env_vars("key1", "value1", &env_vars);
+// 	update_env_vars("key2", "value2", &env_vars);
+// 	update_env_vars("key3", "value3", &env_vars);
+// 	update_env_vars("key4", "value4", &env_vars);
+// 	temp = env_vars;
+// 	while (temp)
+// 	{
+// 		printf("key: %s, value: %s\n", temp->key, temp->value);
+// 		temp = temp->next;
+// 	}
+// 	new_env_vars = copy_env_vars(env_vars);
+// 	temp = new_env_vars;
+// 	while (temp)
+// 	{
+// 		printf("key: %s, value: %s\n", temp->key, temp->value);
+// 		temp = temp->next;
+// 	}
+// }

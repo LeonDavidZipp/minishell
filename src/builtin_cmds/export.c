@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 16:05:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/16 17:26:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// need a list of environment variables tah were exported this session
+// need a list of environment variables that were exported this session
 
 void	builtin_export(t_env_var **env_vars, char *var_string)
 {
@@ -20,7 +20,7 @@ void	builtin_export(t_env_var **env_vars, char *var_string)
 
 	if (!var_string)
 	{
-		// print output all env vars exported this session
+		// print output all env vars exported this session and on this level
 		return ;
 	}
 	temp = ft_split(var_string, "=");

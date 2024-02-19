@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 16:15:14 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/19 10:16:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,11 @@ typedef struct s_treenode
 void		signal_handler(void);
 
 // environment variables
+char		**split_environ(char *environ);
 t_env_var	*init_environ(char **environ);
+t_env_var	*new_env_var(char *key, char *value);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
+void		free_env_vars(t_env_var *env_var);
 
 #endif
