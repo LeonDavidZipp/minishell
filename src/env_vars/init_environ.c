@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_environ.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:04:21 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/17 11:17:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/19 10:20:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,3 +88,29 @@ char	**split_environ(char *environ)
 // 		i++;
 // 	}
 // }
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_env_var	*env_vars;
+	t_env_var	*copy;
+
+	(void)argc;
+	(void)argv;
+	env_vars = init_environ(envp);
+	update_env_vars("key1", "value1", &env_vars);
+	while (env_vars)
+	{
+		printf("key: %s, value: %s\n", env_vars->key, env_vars->value);
+		env_vars = env_vars->next;
+	}
+	printf("----------\n");
+	copy = copy_env_vars(env_vars);
+	while (copy)
+	{
+		printf("key: %s, value: %s\n", copy->key, copy->value);
+		copy = copy->next;
+	}
+	free_env_vars(env_vars);
+	free_env_vars(copy);
+	return (0);
+}
