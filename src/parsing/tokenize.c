@@ -6,48 +6,11 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 14:42:39 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:42:09 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	if (!s)
-		return (0);
-	len = 0;
-	while (s[len])
-		len++;
-	return (len);
-}
-
-char	*ft_substr(char const *s, unsigned int start, size_t len)
-{
-	size_t	j;
-	size_t	s_len;
-	char	*res;
-
-	if (!s)
-		return (NULL);
-	j = 0;
-	s_len = ft_strlen(s);
-	while (j + start < s_len && s[j + start] && j < len)
-		j++;
-	res = (char *)malloc((j + 1) * sizeof(char));
-	if (!res)
-		return (NULL);
-	j = 0;
-	while (start < s_len && s[start] && len > 0)
-	{
-		res[j++] = s[start++];
-		len--;
-	}
-	res[j] = '\0';
-	return (res);
-}
 
 int	is_whitespace(char c)
 {
@@ -203,7 +166,7 @@ static void	init_vars(int *count, bool *flags)
 	flags[1] = false;
 }
 
-char *process_token(char *new_input, int *count, bool *flags, char **tokens)
+char	*process_token(char *new_input, int *count, bool *flags, char **tokens)
 {
 	while (new_input[count[0]] && is_whitespace(new_input[count[0]])
 		&& !flags[0] && !flags[1])
@@ -256,19 +219,19 @@ char	**tokenize(char *input)
 	return (tokens);
 }
 
-int main()
-{
-	//char **str = tokenize("lala hall cat|ls bla cat|ls hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
-	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? ft_*.c hallo test <&&ls 'another$USER' \"'moretext'\"more\"\" $? more*.c more test <&&more 'yetanother$USER' \"'evenmoretext'\"evenmore\"\" $? evenmore*.c evenmore test <&&evenmore");
-	//char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? ft_*.c hallo test <&&ls");
-	for (int i = 0; str[i]; i++)
-	{
-		printf("%s\n", str[i]);
-	}
-	for (int i = 0; str[i]; i++)
-	{
-		free(str[i]);
-	}
-	free(str);
-	return 0;
-}
+// int main()
+// {
+// 	//char **str = tokenize("lala hall cat|ls bla cat|ls hallo  \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' du was&& geht hallo \"hallo du $USER\" cat|ls (ich du) hallo > > test2 'this a longer test' \"even test with $VARIABLE\" | grep 'something' > output.txt (nested (brackets (test))) \"nested 'quotes' test\" 'nested \"quotes\" test' cat file1 && file2 file3 | sort | uniq > result.txt < input.txt");
+// 	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? ft_*.c hallo test <&&ls 'another$USER' \"'moretext'\"more\"\" $? more*.c more test <&&more 'yetanother$USER' \"'evenmoretext'\"evenmore\"\" $? evenmore*.c evenmore test <&&evenmore");
+// 	//char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? ft_*.c hallo test <&&ls");
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		printf("%s\n", str[i]);
+// 	}
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		free(str[i]);
+// 	}
+// 	free(str);
+// 	return 0;
+// }

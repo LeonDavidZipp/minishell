@@ -6,103 +6,11 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 14:15:29 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/19 16:47:32 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <dirent.h>
-#include <string.h>
-
-int	ft_strlen(const char *s)
-{
-	int	i;
-
-	i = 0;
-	while (s[i] != '\0')
-		i++;
-	return (i);
-}
-
-static int	ft_numlen(long nb)
-{
-	int	len;
-
-	len = 0;
-	if (nb == 0)
-		return (1);
-	else if (nb < 0)
-	{
-		nb *= -1;
-		len++;
-	}
-	while (nb > 0)
-	{
-		len++;
-		nb /= 10;
-	}
-	return (len);
-}
-
-char	*ft_itoa(int n)
-{
-	long	nb;
-	int		len;
-	char	*result;
-	int		start;
-
-	nb = (long) n;
-	len = ft_numlen(nb) + 1;
-	start = (nb < 0);
-	if (nb < 0)
-		nb *= -1;
-	result = (char *)malloc(len * sizeof(char));
-	if (!result)
-		return (NULL);
-	if (n < 0)
-		result[0] = '-';
-	result[len - 1] = '\0';
-	len -= 2;
-	while (len >= start)
-	{
-		result[len--] = (nb % 10) + '0';
-		nb /= 10;
-	}
-	return (result);
-}
-
-int	ft_isalnum(int c)
-{
-	if (!(('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')
-			|| ('0' <= c && '9' >= c)))
-		return (0);
-	return (1);
-}
-
-void	*ft_calloc(size_t count, size_t size)
-{
-	void	*ptr;
-	char	*cptr;
-	size_t	total;
-
-	total = count * size;
-	if ((count != 0 && total / count != size)
-		|| (size != 0 && total / size != count))
-		return (NULL);
-	ptr = (void *)malloc(total);
-	if (!ptr)
-		return (NULL);
-	cptr = (char *)ptr;
-	while (total > 0)
-	{
-		*cptr = 0;
-		cptr++;
-		total--;
-	}
-	return (ptr);
-}
+#include "../../inc/minishell.h"
 
 char	*ft_strndup(const char *s1, size_t n)
 {
@@ -132,29 +40,6 @@ int	is_whitespace(char c)
 	if (c == ' ' || c == '\t' || c == '\0')
 		return (1);
 	return (0);
-}
-
-char	*ft_strdup(const char *s1)
-{
-	char	*dest;
-	int		i;
-
-	if (!s1)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-		i++;
-	dest = (char *)malloc((i + 1) * sizeof (char));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s1[i])
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
 }
 
 bool	match(char *pattern, char *string)
@@ -259,7 +144,7 @@ int	env_var(char *input, char **envp, char **output, int *j)
 	char	*name;
 	char	*value;
 	int		i;
-	
+
 	i = 1;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
@@ -279,7 +164,7 @@ int	env_var(char *input, char **envp, char **output, int *j)
 	return (1);
 }
 
-char *handle_expansion(char *input, char **output, int *i, char **envp, int last_exit_code)
+char	*handle_expansion(char *input, char **output, int *i, char **envp, int last_exit_code)
 {
 	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
 	{
@@ -301,7 +186,7 @@ char *handle_expansion(char *input, char **output, int *i, char **envp, int last
 
 // last exit code should be in a struct, same as envp (they should be in the same struct otherwise they two parsing arguments which is shit)
 
-char	*handle_in_string_expansion(char *input, char **envp, int last_exit_code)
+char	*in_string_expansion(char *input, char **envp, int last_exit_code)
 {
 	char	*output;
 	int		i[3];
@@ -327,16 +212,16 @@ char	*handle_in_string_expansion(char *input, char **envp, int last_exit_code)
 	return (output);
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	char	*input = "hello $HAALO your number is $?"; // testing
-	int		i = 0;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	char	*input = "hello $HAALO your number is $?"; // testing
+// 	int		i = 0;
 
-	char *output = handle_in_string_expansion(input, envp, 0);
-	if (output)
-	{
-		printf("%s\n", output);
-		free(output);
-	}
-	return (0);
-}
+// 	char *output = in_string_expansion(input, envp, 0);
+// 	if (output)
+// 	{
+// 		printf("%s\n", output);
+// 		free(output);
+// 	}
+// 	return (0);
+// }
