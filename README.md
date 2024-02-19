@@ -9,12 +9,12 @@ that doesn’t mean your own code, yes the code you wrote, can have memory
 leaks.
 
 ### Guides
-https://reactive.so/post/42-a-comprehensive-guide-to-pipex
-https://achrafbelarif.medium.com/42cursus-minishell-29cd25f972e6
+- https://reactive.so/post/42-a-comprehensive-guide-to-pipex
+- https://achrafbelarif.medium.com/42cursus-minishell-29cd25f972e6
 ### Videos
-https://www.youtube.com/watch?v=eF9qWbuQLuw
+- https://www.youtube.com/watch?v=eF9qWbuQLuw
 ### Tester
-https://github.com/zstenger93/42_minishell_tester
+- https://github.com/zstenger93/42_minishell_tester
 
 ## Prerequisites
 ### Display Prompts
