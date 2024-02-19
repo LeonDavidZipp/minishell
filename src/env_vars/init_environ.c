@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:04:21 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/19 10:20:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/19 17:15:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,45 +72,77 @@ char	**split_environ(char *environ)
 		}
 		len++;
 	}
+	if (ft_isspace(environ[len]))
+	{
+		free(key_value);
+		return (NULL);
+	}
 	key_value[0] = ft_substr(environ, 0, len);
 	key_value[1] = ft_substr(environ, len + 1, ft_strlen(environ) - len);
 	return (key_value);
 }
 
-// int	main(void)
-// {
-// 	char *environ = "USER====1234==6";
-// 	char **result = split_environ(environ);
-// 	int i = 0;
-// 	while (result[i])
-// 	{
-// 		printf("val: |%s|\n", result[i]);
-// 		i++;
-// 	}
-// }
-
-int	main(int argc, char **argv, char **envp)
+int	ft_isspace(int c)
 {
-	t_env_var	*env_vars;
-	t_env_var	*copy;
-
-	(void)argc;
-	(void)argv;
-	env_vars = init_environ(envp);
-	update_env_vars("key1", "value1", &env_vars);
-	while (env_vars)
-	{
-		printf("key: %s, value: %s\n", env_vars->key, env_vars->value);
-		env_vars = env_vars->next;
-	}
-	printf("----------\n");
-	copy = copy_env_vars(env_vars);
-	while (copy)
-	{
-		printf("key: %s, value: %s\n", copy->key, copy->value);
-		copy = copy->next;
-	}
-	free_env_vars(env_vars);
-	free_env_vars(copy);
-	return (0);
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
 }
+
+int	main(void)
+{
+	char *env_vars[] = {
+		"USER= ===1234==6",
+		"USER=",
+		"USER=abc=def",
+		"USER=abc$def&ghi",
+		"USER=abc def",
+		"USER=1234",
+		"",
+		NULL
+	};
+
+	int i, j;
+	char **result;
+	for (i = 0; env_vars[i]; i++)
+	{
+		printf("Testing: |%s|\n", env_vars[i]);
+		result = split_environ(env_vars[i]);
+		j = 0;
+		while (result[j])
+		{
+			printf("val: |%s|\n", result[j]);
+			j++;
+		}
+		printf("\n");
+	}
+}
+
+
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_env_var	*env_vars;
+// 	t_env_var	*copy;
+
+// 	(void)argc;
+// 	(void)argv;
+// 	env_vars = init_environ(envp);
+// 	update_env_vars("key1", "value1", &env_vars);
+// 	update_env_vars()
+// 	t_env_var	*temp = env_vars;
+// 	while (temp)
+// 	{
+// 		printf("key: %s, value: %s\n", temp->key, temp->value);
+// 		temp = temp->next;
+// 	}
+// 	printf("----------\n");
+// 	copy = copy_env_vars(env_vars);
+// 	temp = copy;
+// 	while (temp)
+// 	{
+// 		printf("key: %s, value: %s\n", temp->key, temp->value);
+// 		temp = temp->next;
+// 	}
+// 	free_env_vars(env_vars);
+// 	free_env_vars(copy);
+// 	return (0);
+// }
