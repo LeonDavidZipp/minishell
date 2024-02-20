@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 12:26:03 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 14:29:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,6 @@
 typedef enum e_token
 {
 	SEMICOLON,
-	ARG,
 	FLAG,
 	BUILTIN_CMD,
 	OTHER_CMD,
@@ -71,7 +70,8 @@ typedef enum e_token
 	REDIR_INPUT,
 	HEREDOC,
 	ENV_VAR,
-	WILDCARD
+	WILDCARD,
+	ARG
 }			t_token;
 
 typedef struct s_input

@@ -25,13 +25,6 @@ static char	*get_input(void);
 int	main(int argc, char **argv, char **environ)
 {
 	char		*input;
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	t_env_var	*env_vars;
->>>>>>> 20-norminette-input-parsing
-=======
->>>>>>> origin/20-norminette-input-parsing
 	t_app_data	app_data;
 
 	(void)argv;
