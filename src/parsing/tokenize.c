@@ -3,21 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 16:42:09 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:37:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
 
 int	is_operator(char c, char d)
 {
@@ -51,11 +44,11 @@ int	count_tokens(char *input)
 	in_bracket = false;
 	while (input[i])
 	{
-		while (input[i] && is_whitespace(input[i]) && !in_quote && !in_bracket)
+		while (input[i] && ft_isspace(input[i]) && !in_quote && !in_bracket)
 			i++;
 		if (input[i])
 			amount++;
-		while (input[i] && !is_whitespace(input[i]) || in_quote || in_bracket)
+		while (input[i] && !ft_isspace(input[i]) || in_quote || in_bracket)
 		{
 			handle_quotes_brackets(input[i], &in_quote, &in_bracket);
 			i++;
@@ -68,16 +61,16 @@ void	count_if_space_needed(char *input, int *j, int *i)
 {
 	if (is_operator(input[*i], input[*i + 1]) == 2)
 	{
-		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+		if (input[*i - 1] && !ft_isspace(input[*i - 1]))
 			(*j)++;
-		if (input[*i + 2] && !is_whitespace(input[*i + 2]))
+		if (input[*i + 2] && !ft_isspace(input[*i + 2]))
 			(*j)++;
 	}
 	else
 	{
-		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+		if (input[*i - 1] && !ft_isspace(input[*i - 1]))
 			(*j)++;
-		if (input[*i + 1] && !is_whitespace(input[*i + 1]))
+		if (input[*i + 1] && !ft_isspace(input[*i + 1]))
 			(*j)++;
 	}
 }
@@ -111,19 +104,19 @@ void	check_if_space_needed(char *input, char *new_input, int *j, int *i)
 {
 	if (is_operator(input[*i], input[*i + 1]) == 2)
 	{
-		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+		if (input[*i - 1] && !ft_isspace(input[*i - 1]))
 			new_input[(*j)++] = ' ';
 		new_input[(*j)++] = input[(*i)++];
 		new_input[(*j)++] = input[(*i)++];
-		if (!is_whitespace(input[*i]))
+		if (!ft_isspace(input[*i]))
 			new_input[(*j)++] = ' ';
 	}
 	else
 	{
-		if (input[*i - 1] && !is_whitespace(input[*i - 1]))
+		if (input[*i - 1] && !ft_isspace(input[*i - 1]))
 			new_input[(*j)++] = ' ';
 		new_input[(*j)++] = input[(*i)++];
-		if (!is_whitespace(input[*i]))
+		if (!ft_isspace(input[*i]))
 			new_input[(*j)++] = ' ';
 	}
 }
@@ -168,13 +161,13 @@ static void	init_vars(int *count, bool *flags)
 
 char	*process_token(char *new_input, int *count, bool *flags, char **tokens)
 {
-	while (new_input[count[0]] && is_whitespace(new_input[count[0]])
+	while (new_input[count[0]] && ft_isspace(new_input[count[0]])
 		&& !flags[0] && !flags[1])
 	{
 		count[0]++;
 	}
 	count[1] = count[0];
-	while ((new_input[count[1]] && (!is_whitespace(new_input[count[1]])
+	while ((new_input[count[1]] && (!ft_isspace(new_input[count[1]])
 				|| flags[0] || flags[1])))
 	{
 		handle_quotes_brackets(new_input[count[1]], &flags[0], &flags[1]);

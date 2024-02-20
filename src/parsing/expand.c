@@ -3,44 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 16:47:32 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 10:47:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char	*ft_strndup(const char *s1, size_t n)
-{
-	char	*dest;
-	size_t	i;
-
-	if (!s1)
-		return (NULL);
-	i = 0;
-	while (s1[i] && i < n)
-		i++;
-	dest = (char *)malloc((i + 1) * sizeof (char));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s1[i] && i < n)
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
 
 bool	match(char *pattern, char *string)
 {
@@ -79,7 +49,8 @@ int	env_var_size(char *input, int *i)
 	start = *i;
 	while (ft_isalnum(input[*i]) || input[*i] == '_')
 		(*i)++;
-	name = ft_strndup(input + start, *i - start);
+	// name = ft_strndup(input + start, *i - start);
+	name = ft_substr(input, start, *i - start);
 	if (!name)
 		return (0);
 	value = getenv(name);
@@ -103,7 +74,7 @@ int	get_new_size(char *input, int last_exit_code)
 	{
 		if (input[i] == '$' && input[i + 1] == '?')
 		{
-			size += ft_numlen(last_exit_code);
+			size += ft_dec_len(last_exit_code);
 			i += 2;
 		}
 		else if (input[i] == '$')
@@ -148,7 +119,8 @@ int	env_var(char *input, char **envp, char **output, int *j)
 	i = 1;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	name = ft_strndup(input + 1, i - 1);
+	// name = ft_strndup(input + 1, i - 1);
+	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (0);
 	value = getenv(name);
