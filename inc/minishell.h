@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 12:22:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 12:26:03 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,24 @@
 # define PROMPT "\033[0;36mchl	→	\033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
+# define PARSER_ERR "Error: Failed to parse input\n"
+# define EXEC_ERR "Error: Failed to execute command\n"
+# define FORK_ERR "Error: Failed to fork process\n"
+# define PIPE_ERR "Error: Failed to create pipe\n"
+# define REDIR_ERR "Error: Failed to redirect\n"
+# define CMD_NOT_FOUND "Error: Command not found\n"
+# define CMD_NOT_EXEC "Error: Command not executable\n"
+# define CMD_NOT_DIR "Error: Command is a directory\n"
+# define CMD_NOT_FILE "Error: Command is not a file\n"
+# define CMD_NOT_PERM "Error: Permission denied\n"
+# define CMD_NOT_PIPE "Error: Pipe failed\n"
+# define CMD_NOT_CLOSE "Error: Failed to close file descriptor\n"
+# define CMD_NOT_DUP "Error: Failed to duplicate file descriptor\n"
+# define CMD_NOT_WAIT "Error: Failed to wait for child process\n"
+# define CMD_NOT_SIGNAL "Error: Failed to handle signal\n"
+# define CMD_NOT_ENV "Error: Failed to handle environment variable\n"
+# define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
+# define CMD_NOT_EXIT "Error: Failed to exit\n"
 
 typedef enum e_token
 {
