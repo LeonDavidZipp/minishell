@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 12:11:39 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:20:04 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,18 +109,18 @@ char	**tokenize(char *input)
 	return (tokens);
 }
 
-int main()
-{
-	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? "
-				"ft_*.c hallo test <&&ls");
-	for (int i = 0; str[i]; i++)
-	{
-		printf("%s\n", str[i]);
-	}
-	for (int i = 0; str[i]; i++)
-	{
-		free(str[i]);
-	}
-	free(str);
-	return 0;
-}
+// int main()
+// {
+// 	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? "
+// 				"ft_*.c hallo test <&&ls");
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		printf("%s\n", str[i]);
+// 	}
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		free(str[i]);
+// 	}
+// 	free(str);
+// 	return 0;
+// }
