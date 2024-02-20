@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 11:59:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 12:13:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ int	main(int argc, char **argv, char **environ)
 		app_data.input = get_input();
 		if (app_data.input == NULL)
 			continue ;
+		lexer(&app_data);
 	}
 	return (0);
 }
