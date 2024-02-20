@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 11:11:13 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 11:23:04 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,16 @@ typedef struct s_treenode
 	struct s_treenode	*right;
 }					t_treenode;
 
+typedef struct s_app_data
+{
+	t_env_var	*env_vars;
+	int			last_exit_code;
+}				t_app_data;
+
 // input parsing
 bool		match(char *pattern, char *string);
-int			exit_code(char **str, int *j, int last_exit_code);
+int			env_var_size(char *input, int *i);
+int			get_new_size(char *input, int last_exit_code);
 
 // signal handling
 void		signal_handler(void);

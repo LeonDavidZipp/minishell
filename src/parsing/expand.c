@@ -6,61 +6,29 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 11:10:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 11:18:47 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	env_var_size(char *input, int *i)
+int	exit_code(char **str, int *j, int last_exit_code)
 {
-	int		start;
-	int		size;
-	char	*name;
-	char	*value;
+	char	*exit_code;
+	int		i;
 
-	start = *i;
-	while (ft_isalnum(input[*i]) || input[*i] == '_')
-		(*i)++;
-	name = ft_substr(input, start, *i - start);
-	if (!name)
+	exit_code = ft_itoa(last_exit_code);
+	if (!exit_code)
 		return (0);
-	value = getenv(name);
-	if (value)
-		size = ft_strlen(value);
-	else
-		size = 0;
-	free(name);
-	return (size);
-}
-
-int	get_new_size(char *input, int last_exit_code)
-{
-	int	i;
-	int	size;
-	int	start;
-
 	i = 0;
-	size = 0;
-	while (input[i])
+	while (exit_code[i])
 	{
-		if (input[i] == '$' && input[i + 1] == '?')
-		{
-			size += ft_dec_len(last_exit_code);
-			i += 2;
-		}
-		else if (input[i] == '$')
-		{
-			i++;
-			size += env_var_size(input, &i);
-		}
-		else
-		{
-			size++;
-			i++;
-		}
+		(*str)[*j] = exit_code[i];
+		(*j)++;
+		i++;
 	}
-	return (size);
+	free(exit_code);
+	return (1);
 }
 
 int	env_var(char *input, char **envp, char **output, int *j)
