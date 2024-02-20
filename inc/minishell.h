@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 12:05:55 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:18:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,5 +92,18 @@ t_env_var	*new_env_var(char *key, char *value);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
 void		free_env_vars(t_env_var *env_var);
+
+// parsing && input handling
+int		check_input(char *str);
+char	**tokenize(char *input);
+char	*add_spaces(char *input);
+int		is_operator(char c, char d);
+void	handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
+
+// expansion
+char	*in_string_expansion(char *input, t_app_data *app);
+char	**expand_wildcard(char *input);
+char	*expand_var(char *input, t_env_var *env);
+char	*expand_exit_code(int last_exit_code);
 
 #endif
