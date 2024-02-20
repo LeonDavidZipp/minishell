@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 10:54:15 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 11:24:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	main(int argc, char **argv, char **environ)
 {
 	char		*input;
 	t_env_var	*env_vars;
+	t_app_data	app_data;
 
 	(void)argv;
 	if (argc != 1)
@@ -25,7 +26,7 @@ int	main(int argc, char **argv, char **environ)
 		printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
-	env_vars = init_env_vars(environ);
+	app_data.env_vars = init_env_vars(environ);
 	signal_handler();
 	while (true)
 	{
