@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 11:23:04 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 12:05:55 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,8 @@ typedef struct s_app_data
 {
 	t_env_var	*env_vars;
 	int			last_exit_code;
+	char		*input;
 }				t_app_data;
-
-// input parsing
-bool		match(char *pattern, char *string);
-int			env_var_size(char *input, int *i);
-int			get_new_size(char *input, int last_exit_code);
 
 // signal handling
 void		signal_handler(void);

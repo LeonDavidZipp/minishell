@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 11:24:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 12:04:45 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static char	*get_input(void);
 int	main(int argc, char **argv, char **environ)
 {
 	char		*input;
-	t_env_var	*env_vars;
 	t_app_data	app_data;
 
 	(void)argv;
@@ -30,8 +29,8 @@ int	main(int argc, char **argv, char **environ)
 	signal_handler();
 	while (true)
 	{
-		input = get_input();
-		if (input == NULL)
+		app_data.input = get_input();
+		if (app_data.input == NULL)
 			continue ;
 	}
 	return (0);
