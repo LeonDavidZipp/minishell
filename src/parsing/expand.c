@@ -6,38 +6,11 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 10:47:13 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 11:10:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-bool	match(char *pattern, char *string)
-{
-	while (*pattern && *string)
-	{
-		if (*pattern == '*')
-		{
-			while (*pattern == '*')
-				pattern++;
-			while (*string)
-			{
-				if (match(pattern, string))
-					return (true);
-				string++;
-			}
-			return (match(pattern, string));
-		}
-		else if (*pattern == *string)
-		{
-			pattern++;
-			string++;
-		}
-		else
-			return (false);
-	}
-	return (*pattern == *string);
-}
 
 int	env_var_size(char *input, int *i)
 {
@@ -49,7 +22,6 @@ int	env_var_size(char *input, int *i)
 	start = *i;
 	while (ft_isalnum(input[*i]) || input[*i] == '_')
 		(*i)++;
-	// name = ft_strndup(input + start, *i - start);
 	name = ft_substr(input, start, *i - start);
 	if (!name)
 		return (0);
@@ -91,25 +63,6 @@ int	get_new_size(char *input, int last_exit_code)
 	return (size);
 }
 
-int	exit_code(char **str, int *j, int last_exit_code)
-{
-	char	*exit_code;
-	int		i;
-
-	exit_code = ft_itoa(last_exit_code);
-	if (!exit_code)
-		return (0);
-	i = 0;
-	while (exit_code[i])
-	{
-		(*str)[*j] = exit_code[i];
-		(*j)++;
-		i++;
-	}
-	free(exit_code);
-	return (1);
-}
-
 int	env_var(char *input, char **envp, char **output, int *j)
 {
 	char	*name;
@@ -119,7 +72,6 @@ int	env_var(char *input, char **envp, char **output, int *j)
 	i = 1;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	// name = ft_strndup(input + 1, i - 1);
 	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (0);

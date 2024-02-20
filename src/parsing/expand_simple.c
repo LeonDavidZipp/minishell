@@ -6,45 +6,11 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 10:35:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 11:07:38 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
-
-bool	match(char *pattern, char *string)
-{
-	while (*pattern && *string)
-	{
-		if (*pattern == '*')
-		{
-			while (*pattern == '*')
-				pattern++;
-			while (*string)
-			{
-				if (match(pattern, string))
-					return (true);
-				string++;
-			}
-			return (match(pattern, string));
-		}
-		else if (*pattern == *string)
-		{
-			pattern++;
-			string++;
-		}
-		else
-			return (false);
-	}
-	return (*pattern == *string);
-}
 
 char	*expand_exit_code(int last_exit_code)
 {
@@ -66,7 +32,6 @@ char	*expand_var(char *input, char **envp)
 	i = 1;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	// name = ft_strndup(input + 1, i - 1);
 	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (NULL);
