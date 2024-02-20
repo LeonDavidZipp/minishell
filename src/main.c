@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 10:52:40 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 10:54:15 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ int	main(int argc, char **argv, char **environ)
 	char		*input;
 	t_env_var	*env_vars;
 
-	(void)environ;
 	(void)argv;
 	if (argc != 1)
 	{
@@ -28,7 +27,7 @@ int	main(int argc, char **argv, char **environ)
 	}
 	env_vars = init_env_vars(environ);
 	signal_handler();
-	while (1)
+	while (true)
 	{
 		input = get_input();
 		if (input == NULL)
