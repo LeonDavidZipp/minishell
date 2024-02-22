@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/22 15:05:13 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/22 21:15:42 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_token	rules(char *content)
+t_tokentype	determine_token_type(char *content)
 {
 	// obvious rulings: everything that can be directly assigned to a token type
 	// ############################################################
@@ -31,7 +31,7 @@ t_token	rules(char *content)
 	else if (ft_strncmp(content, ">", ft_strlen(">") == 0))
 		return (REDIR_OUT);
 	else if (ft_strncmp(content, ">>", ft_strlen(">>") == 0))
-		return (REDIR_INPUT);
+		return (REDIR_APPEND);
 	else if (ft_strncmp(content, "<", ft_strlen("<") == 0))
 		return (REDIR_IN);
 	else if (ft_strncmp(content, "<<", ft_strlen("<<") == 0))
@@ -62,9 +62,34 @@ t_token	rules(char *content)
 		{
 			// file is executable
 			return (OTHER_CMD);
-		} else {
+		}
+		else
+		{
 			// file is not executable
 			return (ARG);
 		}
-	} 
+	}
+}
+
+t_token	*new_token(char *value)
+{
+	t_token		*token;
+
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->content = value;
+	token->type = determine_token_type(value);
+	token->next = NULL;
+	return (token);
+}
+
+t_token	*true_tokenize(char **input)
+{
+	t_token	*tokens;
+	t_token	*temp;
+	t_token	*new;
+
+	
+	return (tokens);
 }

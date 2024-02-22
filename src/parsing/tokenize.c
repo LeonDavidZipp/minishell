@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 12:20:04 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/22 16:25:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	init_vars(int *count, bool *flags)
+static void	init_vars(int *count, bool *flags)
 {
 	count[0] = 0;
 	count[1] = 0;
@@ -109,18 +109,18 @@ char	**tokenize(char *input)
 	return (tokens);
 }
 
-// int main()
-// {
-// 	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? "
-// 				"ft_*.c hallo test <&&ls");
-// 	for (int i = 0; str[i]; i++)
-// 	{
-// 		printf("%s\n", str[i]);
-// 	}
-// 	for (int i = 0; str[i]; i++)
-// 	{
-// 		free(str[i]);
-// 	}
-// 	free(str);
-// 	return 0;
-// }
+int main()
+{
+	char **str = tokenize("'$USER' \"'jo'\"hallo\"\" $? "
+				"ft_*.c hallo test <&&ls");
+	for (int i = 0; str[i]; i++)
+	{
+		printf("%s\n", str[i]);
+	}
+	for (int i = 0; str[i]; i++)
+	{
+		free(str[i]);
+	}
+	free(str);
+	return 0;
+}

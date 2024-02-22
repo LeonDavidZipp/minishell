@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/22 14:50:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/22 21:08:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
 
-typedef enum e_token
+typedef enum e_tokentype
 {
 	FLAG,
 	BUILTIN_CMD,
@@ -65,25 +65,26 @@ typedef enum e_token
 	OR,
 	REDIR_OUT,
 	REDIR_IN,
-	REDIR_INPUT,
+	REDIR_APPEND,
 	HEREDOC,
 	ENV_VAR,
 	WILDCARD,
 	ARG
-}			t_token;
+}			t_tokentype;
 
-typedef struct s_input
+typedef struct s_token
 {
-	char	*content;
-	int		type;
-}			t_input;
+	char			*content;
+	int				type;
+	struct s_token	*next;
+}			t_token;
 
 typedef struct s_env_var
 {
 	char				*key;
 	char				*value;
 	struct s_env_var	*next;
-}					t_env_var;
+}			t_env_var;
 
 typedef struct s_treenode
 {
@@ -91,14 +92,14 @@ typedef struct s_treenode
 	int					type;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
-}					t_treenode;
+}			t_treenode;
 
 typedef struct s_app_data
 {
 	t_env_var	*env_vars;
 	int			last_exit_code;
 	char		*input;
-}				t_app_data;
+}			t_app_data;
 
 // signal handling
 void		signal_handler(void);
@@ -127,6 +128,8 @@ void		handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);
+int			get_new_size(char *input, int last_exit_code);
+bool		match(char *pattern, char *string);
 char		**expand_wildcard(char *input);
 char		*expand_var(char *input, t_env_var *env);
 char		*expand_exit_code(int last_exit_code);
