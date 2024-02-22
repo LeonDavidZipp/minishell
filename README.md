@@ -1,6 +1,8 @@
 # Minishell
 Using preprogrammed shells is boring, how about we create our own?
 
+
+
 ## Good to know
 - !!!one global variable!!!
 
