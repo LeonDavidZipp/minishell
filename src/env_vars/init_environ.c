@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_environ.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 15:04:21 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/17 11:17:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/19 18:14:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	update_links(t_env_var **first, t_env_var **prev,
 				t_env_var *env_var);
-char	**split_environ(char *environ);
+char		**split_environ(char *environ);
 
 t_env_var	*init_environ(char **environ)
 {
@@ -27,7 +27,6 @@ t_env_var	*init_environ(char **environ)
 	prev = NULL;
 	while (*environ)
 	{
-		// temp = ft_split(*environ, '=');
 		temp = split_environ(*environ);
 		if (!temp)
 			return (free_env_vars(first), NULL);
@@ -72,19 +71,12 @@ char	**split_environ(char *environ)
 		}
 		len++;
 	}
+	if (ft_isspace(environ[len + 1]))
+	{
+		free(key_value);
+		return (NULL);
+	}
 	key_value[0] = ft_substr(environ, 0, len);
 	key_value[1] = ft_substr(environ, len + 1, ft_strlen(environ) - len);
 	return (key_value);
 }
-
-// int	main(void)
-// {
-// 	char *environ = "USER====1234==6";
-// 	char **result = split_environ(environ);
-// 	int i = 0;
-// 	while (result[i])
-// 	{
-// 		printf("val: |%s|\n", result[i]);
-// 		i++;
-// 	}
-// }

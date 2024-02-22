@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+         #
+#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/16 17:08:08 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/20 10:24:15 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,9 +17,19 @@ CFLAGS := -Wextra -Wall -Werror
 LDFLAGS := -lreadline
 
 SOURCES := $(addprefix src/, \
+bin_tree/new_node.c \
+builtin_cmds/cd.c \
+builtin_cmds/echo.c \
+builtin_cmds/export.c \
+builtin_cmds/pwd.c \
+env_vars/env_vars.c \
+env_vars/init_environ.c \
 main.c \
-signal_handler.c \
-new_node.c)
+signals/signal_handler.c)
+# parsing/check_input.c \
+# parsing/expand_simple.c \
+# parsing/expand.c \
+# parsing/tokenize.c \
 
 OBJECTS := $(SOURCES:.c=.o)
 

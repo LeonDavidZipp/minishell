@@ -3,10 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 13:41:33 by lzipp            ###   ########.fr       */
+<<<<<<< HEAD
+<<<<<<< HEAD
+/*   Updated: 2024/02/20 12:13:12 by lzipp            ###   ########.fr       */
+=======
+/*   Updated: 2024/02/20 11:24:57 by lzipp            ###   ########.fr       */
+>>>>>>> 20-norminette-input-parsing
+=======
+/*   Updated: 2024/02/20 12:04:45 by cgerling         ###   ########.fr       */
+>>>>>>> origin/20-norminette-input-parsing
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +24,23 @@ static char	*get_input(void);
 
 int	main(int argc, char **argv, char **environ)
 {
-	char	*input;
+	char		*input;
+	t_app_data	app_data;
 
-	(void)environ;
 	(void)argv;
 	if (argc != 1)
 	{
 		printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
+	app_data.env_vars = init_env_vars(environ);
 	signal_handler();
-	while (1)
+	while (true)
 	{
-		input = get_input();
-		if (input == NULL)
+		app_data.input = get_input();
+		if (app_data.input == NULL)
 			continue ;
+		lexer(&app_data);
 	}
 	return (0);
 }

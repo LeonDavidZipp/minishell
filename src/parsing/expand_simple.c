@@ -6,68 +6,11 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 17:17:54 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:48:04 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char	*ft_strndup(const char *s1, size_t n)
-{
-	char	*dest;
-	size_t	i;
-
-	if (!s1)
-		return (NULL);
-	i = 0;
-	while (s1[i] && i < n)
-		i++;
-	dest = (char *)malloc((i + 1) * sizeof (char));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s1[i] && i < n)
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
-
-bool	match(char *pattern, char *string)
-{
-	while (*pattern && *string)
-	{
-		if (*pattern == '*')
-		{
-			while (*pattern == '*')
-				pattern++;
-			while (*string)
-			{
-				if (match(pattern, string))
-					return (true);
-				string++;
-			}
-			return (match(pattern, string));
-		}
-		else if (*pattern == *string)
-		{
-			pattern++;
-			string++;
-		}
-		else
-			return (false);
-	}
-	return (*pattern == *string);
-}
 
 char	*expand_exit_code(int last_exit_code)
 {
@@ -79,7 +22,7 @@ char	*expand_exit_code(int last_exit_code)
 	return (exit_code);
 }
 
-char	*expand_var(char *input, char **envp)
+char	*expand_var(char *input, t_env_var *env)
 {
 	char	*name;
 	char	*value;
@@ -89,7 +32,7 @@ char	*expand_var(char *input, char **envp)
 	i = 1;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	name = ft_strndup(input + 1, i - 1);
+	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (NULL);
 	value = getenv(name);

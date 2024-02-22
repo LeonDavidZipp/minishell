@@ -6,121 +6,13 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 16:47:32 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:46:55 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	*ft_strndup(const char *s1, size_t n)
-{
-	char	*dest;
-	size_t	i;
-
-	if (!s1)
-		return (NULL);
-	i = 0;
-	while (s1[i] && i < n)
-		i++;
-	dest = (char *)malloc((i + 1) * sizeof (char));
-	if (!dest)
-		return (NULL);
-	i = 0;
-	while (s1[i] && i < n)
-	{
-		dest[i] = s1[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (dest);
-}
-
-int	is_whitespace(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
-
-bool	match(char *pattern, char *string)
-{
-	while (*pattern && *string)
-	{
-		if (*pattern == '*')
-		{
-			while (*pattern == '*')
-				pattern++;
-			while (*string)
-			{
-				if (match(pattern, string))
-					return (true);
-				string++;
-			}
-			return (match(pattern, string));
-		}
-		else if (*pattern == *string)
-		{
-			pattern++;
-			string++;
-		}
-		else
-			return (false);
-	}
-	return (*pattern == *string);
-}
-
-int	env_var_size(char *input, int *i)
-{
-	int		start;
-	int		size;
-	char	*name;
-	char	*value;
-
-	start = *i;
-	while (ft_isalnum(input[*i]) || input[*i] == '_')
-		(*i)++;
-	name = ft_strndup(input + start, *i - start);
-	if (!name)
-		return (0);
-	value = getenv(name);
-	if (value)
-		size = ft_strlen(value);
-	else
-		size = 0;
-	free(name);
-	return (size);
-}
-
-int	get_new_size(char *input, int last_exit_code)
-{
-	int	i;
-	int	size;
-	int	start;
-
-	i = 0;
-	size = 0;
-	while (input[i])
-	{
-		if (input[i] == '$' && input[i + 1] == '?')
-		{
-			size += ft_numlen(last_exit_code);
-			i += 2;
-		}
-		else if (input[i] == '$')
-		{
-			i++;
-			size += env_var_size(input, &i);
-		}
-		else
-		{
-			size++;
-			i++;
-		}
-	}
-	return (size);
-}
-
-int	exit_code(char **str, int *j, int last_exit_code)
+int	exit_code_expand(char **str, int *j, int last_exit_code)
 {
 	char	*exit_code;
 	int		i;
@@ -139,7 +31,7 @@ int	exit_code(char **str, int *j, int last_exit_code)
 	return (1);
 }
 
-int	env_var(char *input, char **envp, char **output, int *j)
+int	var_expand(char *input, t_env_var *env, char **output, int *j)
 {
 	char	*name;
 	char	*value;
@@ -148,7 +40,7 @@ int	env_var(char *input, char **envp, char **output, int *j)
 	i = 1;
 	while (ft_isalnum(input[i]) || input[i] == '_')
 		i++;
-	name = ft_strndup(input + 1, i - 1);
+	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (0);
 	value = getenv(name);
@@ -164,17 +56,17 @@ int	env_var(char *input, char **envp, char **output, int *j)
 	return (1);
 }
 
-char	*handle_expansion(char *input, char **output, int *i, char **envp, int last_exit_code)
+char	*handle_expansion(char *input, char **output, int *i, t_app_data *app)
 {
 	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
 	{
-		if (!exit_code(output, &i[1], last_exit_code))
+		if (!exit_code(output, &i[1], app->last_exit_code))
 			return (free(*output), NULL);
 		i[0] += 2;
 	}
 	else if (input[i[0]] == '$')
 	{
-		if (!env_var(input + i[0], envp, output, &i[1]))
+		if (!env_var(input + i[0], app->env_vars, output, &i[1]))
 			return (free(*output), NULL);
 		i[2] = 1;
 		while (ft_isalnum(input[i[0] + i[2]]) || input[i[0] + i[2]] == '_')
@@ -184,24 +76,24 @@ char	*handle_expansion(char *input, char **output, int *i, char **envp, int last
 	return (*output);
 }
 
-// last exit code should be in a struct, same as envp (they should be in the same struct otherwise they two parsing arguments which is shit)
-
-char	*in_string_expansion(char *input, char **envp, int last_exit_code)
+char	*in_string_expansion(char *input, t_app_data *app)
 {
 	char	*output;
+	int		size;
 	int		i[3];
 
 	i[0] = 0;
 	i[1] = 0;
-	output = (char *)ft_calloc((get_new_size(input, last_exit_code) + 1), sizeof(char));
-	printf("%d\n", get_new_size(input, last_exit_code));
+	size = get_new_size(input, app->last_exit_code);
+	output = (char *)ft_calloc((size + 1), sizeof(char));
+	printf("%d\n", get_new_size(input, app->last_exit_code));
 	if (!output)
 		return (NULL);
 	while (input[i[0]])
 	{
 		if (input[i[0]] == '$')
 		{
-			output = handle_expansion(input, &output, i, envp, last_exit_code);
+			output = handle_expansion(input, &output, i, app);
 			if (!output)
 				return (NULL);
 		}

@@ -6,13 +6,13 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:47:38 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/19 16:45:21 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:15:55 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	init_vars(int *s_quote, int *d_quote, int *brack_1, int *brack_2)
+void	init_vars(int *s_quote, int *d_quote, int *brack_1, int *brack_2)
 {
 	*s_quote = 0;
 	*d_quote = 0;

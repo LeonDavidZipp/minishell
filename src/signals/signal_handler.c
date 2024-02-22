@@ -6,11 +6,11 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/13 11:34:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/20 10:00:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include "../../inc/minishell.h"
 
 static void		handle_ctrl_c(int signal);
 
