@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/22 14:46:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/22 14:50:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@
 
 typedef enum e_token
 {
-	SEMICOLON,
 	FLAG,
 	BUILTIN_CMD,
 	OTHER_CMD,
@@ -66,7 +65,6 @@ typedef enum e_token
 	OR,
 	REDIR_OUT,
 	REDIR_IN,
-	REDIR_APPEND,
 	REDIR_INPUT,
 	HEREDOC,
 	ENV_VAR,

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 14:39:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/22 15:05:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,28 @@
 
 t_token	rules(char *content)
 {
-	if (ft_strncmp(content, ";", ft_strlen(";") == 0))
-		return (SEMICOLON);
-	else if (ft_strncmp(content, "|", ft_strlen("|") == 0))
+	// obvious rulings: everything that can be directly assigned to a token type
+	// ############################################################
+	if (ft_strncmp(content, "|", ft_strlen("|") == 0))
 		return (PIPE);
+	else if (ft_strncmp(content, "'", ft_strlen("'") == 0))
+		return (SINGLE_QUOTE);
+	else if (ft_strncmp(content, "\"", ft_strlen("\"") == 0))
+		return (DOUBLE_QUOTE);
 	else if (ft_strncmp(content, "&&", ft_strlen("&&") == 0))
 		return (AND);
 	else if (ft_strncmp(content, "||", ft_strlen("||") == 0))
 		return (OR);
+	else if (ft_strncmp(content, "*", ft_strlen("*") == 0))
+		return (WILDCARD);
 	else if (ft_strncmp(content, ">", ft_strlen(">") == 0))
 		return (REDIR_OUT);
 	else if (ft_strncmp(content, ">>", ft_strlen(">>") == 0))
-		return (REDIR_APPEND);
+		return (REDIR_INPUT);
 	else if (ft_strncmp(content, "<", ft_strlen("<") == 0))
 		return (REDIR_IN);
 	else if (ft_strncmp(content, "<<", ft_strlen("<<") == 0))
-		return (REDIR_APPEND);
-	// flag not correct yet
-	else if (ft_strncmp(content, "-", ft_strlen("-") == 0))
-		return (FLAG);
+		return (HEREDOC);
 	else if (ft_strncmp(content, "echo", ft_strlen("echo") == 0))
 		return (BUILTIN_CMD);
 	else if (ft_strncmp(content, "cd", ft_strlen("cd") == 0))
@@ -47,9 +50,21 @@ t_token	rules(char *content)
 		return (BUILTIN_CMD);
 	else if (ft_strncmp(content, "exit", ft_strlen("exit") == 0))
 		return (BUILTIN_CMD);
-	// else it is an argument
-	else
-		return (ARG);
+	else if (content && content[0] == '-')
+		return (FLAG);
+	// ############################################################
+	// everything below here is either an execve command or an argument
+	// if its an execve command, access will return 0
+	else if (access(content, F_OK) != -1)
+	{
+		// file exists
+		if (access(content, X_OK) != -1)
+		{
+			// file is executable
+			return (OTHER_CMD);
+		} else {
+			// file is not executable
+			return (ARG);
+		}
+	} 
 }
-
-run everything through acces to check whether execve command or arg
