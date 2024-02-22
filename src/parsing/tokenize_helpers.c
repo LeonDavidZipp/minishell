@@ -6,19 +6,21 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:49:48 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 12:02:05 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/22 19:09:53 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket)
+void	handle_quotes_brackets(char c, bool *s_quote, bool *d_quote, bool *in_bracket)
 {
-	if (c == '\'' || c == '\"')
-		*in_quote = !*in_quote;
-	if (c == '(')
+	if (c == '\'' && !*d_quote && !*in_bracket)
+		*s_quote = !*s_quote;
+	if (c == '"' && !*s_quote && !*in_bracket)
+		*d_quote = !*d_quote;
+	if (c == '(' && !*s_quote && !*d_quote)
 		*in_bracket = true;
-	if (c == ')')
+	if (c == ')' && !*s_quote && !*d_quote)
 		*in_bracket = false;
 }
 
@@ -42,21 +44,22 @@ void	count_if_space_needed(char *input, int *j, int *i)
 
 int	new_input_length(char *input)
 {
-	char	*new_input;
 	int		i;
 	int		j;
-	bool	in_quote;
+	bool	s_quote;
+	bool	d_quote;
 	bool	in_bracket;
 
 	i = 0;
 	j = 0;
-	in_quote = false;
+	s_quote = false;
+	d_quote = false;
 	in_bracket = false;
 	while (input[i])
 	{
-		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
+		handle_quotes_brackets(input[i], &s_quote, &d_quote, &in_bracket);
 		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
-			&& !in_quote && !in_bracket)
+			&& !s_quote && !d_quote && !in_bracket)
 		{
 			count_if_space_needed(input, &j, &i);
 		}
@@ -91,22 +94,22 @@ char	*add_spaces(char *input)
 	char	*new_input;
 	int		i;
 	int		j;
-	bool	in_quote;
-	bool	in_bracket;
+	bool	flags[3];
 
 	i = 0;
 	j = 0;
-	in_quote = false;
-	in_bracket = false;
+	flags[0] = false;
+	flags[1] = false;
+	flags[2] = false;
 	new_input = malloc(sizeof(char) * ((ft_strlen(input)
 					+ new_input_length(input)) + 1));
 	if (!new_input)
 		return (NULL);
 	while (input[i])
 	{
-		handle_quotes_brackets(input[i], &in_quote, &in_bracket);
+		handle_quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
 		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
-			&& !in_quote && !in_bracket)
+			&& !flags[0] && !flags[1] && !flags[2])
 			check_if_space_needed(input, new_input, &j, &i);
 		else
 			new_input[j++] = input[i++];
