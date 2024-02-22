@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 11:23:04 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/22 12:57:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,12 +89,19 @@ int			get_new_size(char *input, int last_exit_code);
 // signal handling
 void		signal_handler(void);
 
+// built-in commands
+void		builtin_cd(char *path);
+void		builtin_echo(char *str, bool flag_was_set);
+void		builtin_env(t_env_var **env_vars);
+void		builtin_exit(int exit_code);
+void		builtin_export(t_env_var **env_vars, char *var_string);
+
 // environment variables
-char		**split_environ(char *environ);
 t_env_var	*init_environ(char **environ);
 t_env_var	*new_env_var(char *key, char *value);
-void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
+char		**split_environ(char *environ);
+void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
 
 #endif
