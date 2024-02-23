@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/22 12:58:33 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/23 15:06:30 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ bin_tree/new_node.c \
 builtin_cmds/cd.c \
 builtin_cmds/echo.c \
 builtin_cmds/env.c \
-built0n_cmds/exit.c \
+builtin_cmds/exit.c \
 builtin_cmds/export.c \
 builtin_cmds/pwd.c \
 env_vars/env_vars.c \
