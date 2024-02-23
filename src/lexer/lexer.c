@@ -6,16 +6,11 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 14:59:44 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:07:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	expand_where_needed(char **tokens)
-{
-	(void)tokens;
-}
 
 void	lexer(t_app_data *app_data)
 {

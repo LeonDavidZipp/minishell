@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 15:17:46 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:02:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define CMD_NOT_DUP "Error: Failed to duplicate file descriptor\n"
 # define CMD_NOT_WAIT "Error: Failed to wait for child process\n"
 # define CMD_NOT_SIGNAL "Error: Failed to handle signal\n"
-# define CMD_NOT_ENV "Error: Failed to handle environment variable\n"
+# define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
 
@@ -110,11 +110,11 @@ void		builtin_env(t_env_var **env_vars);
 void		builtin_exit(int exit_code);
 void		builtin_export(t_env_var **env_vars, char *var_string);
 
-// environment variables
-t_env_var	*init_environ(char **environ);
+// enironment variables
+t_env_var	*init_envp(char **envp);
 t_env_var	*new_env_var(char *key, char *value);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
-char		**split_environ(char *environ);
+char		**split_envp(char *envp);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
 
@@ -124,6 +124,9 @@ char		**tokenize(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 void		handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
+
+// tokenization
+t_token		*true_tokenize(char **input);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);
