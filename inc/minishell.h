@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 17:42:10 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 20:23:22 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,13 @@
 # define CMD_NOT_DUP "Error: Failed to duplicate file descriptor\n"
 # define CMD_NOT_WAIT "Error: Failed to wait for child process\n"
 # define CMD_NOT_SIGNAL "Error: Failed to handle signal\n"
-# define CMD_NOT_ENV "Error: Failed to handle environment variable\n"
+# define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
 
-typedef enum e_token
+typedef enum e_tokentype
 {
-	SEMICOLON,
 	FLAG,
-	BUILTIN_CMD,
-	OTHER_CMD,
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	PIPE,
@@ -67,50 +64,58 @@ typedef enum e_token
 	REDIR_OUT,
 	REDIR_IN,
 	REDIR_APPEND,
-	REDIR_INPUT,
 	HEREDOC,
-	ENV_VAR,
 	WILDCARD,
+	BUILTIN_CMD,
+	OTHER_CMD,
 	ARG
-}			t_token;
-
-typedef struct s_input
-{
-	char	*content;
-	int		type;
-}			t_input;
+}			t_tokentype;
 
 typedef struct s_env_var
 {
 	char				*key;
 	char				*value;
 	struct s_env_var	*next;
-}					t_env_var;
+}			t_env_var;
+
+typedef struct s_token
+{
+	char			*content;
+	t_tokentype		type;
+	struct s_token	*next;
+}			t_token;
 
 typedef struct s_treenode
 {
 	char				*content;
-	int					type;
+	t_tokentype			type;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
-}					t_treenode;
+}			t_treenode;
 
 typedef struct s_app_data
 {
 	t_env_var	*env_vars;
 	int			last_exit_code;
 	char		*input;
-}				t_app_data;
+}			t_app_data;
 
 // signal handling
 void		signal_handler(void);
 
-// environment variables
-char		**split_environ(char *environ);
-t_env_var	*init_environ(char **environ);
+// built-in commands
+void		builtin_cd(char *path);
+void		builtin_echo(char *str, bool flag_was_set);
+void		builtin_env(t_env_var **env_vars);
+void		builtin_exit(int exit_code);
+void		builtin_export(t_env_var **env_vars, char *var_string);
+
+// enironment variables
+t_env_var	*init_envp(char **envp);
 t_env_var	*new_env_var(char *key, char *value);
-void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
+char		**split_envp(char *envp);
+void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
 
 // parsing && input handling
@@ -119,11 +124,17 @@ char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 void		quotes_brackets(char c, bool *s_quote, bool *d_quote, bool *in_bracket);
+int			is_space(char c);
+
+// tokenization
+t_token		*tokenize(char *input);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);
+int			get_new_size(char *input, int last_exit_code);
+bool		match(char *pattern, char *string);
 char		**expand_wildcard(char *input);
-char		*expand_var(char *input, t_env_var *env);
+char		*expand_var(char *input);
 char		*expand_exit_code(int last_exit_code);
 bool		match(char *pattern, char *string);
 int			get_new_size(char *input, int last_exit_code);
