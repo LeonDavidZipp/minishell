@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/22 21:08:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 11:44:44 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,6 @@
 typedef enum e_tokentype
 {
 	FLAG,
-	BUILTIN_CMD,
-	OTHER_CMD,
 	SINGLE_QUOTE,
 	DOUBLE_QUOTE,
 	PIPE,
@@ -67,17 +65,12 @@ typedef enum e_tokentype
 	REDIR_IN,
 	REDIR_APPEND,
 	HEREDOC,
-	ENV_VAR,
+	// ENV_VAR,
 	WILDCARD,
+	BUILTIN_CMD,
+	OTHER_CMD,
 	ARG
 }			t_tokentype;
-
-typedef struct s_token
-{
-	char			*content;
-	int				type;
-	struct s_token	*next;
-}			t_token;
 
 typedef struct s_env_var
 {
@@ -85,6 +78,13 @@ typedef struct s_env_var
 	char				*value;
 	struct s_env_var	*next;
 }			t_env_var;
+
+typedef struct s_token
+{
+	char			*content;
+	int				type;
+	struct s_token	*next;
+}			t_token;
 
 typedef struct s_treenode
 {
