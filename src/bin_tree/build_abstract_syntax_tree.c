@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 15:52:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 15:53:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,13 +44,13 @@ static t_treenode	*new_node(t_token *token)
 	return (node);
 }
 
-void	debug_print_tabs(int tabs)
+static void	debug_print_tabs(int tabs)
 {
 	while (tabs--)
 		printf("\t");
 }
 
-void	debug_printtree(t_treenode *root, int tabs)
+static void	debug_printtree(t_treenode *root, int tabs)
 {
 	if (root)
 	{
@@ -80,9 +80,9 @@ int	main(void)
 	input[0] = ft_strdup("echo");
 	input[1] = ft_strdup("hello");
 	input[2] = ft_strdup("world");
-	// input[3] = ft_strdup("&&");
-	// input[4] = ft_strdup("ls");
-	// input[5] = ft_strdup("-la");
+	input[3] = ft_strdup("&&");
+	input[4] = ft_strdup("ls");
+	input[5] = ft_strdup("-la");
 	tokens = true_tokenize(input);
 	printf("tokens:\n");
 	t_token	*temp = tokens;
