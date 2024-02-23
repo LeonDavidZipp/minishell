@@ -5,16 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2024/02/20 12:13:12 by lzipp            ###   ########.fr       */
-=======
-/*   Updated: 2024/02/20 11:24:57 by lzipp            ###   ########.fr       */
->>>>>>> 20-norminette-input-parsing
-=======
-/*   Updated: 2024/02/20 12:04:45 by cgerling         ###   ########.fr       */
->>>>>>> origin/20-norminette-input-parsing
+/*   Created: 2024/02/23 15:16:21 by cgerling          #+#    #+#             */
+/*   Updated: 2024/02/23 15:16:24 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 14:29:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:32:04 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,12 +118,14 @@ int			check_input(char *str);
 char		**tokenize(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
-void		handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
+void		quotes_brackets(char c, bool *s_quote, bool *d_quote, bool *in_bracket);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);
 char		**expand_wildcard(char *input);
 char		*expand_var(char *input, t_env_var *env);
 char		*expand_exit_code(int last_exit_code);
+bool		match(char *pattern, char *string);
+int			get_new_size(char *input, int last_exit_code);
 
 #endif
