@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:50:28 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 20:50:31 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 21:39:49 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,18 +17,14 @@ void	count_if_space_needed(char *input, int *j, int *i)
 	if (is_operator(input[*i], input[*i + 1]) == 2)
 	{
 		if (input[*i - 1] && !is_space(input[*i - 1]))
-		if (input[*i - 1] && !is_space(input[*i - 1]))
 			(*j)++;
-		if (input[*i + 2] && !is_space(input[*i + 2]))
 		if (input[*i + 2] && !is_space(input[*i + 2]))
 			(*j)++;
 	}
 	else
 	{
 		if (input[*i - 1] && !is_space(input[*i - 1]))
-		if (input[*i - 1] && !is_space(input[*i - 1]))
 			(*j)++;
-		if (input[*i + 1] && !is_space(input[*i + 1]))
 		if (input[*i + 1] && !is_space(input[*i + 1]))
 			(*j)++;
 	}
@@ -65,21 +61,17 @@ void	check_if_space_needed(char *input, char *new_input, int *j, int *i)
 	if (is_operator(input[*i], input[*i + 1]) == 2)
 	{
 		if (input[*i - 1] && !is_space(input[*i - 1]))
-		if (input[*i - 1] && !is_space(input[*i - 1]))
 			new_input[(*j)++] = ' ';
 		new_input[(*j)++] = input[(*i)++];
 		new_input[(*j)++] = input[(*i)++];
-		if (!is_space(input[*i]))
 		if (!is_space(input[*i]))
 			new_input[(*j)++] = ' ';
 	}
 	else
 	{
 		if (input[*i - 1] && !is_space(input[*i - 1]))
-		if (input[*i - 1] && !is_space(input[*i - 1]))
 			new_input[(*j)++] = ' ';
 		new_input[(*j)++] = input[(*i)++];
-		if (!is_space(input[*i]))
 		if (!is_space(input[*i]))
 			new_input[(*j)++] = ' ';
 	}

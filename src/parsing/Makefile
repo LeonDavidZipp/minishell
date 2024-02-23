@@ -10,3 +10,4 @@ all:
 	../../lib/libft/src/ft_substr.c \
 	../../lib/libft/src/ft_isprint.c \
 	../../lib/libft/src/ft_free_null_term_arrs.c \
+	../../lib/libft/src/ft_strtrim.c \

@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 21:00:24 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 21:44:45 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,10 @@ int	process_token(char *input, int *count, bool *flags, char **tokens)
 		if (condition(input, count, flags, was_flag))
 			break ;
 	}
-	tokens[count[2]] = ft_substr(input, count[0], count[1] - count[0]);
+	tokens[count[2]] = ft_trim_in_place(
+			ft_substr(input, count[0], count[1] - count[0]), " \t");
 	if (!tokens[count[2]])
 	{
-		tokens[count[2]] = NULL;
 		ft_free_2d_arr((void **)tokens);
 		return (free(input), 0);
 	}
@@ -108,12 +108,12 @@ char	**split(char *input)
 	tokens = malloc(sizeof(char *) * (count[3] + 1));
 	if (!tokens)
 		return (free(new_input), NULL);
+	tokens[count[3]] = NULL;
 	while (count[2] < count[3])
 	{
 		if (!process_token(new_input, count, flags, tokens))
 			return (free(new_input), free(tokens), NULL);
 	}
-	tokens[count[2]] = NULL;
 	free(new_input);
 	return (tokens);
 }
@@ -121,7 +121,7 @@ char	**split(char *input)
 // int main()
 // {
 // 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
-// 	// char **str = split("echo hi was jo");
+// 	// char **str = split("echo hi was");
 // 	for (int i = 0; str[i]; i++)
 // 	{
 // 		printf("%s\n", str[i]);
