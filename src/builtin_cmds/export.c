@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/22 12:56:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 18:11:38 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	builtin_export(t_env_var **env_vars, char *var_string)
 			env_vars++;
 		}
 	}
-	temp = split_environ(var_string);
+	temp = split_envp(var_string);
 	if (!temp)
 		return ;
 	if (ft_null_terminated_arr_len((void **)temp) != 2)

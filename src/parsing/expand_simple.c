@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_simple.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/22 12:57:29 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:27:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*expand_exit_code(int last_exit_code)
 	return (exit_code);
 }
 
-char	*expand_var(char *input, t_env_var *env)
+char	*expand_var(char *input)
 {
 	char	*name;
 	char	*value;

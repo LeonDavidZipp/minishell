@@ -3,14 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:02:22 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/06 12:30:28 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:26:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/pipex.h"
+#include "../../inc/minishell.h"
+
+static void		ft_free_tab(char **table);
+void			error_exit(char *message, int exit_code);
 
 char	*search_path_variable(char **envp)
 {
@@ -37,62 +40,44 @@ char	*find_path(char *command, char **envp)
 {
 	char	*path;
 	char	*temp;
-	char	**tab;
+	char	**table;
 	int		i;
 
 	temp = search_path_variable(envp);
-	tab = ft_split(temp, ':');
+	table = ft_split(temp, ':');
 	i = 0;
-	while (tab[i] != NULL)
+	while (table[i] != NULL)
 	{
-		path = ft_strjoin(tab[i], "/");
+		path = ft_strjoin(table[i], "/");
 		path = ft_strjoin(path, command);
 		if (access(path, X_OK) == 0)
 		{
-			ft_free_tab(tab);
+			ft_free_tab(table);
 			return (path);
 		}
 		free(path);
 		i++;
 	}
-	ft_free_tab(tab);
+	ft_free_tab(table);
 	error_exit("Error: command not found\n", 127);
 	return (NULL);
 }
 
-void	ft_free_tab(char **tab)
+static void	ft_free_tab(char **table)
 {
 	int	i;
 
 	i = 0;
-	while (tab[i])
+	while (table[i])
 	{
-		free(tab[i]);
+		free(table[i]);
 		i++;
 	}
-	free(tab);
+	free(table);
 }
 
 void	error_exit(char *message, int exit_code)
 {
 	ft_putstr_fd(message, 2);
 	exit(exit_code);
-}
-
-void	check_input(int argc, char **argv, char **envp)
-{
-	if (BONUS == 1)
-	{
-		if (argc > 1 && ft_strncmp(argv[1], "here_doc", 8) == 0)
-			here_doc(argc, argv, envp);
-		if (argc < 4)
-			error_exit("Error: invalid number of arguments\n"
-				"Usage: ./pipex infile cmd ... cmd outfile\n", 1);
-	}
-	else
-	{
-		if (argc != 5)
-			error_exit("Error: invalid number of arguments\n"
-				"Usage: ./pipex infile cmd1 cmd2 outfile\n", 1);
-	}
 }

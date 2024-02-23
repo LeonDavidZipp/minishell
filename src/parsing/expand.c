@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 17:49:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 18:28:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	exit_code_expand(char **str, int *j, int last_exit_code)
 	return (1);
 }
 
-int	var_expand(char *input, t_env_var *env, char **output, int *j)
+int	var_expand(char *input, char **output, int *j)
 {
 	char	*name;
 	char	*value;
@@ -66,7 +66,7 @@ char	*handle_expansion(char *input, char **output, int *i, t_app_data *app)
 	}
 	else if (input[i[0]] == '$')
 	{
-		if (!var_expand(input + i[0], app->env_vars, output, &i[1]))
+		if (!var_expand(input + i[0], output, &i[1]))
 			return (free(*output), NULL);
 		i[2] = 1;
 		while (ft_isalnum(input[i[0] + i[2]]) || input[i[0] + i[2]] == '_')

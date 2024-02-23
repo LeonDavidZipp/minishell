@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 17:57:55 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 18:31:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,17 +123,18 @@ int			check_input(char *str);
 char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
-void		handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
+void		quotes_brackets(char c, bool *s_quote, bool d_quote,
+				bool *in_bracket);
 
 // tokenization
-t_token		*tokenize(char **input);
+t_token		*tokenize(char *input);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);
 int			get_new_size(char *input, int last_exit_code);
 bool		match(char *pattern, char *string);
 char		**expand_wildcard(char *input);
-char		*expand_var(char *input, t_env_var *env);
+char		*expand_var(char *input);
 char		*expand_exit_code(int last_exit_code);
 bool		match(char *pattern, char *string);
 int			get_new_size(char *input, int last_exit_code);
