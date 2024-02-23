@@ -7,10 +7,10 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
-	rules.c \
+	tokenize.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
-	../../lib/libft/src/ft_strncmp.c \
+	../../lib/libft/src/ft_strcmp.c \
 	../../lib/libft/src/ft_calloc.c \
 	../../lib/libft/src/ft_free_null_term_arrs.c \
 	../../lib/libft/src/ft_null_terminated_arr_len.c \
