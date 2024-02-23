@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 11:44:44 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 11:59:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,14 @@ typedef struct s_env_var
 typedef struct s_token
 {
 	char			*content;
-	int				type;
+	t_tokentype		type;
 	struct s_token	*next;
 }			t_token;
 
 typedef struct s_treenode
 {
 	char				*content;
-	int					type;
+	t_tokentype			type;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
