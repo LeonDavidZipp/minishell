@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 17:32:04 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:42:10 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ void		free_env_vars(t_env_var *env_var);
 
 // parsing && input handling
 int			check_input(char *str);
-char		**tokenize(char *input);
+char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 void		quotes_brackets(char c, bool *s_quote, bool *d_quote, bool *in_bracket);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 17:26:44 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:41:48 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ char	*process_token(char *input, int *count, bool *flags, char **tokens)
 	return (input);
 }
 
-char	**tokenize(char *input)
+char	**split(char *input)
 {
 	char	**tokens;
 	char	*new_input;
