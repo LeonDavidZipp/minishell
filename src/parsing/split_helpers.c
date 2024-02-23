@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/02/23 20:50:11 by cgerling         ###   ########.fr       */
+/*   Created: 2024/02/23 20:50:28 by cgerling          #+#    #+#             */
+/*   Updated: 2024/02/23 20:50:31 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../inc/minishell.h"
 

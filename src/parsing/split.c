@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 20:51:03 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 21:00:24 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int	count_tokens(char *input)
 		quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
 		if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[i]))
 			&& (is_space(input[i - 1]) || input[i - 1] == '\''
-		if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[i]))
-			&& (is_space(input[i - 1]) || input[i - 1] == '\''
 				|| input[i - 1] == '"' || input[i - 1] == '(' || was_flag))
 		{
 			amount++;
@@ -54,8 +52,6 @@ int	count_tokens(char *input)
 
 int	condition(char *input, int *count, bool *flags, bool was_flag)
 {
-	if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[count[1]]))
-		&& (is_space(input[count[1] - 1]) || input[count[1] - 1] == '\''
 	if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[count[1]]))
 		&& (is_space(input[count[1] - 1]) || input[count[1] - 1] == '\''
 			|| input[count[1] - 1] == '"' || input[count[1] - 1] == '('
@@ -73,7 +69,6 @@ int	process_token(char *input, int *count, bool *flags, char **tokens)
 	bool	was_flag;
 
 	was_flag = false;
-	while (input[count[0]] && is_space(input[count[0]])
 	while (input[count[0]] && is_space(input[count[0]])
 		&& !flags[0] && !flags[1] && !flags[2])
 		count[0]++;
@@ -129,7 +124,7 @@ char	**split(char *input)
 // 	// char **str = split("echo hi was jo");
 // 	for (int i = 0; str[i]; i++)
 // 	{
-// 		printf("|%s|\n", str[i]);
+// 		printf("%s\n", str[i]);
 // 	}
 // 	for (int i = 0; str[i]; i++)
 // 	{
