@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 13:36:45 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 14:59:44 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	lexer(t_app_data *app_data)
 		// exit(1);
 	}
 	// 3. expand where needed
-	
+
 	// 4. write to linked list including type of token
 	// 5. to binary tree (maybe together with step 4)
 	// 6. execute
