@@ -6,23 +6,11 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:49:48 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/22 19:09:53 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 17:26:20 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-void	handle_quotes_brackets(char c, bool *s_quote, bool *d_quote, bool *in_bracket)
-{
-	if (c == '\'' && !*d_quote && !*in_bracket)
-		*s_quote = !*s_quote;
-	if (c == '"' && !*s_quote && !*in_bracket)
-		*d_quote = !*d_quote;
-	if (c == '(' && !*s_quote && !*d_quote)
-		*in_bracket = true;
-	if (c == ')' && !*s_quote && !*d_quote)
-		*in_bracket = false;
-}
 
 void	count_if_space_needed(char *input, int *j, int *i)
 {
@@ -57,7 +45,7 @@ int	new_input_length(char *input)
 	in_bracket = false;
 	while (input[i])
 	{
-		handle_quotes_brackets(input[i], &s_quote, &d_quote, &in_bracket);
+		quotes_brackets(input[i], &s_quote, &d_quote, &in_bracket);
 		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
 			&& !s_quote && !d_quote && !in_bracket)
 		{
@@ -107,7 +95,7 @@ char	*add_spaces(char *input)
 		return (NULL);
 	while (input[i])
 	{
-		handle_quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
+		quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
 		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
 			&& !flags[0] && !flags[1] && !flags[2])
 			check_if_space_needed(input, new_input, &j, &i);
