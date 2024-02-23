@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 17:49:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:57:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int			is_operator(char c, char d);
 void		handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
 
 // tokenization
-t_token		*true_tokenize(char **input);
+t_token		*tokenize(char **input);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);

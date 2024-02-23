@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 12:55:17 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:57:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_token		*new_token(char *content);
 static t_tokentype	determine_token_type(char *content);
 static t_tokentype	determine_token_type_2(char *content);
 
-t_token	*true_tokenize(char **input)
+t_token	*tokenize(char **input)
 {
 	t_token			*token;
 	t_token			*prev;
@@ -124,7 +124,7 @@ static t_token	*new_token(char *content)
 // 	input[2] = strdup("world");
 // 	t_token	*tokens;
 
-// 	tokens = true_tokenize(input);
+// 	tokens = tokenize(input);
 // 	t_token	*temp = tokens;
 // 	while (temp)
 // 	{

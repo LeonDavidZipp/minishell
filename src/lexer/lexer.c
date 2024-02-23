@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 17:07:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:57:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void	lexer(t_app_data *app_data)
 	char	**tokens;
 	// 1. first validate input (according to braces, quotes, etc.)
 	if (check_input(app_data->input) == 1)
-	{
 		free_app_data(app_data);
-		// exit(1);
-	}
 	// 2. then tokenize
 	tokens = tokenize(app_data->input);
 	if (!tokens)

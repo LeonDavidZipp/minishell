@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 15:53:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 17:57:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main(void)
 	input[3] = ft_strdup("&&");
 	input[4] = ft_strdup("ls");
 	input[5] = ft_strdup("-la");
-	tokens = true_tokenize(input);
+	tokens = tokenize(input);
 	printf("tokens:\n");
 	t_token	*temp = tokens;
 	while (temp)
