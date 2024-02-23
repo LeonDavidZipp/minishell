@@ -1,7 +1,8 @@
 all:
 	@gcc -Wall -Wextra -Werror \
-	tokenize.c \
-	tokenize_helpers.c \
+	split.c \
+	split_helpers.c \
+	split_helpers2.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_numlens.c \
 	../../lib/libft/src/ft_isspace.c \

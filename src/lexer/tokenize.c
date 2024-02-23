@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 18:19:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 20:21:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,22 @@ t_token	*tokenize(char *input)
 	t_token			*token;
 	t_token			*prev;
 	t_token			*first;
+	int				i;
 
 	token_contents = split(input);
 	if (!token_contents)
 		return (NULL);
 	first = NULL;
 	prev = NULL;
-	while (*token_contents)
+	i = -1;
+	while (token_contents[++i])
 	{
-		token = new_token(*token_contents);
+		token = new_token(token_contents[i]);
 		if (!prev)
 			first = token;
 		else
 			prev->next = token;
 		prev = token;
-		token_contents++;
 	}
 	ft_free_2d_arr((void **)token_contents);
 	return (first);
@@ -53,6 +54,19 @@ void	free_tokens(t_token *token)
 		free(token);
 		token = temp;
 	}
+}
+
+static t_token	*new_token(char *content)
+{
+	t_token		*token;
+
+	token = (t_token *)malloc(sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->content = ft_strdup(content);
+	token->type = determine_token_type(content);
+	token->next = NULL;
+	return (token);
 }
 
 static t_tokentype	determine_token_type(char *content)
@@ -85,6 +99,8 @@ static t_tokentype	determine_token_type(char *content)
 
 static t_tokentype	determine_token_type_2(char *content)
 {
+	printf("echo vs |%s|\n", content);
+	printf("strcmp: %d\n", ft_strcmp(content, "echo"));
 	if (ft_strcmp(content, "echo") == 0)
 		return (BUILTIN_CMD);
 	else if (ft_strcmp(content, "cd") == 0)
@@ -108,35 +124,21 @@ static t_tokentype	determine_token_type_2(char *content)
 	}
 }
 
-static t_token	*new_token(char *content)
-{
-	t_token		*token;
-
-	token = (t_token *)malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->content = content;
-	token->type = determine_token_type(content);
-	token->next = NULL;
-	return (token);
-}
-
 // int main()
 // {
-// 	char	**input = ft_calloc(4, sizeof(char *));
-// 	input[0] = strdup("echo");
-// 	input[1] = strdup("*");
-// 	input[2] = strdup("world");
+// 	char	*input = ft_strdup("echo hi");
 // 	t_token	*tokens;
 
 // 	tokens = tokenize(input);
 // 	t_token	*temp = tokens;
+// 	int i = 0;
 // 	while (temp)
 // 	{
 // 		printf("content: %s - type: %d\n", temp->content, temp->type);
+// 		printf("i: %d\n", i++);
 // 		temp = temp->next;
 // 	}
 // 	printf("done\n");
-// 	free_tokens(tokens);
+// 	// free_tokens(tokens);
 // 	return (0);
 // }

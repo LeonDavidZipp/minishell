@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 18:02:14 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 19:16:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,15 @@ void	lexer(t_app_data *app_data)
 	if (check_input(app_data->input) == 1)
 		free_for_next_call(app_data);
 	// 2. then tokenize
+
 	tokens = tokenize(app_data->input);
 	if (!tokens)
 	{
 		printf("%s", LEXER_ERR);
 		free_for_next_call(app_data);
-		// exit(1);
 	}
 	t_token	*tmp = tokens;
+	printf("tokens:\n");
 	while (tmp)
 	{
 		printf("content: %s, type: %d\n", tmp->content, tmp->type);

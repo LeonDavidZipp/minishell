@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 17:47:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 19:04:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
-	app_data.env_vars = init_env_vars(envp);
+	app_data.env_vars = init_envp(envp);
 	signal_handler();
 	while (true)
 	{

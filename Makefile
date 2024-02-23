@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/23 18:09:56 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/23 18:54:39 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -37,8 +37,8 @@ parsing/expand.c \
 parsing/split_helpers.c \
 parsing/split_helpers2.c \
 parsing/split.c \
-signals/signal_handler.c) \
-main.c
+signals/signal_handler.c \
+main.c)
 
 OBJECTS := $(SOURCES:.c=.o)
 

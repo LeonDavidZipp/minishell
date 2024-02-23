@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:47:38 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 12:15:55 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 19:01:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	init_vars(int *s_quote, int *d_quote, int *brack_1, int *brack_2)
+static void	init_vars(int *s_quote, int *d_quote, int *brack_1, int *brack_2)
 {
 	*s_quote = 0;
 	*d_quote = 0;
