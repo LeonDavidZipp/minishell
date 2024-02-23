@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 20:23:22 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 20:49:28 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,15 +119,19 @@ void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
 
 // parsing && input handling
+int			is_space(char c);
 int			check_input(char *str);
 char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
-void		quotes_brackets(char c, bool *s_quote, bool *d_quote, bool *in_bracket);
-int			is_space(char c);
+void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
+				bool *in_bracket);
 
 // tokenization
 t_token		*tokenize(char *input);
+
+// lexer
+void		lexer(t_app_data *app_data);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);

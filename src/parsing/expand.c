@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 17:32:51 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:28:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	exit_code_expand(char **str, int *j, int last_exit_code)
 	return (1);
 }
 
-int	var_expand(char *input, t_env_var *env, char **output, int *j)
+int	var_expand(char *input, char **output, int *j)
 {
 	char	*name;
 	char	*value;
@@ -60,13 +60,13 @@ char	*handle_expansion(char *input, char **output, int *i, t_app_data *app)
 {
 	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
 	{
-		if (!exit_code(output, &i[1], app->last_exit_code))
+		if (!exit_code_expand(output, &i[1], app->last_exit_code))
 			return (free(*output), NULL);
 		i[0] += 2;
 	}
 	else if (input[i[0]] == '$')
 	{
-		if (!env_var(input + i[0], app->env_vars, output, &i[1]))
+		if (!var_expand(input + i[0], output, &i[1]))
 			return (free(*output), NULL);
 		i[2] = 1;
 		while (ft_isalnum(input[i[0] + i[2]]) || input[i[0] + i[2]] == '_')
@@ -108,7 +108,6 @@ char	*in_string_expansion(char *input, t_app_data *app)
 // {
 // 	char	*input = "hello $HAALO your number is $?"; // testing
 // 	int		i = 0;
-
 // 	char *output = in_string_expansion(input, envp, 0);
 // 	if (output)
 // 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/23 15:16:21 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 17:39:34 by cgerling         ###   ########.fr       */
+/*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
+/*   Updated: 2024/02/23 19:04:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ static char	*get_input(void);
 
 int	main(int argc, char **argv, char **envp)
 {
-	char		*input;
 	t_app_data	app_data;
 
 	(void)argv;
@@ -25,7 +24,7 @@ int	main(int argc, char **argv, char **envp)
 		printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
-	app_data.env_vars = init_env_vars(envp);
+	app_data.env_vars = init_envp(envp);
 	signal_handler();
 	while (true)
 	{
@@ -44,11 +43,8 @@ static char	*get_input(void)
 	input = readline(PROMPT);
 	if (input == NULL)
 	{
-		printf("exit\n");
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		exit(0);
+		// maybe change exit code
+		builtin_exit(0);
 	}
 	else if (ft_strlen(input) == 0)
 	{
@@ -59,11 +55,8 @@ static char	*get_input(void)
 	{
 		add_history(input);
 		free(input);
-		printf("exit\n");
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		exit(0);
+		// maybe change exit code
+		builtin_exit(0);
 	}
 	add_history(input);
 	return (input);
