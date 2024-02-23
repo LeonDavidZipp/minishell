@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 15:05:56 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 15:12:54 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,24 @@
 
 t_treenode	*buildAST(t_token *tokens, int *depth)
 {
-	t_treenode  *root;
+	t_treenode	*root;
+
 	if (tokens == NULL)
 		return (NULL);
-	root = (t_treenode *)malloc(sizeof(t_treenode));
-	root->type = tokens->type;
-	root->content = strdup(tokens->content);
-	root->left = NULL;
-	root->right = NULL;
+	root = new_node(tokens);
 	if (tokens->next != NULL)
 		root->left = buildAST(tokens->next, depth + 1);
 	return (root);
 }
 
-t_treenode	*new_node(t_token *token)
+static t_treenode	*new_node(t_token *token)
 {
 	t_treenode	*node;
 
 	node = (t_treenode *)malloc(sizeof(t_treenode));
 	if (!node)
 		return (NULL);
-	node->content = token->content;
+	node->content = ft_strdup(token->content);
 	node->type = token->type;
 	node->left = NULL;
 	node->right = NULL;
