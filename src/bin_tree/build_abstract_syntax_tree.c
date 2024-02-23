@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   new_node.c                                         :+:      :+:    :+:   */
+/*   build_abstract_syntax_tree.c                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 15:12:54 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 15:52:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_treenode	*buildAST(t_token *tokens, int *depth)
+static t_treenode	*new_node(t_token *token);
+
+t_treenode	*build_a_s_t(t_token *tokens, int *depth)
 {
 	t_treenode	*root;
 
@@ -20,7 +22,11 @@ t_treenode	*buildAST(t_token *tokens, int *depth)
 		return (NULL);
 	root = new_node(tokens);
 	if (tokens->next != NULL)
-		root->left = buildAST(tokens->next, depth + 1);
+	{
+		root->left = build_a_s_t(tokens->next, depth + 1);
+		if (tokens->next->next != NULL)
+			root->right = build_a_s_t(tokens->next->next, depth + 1);
+	}
 	return (root);
 }
 
@@ -62,4 +68,30 @@ void	debug_printtree(t_treenode *root, int tabs)
 		debug_print_tabs(tabs);
 		printf("--is empty--\n");
 	}
+}
+
+int	main(void)
+{
+	char			**input;
+	t_token			*tokens;
+	t_treenode		*ast;
+
+	input = ft_calloc(7, sizeof(char *));
+	input[0] = ft_strdup("echo");
+	input[1] = ft_strdup("hello");
+	input[2] = ft_strdup("world");
+	// input[3] = ft_strdup("&&");
+	// input[4] = ft_strdup("ls");
+	// input[5] = ft_strdup("-la");
+	tokens = true_tokenize(input);
+	printf("tokens:\n");
+	t_token	*temp = tokens;
+	while (temp)
+	{
+		printf("content: %s - type: %d\n", temp->content, temp->type);
+		temp = temp->next;
+	}
+	printf("------------------------\n");
+	ast = build_a_s_t(tokens, 0);
+	debug_printtree(ast, 0);
 }
