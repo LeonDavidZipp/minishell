@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 17:41:48 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/23 20:45:54 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ int	count_tokens(char *input)
 	while (input[i])
 	{
 		quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
-		if ((!flags[0] && !flags[1] && !flags[2] && !ft_isspace(input[i]))
-			&& (ft_isspace(input[i - 1]) || input[i - 1] == '\''
+		if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[i]))
+			&& (is_space(input[i - 1]) || input[i - 1] == '\''
 				|| input[i - 1] == '"' || input[i - 1] == '(' || was_flag))
 		{
 			amount++;
@@ -52,8 +52,8 @@ int	count_tokens(char *input)
 
 int	condition(char *input, int *count, bool *flags, bool was_flag)
 {
-	if ((!flags[0] && !flags[1] && !flags[2] && !ft_isspace(input[count[1]]))
-		&& (ft_isspace(input[count[1] - 1]) || input[count[1] - 1] == '\''
+	if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[count[1]]))
+		&& (is_space(input[count[1] - 1]) || input[count[1] - 1] == '\''
 			|| input[count[1] - 1] == '"' || input[count[1] - 1] == '('
 			|| was_flag || (ft_isprint(input[count[1] - 1])
 				&& (input[count[1]] == '\'' || input[count[1]] == '"'
@@ -64,12 +64,12 @@ int	condition(char *input, int *count, bool *flags, bool was_flag)
 	return (0);
 }
 
-char	*process_token(char *input, int *count, bool *flags, char **tokens)
+int	process_token(char *input, int *count, bool *flags, char **tokens)
 {
 	bool	was_flag;
 
 	was_flag = false;
-	while (input[count[0]] && ft_isspace(input[count[0]])
+	while (input[count[0]] && is_space(input[count[0]])
 		&& !flags[0] && !flags[1] && !flags[2])
 		count[0]++;
 	count[1] = count[0];
@@ -86,11 +86,11 @@ char	*process_token(char *input, int *count, bool *flags, char **tokens)
 	{
 		tokens[count[2]] = NULL;
 		ft_free_2d_arr((void **)tokens);
-		return (free(input), NULL);
+		return (free(input), 0);
 	}
 	count[0] = count[1];
 	count[2]++;
-	return (input);
+	return (1);
 }
 
 char	**split(char *input)
@@ -110,9 +110,8 @@ char	**split(char *input)
 		return (free(new_input), NULL);
 	while (count[2] < count[3])
 	{
-		new_input = process_token(new_input, count, flags, tokens);
-		if (!new_input)
-			return (NULL);
+		if (!process_token(new_input, count, flags, tokens))
+			return (free(new_input), free(tokens), NULL);
 	}
 	tokens[count[2]] = NULL;
 	free(new_input);
@@ -121,7 +120,8 @@ char	**split(char *input)
 
 // int main()
 // {
-// 	char **str = tokenize("'\"'\"'\"hello\"'\"'\"'");
+// 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
+// 	// char **str = split("echo hi was jo");
 // 	for (int i = 0; str[i]; i++)
 // 	{
 // 		printf("%s\n", str[i]);
