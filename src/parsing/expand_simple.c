@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/20 11:48:04 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/22 12:57:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ char	**expand_wildcard(char *input)
 // 	else
 // 	{
 // 		char **output = expand_wildcard(input);
+// 		if (!output)
+// 			return (1);
 // 		int j = 0;
 // 		while (output[j])
 // 		{

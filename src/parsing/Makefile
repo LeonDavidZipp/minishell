@@ -1,19 +1,12 @@
-all :
-	gcc \
-	check_input.c \
-	expand_helpers.c \
-	expand.c \
-	expand_simple.c \
-	tokenize_helpers.c \
+all:
+	@gcc -Wall -Wextra -Werror \
 	tokenize.c \
+	tokenize_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
-	../../lib/libft/src/ft_strlen.c \
-	../../lib/libft/src/ft_strncmp.c \
-	../../lib/libft/src/ft_calloc.c \
-	../../lib/libft/src/ft_free_null_term_arrs.c \
-	../../lib/libft/src/ft_null_terminated_arr_len.c \
-	../../lib/libft/src/ft_substr.c \
 	../../lib/libft/src/ft_numlens.c \
-	../../lib/libft/src/ft_isalnum.c \
 	../../lib/libft/src/ft_isspace.c \
-	../../lib/libft/src/ft_itoa.c \
+	../../lib/libft/src/ft_calloc.c \
+	../../lib/libft/src/ft_strlen.c \
+	../../lib/libft/src/ft_substr.c \
+	../../lib/libft/src/ft_isprint.c \
+	../../lib/libft/src/ft_free_null_term_arrs.c \
