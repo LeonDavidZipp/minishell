@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 11:55:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 12:06:28 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,39 +20,39 @@ t_tokentype	determine_token_type(char *content)
 	// ############################################################
 	printf("content: %s\n", content);
 	printf("strncmp: %d\n", ft_strncmp(content, "echo", ft_strlen("echo")));
-	if (ft_strncmp(content, "|", ft_strlen("|") == 0))
+	if (ft_strncmp(content, "|", ft_strlen("|")) == 0)
 		return (PIPE);
-	else if (ft_strncmp(content, "'", ft_strlen("'") == 0))
+	else if (ft_strncmp(content, "'", ft_strlen("'")) == 0)
 		return (SINGLE_QUOTE);
-	else if (ft_strncmp(content, "\"", ft_strlen("\"") == 0))
+	else if (ft_strncmp(content, "\"", ft_strlen("\"")) == 0)
 		return (DOUBLE_QUOTE);
-	else if (ft_strncmp(content, "&&", ft_strlen("&&") == 0))
+	else if (ft_strncmp(content, "&&", ft_strlen("&&")) == 0)
 		return (AND);
-	else if (ft_strncmp(content, "||", ft_strlen("||") == 0))
+	else if (ft_strncmp(content, "||", ft_strlen("||")) == 0)
 		return (OR);
-	else if (ft_strncmp(content, "*", ft_strlen("*") == 0))
+	else if (ft_strncmp(content, "*", ft_strlen("*")) == 0)
 		return (WILDCARD);
-	else if (ft_strncmp(content, ">", ft_strlen(">") == 0))
+	else if (ft_strncmp(content, ">", ft_strlen(">")) == 0)
 		return (REDIR_OUT);
-	else if (ft_strncmp(content, ">>", ft_strlen(">>") == 0))
+	else if (ft_strncmp(content, ">>", ft_strlen(">>")) == 0)
 		return (REDIR_APPEND);
-	else if (ft_strncmp(content, "<", ft_strlen("<") == 0))
+	else if (ft_strncmp(content, "<", ft_strlen("<")) == 0)
 		return (REDIR_IN);
-	else if (ft_strncmp(content, "<<", ft_strlen("<<") == 0))
+	else if (ft_strncmp(content, "<<", ft_strlen("<<")) == 0)
 		return (HEREDOC);
-	else if (ft_strncmp(content, "echo", ft_strlen("echo") == 0))
+	else if (ft_strncmp(content, "echo", ft_strlen("echo")) == 0)
 		return (BUILTIN_CMD);
-	else if (ft_strncmp(content, "cd", ft_strlen("cd") == 0))
+	else if (ft_strncmp(content, "cd", ft_strlen("cd")) == 0)
 		return (BUILTIN_CMD);
-	else if (ft_strncmp(content, "pwd", ft_strlen("pwd") == 0))
+	else if (ft_strncmp(content, "pwd", ft_strlen("pwd")) == 0)
 		return (BUILTIN_CMD);
-	else if (ft_strncmp(content, "export", ft_strlen("export") == 0))
+	else if (ft_strncmp(content, "export", ft_strlen("export")) == 0)
 		return (BUILTIN_CMD);
-	else if (ft_strncmp(content, "unset", ft_strlen("unset") == 0))
+	else if (ft_strncmp(content, "unset", ft_strlen("unset")) == 0)
 		return (BUILTIN_CMD);
-	else if (ft_strncmp(content, "env", ft_strlen("env") == 0))
+	else if (ft_strncmp(content, "env", ft_strlen("env")) == 0)
 		return (BUILTIN_CMD);
-	else if (ft_strncmp(content, "exit", ft_strlen("exit") == 0))
+	else if (ft_strncmp(content, "exit", ft_strlen("exit")) == 0)
 		return (BUILTIN_CMD);
 	else if (content && content[0] == '-')
 		return (FLAG);
