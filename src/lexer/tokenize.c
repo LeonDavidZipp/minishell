@@ -6,15 +6,13 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:32:54 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 15:46:45 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static t_token		*new_token(char *content, t_app_data *app);
-static t_tokentype	determine_token_type(char *content);
-static t_tokentype	determine_token_type_2(char *content);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -68,6 +66,8 @@ static t_token	*new_token(char *content, t_app_data *app)
 		temp = in_string_expansion(content, app);
 		temp = ft_trim_in_place(temp, "\"");
 	}
+	else if (content[0] == '$')
+		temp = in_string_expansion(content, app);
 	else
 		temp = ft_strdup(content);
 	if (!temp)
@@ -76,63 +76,40 @@ static t_token	*new_token(char *content, t_app_data *app)
 	if (!token)
 		return (NULL);
 	token->content = ft_strdup(temp);
-	token->type = determine_token_type(content);
+	token->type = token_type(content);
 	token->next = NULL;
 	free(temp);
 	return (token);
 }
 
-static t_tokentype	determine_token_type(char *content)
+static char	**join_tokens(char **contents)
 {
-	if (ft_strcmp(content, "|") == 0)
-		return (PIPE);
-	else if (ft_strcmp(content, "'") == 0)
-		return (SINGLE_QUOTE);
-	else if (ft_strcmp(content, "\"") == 0)
-		return (DOUBLE_QUOTE);
-	else if (ft_strcmp(content, "&&") == 0)
-		return (AND);
-	else if (ft_strcmp(content, "||") == 0)
-		return (OR);
-	else if (ft_strcmp(content, "*") == 0)
-		return (WILDCARD);
-	else if (ft_strcmp(content, ">") == 0)
-		return (REDIR_OUT);
-	else if (ft_strcmp(content, ">>") == 0)
-		return (REDIR_APPEND);
-	else if (ft_strcmp(content, "<") == 0)
-		return (REDIR_IN);
-	else if (ft_strcmp(content, "<<") == 0)
-		return (HEREDOC);
-	else if (content && content[0] == '-')
-		return (FLAG);
-	else
-		return (determine_token_type_2(content));
-}
+	char	**new_contents;
+	char	*temp;
+	int		i;
+	int		j;
 
-static t_tokentype	determine_token_type_2(char *content)
-{
-	if (ft_strcmp(content, "echo") == 0)
-		return (BUILTIN_CMD);
-	else if (ft_strcmp(content, "cd") == 0)
-		return (BUILTIN_CMD);
-	else if (ft_strcmp(content, "pwd") == 0)
-		return (BUILTIN_CMD);
-	else if (ft_strcmp(content, "export") == 0)
-		return (BUILTIN_CMD);
-	else if (ft_strcmp(content, "unset") == 0)
-		return (BUILTIN_CMD);
-	else if (ft_strcmp(content, "env") == 0)
-		return (BUILTIN_CMD);
-	else if (ft_strcmp(content, "exit") == 0)
-		return (BUILTIN_CMD);
-	else
+	i = -1;
+	j = -1;
+	new_contents = ft_calloc(ft_null_terminated_arr_len((void **)contents) + 1,
+			sizeof(char *));
+	while (contents[++i])
 	{
-		if (access(content, X_OK) != -1)
-			return (OTHER_CMD);
-		else
-			return (ARG);
+		if (ft_strcmp(contents[i], "echo") == 0)
+		{
+			i++;
+			if (contents[i] && ft_strcmp(contents[i], "-n") == 0)
+				i++;
+			while (contents[i] && token_type(contents[i]) == ARG)
+			{
+				temp = ft_strjoin(new_contents[j], contents[i]);
+				free(new_contents[j]);
+				new_contents[j] = temp;
+				i++;
+			}
+		}
 	}
+	return(contents);
 }
 
 // int main()
