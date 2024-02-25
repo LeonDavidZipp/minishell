@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 15:29:45 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 20:54:54 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ void		signal_handler(void);
 
 // built-in commands
 void		builtin_cd(char *path);
-void		builtin_echo(char *str, bool flag_was_set);
+void		builtin_echo(char *str);
 void		builtin_env(t_env_var **env_vars);
 void		builtin_exit(int exit_code);
 void		builtin_export(t_env_var **env_vars, char *var_string);
