@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 20:44:30 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 20:49:33 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ static t_token	*join_arg_tokens(t_token *tokens)
 	join = NULL;
 	while (tokens)
 	{
-		if (tokens->type == ARG)
+		if (tokens->type == ARG || tokens->type == FLAG)
 			join_tokens(&join, &prev, &tokens);
 		else if (tokens->type != ARG)
 		{
@@ -134,7 +134,7 @@ static void	join_tokens(t_token **join, t_token **prev, t_token **tokens)
 
 // int main()
 // {
-// 	char	*input = ft_strdup("echo hi hello u geylord");
+// 	char	*input = ft_strdup("echo -n hi hello u geylord");
 // 	t_token	*tokens;
 // 	t_app_data app;
 // 	app.input = input;
