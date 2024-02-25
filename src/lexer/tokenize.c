@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:26:10 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:28:03 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token		*new_token(char *content);
+static t_token		*new_token(char *content, t_app_data *app);
 static t_tokentype	determine_token_type(char *content);
 static t_tokentype	determine_token_type_2(char *content);
 
