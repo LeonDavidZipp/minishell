@@ -6,16 +6,16 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 20:35:39 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 20:41:05 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static t_token		*new_token(char *content, t_app_data *app);
-static t_token		*join_arg_tokens(t_token *tokens);
 static void			join_tokens(t_token **join, t_token **prev,
 						t_token **tokens);
+static t_token		*join_arg_tokens(t_token *tokens);
 
 t_token	*tokenize(t_app_data *app)
 {
