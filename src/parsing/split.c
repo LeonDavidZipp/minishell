@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 20:14:02 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 21:44:45 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	condition(char *input, int *count, bool *flags, bool was_flag)
 	return (0);
 }
 
-char	*process_token(char *input, int *count, bool *flags, char **tokens)
+int	process_token(char *input, int *count, bool *flags, char **tokens)
 {
 	bool	was_flag;
 
@@ -81,16 +81,16 @@ char	*process_token(char *input, int *count, bool *flags, char **tokens)
 		if (condition(input, count, flags, was_flag))
 			break ;
 	}
-	tokens[count[2]] = ft_substr(input, count[0], count[1] - count[0]);
+	tokens[count[2]] = ft_trim_in_place(
+			ft_substr(input, count[0], count[1] - count[0]), " \t");
 	if (!tokens[count[2]])
 	{
-		tokens[count[2]] = NULL;
 		ft_free_2d_arr((void **)tokens);
-		return (free(input), NULL);
+		return (free(input), 0);
 	}
 	count[0] = count[1];
 	count[2]++;
-	return (input);
+	return (1);
 }
 
 char	**split(char *input)
@@ -108,24 +108,23 @@ char	**split(char *input)
 	tokens = malloc(sizeof(char *) * (count[3] + 1));
 	if (!tokens)
 		return (free(new_input), NULL);
+	tokens[count[3]] = NULL;
 	while (count[2] < count[3])
 	{
-		new_input = process_token(new_input, count, flags, tokens);
-		if (!new_input)
-			return (NULL);
+		if (!process_token(new_input, count, flags, tokens))
+			return (free(new_input), free(tokens), NULL);
 	}
-	tokens[count[2]] = NULL;
 	free(new_input);
 	return (tokens);
 }
 
 // int main()
 // {
-// 	// char **str = tokenize("'\"'\"'\"hello\"'\"'\"'");
-// 	char **str = split("echo hi");
+// 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
+// 	// char **str = split("echo hi was");
 // 	for (int i = 0; str[i]; i++)
 // 	{
-// 		printf("|%s|\n", str[i]);
+// 		printf("%s\n", str[i]);
 // 	}
 // 	for (int i = 0; str[i]; i++)
 // 	{

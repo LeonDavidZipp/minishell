@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
+#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/23 18:54:39 by lzipp            ###   ########.fr        #
+#    Updated: 2024/02/23 21:10:10 by cgerling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,6 +16,7 @@ CC := cc
 CFLAGS := -Wextra -Wall -Werror
 LDFLAGS := -lreadline
 
+OBJDIR = ./obj
 SOURCES := $(addprefix src/, \
 abstract_syntax_tree/build_a_s_t.c \
 builtin_cmds/cd.c \
@@ -40,7 +41,7 @@ parsing/split.c \
 signals/signal_handler.c \
 main.c)
 
-OBJECTS := $(SOURCES:.c=.o)
+OBJECTS := $(addprefix $(OBJDIR)/, $(SOURCES:.c=.o))
 
 LIBFT := lib/libft
 
@@ -50,17 +51,18 @@ $(NAME): $(OBJECTS)
 	make -C $(LIBFT)
 	$(CC) $(CFLAGS) $(OBJECTS) $(LDFLAGS) -o $(NAME) -L $(LIBFT) -lft
 
+$(OBJDIR)/%.o: %.c
+	@mkdir -p $(@D)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
 clean:
 	make -C $(LIBFT) clean
-	rm -f $(OBJECTS)
-	
+	rm -rf $(OBJDIR)
+
 fclean: clean
 	make -C $(LIBFT) fclean
 	rm -f $(NAME)
 
 re: fclean all
-
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
 
 .PHONY: all clean fclean re
