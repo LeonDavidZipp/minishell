@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:34:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:30:29 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,26 @@ void	lexer(t_app_data *app_data)
 	// 1. first validate input (according to braces, quotes, etc.)
 	if (check_input(app_data->input) == 1)
 		free_for_next_call(app_data);
-	// 2. then tokenize
-
+	// 2. then tokenize & ...
+	// 3. expand where needed
 	tokens = tokenize(app_data);
 	if (!tokens)
 	{
 		printf("%s", LEXER_ERR);
 		free_for_next_call(app_data);
 	}
-	t_token	*tmp = tokens;
-	printf("tokens:\n");
-	while (tmp)
+	while (tokens)
 	{
-		printf("content: %s, type: %d\n", tmp->content, tmp->type);
-		tmp = tmp->next;
+		printf("content: %s, type: %d\n", tokens->content, tokens->type);
+		tokens = tokens->next;
 	}
-	// 3. expand where needed
+	// t_token	*tmp = tokens;
+	// printf("tokens:\n");
+	// while (tmp)
+	// {
+	// 	printf("content: %s, type: %d\n", tmp->content, tmp->type);
+	// 	tmp = tmp->next;
+	// }
 
 	// 4. write to linked list including type of token
 	// 5. to binary tree (maybe together with step 4)

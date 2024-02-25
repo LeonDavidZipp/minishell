@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:34:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:32:54 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static t_token	*new_token(char *content, t_app_data *app)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->content = temp;
+	token->content = ft_strdup(temp);
 	token->type = determine_token_type(content);
 	token->next = NULL;
 	free(temp);
@@ -112,8 +112,6 @@ static t_tokentype	determine_token_type(char *content)
 
 static t_tokentype	determine_token_type_2(char *content)
 {
-	printf("echo vs |%s|\n", content);
-	printf("strcmp: %d\n", ft_strcmp(content, "echo"));
 	if (ft_strcmp(content, "echo") == 0)
 		return (BUILTIN_CMD);
 	else if (ft_strcmp(content, "cd") == 0)
