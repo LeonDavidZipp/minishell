@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
+#    By: intra <intra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/23 21:10:10 by cgerling         ###   ########.fr        #
+#    Updated: 2024/02/25 14:56:11 by intra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ parsing/split.c \
 signals/signal_handler.c \
 main.c)
 
+OBJDIR = ./obj
 OBJECTS := $(addprefix $(OBJDIR)/, $(SOURCES:.c=.o))
 
 LIBFT := lib/libft

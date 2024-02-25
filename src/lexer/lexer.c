@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:30:29 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 15:04:02 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,25 @@ void	lexer(t_app_data *app_data)
 		printf("%s", LEXER_ERR);
 		free_for_next_call(app_data);
 	}
-	while (tokens)
+	t_token	*tmp = tokens;
+	printf("tokens:\n");
+	while (tmp)
 	{
-		printf("content: %s, type: %d\n", tokens->content, tokens->type);
-		tokens = tokens->next;
+		printf("content: %s, type: %d\n", tmp->content, tmp->type);
+		tmp = tmp->next;
 	}
-	// t_token	*tmp = tokens;
-	// printf("tokens:\n");
-	// while (tmp)
-	// {
-	// 	printf("content: %s, type: %d\n", tmp->content, tmp->type);
-	// 	tmp = tmp->next;
-	// }
 
 	// 4. write to linked list including type of token
 	// 5. to binary tree (maybe together with step 4)
 	// 6. execute
 	// 7. free memory
+	free_for_next_call(app_data);
 }
 
 static void	free_for_next_call(t_app_data *app_data)
 {
 	(void)app_data;
-	// free(app_data->input);
-	// app_data->input = NULL;
+	free(app_data->input);
+	free_tokens(app_data->tokens);
+	app_data->input = NULL;
 }

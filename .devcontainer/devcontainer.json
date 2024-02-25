@@ -46,7 +46,7 @@
 	// "forwardPorts": [],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "echo 'Container created. Happy coding!'"
+	"postCreateCommand": "echo Happy coding!"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 13:58:23 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 15:03:18 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ typedef struct s_app_data
 	t_env_var	*env_vars;
 	int			last_exit_code;
 	char		*input;
+	t_token		*tokens;
 }			t_app_data;
 
 // signal handling
@@ -129,6 +130,7 @@ void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
+void		free_tokens(t_token *token);
 
 // lexer
 void		lexer(t_app_data *app_data);
