@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 20:41:05 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 20:44:30 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ static t_token	*join_arg_tokens(t_token *tokens)
 	t_token		*join;
 
 	first = tokens;
-	join = NULL;
 	prev = NULL;
+	join = NULL;
 	while (tokens)
 	{
 		if (tokens->type == ARG)
