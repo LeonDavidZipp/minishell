@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_a_s_t.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 19:00:54 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 21:17:14 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,54 +44,48 @@ static t_treenode	*new_node(t_token *token)
 	return (node);
 }
 
-// static void	debug_print_tabs(int tabs)
-// {
-// 	while (tabs--)
-// 		printf("\t");
-// }
+static void	debug_print_tabs(int tabs)
+{
+	while (tabs--)
+		printf("\t");
+}
 
-// static void	debug_printtree(t_treenode *root, int tabs)
-// {
-// 	if (root)
-// 	{
-// 		debug_print_tabs(tabs);
-// 		printf("content: %s, type: %d\n", root->content, root->type);
-// 		debug_print_tabs(tabs);
-// 		printf("left:\n");
-// 		debug_printtree(root->left, tabs + 1);
-// 		debug_print_tabs(tabs);
-// 		printf("right:\n");
-// 		debug_printtree(root->right, tabs + 1);
-// 	}
-// 	else
-// 	{
-// 		debug_print_tabs(tabs);
-// 		printf("--is empty--\n");
-// 	}
-// }
+static void	debug_printtree(t_treenode *root, int tabs)
+{
+	if (root)
+	{
+		debug_print_tabs(tabs);
+		printf("content: %s, type: %d\n", root->content, root->type);
+		debug_print_tabs(tabs);
+		printf("left:\n");
+		debug_printtree(root->left, tabs + 1);
+		debug_print_tabs(tabs);
+		printf("right:\n");
+		debug_printtree(root->right, tabs + 1);
+	}
+	else
+	{
+		debug_print_tabs(tabs);
+		printf("--is empty--\n");
+	}
+}
 
-// int	main(void)
-// {
-// 	char			**input;
-// 	t_token			*tokens;
-// 	t_treenode		*ast;
+int	main(void)
+{
+	t_app_data		app;
+	t_token			*tokens;
+	t_treenode		*ast;
 
-// 	input = ft_calloc(7, sizeof(char *));
-// 	input[0] = ft_strdup("echo");
-// 	input[1] = ft_strdup("hello");
-// 	input[2] = ft_strdup("world");
-// 	input[3] = ft_strdup("&&");
-// 	input[4] = ft_strdup("ls");
-// 	input[5] = ft_strdup("-la");
-// 	tokens = tokenize(input);
-// 	printf("tokens:\n");
-// 	t_token	*temp = tokens;
-// 	while (temp)
-// 	{
-// 		printf("content: %s - type: %d\n", temp->content, temp->type);
-// 		temp = temp->next;
-// 	}
-// 	printf("------------------------\n");
-// 	ast = build_a_s_t(tokens, 0);
-// 	debug_printtree(ast, 0);
-// }
+	app.input = ft_strdup("command1 | command 2");
+	tokens = tokenize(&app);
+	printf("tokens:\n");
+	t_token	*temp = tokens;
+	while (temp)
+	{
+		printf("content: %s - type: %d\n", temp->content, temp->type);
+		temp = temp->next;
+	}
+	printf("------------------------\n");
+	ast = build_a_s_t(tokens, 0);
+	debug_printtree(ast, 0);
+}
