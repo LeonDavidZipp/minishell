@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:28:03 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:34:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_token		*new_token(char *content, t_app_data *app);
 static t_tokentype	determine_token_type(char *content);
 static t_tokentype	determine_token_type_2(char *content);
 
-t_token	*tokenize(char *input, t_app_data *app)
+t_token	*tokenize(t_app_data *app)
 {
 	char			**token_contents;
 	t_token			*token;
@@ -24,7 +24,7 @@ t_token	*tokenize(char *input, t_app_data *app)
 	t_token			*first;
 	int				i;
 
-	token_contents = split(input);
+	token_contents = split(app->input);
 	if (!token_contents)
 		return (NULL);
 	first = NULL;

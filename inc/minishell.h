@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 14:29:30 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:35:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
 				bool *in_bracket);
 
 // tokenization
-t_token		*tokenize(char *input, t_app_data *app);
+t_token		*tokenize(t_app_data *app);
 
 // lexer
 void		lexer(t_app_data *app_data);

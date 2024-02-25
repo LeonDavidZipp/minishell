@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 19:16:32 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:34:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	lexer(t_app_data *app_data)
 		free_for_next_call(app_data);
 	// 2. then tokenize
 
-	tokens = tokenize(app_data->input);
+	tokens = tokenize(app_data);
 	if (!tokens)
 	{
 		printf("%s", LEXER_ERR);
