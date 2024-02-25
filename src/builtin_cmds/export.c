@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 18:11:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 18:58:50 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	builtin_export(t_env_var **env_vars, char *var_string)
 				printf("declare -x %s\n", (*env_vars)->key);
 			env_vars++;
 		}
+		return ;
 	}
 	temp = split_envp(var_string);
 	if (!temp)

@@ -8,6 +8,7 @@
 all :
 	gcc -Wall -Werror -Wextra \
 	tokenize.c \
+	token_type.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
 	../../lib/libft/src/ft_strcmp.c \
@@ -20,6 +21,8 @@ all :
 	../../lib/libft/src/ft_numlens.c \
 	../../lib/libft/src/ft_isalnum.c \
 	../../lib/libft/src/ft_itoa.c \
+	../../lib/libft/src/ft_strtrim.c \
+	../../lib/libft/src/ft_strjoin.c \
 	../parsing/split.c \
 	../parsing/split_helpers.c \
 	../parsing/split_helpers2.c \

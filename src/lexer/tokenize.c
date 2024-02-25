@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 17:25:07 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 20:35:39 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static t_token		*new_token(char *content, t_app_data *app);
 static t_token		*join_arg_tokens(t_token *tokens);
+static void			join_tokens(t_token **join, t_token **prev,
+						t_token **tokens);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -87,38 +89,56 @@ static t_token	*join_arg_tokens(t_token *tokens)
 {
 	t_token		*first;
 	t_token		*prev;
-	t_token		*join_to;
+	t_token		*join;
 
 	first = tokens;
-	join_to = NULL;
+	join = NULL;
+	prev = NULL;
 	while (tokens)
 	{
-		if (!join_to && tokens->type == ARG)
-			join_to = tokens;
-		else if (join_to && tokens->type == ARG)
+		if (tokens->type == ARG)
+			join_tokens(&join, &prev, &tokens);
+		else if (tokens->type != ARG)
 		{
-			join_to->content = ft_join_in_place(join_to->content, " ");
-			join_to->content = ft_join_in_place(join_to->content, tokens->content);
-			join_to->next = tokens->next;
-
-			free(tokens->content);
-			free(tokens);
+			join = NULL;
+			prev = tokens;
+			tokens = tokens->next;
 		}
-		if (!prev)
-			first = tokens;
-		else
+		if (prev)
 			prev->next = tokens;
-		prev = tokens;
+		if (first == tokens && tokens->type == ARG)
+			first = join;
 	}
 	return (first);
 }
 
+static void	join_tokens(t_token **join, t_token **prev, t_token **tokens)
+{
+	if (*join)
+	{
+		(*join)->content = ft_join_in_place((*join)->content, " ");
+		(*join)->content = ft_join_in_place((*join)->content,
+				(*tokens)->content);
+		(*join)->next = (*tokens)->next;
+		free((*tokens)->content);
+		free(*tokens);
+		*tokens = (*join)->next;
+	}
+	else
+	{
+		*join = *tokens;
+		*prev = *tokens;
+		*tokens = (*tokens)->next;
+	}
+}
+
 // int main()
 // {
-// 	char	*input = ft_strdup("echo hi");
+// 	char	*input = ft_strdup("echo hi hello u geylord");
 // 	t_token	*tokens;
-
-// 	tokens = tokenize(input);
+// 	t_app_data app;
+// 	app.input = input;
+// 	tokens = tokenize(&app);
 // 	t_token	*temp = tokens;
 // 	int i = 0;
 // 	while (temp)
@@ -128,6 +148,7 @@ static t_token	*join_arg_tokens(t_token *tokens)
 // 		temp = temp->next;
 // 	}
 // 	printf("done\n");
-// 	// free_tokens(tokens);
+// 	free_tokens(tokens);
+// 	free(input);
 // 	return (0);
 // }
