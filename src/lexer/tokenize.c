@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 20:21:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:26:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_token		*new_token(char *content);
 static t_tokentype	determine_token_type(char *content);
 static t_tokentype	determine_token_type_2(char *content);
 
-t_token	*tokenize(char *input)
+t_token	*tokenize(char *input, t_app_data *app)
 {
 	char			**token_contents;
 	t_token			*token;
@@ -32,7 +32,7 @@ t_token	*tokenize(char *input)
 	i = -1;
 	while (token_contents[++i])
 	{
-		token = new_token(token_contents[i]);
+		token = new_token(token_contents[i], app);
 		if (!prev)
 			first = token;
 		else
@@ -56,16 +56,29 @@ void	free_tokens(t_token *token)
 	}
 }
 
-static t_token	*new_token(char *content)
+static t_token	*new_token(char *content, t_app_data *app)
 {
 	t_token		*token;
+	char		*temp;
 
+	if (content[0] == '\'')
+		temp = ft_substr(content, 1, ft_strlen(content) - 2);
+	else if (content[0] == '\"')
+	{
+		temp = in_string_expansion(content, app);
+		temp = ft_trim_in_place(temp, "\"");
+	}
+	else
+		temp = ft_strdup(content);
+	if (!temp)
+		return (NULL);
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->content = ft_strdup(content);
+	token->content = temp;
 	token->type = determine_token_type(content);
 	token->next = NULL;
+	free(temp);
 	return (token);
 }
 

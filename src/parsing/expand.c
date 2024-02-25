@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 18:28:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/25 14:08:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ char	*in_string_expansion(char *input, t_app_data *app)
 	i[1] = 0;
 	size = get_new_size(input, app->last_exit_code);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
-	printf("%d\n", get_new_size(input, app->last_exit_code));
 	if (!output)
 		return (NULL);
 	while (input[i[0]])
