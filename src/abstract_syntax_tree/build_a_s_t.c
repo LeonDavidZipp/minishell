@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 21:17:14 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 21:50:48 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static t_treenode	*new_node(t_token *token)
 	node = (t_treenode *)malloc(sizeof(t_treenode));
 	if (!node)
 		return (NULL);
-	node->content = ft_strdup(token->content);
+	node->command = ft_strdup(token->content);
 	node->type = token->type;
 	node->left = NULL;
 	node->right = NULL;
