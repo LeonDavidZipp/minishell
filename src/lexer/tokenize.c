@@ -6,13 +6,14 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 15:46:45 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/25 17:25:07 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static t_token		*new_token(char *content, t_app_data *app);
+static t_token		*join_arg_tokens(t_token *tokens);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -38,7 +39,7 @@ t_token	*tokenize(t_app_data *app)
 		prev = token;
 	}
 	ft_free_2d_arr((void **)token_contents);
-	return (first);
+	return (join_arg_tokens(first));
 }
 
 void	free_tokens(t_token *token)
@@ -76,40 +77,40 @@ static t_token	*new_token(char *content, t_app_data *app)
 	if (!token)
 		return (NULL);
 	token->content = ft_strdup(temp);
-	token->type = token_type(content);
+	token->type = token_type(token->content);
 	token->next = NULL;
 	free(temp);
 	return (token);
 }
 
-static char	**join_tokens(char **contents)
+static t_token	*join_arg_tokens(t_token *tokens)
 {
-	char	**new_contents;
-	char	*temp;
-	int		i;
-	int		j;
+	t_token		*first;
+	t_token		*prev;
+	t_token		*join_to;
 
-	i = -1;
-	j = -1;
-	new_contents = ft_calloc(ft_null_terminated_arr_len((void **)contents) + 1,
-			sizeof(char *));
-	while (contents[++i])
+	first = tokens;
+	join_to = NULL;
+	while (tokens)
 	{
-		if (ft_strcmp(contents[i], "echo") == 0)
+		if (!join_to && tokens->type == ARG)
+			join_to = tokens;
+		else if (join_to && tokens->type == ARG)
 		{
-			i++;
-			if (contents[i] && ft_strcmp(contents[i], "-n") == 0)
-				i++;
-			while (contents[i] && token_type(contents[i]) == ARG)
-			{
-				temp = ft_strjoin(new_contents[j], contents[i]);
-				free(new_contents[j]);
-				new_contents[j] = temp;
-				i++;
-			}
+			join_to->content = ft_join_in_place(join_to->content, " ");
+			join_to->content = ft_join_in_place(join_to->content, tokens->content);
+			join_to->next = tokens->next;
+
+			free(tokens->content);
+			free(tokens);
 		}
+		if (!prev)
+			first = tokens;
+		else
+			prev->next = tokens;
+		prev = tokens;
 	}
-	return(contents);
+	return (first);
 }
 
 // int main()
