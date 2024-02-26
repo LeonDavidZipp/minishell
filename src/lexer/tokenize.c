@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 20:49:33 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/26 12:08:32 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static t_token		*join_arg_tokens(t_token *tokens);
 t_token	*tokenize(t_app_data *app)
 {
 	char			**token_contents;
-	t_token			*token;
+	t_token			*current;
 	t_token			*prev;
 	t_token			*first;
 	int				i;
@@ -33,12 +33,12 @@ t_token	*tokenize(t_app_data *app)
 	i = -1;
 	while (token_contents[++i])
 	{
-		token = new_token(token_contents[i], app);
+		current = new_token(token_contents[i], app);
 		if (!prev)
-			first = token;
+			first = current;
 		else
-			prev->next = token;
-		prev = token;
+			prev->next = current;
+		prev = current;
 	}
 	ft_free_2d_arr((void **)token_contents);
 	return (join_arg_tokens(first));
@@ -96,7 +96,8 @@ static t_token	*join_arg_tokens(t_token *tokens)
 	join = NULL;
 	while (tokens)
 	{
-		if (tokens->type == ARG || tokens->type == FLAG)
+		if (tokens->type == ARG || tokens->type == FLAG
+			|| tokens->type == )
 			join_tokens(&join, &prev, &tokens);
 		else if (tokens->type != ARG)
 		{
