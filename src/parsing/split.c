@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/26 18:46:27 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 10:52:52 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	count_tokens(char *input)
 int	condition(char *input, int *count, bool *flags, bool was_flag)
 {
 	if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[count[1]]))
-		&& (count[1] > 0 || (is_space(input[count[1] - 1])
+		&& (count[1] == 0 || (is_space(input[count[1] - 1])
 				|| input[count[1] - 1] == '\'' || input[count[1] - 1] == '"'
 				|| input[count[1] - 1] == '(' || was_flag
 				|| (ft_isprint(input[count[1] - 1]) && (input[count[1]] == '\''
@@ -119,7 +119,7 @@ char	**split(char *input)
 // int main()
 // {
 // 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
-// 	// char **str = split("echo hi was");
+// 	// char **str = split("echo hi");
 // 	for (int i = 0; str[i]; i++)
 // 	{
 // 		printf("%s\n", str[i]);
