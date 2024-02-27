@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/26 09:46:22 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:43:12 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,10 @@ void	lexer(t_app_data *app_data)
 		free_for_next_call(app_data);
 	}
 	t_token	*tmp = tokens;
-	int i = 0;
 	while (tmp)
 	{
 		printf("content: %s\ntype: %d\n-------\n", tmp->content, tmp->type);
 		tmp = tmp->next;
-		i++;
-		if (i >= 2)
-			break ;
 	}
 	// 4. write to linked list including type of token
 	// 5. to binary tree (maybe together with step 4)

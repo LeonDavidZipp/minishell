@@ -8,6 +8,7 @@
 all :
 	gcc -Wall -Werror -Wextra \
 	tokenize.c \
+	tokenize_helpers.c \
 	token_type.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
