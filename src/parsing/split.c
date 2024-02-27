@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/26 15:00:47 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:13:51 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	count_tokens(char *input)
 int	condition(char *input, int *count, bool *flags, bool was_flag)
 {
 	if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[count[1]]))
-		&& (count[1] > 0 || (is_space(input[count[1] - 1])
+		&& (count[1] == 0 || (is_space(input[count[1] - 1])
 				|| input[count[1] - 1] == '\'' || input[count[1] - 1] == '"'
 				|| input[count[1] - 1] == '(' || was_flag
 				|| (ft_isprint(input[count[1] - 1]) && (input[count[1]] == '\''
@@ -116,18 +116,18 @@ char	**split(char *input)
 	return (tokens);
 }
 
-int main()
-{
-	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
-	// char **str = split("echo hi was");
-	for (int i = 0; str[i]; i++)
-	{
-		printf("%s\n", str[i]);
-	}
-	for (int i = 0; str[i]; i++)
-	{
-		free(str[i]);
-	}
-	free(str);
-	return 0;
-}
+// int main()
+// {
+// 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
+// 	// char **str = split("echo hi");
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		printf("%s\n", str[i]);
+// 	}
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		free(str[i]);
+// 	}
+// 	free(str);
+// 	return 0;
+// }
