@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_simple.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:59:08 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 18:27:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/27 18:20:28 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,38 +48,14 @@ char	*expand_var(char *input)
 	return (NULL);
 }
 
-int	size(char *input)
+char	*expand_wildcard(char *input)
 {
 	DIR				*dir;
 	struct dirent	*entry;
-	int				i;
+	char			*output;
+	char			*temp;
 
-	i = 0;
-	dir = opendir(".");
-	if (dir == NULL)
-		return (0);
-	entry = readdir(dir);
-	while (entry != NULL)
-	{
-		if (match(input, entry->d_name))
-			i++;
-		entry = readdir(dir);
-	}
-	closedir(dir);
-	return (i);
-}
-
-char	**expand_wildcard(char *input)
-{
-	DIR				*dir;
-	struct dirent	*entry;
-	char			**output;
-	int				i;
-
-	i = 0;
-	output = (char **)ft_calloc((size(input) + 1), sizeof(char *));
-	if (!output)
-		return (NULL);
+	output = NULL;
 	dir = opendir(".");
 	if (dir == NULL)
 		return (NULL);
@@ -87,19 +63,28 @@ char	**expand_wildcard(char *input)
 	while (entry != NULL)
 	{
 		if (match(input, entry->d_name))
-			output[i++] = ft_strdup(entry->d_name);
+		{
+			if (output)
+			{
+				temp = ft_strjoin(output, " ");
+				free(output);
+				output = ft_strjoin(temp, entry->d_name);
+				free(temp);
+			}
+			else
+			{
+				output = ft_strdup(entry->d_name);
+			}
+		}
 		entry = readdir(dir);
 	}
-	if (i == 0)
-		return (free(output), NULL);
-	output[i] = NULL;
 	closedir(dir);
 	return (output);
 }
 
-// int	main(int argc, char **argv, char **envp)
+// int	main(void)
 // {
-// 	char	*input = "*";
+// 	char	*input = "e*.c";
 // 	int		i = 0;
 // 	if (input[i] == '$' && input[i + 1] == '?')
 // 	{
@@ -109,7 +94,7 @@ char	**expand_wildcard(char *input)
 // 	}
 // 	else if (input[i] == '$')
 // 	{
-// 		char *output = expand_var(input, envp);
+// 		char *output = expand_var(input);
 // 		if (output)
 // 		{
 // 			printf("%s\n", output);
@@ -118,16 +103,10 @@ char	**expand_wildcard(char *input)
 // 	}
 // 	else
 // 	{
-// 		char **output = expand_wildcard(input);
+// 		char *output = expand_wildcard(input);
 // 		if (!output)
 // 			return (1);
-// 		int j = 0;
-// 		while (output[j])
-// 		{
-// 			printf("%s\n", output[j]);
-// 			free(output[j]);
-// 			j++;
-// 		}
+// 		printf("%s\n", output);
 // 		free(output);
 // 	}
 // 	return (0);
