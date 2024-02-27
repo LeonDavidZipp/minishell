@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/26 12:08:32 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 09:31:47 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,11 @@ t_token	*tokenize(t_app_data *app)
 	int				i;
 
 	token_contents = split(app->input);
+	i = -1;
+	while (token_contents[++i])
+	{
+		printf("token_contents[%d]: %s\n", i, token_contents[i]);
+	}
 	if (!token_contents)
 		return (NULL);
 	first = NULL;
@@ -43,6 +48,45 @@ t_token	*tokenize(t_app_data *app)
 	ft_free_2d_arr((void **)token_contents);
 	return (join_arg_tokens(first));
 }
+
+// char	**rejoin_tokens(char **tokens)
+// {
+// 	int		i;
+// 	int		j;
+// 	int		echo_flag;
+// 	char	**result;
+// 	char	*join_to;
+
+// 	echo_flag = 0;
+// 	result = ft_calloc(1, sizeof(char *));
+// 	join_to = NULL;
+// 	j = -1;
+// 	while (tokens[++j])
+// 	{
+// 		if (echo_flag == 0 && ft_strcmp(tokens[j],"echo") == 0)
+// 			echo_flag = 1;
+// 		else if (echo_flag == 1 && token_type(tokens[j]) == BUILTIN_CMD)
+// 			echo_flag = 0;
+// 		if (echo_flag == 1 && !join_to)
+// 		{
+// 			join_to = ft_strdup(tokens[j]);
+// 			continue ;
+// 		}
+// 		else if (echo_flag == 1)
+// 		{
+// 			join_to = ft_join_in_place(join_to, " ");
+// 			join_to = ft_join_in_place(join_to, tokens[j]);
+// 		}
+// 		else if (join_to)
+// 		{
+// 			result = ft_realloc_2d_arr(result, join_to);
+// 			free(join_to);
+// 			join_to = NULL;
+// 		}
+// 		else
+// 			result = ft_realloc_2d_arr(result, tokens[j]);
+// 	}
+// }
 
 void	free_tokens(t_token *token)
 {
@@ -96,8 +140,7 @@ static t_token	*join_arg_tokens(t_token *tokens)
 	join = NULL;
 	while (tokens)
 	{
-		if (tokens->type == ARG || tokens->type == FLAG
-			|| tokens->type == )
+		if (tokens->type == ARG || tokens->type == FLAG)
 			join_tokens(&join, &prev, &tokens);
 		else if (tokens->type != ARG)
 		{

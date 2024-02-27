@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/26 15:00:47 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/26 18:46:27 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,18 +116,18 @@ char	**split(char *input)
 	return (tokens);
 }
 
-int main()
-{
-	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
-	// char **str = split("echo hi was");
-	for (int i = 0; str[i]; i++)
-	{
-		printf("%s\n", str[i]);
-	}
-	for (int i = 0; str[i]; i++)
-	{
-		free(str[i]);
-	}
-	free(str);
-	return 0;
-}
+// int main()
+// {
+// 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
+// 	// char **str = split("echo hi was");
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		printf("%s\n", str[i]);
+// 	}
+// 	for (int i = 0; str[i]; i++)
+// 	{
+// 		free(str[i]);
+// 	}
+// 	free(str);
+// 	return 0;
+// }

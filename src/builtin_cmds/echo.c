@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/26 12:17:28 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 09:27:37 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,3 +27,15 @@ void	builtin_echo(char *str)
 	else
 		printf("%s\n", str);
 }
+
+// int	main(int argc, char **argv)
+// {
+// 	// int	i;
+
+// 	// i = 1;
+// 	if (argc == 1)
+// 		printf("\n");
+// 	else
+// 		builtin_echo(argv[2]);
+// 	return (0);
+// }
