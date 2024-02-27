@@ -6,43 +6,43 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/26 09:31:54 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:58:49 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_treenode	*new_node(t_token *token);
+// static t_treenode	*new_node(t_token *token);
 
-t_treenode	*build_a_s_t(t_token *tokens, int *depth)
-{
-	t_treenode	*root;
+// t_treenode	*build_a_s_t(t_token *tokens, int *depth)
+// {
+// 	t_treenode	*root;
 
-	if (tokens == NULL)
-		return (NULL);
-	root = new_node(tokens);
-	if (tokens->next != NULL)
-	{
-		root->left = build_a_s_t(tokens->next, depth + 1);
-		if (tokens->next->next != NULL)
-			root->right = build_a_s_t(tokens->next->next, depth + 1);
-	}
-	return (root);
-}
+// 	if (tokens == NULL)
+// 		return (NULL);
+// 	root = new_node(tokens);
+// 	if (tokens->next != NULL)
+// 	{
+// 		root->left = build_a_s_t(tokens->next, depth + 1);
+// 		if (tokens->next->next != NULL)
+// 			root->right = build_a_s_t(tokens->next->next, depth + 1);
+// 	}
+// 	return (root);
+// }
 
-static t_treenode	*new_node(t_token *token)
-{
-	t_treenode	*node;
+// static t_treenode	*new_treenode(t_token *token)
+// {
+// 	t_treenode	*node;
 
-	node = (t_treenode *)malloc(sizeof(t_treenode));
-	if (!node)
-		return (NULL);
-	node->command = ft_strdup(token->content);
-	node->type = token->type;
-	node->left = NULL;
-	node->right = NULL;
-	return (node);
-}
+// 	node = (t_treenode *)malloc(sizeof(t_treenode));
+// 	if (!node)
+// 		return (NULL);
+// 	node->command = ft_strdup(token->content);
+// 	node-> = token->type;
+// 	node->left = NULL;
+// 	node->right = NULL;
+// 	return (node);
+// }
 
 // static void	debug_print_tabs(int tabs)
 // {

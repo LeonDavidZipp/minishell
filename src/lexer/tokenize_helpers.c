@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/27 17:45:20 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 18:16:16 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ t_token	*join_arg_tokens(t_token *tokens)
 	join = NULL;
 	while (tokens)
 	{
-		if (tokens->type == ARG || tokens->type == FLAG)
+		if (tokens->type == ARG)
 			join_tokens_helper(&join, &prev, &tokens);
-		else if (tokens->type != ARG && tokens->type != FLAG)
+		else if (tokens->type != ARG)
 		{
 			join = NULL;
 			prev = tokens;

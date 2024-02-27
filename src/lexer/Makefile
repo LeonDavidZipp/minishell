@@ -7,6 +7,7 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
+	join_tokens.c \
 	tokenize.c \
 	tokenize_helpers.c \
 	token_type.c \

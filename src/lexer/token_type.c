@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by intra             #+#    #+#             */
-/*   Updated: 2024/02/27 11:34:41 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 18:22:49 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,6 @@ t_tokentype	token_type(char *content)
 {
 	if (ft_strcmp(content, "|") == 0)
 		return (PIPE);
-	// else if (ft_strcmp(content, "'") == 0)
-	// 	return (SINGLE_QUOTE);
-	// else if (ft_strcmp(content, "\"") == 0)
-	// 	return (DOUBLE_QUOTE);
 	else if (ft_strcmp(content, "&&") == 0)
 		return (AND);
 	else if (ft_strcmp(content, "||") == 0)
@@ -36,8 +32,6 @@ t_tokentype	token_type(char *content)
 		return (REDIR_IN);
 	else if (ft_strcmp(content, "<<") == 0)
 		return (HEREDOC);
-	else if (content && content[0] == '-')
-		return (FLAG);
 	else
 		return (token_type_2(content));
 }
@@ -60,9 +54,9 @@ static t_tokentype	token_type_2(char *content)
 		return (BUILTIN_CMD);
 	else
 	{
-		if (access(content, X_OK) != -1)
-			return (OTHER_CMD);
-		else
+		if (access(content, X_OK) == -1 || ft_strcmp(content, "..") == 0 || ft_strcmp(content, ".") == 0)
 			return (ARG);
+		else
+			return (OTHER_CMD);
 	}
 }
