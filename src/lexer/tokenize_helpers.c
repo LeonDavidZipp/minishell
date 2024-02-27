@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/27 17:40:59 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:45:20 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,14 @@ t_token	*join_arg_tokens(t_token *tokens)
 	join = NULL;
 	while (tokens)
 	{
-		// printf("should i join? %s\n", tokens->content);
 		if (tokens->type == ARG || tokens->type == FLAG)
 			join_tokens_helper(&join, &prev, &tokens);
 		else if (tokens->type != ARG && tokens->type != FLAG)
 		{
-			// printf("not joining: %s\n", tokens->content);
 			join = NULL;
-			// printf("setting join to NULL\n");
 			prev = tokens;
-			// printf("prev value: %s\n", prev->content);
 			prev->next = tokens->next;
-			// printf("prev next value: %s\n", prev->next->content);
 			tokens = tokens->next;
-			// printf("next value: %s\n", tokens->content);
 		}
 		if (first == tokens && tokens->type == ARG)
 			first = join;

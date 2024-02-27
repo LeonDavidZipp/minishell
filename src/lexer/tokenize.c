@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/27 17:40:04 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 17:48:34 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ t_token	*tokenize(t_app_data	*app)
 	first = join_after_echo(first);
 	return (first);
 	ft_free_2d_arr((void **)token_contents);
-	// return (join_arg_tokens(first));
 }
 
 void	free_tokens(t_token *token)
