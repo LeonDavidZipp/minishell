@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by intra             #+#    #+#             */
-/*   Updated: 2024/02/25 15:29:23 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 11:34:41 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ t_tokentype	token_type(char *content)
 {
 	if (ft_strcmp(content, "|") == 0)
 		return (PIPE);
-	else if (ft_strcmp(content, "'") == 0)
-		return (SINGLE_QUOTE);
-	else if (ft_strcmp(content, "\"") == 0)
-		return (DOUBLE_QUOTE);
+	// else if (ft_strcmp(content, "'") == 0)
+	// 	return (SINGLE_QUOTE);
+	// else if (ft_strcmp(content, "\"") == 0)
+	// 	return (DOUBLE_QUOTE);
 	else if (ft_strcmp(content, "&&") == 0)
 		return (AND);
 	else if (ft_strcmp(content, "||") == 0)

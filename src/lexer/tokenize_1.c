@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
+/*   tokenize_1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/27 09:31:47 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 11:51:57 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void			join_tokens(t_token **join, t_token **prev,
 						t_token **tokens);
 static t_token		*join_arg_tokens(t_token *tokens);
 
-t_token	*tokenize(t_app_data *app)
+t_token	*tokenize(t_app_data	*app)
 {
 	char			**token_contents;
 	t_token			*current;
@@ -28,9 +28,7 @@ t_token	*tokenize(t_app_data *app)
 	token_contents = split(app->input);
 	i = -1;
 	while (token_contents[++i])
-	{
 		printf("token_contents[%d]: %s\n", i, token_contents[i]);
-	}
 	if (!token_contents)
 		return (NULL);
 	first = NULL;
@@ -46,6 +44,7 @@ t_token	*tokenize(t_app_data *app)
 		prev = current;
 	}
 	ft_free_2d_arr((void **)token_contents);
+	// return (first);
 	return (join_arg_tokens(first));
 }
 

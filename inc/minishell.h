@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/25 21:26:22 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/27 11:33:55 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,8 @@
 typedef enum e_tokentype
 {
 	FLAG,
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
+	// SINGLE_QUOTE,
+	// DOUBLE_QUOTE,
 	PIPE,
 	AND,
 	OR,
