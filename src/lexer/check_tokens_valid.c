@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 11:43:45 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 13:55:16 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	check_nodes_valid(t_treenode *nodes)
 	temp = nodes->left;
 	while (temp->left)
 	{
-		type = token_type(temp->command);
+		type = token_type(temp->cmd);
 		if (type == ARG || type == WILDCARD)
 			return (false);
 		if ((type == PIPE || type == AND || type == OR)
@@ -39,13 +39,13 @@ bool	check_nodes_valid(t_treenode *nodes)
 
 static bool	check_first_last_node(t_treenode *node)
 {
-	if (token_type(node->command) == ARG
-		|| token_type(node->command) == OR
-		|| token_type(node->command) == AND
-		|| token_type(node->command) == PIPE
-		|| token_type(node->command) == REDIR_OUT
-		|| token_type(node->command) == REDIR_IN
-		|| token_type(node->command) == REDIR_APPEND
-		|| token_type(node->command) == HEREDOC)
+	if (token_type(node->cmd) == ARG
+		|| token_type(node->cmd) == OR
+		|| token_type(node->cmd) == AND
+		|| token_type(node->cmd) == PIPE
+		|| token_type(node->cmd) == REDIR_OUT
+		|| token_type(node->cmd) == REDIR_IN
+		|| token_type(node->cmd) == REDIR_APPEND
+		|| token_type(node->cmd) == HEREDOC)
 		return (false);
 }	

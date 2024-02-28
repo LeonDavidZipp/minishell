@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/27 18:15:36 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 13:55:29 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_token
 
 typedef struct s_treenode
 {
-	char				*command;
+	char				*cmd;
 	char				*args;
 	struct s_treenode	*left;
 	struct s_treenode	*right;

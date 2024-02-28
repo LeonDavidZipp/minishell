@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by intra             #+#    #+#             */
-/*   Updated: 2024/02/27 18:29:12 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 13:55:16 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_treenode	*new_treenode(t_token *token);
 
-t_treenode	*combine_tokens(t_token *tokens)
+t_treenode	*combine_cmds_args(t_token *tokens)
 {
 	t_token			*temp;
 	t_treenode		*current;
@@ -50,7 +50,7 @@ static t_treenode	*new_treenode(t_token *token)
 	node = (t_treenode *)malloc(sizeof(t_treenode));
 	if (!node)
 		return (NULL);
-	node->command = ft_strdup(token->content);
+	node->cmd = ft_strdup(token->content);
 	node->args = NULL;
 	node->left = NULL;
 	node->right = NULL;
@@ -68,7 +68,7 @@ int	main(void)
 	root = combine_tokens(tokens);
 	while (root)
 	{
-		printf("command: %s\n", root->command);
+		printf("command: %s\n", root->cmd);
 		printf("args: %s\n-------\n", root->args);
 		root = root->left;
 	}
