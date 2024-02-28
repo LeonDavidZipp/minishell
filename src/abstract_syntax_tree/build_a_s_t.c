@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 13:55:16 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 14:10:45 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,59 @@
 
 // static t_treenode	*new_node(t_token *token);
 
-// t_treenode	*build_a_s_t(t_token *tokens, int *depth)
-// {
-// 	t_treenode	*root;
+static bool	is_operator_2(char *cmd);
+static int	operator_precedence(char *cmd);
 
-// 	if (tokens == NULL)
-// 		return (NULL);
-// 	root = new_node(tokens);
-// 	if (tokens->next != NULL)
-// 	{
-// 		root->left = build_a_s_t(tokens->next, depth + 1);
-// 		if (tokens->next->next != NULL)
-// 			root->right = build_a_s_t(tokens->next->next, depth + 1);
-// 	}
-// 	return (root);
-// }
+t_treenode *create_node(char *cmd, char *args) {
+	t_treenode *node = malloc(sizeof(t_treenode));
+	node->cmd = cmd;
+	node->args = args;
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
 
+t_treenode *insert_node(t_treenode *root, char *cmd, char *args) {
+	// If the tree is empty, assign a new node address to root
+	if (root == NULL) {
+		return create_node(cmd, args);
+	}
+
+	// If the command is an operator and has higher precedence than the root
+	if (is_operator_2(cmd) && operator_precedence(cmd) > operator_precedence(root->cmd)) {
+		t_treenode *node = create_node(cmd, args);
+		node->left = root;
+		return node;
+	}
+
+	// Else, recursively insert the node into the right subtree
+	root->right = insert_node(root->right, cmd, args);
+	return root;
+	}
+
+static bool	is_operator_2(char *cmd)
+{
+	return (ft_strcmp(cmd, "|") == 0 || ft_strcmp(cmd, "||") == 0
+		|| ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, ">") == 0
+		|| ft_strcmp(cmd, ">>") == 0 || ft_strcmp(cmd, "<") == 0
+		|| ft_strcmp(cmd, "<<") == 0 || ft_strcmp(cmd, ";") == 0);
+}
+
+static int	operator_precedence(char *cmd)
+{
+	if (ft_strcmp(cmd, "|") == 0)
+		return 1;
+	if (ft_strcmp(cmd, "||") == 0)
+		return 2;
+	if (ft_strcmp(cmd, "&&") == 0)
+		return 3;
+	if (ft_strcmp(cmd, ">") == 0 || ft_strcmp(cmd, ">>") == 0
+		|| ft_strcmp(cmd, "<") == 0 || ft_strcmp(cmd, "<<") == 0)
+		return 4;
+	if (ft_strcmp(cmd, ";") == 0)
+		return 5;
+	return 0;
+}
 // static t_treenode	*new_treenode(t_token *token)
 // {
 // 	t_treenode	*node;
