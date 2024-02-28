@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 13:55:16 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 15:28:15 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ bool	check_nodes_valid(t_treenode *nodes)
 		if (type == ARG || type == WILDCARD)
 			return (false);
 		if ((type == PIPE || type == AND || type == OR)
-				&& temp->args != NULL)
+			&& temp->args != NULL)
 			return (false);
 		temp = temp->left;
 	}
@@ -48,4 +48,5 @@ static bool	check_first_last_node(t_treenode *node)
 		|| token_type(node->cmd) == REDIR_APPEND
 		|| token_type(node->cmd) == HEREDOC)
 		return (false);
-}	
+	return (true);
+}

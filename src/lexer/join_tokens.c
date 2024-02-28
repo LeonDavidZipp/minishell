@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 14:17:39 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 15:25:13 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,20 +57,20 @@ static t_treenode	*new_treenode(char *content)
 	return (node);
 }
 
-int	main(void)
-{
-	t_app_data	app;
-	t_token		*tokens;
-	t_treenode	*root;
+// int	main(void)
+// {
+// 	t_app_data	app;
+// 	t_token		*tokens;
+// 	t_treenode	*root;
 
-	app.input = ft_strdup("echo -n hello how are you && cd .. * .");
-	tokens = tokenize(&app);
-	root = combine_tokens(tokens);
-	while (root)
-	{
-		printf("command: %s\n", root->cmd);
-		printf("args: %s\n-------\n", root->args);
-		root = root->left;
-	}
-	return (0);
-}
+// 	app.input = ft_strdup("echo -n hello how are you && cd .. * .");
+// 	tokens = tokenize(&app);
+// 	root = combine_cmds_args(tokens);
+// 	while (root)
+// 	{
+// 		printf("command: %s\n", root->cmd);
+// 		printf("args: %s\n-------\n", root->args);
+// 		root = root->left;
+// 	}
+// 	return (0);
+// }

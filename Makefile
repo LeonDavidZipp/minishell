@@ -6,7 +6,7 @@
 #    By: intra <intra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/27 15:31:36 by intra            ###   ########.fr        #
+#    Updated: 2024/02/28 15:21:50 by intra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LDFLAGS := -lreadline
 
 OBJDIR = ./obj
 SOURCES := $(addprefix src/, \
-abstract_syntax_tree/build_a_s_t.c \
+abstract_syntax_tree/build_ast.c \
+abstract_syntax_tree/ast_helpers.c \
 builtin_cmds/cd.c \
 builtin_cmds/echo.c \
 builtin_cmds/env.c \
