@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 16:50:58 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:53:54 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static t_treenode	*insert_node(t_treenode *root, char *cmd, char *args)
 	// If the command is an operator and has higher precedence than the root
 	if (node_is_operator(cmd) && priority(cmd) > priority(root->cmd))
 	{
-		node = (new_treenode(cmd, args));
+		node = new_treenode(cmd, args);
 		node->left = root;
 		return (node);
 	}
