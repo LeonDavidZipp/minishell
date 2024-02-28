@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 20:35:34 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 20:55:34 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ bool	check_nodes_valid(t_treenode *nodes)
 	t_tokentype	type;
 
 	if (!check_first_node(nodes))
-		return (false);	
+		return (false);
 	temp = nodes->left;
 	while (temp->left)
 	{
