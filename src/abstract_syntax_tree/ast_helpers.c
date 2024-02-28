@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prioritize.c                                       :+:      :+:    :+:   */
+/*   a_s_t_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/25 15:10:14 by intra             #+#    #+#             */
-/*   Updated: 2024/02/25 15:19:38 by intra            ###   ########.fr       */
+/*   Created: 2024/02/28 14:18:00 by intra             #+#    #+#             */
+/*   Updated: 2024/02/28 14:19:11 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	prioritize(t_token *tokens, t_app_data *app_data)
+void	free_treenodes(t_treenode *node)
 {
-	// toke priorities are as follows:
-	(void)tokens;
-	(void)app_data;
+	if (node->left)
+		free_treenodes(node->left);
+	if (node->right)
+		free_treenodes(node->right);
+	free(node->cmd);
+	free(node->args);
+	free(node);
 }

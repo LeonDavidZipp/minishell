@@ -6,13 +6,13 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 13:55:16 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 14:17:39 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_treenode	*new_treenode(t_token *token);
+static t_treenode	*new_treenode(char *content);
 
 t_treenode	*combine_cmds_args(t_token *tokens)
 {
@@ -26,7 +26,7 @@ t_treenode	*combine_cmds_args(t_token *tokens)
 	prev = NULL;
 	while (temp)
 	{
-		current = new_treenode(temp);
+		current = new_treenode(temp->content);
 		if (temp->next && temp->next->type == ARG)
 		{
 			current->args = ft_strdup(temp->next->content);
@@ -43,14 +43,14 @@ t_treenode	*combine_cmds_args(t_token *tokens)
 	return (first);
 }
 
-static t_treenode	*new_treenode(t_token *token)
+static t_treenode	*new_treenode(char *content)
 {
 	t_treenode	*node;
 
 	node = (t_treenode *)malloc(sizeof(t_treenode));
 	if (!node)
 		return (NULL);
-	node->cmd = ft_strdup(token->content);
+	node->cmd = ft_strdup(content);
 	node->args = NULL;
 	node->left = NULL;
 	node->right = NULL;
