@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 15:25:13 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 18:54:43 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ t_treenode	*combine_cmds_args(t_token *tokens)
 		prev = current;
 		temp = temp->next;
 	}
-	free_tokens(tokens);
+	// free_tokens(tokens);
 	return (first);
 }
 

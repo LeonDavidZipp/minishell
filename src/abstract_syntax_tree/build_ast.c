@@ -6,28 +6,14 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 16:53:54 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 18:57:58 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool			node_is_operator(char *cmd);
-static int			priority(char *cmd);
 static t_treenode	*new_treenode(char *cmd, char *args);
 static t_treenode	*insert_node(t_treenode *root, char *cmd, char *args);
-
-static t_treenode	*new_treenode(char *cmd, char *args)
-{
-	t_treenode		*node;
-
-	node = malloc(sizeof(t_treenode));
-	node->cmd = ft_strdup(cmd);
-	node->args = ft_strdup(args);
-	node->left = NULL;
-	node->right = NULL;
-	return (node);
-}
 
 t_treenode	*build_ast(t_treenode *lin_tree)
 {
@@ -43,6 +29,29 @@ t_treenode	*build_ast(t_treenode *lin_tree)
 	}
 	free_treenodes(lin_tree);
 	return (ast);
+}
+
+static t_treenode	*new_treenode(char *cmd, char *args)
+{
+	t_treenode		*node;
+
+	node = malloc(sizeof(t_treenode));
+	node->cmd = ft_strdup(cmd);
+	node->args = ft_strdup(args);
+	node->left = NULL;
+	node->right = NULL;
+	return (node);
+}
+
+void	free_treenodes(t_treenode *node)
+{
+	if (node->left)
+		free_treenodes(node->left);
+	if (node->right)
+		free_treenodes(node->right);
+	free(node->cmd);
+	free(node->args);
+	free(node);
 }
 
 static t_treenode	*insert_node(t_treenode *root, char *cmd, char *args)
@@ -63,54 +72,6 @@ static t_treenode	*insert_node(t_treenode *root, char *cmd, char *args)
 	root->right = insert_node(root->right, cmd, args);
 	return (root);
 }
-
-static bool	node_is_operator(char *cmd)
-{
-	return (ft_strcmp(cmd, "|") == 0 || ft_strcmp(cmd, "||") == 0
-		|| ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, ">") == 0
-		|| ft_strcmp(cmd, ">>") == 0 || ft_strcmp(cmd, "<") == 0
-		|| ft_strcmp(cmd, "<<") == 0);
-}
-
-static int	priority(char *cmd)
-{
-	if (ft_strcmp(cmd, ">") == 0 || ft_strcmp(cmd, ">>") == 0
-		|| ft_strcmp(cmd, "<") == 0 || ft_strcmp(cmd, "<<") == 0)
-		return (1);
-	else if (ft_strcmp(cmd, "|") == 0)
-		return (2);
-	else if (ft_strcmp(cmd, "&&") == 0)
-		return (3);
-	else if (ft_strcmp(cmd, "||") == 0)
-		return (4);
-	return (0);
-}
-
-// static void	debug_print_tabs(int tabs)
-// {
-// 	while (tabs--)
-// 		printf("\t");
-// }
-
-// static void	debug_printtree(t_treenode *root, int tabs)
-// {
-// 	if (root)
-// 	{
-// 		debug_print_tabs(tabs);
-// 		printf("content: %s, args: %s\n", root->cmd, root->args);
-// 		debug_print_tabs(tabs);
-// 		printf("left:\n");
-// 		debug_printtree(root->left, tabs + 1);
-// 		debug_print_tabs(tabs);
-// 		printf("right:\n");
-// 		debug_printtree(root->right, tabs + 1);
-// 	}
-// 	else
-// 	{
-// 		debug_print_tabs(tabs);
-// 		printf("--is empty--\n");
-// 	}
-// }
 
 // int	main(void)
 // {

@@ -6,7 +6,7 @@
 #    By: intra <intra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/28 15:21:50 by intra            ###   ########.fr        #
+#    Updated: 2024/02/28 18:33:00 by intra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,11 +29,12 @@ builtin_cmds/pwd.c \
 builtin_cmds/unset.c \
 env_vars/env_vars.c \
 env_vars/init_environ.c \
+lexer/check_tokens_valid.c \
+lexer/join_tokens.c \
 lexer/lexer.c \
-lexer/order_tokens.c \
-lexer/tokenize.c \
-lexer/tokenize_helpers.c \
 lexer/token_type.c \
+lexer/tokenize_helpers.c \
+lexer/tokenize.c \
 other_cmds/utils.c \
 parsing/check_input.c \
 parsing/expand_helpers.c \
