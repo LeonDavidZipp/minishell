@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 16:48:31 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:50:58 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,8 @@ static int	priority(char *cmd)
 // 	t_treenode	*root;
 // 	t_treenode	*ast;
 
-// 	app.input = ft_strdup("echo -n hello how are you && cd .. || echo hi || echo hello u");
+// 	app.input = ft_strdup("echo -n hello how are you && cd .. 
+// || echo hi || echo hello u");
 // 	tokens = tokenize(&app);
 // 	root = combine_cmds_args(tokens);
 // 	ast = build_ast(root);
