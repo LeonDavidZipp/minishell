@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/27 17:48:34 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 11:14:13 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,14 @@ static t_token	*new_token(char *content, t_app_data *app)
 
 	if (content[0] == '\'')
 		temp = ft_substr(content, 1, ft_strlen(content) - 2);
-	else if (content[0] == '\"')
+	else if (content[0] == '\"' || content[0] == '$')
 	{
 		temp = in_string_expansion(content, app);
 		temp = ft_trim_in_place(temp, "\"");
 	}
-	else if (content[0] == '$')
-		temp = in_string_expansion(content, app);
 	else
-		temp = ft_strdup(content);
+		temp = in_string_expansion(content, app);
+		// temp = ft_strdup(content);
 	if (!temp)
 		return (NULL);
 	token = (t_token *)malloc(sizeof(t_token));
