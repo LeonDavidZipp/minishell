@@ -6,20 +6,20 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/28 18:51:58 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 20:35:34 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	check_first_last_node(t_treenode *node);
+static bool	check_first_node(t_treenode *node);
 
 bool	check_nodes_valid(t_treenode *nodes)
 {
 	t_treenode	*temp;
 	t_tokentype	type;
 
-	if (!check_first_last_node(nodes))
+	if (!check_first_node(nodes))
 		return (false);	
 	temp = nodes->left;
 	while (temp->left)
@@ -32,12 +32,10 @@ bool	check_nodes_valid(t_treenode *nodes)
 			return (false);
 		temp = temp->left;
 	}
-	if (!check_first_last_node(temp))
-		return (false);
 	return (true);
 }
 
-static bool	check_first_last_node(t_treenode *node)
+static bool	check_first_node(t_treenode *node)
 {
 	if (token_type(node->cmd) == ARG
 		|| token_type(node->cmd) == OR

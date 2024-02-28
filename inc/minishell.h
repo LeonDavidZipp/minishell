@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 18:57:12 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 20:34:33 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,6 +140,7 @@ t_treenode	*build_ast(t_treenode *lin_tree);
 t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
+bool		check_nodes_valid(t_treenode *nodes);
 bool		node_is_operator(char *cmd);
 int			priority(char *cmd);
 

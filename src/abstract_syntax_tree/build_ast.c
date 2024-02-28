@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 18:57:58 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 20:30:00 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_treenode	*build_ast(t_treenode *lin_tree)
 		ast = insert_node(ast, temp->cmd, temp->args);
 		temp = temp->left;
 	}
-	free_treenodes(lin_tree);
+	// free_treenodes(lin_tree);
 	return (ast);
 }
 
