@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 14:58:13 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/28 16:48:31 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@ static t_treenode	*new_treenode(char *cmd, char *args)
 	t_treenode		*node;
 
 	node = malloc(sizeof(t_treenode));
-	node->cmd = cmd;
-	node->args = args;
+	node->cmd = ft_strdup(cmd);
+	node->args = ft_strdup(args);
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
@@ -86,20 +86,6 @@ static int	priority(char *cmd)
 	return (0);
 }
 
-// static t_treenode	*new_treenode(t_token *token)
-// {
-// 	t_treenode	*node;
-
-// 	node = (t_treenode *)malloc(sizeof(t_treenode));
-// 	if (!node)
-// 		return (NULL);
-// 	node->cmd = ft_strdup(token->content);
-// 	node-> = token->type;
-// 	node->left = NULL;
-// 	node->right = NULL;
-// 	return (node);
-// }
-
 // static void	debug_print_tabs(int tabs)
 // {
 // 	while (tabs--)
@@ -111,7 +97,7 @@ static int	priority(char *cmd)
 // 	if (root)
 // 	{
 // 		debug_print_tabs(tabs);
-// 		printf("content: %s, type: %d\n", root->content, root->type);
+// 		printf("content: %s, args: %s\n", root->cmd, root->args);
 // 		debug_print_tabs(tabs);
 // 		printf("left:\n");
 // 		debug_printtree(root->left, tabs + 1);
@@ -126,16 +112,17 @@ static int	priority(char *cmd)
 // 	}
 // }
 
-int	main(void)
-{
-	t_app_data	app;
-	t_token		*tokens;
-	t_treenode	*root;
+// int	main(void)
+// {
+// 	t_app_data	app;
+// 	t_token		*tokens;
+// 	t_treenode	*root;
+// 	t_treenode	*ast;
 
-	app.input = ft_strdup("echo -n hello how are you && cd .. * .");
-	tokens = tokenize(&app);
-	root = combine_tokens(tokens);
-	root = build_ast(root);
-	// debug_printtree(root, 0);
-	return (0);
-}
+// 	app.input = ft_strdup("echo -n hello how are you && cd .. || echo hi || echo hello u");
+// 	tokens = tokenize(&app);
+// 	root = combine_cmds_args(tokens);
+// 	ast = build_ast(root);
+// 	debug_printtree(ast, 0);
+// 	return (0);
+// }
