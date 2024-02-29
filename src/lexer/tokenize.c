@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:09:51 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 16:26:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_token	*tokenize(t_app_data *app)
 		prev = current;
 	}
 	ft_free_2d_arr((void **)token_contents);
-	first = join_after_echo(first);
+	first = join_arg_tokens(first);
 	first = join_after_echo(first);
 	return (first);
 }
@@ -60,6 +60,7 @@ static t_token	*new_token(char *content, t_app_data *app)
 {
 	t_token		*token;
 	char		*temp;
+	char		*path;
 
 	// cut out as soon as charlotte is done
 	if (content[0] == '\'')
@@ -70,7 +71,6 @@ static t_token	*new_token(char *content, t_app_data *app)
 		temp = ft_trim_in_place(temp, "\"");
 	}
 	else
-		// temp = in_string_expansion(content, app);
 		temp = ft_strdup(content);
 	if (!temp)
 		return (NULL);
@@ -78,10 +78,12 @@ static t_token	*new_token(char *content, t_app_data *app)
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
+	path = get_path(app->env_vars);
 	token->content = ft_strdup(temp);
-	token->type = token_type(token->content);
+	token->type = token_type(token->content, path);
 	token->next = NULL;
 	free(temp);
+	free(path);
 	return (token);
 }
 

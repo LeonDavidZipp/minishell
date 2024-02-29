@@ -98,7 +98,7 @@ char	*get_path(t_env_var *env_vars)
 	while (temp)
 	{
 		if (ft_strcmp(temp->key, "PATH") == 0)
-			return (temp->value);
+			return (ft_strdup(temp->value));
 		temp = temp->next;
 	}
 	return (NULL);
