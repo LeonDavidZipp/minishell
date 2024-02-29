@@ -80,3 +80,30 @@ static void	update_links(t_env_var **first, t_env_var **prev,
 		(*prev)->next = env_var;
 	*prev = env_var;
 }
+
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_app_data	app_data;
+
+// 	(void)argc;
+// 	(void)argv;
+// 	app_data.env_vars = init_envp(envp);
+// 	while (app_data.env_vars)
+// 	{
+// 		printf("key: %s | value: %s\n", app_data.env_vars->key,
+// 			app_data.env_vars->value);
+// 		app_data.env_vars = app_data.env_vars->next;
+// 	}
+// 	if (!app_data.env_vars)
+// 		return (1);
+// 	// app_data.input = NULL;
+// 	// while (1)
+// 	// {
+// 	// 	printf("minishell$ ");
+// 	// 	get_next_line(0, &app_data.input);
+// 	// 	if (!app_data.input)
+// 	// 		break ;
+// 	// 	lexer(&app_data);
+// 	// }
+// 	return (0);
+// }
