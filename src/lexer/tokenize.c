@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:01:32 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 13:03:31 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ static t_token	*new_token(char *content, t_app_data *app)
 		temp = ft_strdup(content);
 	if (!temp)
 		return (NULL);
+	// end cut out
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);

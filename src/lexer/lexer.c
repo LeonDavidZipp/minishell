@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:00:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 13:03:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	lexer(t_app_data *app_data)
 	t_token		*tokens;
 	t_treenode	*intermediate_tree;
 	t_treenode	*ast;
+
 	// 1. first validate input (according to braces, quotes, etc.)
 	if (check_input(app_data->input) == 1)
 	{
