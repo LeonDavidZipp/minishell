@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:10:02 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 15:33:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,11 @@ void		builtin_export(t_env_var **env_vars, char *var_string);
 t_env_var	*init_envp(char **envp);
 t_env_var	*new_env_var(char *key, char *value);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
-char		**split_envp(char *envp);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
+char		**split_envp(char *envp);
+char		**split_path(char *path);
+char		*get_path(t_env_var *env_vars);
 
 // parsing && input handling
 int			is_space(char c);
@@ -133,7 +135,7 @@ t_token		*tokenize(t_app_data *app);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 void		free_tokens(t_token *token);
-t_tokentype	token_type(char *content);
+t_tokentype	token_type(char *content, char *path);
 
 // abstract syntax tree
 t_treenode	*build_ast(t_treenode *lin_tree);

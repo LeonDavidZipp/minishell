@@ -71,6 +71,39 @@ char	**split_envp(char *envp)
 	return (key_value);
 }
 
+char	**split_path(char *path)
+{
+	char	**result;
+	char	*temp;
+	int		i;
+
+	result = ft_split(path, ':');
+	if (!result)
+		return (NULL);
+	i = -1;
+	while (result[++i])
+	{
+		temp = ft_strjoin(result[i], "/");
+		free(result[i]);
+		result[i] = temp;
+	}
+	return (result);
+}
+
+char	*get_path(t_env_var *env_vars)
+{
+	t_env_var	*temp;
+
+	temp = env_vars;
+	while (temp)
+	{
+		if (ft_strcmp(temp->key, "PATH") == 0)
+			return (temp->value);
+		temp = temp->next;
+	}
+	return (NULL);
+}
+
 static void	update_links(t_env_var **first, t_env_var **prev,
 				t_env_var *env_var)
 {
