@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 09:54:39 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/29 12:23:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@ t_token	*tokenize(t_app_data	*app)
 			prev->next = current;
 		prev = current;
 	}
+	ft_free_2d_arr((void **)token_contents);
 	// first = join_arg_tokens(first);
 	first = join_after_echo(first);
+	printf("joined after echo\n");
 	return (first);
-	ft_free_2d_arr((void **)token_contents);
 }
 
 void	free_tokens(t_token *token)
@@ -69,8 +70,8 @@ static t_token	*new_token(char *content, t_app_data *app)
 		temp = ft_trim_in_place(temp, "\"");
 	}
 	else
-		temp = in_string_expansion(content, app);
-		// temp = ft_strdup(content);
+		// temp = in_string_expansion(content, app);
+		temp = ft_strdup(content);
 	if (!temp)
 		return (NULL);
 	token = (t_token *)malloc(sizeof(t_token));

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 20:34:06 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/29 12:47:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,22 @@ void	lexer(t_app_data *app_data)
 		handle_error(app_data);
 	// 4. write to linked list including type of token
 	intermediate_tree = combine_cmds_args(tokens);
+	t_treenode *temp = intermediate_tree;
+	while (temp)
+	{
+		printf("cmds & args: %s | %s\n", temp->)
+	}
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		handle_error(app_data);
 	// 4. check if the tree is valid
-	if (!check_nodes_valid(intermediate_tree))
-	{
-		printf("%s", LEXER_ERR);
-		free_for_next_call(app_data);
-	}
+	// if (!check_nodes_valid(intermediate_tree))
+	// {
+	// 	printf("%s", LEXER_ERR);
+	// 	free_for_next_call(app_data);
+	// }
 	// 5. to binary tree (maybe together with step 4)
+	printf("building ast\n");
 	ast = build_ast(intermediate_tree);
 	printf("lexer done wit ast\n");
 	free_treenodes(intermediate_tree);

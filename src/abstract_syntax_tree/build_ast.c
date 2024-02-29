@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/28 20:30:00 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/29 12:44:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_treenode	*build_ast(t_treenode *lin_tree)
 	temp = lin_tree;
 	while (temp)
 	{
+		printf("cmd & args: %s | %s\n", temp->cmd, temp->args);
 		ast = insert_node(ast, temp->cmd, temp->args);
 		temp = temp->left;
 	}
@@ -59,6 +60,7 @@ static t_treenode	*insert_node(t_treenode *root, char *cmd, char *args)
 	t_treenode	*node;
 
 	// If the tree is empty, assign a new node address to root
+	printf("inserting node with cmd: %s and args: %s\n", cmd, args);
 	if (root == NULL)
 		return (new_treenode(cmd, args));
 	// If the command is an operator and has higher precedence than the root

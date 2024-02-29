@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/29 09:47:55 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/29 12:38:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,7 @@ static void	join_tokens_helper(t_token **join, t_token **prev,
 		(*prev)->next = (*tokens)->next;
 		*tokens = (*tokens)->next;
 	}
+	printf("join is now: %s\n", (*join)->content);
 }
 
 // int	main(void)
