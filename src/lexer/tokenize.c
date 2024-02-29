@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:03:31 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 13:04:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_token		*new_token(char *content, t_app_data *app);
 
-t_token	*tokenize(t_app_data	*app)
+t_token	*tokenize(t_app_data *app)
 {
 	char			**token_contents;
 	t_token			*current;
