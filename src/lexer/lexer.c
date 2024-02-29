@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:03:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 14:34:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	lexer(t_app_data *app_data)
 	t_treenode	*ast;
 
 	// 1. first validate input (according to braces, quotes, etc.)
+	printf("token type ls: %d\n", token_type("ls"));
+	printf("access code: %d\n", access("/bin/ls", X_OK));
 	if (check_input(app_data->input) == 1)
 	{
 		// print some shit
@@ -29,19 +31,31 @@ void	lexer(t_app_data *app_data)
 	}
 	// 2. then tokenize & 3. expand where needed
 	tokens = tokenize(app_data);
+	t_token *temp = tokens;
+	while (temp)
+	{
+		printf("content: %s\n", temp->content);
+		temp = temp->next;
+	}
+	printf("\n-------\n");
 	if (!tokens)
 		handle_error(app_data);
-	// 4. write to linked list including type of token
-	intermediate_tree = combine_cmds_args(tokens);
-	free_tokens(tokens);
-	if (!intermediate_tree)
-		handle_error(app_data);
 	// 4. check if the tree is valid
-	// if (!check_nodes_valid(intermediate_tree))
+	// if (!check_nodes_valid(tokens))
 	// {
 	// 	printf("%s", LEXER_ERR);
 	// 	free_for_next_call(app_data);
 	// }
+	intermediate_tree = combine_cmds_args(tokens);
+	free_tokens(tokens);
+	if (!intermediate_tree)
+		handle_error(app_data);
+	t_treenode *temp2 = intermediate_tree;
+	while (temp2)
+	{
+		printf("cmds & args: %s | %s\n", temp2->cmd, temp2->args);
+		temp2 = temp2->left;
+	}
 	// 5. to binary tree (maybe together with step 4)
 	printf("building ast\n");
 	ast = build_ast(intermediate_tree);

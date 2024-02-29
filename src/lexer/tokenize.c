@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 13:04:35 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 13:09:51 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,8 @@ t_token	*tokenize(t_app_data *app)
 		prev = current;
 	}
 	ft_free_2d_arr((void **)token_contents);
-	// first = join_arg_tokens(first);
 	first = join_after_echo(first);
-	printf("joined after echo\n");
+	first = join_after_echo(first);
 	return (first);
 }
 

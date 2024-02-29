@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by intra             #+#    #+#             */
-/*   Updated: 2024/02/27 18:22:49 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/29 14:37:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ t_tokentype	token_type(char *content)
 
 static t_tokentype	token_type_2(char *content)
 {
+	char	*temp;
+
 	if (ft_strcmp(content, "echo") == 0)
 		return (BUILTIN_CMD);
 	else if (ft_strcmp(content, "cd") == 0)
@@ -54,9 +56,12 @@ static t_tokentype	token_type_2(char *content)
 		return (BUILTIN_CMD);
 	else
 	{
-		if (access(content, X_OK) == -1 || ft_strcmp(content, "..") == 0 || ft_strcmp(content, ".") == 0)
+		temp = ft_strjoin("/bin/", content);
+		if (access(temp, X_OK) == -1 || ft_strcmp(content, "..") == 0
+			|| ft_strcmp(content, ".") == 0)
 			return (ARG);
 		else
 			return (OTHER_CMD);
+		free(temp);
 	}
 }
