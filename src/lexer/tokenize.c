@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 12:23:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 13:01:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ static t_token	*new_token(char *content, t_app_data *app)
 	t_token		*token;
 	char		*temp;
 
+	// cut out as soon as charlotte is done
 	if (content[0] == '\'')
 		temp = ft_substr(content, 1, ft_strlen(content) - 2);
 	else if (content[0] == '\"' || content[0] == '$')

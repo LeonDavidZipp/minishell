@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 12:47:24 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 13:00:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,6 @@ void	lexer(t_app_data *app_data)
 		handle_error(app_data);
 	// 4. write to linked list including type of token
 	intermediate_tree = combine_cmds_args(tokens);
-	t_treenode *temp = intermediate_tree;
-	while (temp)
-	{
-		printf("cmds & args: %s | %s\n", temp->)
-	}
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		handle_error(app_data);

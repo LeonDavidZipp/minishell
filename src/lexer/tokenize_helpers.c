@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/29 12:38:46 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 12:59:30 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,31 @@ static void	join_tokens_helper(t_token **join, t_token **prev,
 static void	join_after_echo_loop(int *echo_flag, t_token **tokens,
 				t_token **join, t_token **prev);
 
-t_token	*join_arg_tokens(t_token *tokens)
-{
-	t_token		*first;
-	t_token		*prev;
-	t_token		*join;
+// t_token	*join_arg_tokens(t_token *tokens)
+// {
+// 	t_token		*first;
+// 	t_token		*prev;
+// 	t_token		*join;
 
-	first = tokens;
-	prev = NULL;
-	join = NULL;
-	while (tokens)
-	{
-		if (tokens->type == ARG)
-			join_tokens_helper(&join, &prev, &tokens);
-		else if (tokens->type != ARG)
-		{
-			join = NULL;
-			prev = tokens;
-			prev->next = tokens->next;
-			tokens = tokens->next;
-		}
-		if (first == tokens && tokens->type == ARG)
-			first = join;
-	}
-	return (first);
-}
+// 	first = tokens;
+// 	prev = NULL;
+// 	join = NULL;
+// 	while (tokens)
+// 	{
+// 		if (tokens->type == ARG)
+// 			join_tokens_helper(&join, &prev, &tokens);
+// 		else if (tokens->type != ARG)
+// 		{
+// 			join = NULL;
+// 			prev = tokens;
+// 			prev->next = tokens->next;
+// 			tokens = tokens->next;
+// 		}
+// 		if (first == tokens && tokens->type == ARG)
+// 			first = join;
+// 	}
+// 	return (first);
+// }
 
 t_token	*join_after_echo(t_token *tokens)
 {
@@ -104,11 +104,11 @@ static void	join_tokens_helper(t_token **join, t_token **prev,
 	else
 	{
 		*join = *tokens;
+		(*join)->type = ARG;
 		*prev = *tokens;
 		(*prev)->next = (*tokens)->next;
 		*tokens = (*tokens)->next;
 	}
-	printf("join is now: %s\n", (*join)->content);
 }
 
 // int	main(void)
