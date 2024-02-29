@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by intra             #+#    #+#             */
-/*   Updated: 2024/02/29 14:37:56 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/29 14:39:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ t_tokentype	token_type(char *content)
 		return (REDIR_IN);
 	else if (ft_strcmp(content, "<<") == 0)
 		return (HEREDOC);
+	else if (ft_strcmp(content, "echo") == 0)
+		return (BUILTIN_CMD);
 	else
 		return (token_type_2(content));
 }
@@ -40,8 +42,6 @@ static t_tokentype	token_type_2(char *content)
 {
 	char	*temp;
 
-	if (ft_strcmp(content, "echo") == 0)
-		return (BUILTIN_CMD);
 	else if (ft_strcmp(content, "cd") == 0)
 		return (BUILTIN_CMD);
 	else if (ft_strcmp(content, "pwd") == 0)
