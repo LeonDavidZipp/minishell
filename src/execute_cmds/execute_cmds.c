@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:08:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:45:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	execute_builtin(char *cmd, char *args, t_env_var *env_vars)
 	else if (ft_strcmp(cmd, "echo") == 0)
 		builtin_echo(args);
 	else if (ft_strcmp(cmd, "env") == 0)
-		builtin_env(args, env_vars);
+		builtin_env(args, &env_vars);
 	else if (ft_strcmp(cmd, "exit") == 0)
 		builtin_exit(0);
 	else if (ft_strcmp(cmd, "export") == 0)
