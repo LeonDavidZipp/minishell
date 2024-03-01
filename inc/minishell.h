@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 05:15:40 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 05:29:23 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define NAME "chl"
 # define PROMPT "\033[0;36mchl	→	\033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"

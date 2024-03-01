@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 05:21:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:02:07 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,27 +26,33 @@ bool	check_tokens_valid(t_token *tokens)
 		if (tokens->type == AND || tokens->type == OR)
 		{
 			if (!tokens->next)
-				return (false);
-			type = token_type(tokens->next->content, NULL);
-			if (tokens->next->type == WILDCARD || tokens->next->type == REDIR_IN
-				|| tokens->next->type == HEREDOC || tokens->next->type == PIPE
-				|| tokens->next->type == AND || tokens->next->type == OR)
-				return (false);
+				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			else if (tokens->next->type == AND || tokens->next->type == OR
+				|| tokens->next->type == PIPE)
+				return (printf("%s: parse error near `%s'\n",
+						NAME, tokens->next->content), false);
 		}
 		// > and >>
 		if (tokens->type == REDIR_OUT || tokens->type == REDIR_APPEND)
 		{
 			if (!tokens->next)
-				return (false);
-			type = token_type(tokens->next->content, NULL);
-			if (tokens->next->type == WILDCARD || tokens->next->type == REDIR_IN
-				|| tokens->next->type == HEREDOC || tokens->next->type == PIPE
+				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			if (!tokens->next || tokens->next->type == WILDCARD
+				|| tokens->next->type == REDIR_IN || tokens->next->type == HEREDOC
+				|| tokens->next->type == PIPE
 				|| tokens->next->type == AND || tokens->next->type == OR)
-				return (false);
+				return (printf("%s: parse error near `\\n'\n", NAME), false);
 		}
 		// < and <<
+		if (tokens->type == REDIR_IN || tokens->type == HEREDOC)
+		{
+			if (!tokens->next || tokens->next->type == WILDCARD
+				|| tokens->next->type == REDIR_IN
+				|| tokens->next->type == HEREDOC || tokens->next->type == PIPE
+				|| tokens->next->type == AND || tokens->next->type == OR)
+				return (printf("%s: parse error near `\\n'\n", NAME), false);
+		}
 		// echo, cd, pwd, export, unset, env
-
 	}
 	return (true);
 }
@@ -58,7 +64,8 @@ bool	check_first_token(t_token *token)
 		|| token->type == AND
 		|| token->type == PIPE
 		|| token->type == WILDCARD)
-		return (false);
+		return (printf("%s: parse error near `%s'\n",
+				NAME, token->next->content), false);
 	return (true);
 }
 
