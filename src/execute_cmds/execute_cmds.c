@@ -6,35 +6,40 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 12:54:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 14:54:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	execute_cmds(t_treenode *ast, char **envp)
+void	execute_execv(char *cmd, char *args, t_env_var *env_vars);
+
+void	execute_cmds(t_treenode *ast, t_env_var *env_vars)
 {
 	t_tokentype	type;
+	char		*path;
 
 	if (ast->left)
-		execute_cmds(ast->left, envp);
+		execute_cmds(ast->left, env_vars);
 	if (ast->right)
-		execute_cmds(ast->right, envp);
+		execute_cmds(ast->right, env_vars);
 	if (ast->cmd)
 	{
-		type = token_type(ast->cmd);
+		path = get_path(env_vars);
+		type = token_type(ast->cmd, path);
 		if (type == OTHER_CMD)
-			execute_cmd(ast->cmd, ast->args, envp);
+			execute_execv(ast->cmd, ast->args, env_vars);
 		else if (type == BUILTIN_CMD)
-			execute_builtin(ast->cmd, ast->args, envp);
+			execute_builtin(ast->cmd, ast->args, env_vars);
 	}
 }
 
-void	execute_cmd(char *cmd, char *args, char **envp)
+static void	execute_execv(char *cmd, char *args, t_env_var *env_vars)
 {
 	pid_t	pid;
 	int		status;
 	char	**arg_arr;
+	char	**envp;
 
 	arg_arr = ft_split(args, ' ');
 	if (!arg_arr)
@@ -42,8 +47,12 @@ void	execute_cmd(char *cmd, char *args, char **envp)
 	pid = fork();
 	if (pid == 0)
 	{
+		envp = env_vars_to_char_arr(env_vars);
+		if (!envp)
+			return ;
 		execve(cmd, arg_arr, envp);
 		free_2d_arr((void **)arg_arr);
+		free_2d_arr((void **)envp);
 		exit(1);
 	}
 	else

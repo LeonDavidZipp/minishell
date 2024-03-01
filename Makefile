@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/01 11:33:32 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/01 14:45:23 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ builtin_cmds/export.c \
 builtin_cmds/pwd.c \
 builtin_cmds/unset.c \
 env_vars/env_vars.c \
+env_vars/env_vars_2.c \
 env_vars/init_environ.c \
 lexer/check_tokens_valid.c \
 lexer/join_tokens.c \
