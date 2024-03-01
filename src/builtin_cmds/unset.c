@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:54:39 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/22 12:51:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:40:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	builtin_unset(char *key, t_env_var **env_vars)
 	t_env_var	*current;
 	t_env_var	*next;
 
+	if (!key || ft_strcmp(key, "") == 0)
+	{
+		printf("unset: not enough arguments\n");
+		return ;
+	}
 	current = *env_vars;
 	prev = NULL;
 	while (current)
