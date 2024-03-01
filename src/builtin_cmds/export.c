@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 08:59:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 16:02:22 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ static void	print_vars(t_env_var *env_vars);
 void	builtin_export(char *var_string, t_env_var **env_vars)
 {
 	char	**vars;
-	int		i;
 	char	**temp;
+	int		i;
 
 	if (!var_string)
 	{
@@ -26,6 +26,8 @@ void	builtin_export(char *var_string, t_env_var **env_vars)
 		return ;
 	}
 	vars = ft_split(var_string, ' ');
+	if (!vars)
+		return ;
 	i = -1;
 	while (vars[++i])
 	{
