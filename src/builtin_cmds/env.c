@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:31 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 09:10:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:43:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,10 @@ void	builtin_env(char *new_var, t_env_var **env_vars)
 	if (new_var)
 	{
 		key_value = split_envp(new_var);
-		update_env_vars(key_value[0], key_value[1], env_vars);
+		if (!(key_value[1]))
+			update_env_vars(key_value[0], "", env_vars);
+		else
+			update_env_vars(key_value[0], key_value[1], env_vars);
 		ft_free_2d_arr((void **)key_value);
 	}
 	temp = *env_vars;

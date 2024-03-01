@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/01 17:31:56 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:34:35 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # include <readline/history.h>
 
 # define NAME "babash"
-# define PROMPT "\033[0;36mbabash →  \033[0m"
+# define PROMPT "\033[1;36mbabash →  \033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -70,7 +70,9 @@ typedef enum e_tokentype
 	WILDCARD,
 	BUILTIN_CMD,
 	OTHER_CMD,
-	ARG
+	ARG,
+	LEFT_BRACKET,
+	RIGHT_BRACKET
 }			t_tokentype;
 
 typedef struct s_env_var
@@ -124,6 +126,7 @@ void		free_env_vars(t_env_var *env_var);
 char		**split_envp(char *envp);
 char		**split_path(char *path);
 char		*get_path(t_env_var *env_vars);
+char		**env_vars_to_char_arr(t_env_var *env_vars);
 
 // parsing && input handling
 int			is_space(char c);
