@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 05:29:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:14:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void		signal_handler(void);
 
 // built-in commands
 void		builtin_cd(char *path);
+void		builtin_pwd(char *args);
 void		builtin_echo(char *str);
 void		builtin_env(t_env_var **env_vars);
 void		builtin_exit(int exit_code);

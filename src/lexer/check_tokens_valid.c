@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 06:02:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:33:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ bool	check_tokens_valid(t_token *tokens)
 	while (tokens)
 	{
 		// && and ||
-		if (tokens->type == AND || tokens->type == OR)
+		if (tokens->next)
+			type = tokens->next->type;
+		if (tokens->type == AND || tokens->type == OR || tokens->type == PIPE)
 		{
 			if (!tokens->next)
 				return (printf("%s: parse error near `\\n'\n", NAME), false);
-			else if (tokens->next->type == AND || tokens->next->type == OR
-				|| tokens->next->type == PIPE)
+			else if (type == AND || type == OR || type == PIPE)
 				return (printf("%s: parse error near `%s'\n",
 						NAME, tokens->next->content), false);
 		}
@@ -37,20 +38,55 @@ bool	check_tokens_valid(t_token *tokens)
 		{
 			if (!tokens->next)
 				return (printf("%s: parse error near `\\n'\n", NAME), false);
-			if (!tokens->next || tokens->next->type == WILDCARD
-				|| tokens->next->type == REDIR_IN || tokens->next->type == HEREDOC
-				|| tokens->next->type == PIPE
-				|| tokens->next->type == AND || tokens->next->type == OR)
-				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			else if (type == AND || type == OR || type == PIPE
+				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
+				|| type == HEREDOC || type == WILDCARD)
+				return (printf("%s: parse error near `%s'\n",
+						NAME, tokens->next->content), false);
 		}
 		// < and <<
 		if (tokens->type == REDIR_IN || tokens->type == HEREDOC)
 		{
-			if (!tokens->next || tokens->next->type == WILDCARD
-				|| tokens->next->type == REDIR_IN
-				|| tokens->next->type == HEREDOC || tokens->next->type == PIPE
-				|| tokens->next->type == AND || tokens->next->type == OR)
+			if (!tokens->next)
 				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			else if (type == AND || type == OR || type == PIPE
+				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
+				|| type == HEREDOC || type == WILDCARD)
+				return (printf("%s: parse error near `%s'\n",
+						NAME, tokens->next->content), false);
+		}
+		if (ft_strcmpt(tokens->content, "cd") == 0)
+		{
+			if (tokens->next && tokens->next->next
+				&& tokens->next->next->next
+				&& tokens->next->next->type != AND
+				&& tokens->next->next->type != OR
+				&& tokens->next->next->type != PIPE
+				&& tokens->next->next->type != REDIR_OUT
+				&& tokens->next->next->type != REDIR_APPEND
+				&& tokens->next->next->type != REDIR_IN
+				&& tokens->next->next->type != HEREDOC
+				&& tokens->next->next->type != WILDCARD
+				&& tokens->next->next->next->type != AND
+				&& tokens->next->next->next->type != OR
+				&& tokens->next->next->next->type != PIPE
+				&& tokens->next->next->next->type != REDIR_OUT
+				&& tokens->next->next->next->type != REDIR_APPEND
+				&& tokens->next->next->next->type != REDIR_IN
+				&& tokens->next->next->next->type != HEREDOC
+				&& tokens->next->next->next->type != WILDCARD)
+				return (printf("cd: too many arguments\n"), false);
+			else if (tokens->next && tokens->next->next
+				&& tokens->next->next->type != AND
+				&& tokens->next->next->type != OR
+				&& tokens->next->next->type != PIPE
+				&& tokens->next->next->type != REDIR_OUT
+				&& tokens->next->next->type != REDIR_APPEND
+				&& tokens->next->next->type != REDIR_IN
+				&& tokens->next->next->type != HEREDOC
+				&& tokens->next->next->type != WILDCARD)
+				return (printf("cd: string not in pwd: `%s'\n",
+						tokens->next->content), false);
 		}
 		// echo, cd, pwd, export, unset, env
 	}
