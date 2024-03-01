@@ -12,8 +12,8 @@
 				"editor.renderWhitespace": "all",
 				"editor.insertSpaces": false,
 				"debug.onTaskErrors": "debugAnyway",
-				"42header.email": "intra@student.42.fr",
-				"42header.username": "intra"
+				"42header.email": "lzipp@student.42.fr",
+				"42header.username": "lzipp"
 			},
 			"extensions": [
 				"ms-vscode.cpptools-themes",
