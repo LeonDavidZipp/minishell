@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 11:34:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 16:42:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_treenode	*build_ast(t_treenode *lin_tree)
 	temp = lin_tree;
 	while (temp)
 	{
+		// printf("cmd & args: %s | %s\n", temp->cmd, temp->args);
 		ast = insert_node(ast, temp->cmd, temp->args);
 		temp = temp->left;
 	}
