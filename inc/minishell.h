@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 14:29:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 11:18:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define PROMPT "\033[0;36mchl	→	\033[0m"
+# define NAME "babash"
+# define PROMPT "\033[0;36mbabash →  \033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -49,81 +50,116 @@
 # define CMD_NOT_DUP "Error: Failed to duplicate file descriptor\n"
 # define CMD_NOT_WAIT "Error: Failed to wait for child process\n"
 # define CMD_NOT_SIGNAL "Error: Failed to handle signal\n"
-# define CMD_NOT_ENV "Error: Failed to handle environment variable\n"
+# define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
 
-typedef enum e_token
+typedef enum e_tokentype
 {
-	SEMICOLON,
-	FLAG,
-	BUILTIN_CMD,
-	OTHER_CMD,
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
+	// FLAG,
+	// SINGLE_QUOTE,
+	// DOUBLE_QUOTE,
 	PIPE,
 	AND,
 	OR,
-	REDIR_OUT,
-	REDIR_IN,
-	REDIR_APPEND,
-	REDIR_INPUT,
-	HEREDOC,
-	ENV_VAR,
+	REDIR_OUT, // >
+	REDIR_IN, // <
+	REDIR_APPEND, // >>
+	HEREDOC, // <<
 	WILDCARD,
+	BUILTIN_CMD,
+	OTHER_CMD,
 	ARG
-}			t_token;
-
-typedef struct s_input
-{
-	char	*content;
-	int		type;
-}			t_input;
+}			t_tokentype;
 
 typedef struct s_env_var
 {
 	char				*key;
 	char				*value;
 	struct s_env_var	*next;
-}					t_env_var;
+}			t_env_var;
+
+typedef struct s_token
+{
+	char			*content;
+	t_tokentype		type;
+	struct s_token	*next;
+}			t_token;
 
 typedef struct s_treenode
 {
-	char				*content;
-	int					type;
+	char				*cmd;
+	char				*args;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
-}					t_treenode;
+}			t_treenode;
 
 typedef struct s_app_data
 {
 	t_env_var	*env_vars;
 	int			last_exit_code;
 	char		*input;
-}				t_app_data;
+	t_token		*tokens;
+}			t_app_data;
 
 // signal handling
 void		signal_handler(void);
 
+// built-in commands
+void		builtin_cd(char *path);
+void		builtin_pwd(char *args);
+void		builtin_echo(char *str);
+void		builtin_env(char *new_var, t_env_var **env_vars);
+void		builtin_exit(int exit_code);
+void		builtin_export(char *var_string, t_env_var **env_vars);
+void		builtin_unset(char *keys, t_env_var **env_vars);
+
 // environment variables
-char		**split_environ(char *environ);
-t_env_var	*init_environ(char **environ);
+t_env_var	*init_envp(char **envp);
 t_env_var	*new_env_var(char *key, char *value);
-void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
+void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
+char		**split_envp(char *envp);
+char		**split_path(char *path);
+char		*get_path(t_env_var *env_vars);
 
 // parsing && input handling
+int			is_space(char c);
 int			check_input(char *str);
-char		**tokenize(char *input);
+char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
-void		handle_quotes_brackets(char c, bool *in_quote, bool *in_bracket);
+void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
+				bool *in_bracket);
+
+// tokenization
+t_token		*tokenize(t_app_data *app);
+t_token		*join_arg_tokens(t_token *tokens);
+t_token		*join_after_echo(t_token *tokens);
+void		free_tokens(t_token *token);
+t_tokentype	token_type(char *content, char *path);
+bool		check_tokens_valid(t_token *tokens);
+
+// abstract syntax tree
+t_treenode	*build_ast(t_treenode *lin_tree);
+t_treenode	*combine_cmds_args(t_token *tokens);
+void		free_treenodes(t_treenode *node);
+void		debug_printtree(t_treenode *root, int tabs);
+bool		node_is_operator(char *cmd);
+int			priority(char *cmd);
+
+// lexer
+void		lexer(t_app_data *app_data);
 
 // expansion
 char		*in_string_expansion(char *input, t_app_data *app);
+int			get_new_size(char *input, int last_exit_code);
+bool		match(char *pattern, char *string);
 char		**expand_wildcard(char *input);
-char		*expand_var(char *input, t_env_var *env);
+char		*expand_var(char *input);
 char		*expand_exit_code(int last_exit_code);
+bool		match(char *pattern, char *string);
+int			get_new_size(char *input, int last_exit_code);
 
 #endif

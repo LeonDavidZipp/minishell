@@ -6,29 +6,65 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 10:20:45 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:59:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// need a list of environment variables that were exported this session
+static void	print_vars(t_env_var *env_vars);
 
-void	builtin_export(t_env_var **env_vars, char *var_string)
+void	builtin_export(char *var_string, t_env_var **env_vars)
 {
+	char	**vars;
+	int		i;
 	char	**temp;
 
 	if (!var_string)
 	{
-		// print output all env vars exported this session and on this level
+		print_vars(*env_vars);
 		return ;
 	}
-	temp = split_environ(var_string);
-	if (ft_null_terminated_arr_len((void **)temp) != 2)
-		update_env_vars(temp[0], "", env_vars);
-	else
-		update_env_vars(temp[0], temp[1], env_vars);
-	// check if var_string is valid
-	// if not, print error message
-	// else, add var_string to env_vars
+	vars = ft_split(var_string, ' ');
+	i = -1;
+	while (vars[++i])
+	{
+		temp = split_envp(vars[i]);
+		if (!temp)
+			continue ;
+		if (ft_null_terminated_arr_len((void **)temp) != 2)
+			update_env_vars(temp[0], "", env_vars);
+		else
+			update_env_vars(temp[0], temp[1], env_vars);
+		free(temp);
+	}
+	ft_free_2d_arr((void **)vars);
 }
+
+static void	print_vars(t_env_var *env_vars)
+{
+	while (env_vars)
+	{
+		if (env_vars->value)
+			printf("declare -x %s=\"%s\"\n", env_vars->key, env_vars->value);
+		else
+			printf("declare -x %s\n", env_vars->key);
+		env_vars = env_vars->next;
+	}
+}
+
+// int main()
+// {
+// 	t_env_var	*env_vars;
+
+// 	env_vars = NULL;
+// 	update_env_vars("key1", "value1", &env_vars);
+// 	update_env_vars("key2", "value2", &env_vars);
+// 	update_env_vars("key3", "value3", &env_vars);
+// 	update_env_vars("key4", "value4", &env_vars);
+// 	// Add two new variables to the environment
+// 	builtin_export("VAR1=value1 VAR2=value2", &env_vars);
+// 	printf("\n----------------\n");
+// 	builtin_export(NULL, &env_vars);
+// 	return 0;
+// }

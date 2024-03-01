@@ -3,28 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 15:22:58 by lzipp             #+#    #+#             */
-<<<<<<< HEAD
-<<<<<<< HEAD
-/*   Updated: 2024/02/20 12:13:12 by lzipp            ###   ########.fr       */
-=======
-/*   Updated: 2024/02/20 11:24:57 by lzipp            ###   ########.fr       */
->>>>>>> 20-norminette-input-parsing
-=======
-/*   Updated: 2024/02/20 12:04:45 by cgerling         ###   ########.fr       */
->>>>>>> origin/20-norminette-input-parsing
+/*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/01 11:22:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 static char	*get_input(void);
+static void	print_logo(void);
 
-int	main(int argc, char **argv, char **environ)
+int	main(int argc, char **argv, char **envp)
 {
-	char		*input;
 	t_app_data	app_data;
 
 	(void)argv;
@@ -33,8 +25,9 @@ int	main(int argc, char **argv, char **environ)
 		printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
-	app_data.env_vars = init_env_vars(environ);
+	app_data.env_vars = init_envp(envp);
 	signal_handler();
+	print_logo();
 	while (true)
 	{
 		app_data.input = get_input();
@@ -52,11 +45,8 @@ static char	*get_input(void)
 	input = readline(PROMPT);
 	if (input == NULL)
 	{
-		printf("exit\n");
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		exit(0);
+		// maybe change exit code
+		builtin_exit(0);
 	}
 	else if (ft_strlen(input) == 0)
 	{
@@ -67,12 +57,34 @@ static char	*get_input(void)
 	{
 		add_history(input);
 		free(input);
-		printf("exit\n");
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		// free memory!!!!!!!!!!!!!!!!
-		exit(0);
+		// maybe change exit code
+		builtin_exit(0);
 	}
 	add_history(input);
 	return (input);
+}
+
+static void	print_logo(void)
+{
+	char	*lzipp;
+	char	*cgerling;
+
+	// font is ANSI Shadow
+	// https://patorjk.com/software/taag/#p
+	// =display&f=ANSI%20Shadow&t=babash
+	lzipp = "https://profile.intra.42.fr/users/lzipp";
+	cgerling = "https://profile.intra.42.fr/users/cgerling";
+	printf("\033[0;32m\n\n");
+	printf("	██████╗  █████╗ ██████╗  █████╗ ███████╗██╗  ██╗\n");
+	printf("	██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║\n");
+	printf("	██████╔╝███████║██████╔╝███████║███████╗███████║\n");
+	printf("	██╔══██╗██╔══██║██╔══██╗██╔══██║╚════██║██╔══██║\n");
+	printf("	██████╔╝██║  ██║██████╔╝██║  ██║███████║██║  ██║\n");
+	printf("	╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝");
+	printf("\033[0;33m\n\n");
+	printf("		   born again born again shell\n\n");
+	printf("\033[0;36m			");
+	printf("\e]8;;%s\alzipp\e]8;;\a && ", lzipp);
+	printf("\e]8;;%s\acgerling\e]8;;\a\n", cgerling);
+	printf("\033[0m\n");
 }

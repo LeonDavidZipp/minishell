@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Minishell
 Using preprogrammed shells is boring, how about we create our own?
 
@@ -45,3 +46,5 @@ leaks.
 ### && and ||
 ### * for currend working dir
 
+=======
+>>>>>>> 22-grammar-checker

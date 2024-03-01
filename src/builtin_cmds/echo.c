@@ -3,18 +3,39 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/14 17:33:54 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/27 09:27:37 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	builtin_echo(char *str, bool flag_was_set)
+void	builtin_echo(char *str)
 {
-	printf("%s", str);
-	if (flag_was_set)
+	char	*temp;
+
+	if (ft_strlen(str) >= 3 && ft_strncmp(str, "-n ", 3) == 0)
+	{
+		temp = ft_substr(str, 3, ft_strlen(str) - 3);
+		printf("%s", temp);
+		free(temp);
+	}
+	else if (ft_strlen(str) == 2 && ft_strncmp(str, "-n", 2) == 0)
 		printf("\n");
+	else
+		printf("%s\n", str);
 }
+
+// int	main(int argc, char **argv)
+// {
+// 	// int	i;
+
+// 	// i = 1;
+// 	if (argc == 1)
+// 		printf("\n");
+// 	else
+// 		builtin_echo(argv[2]);
+// 	return (0);
+// }

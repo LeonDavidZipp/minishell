@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/20 11:18:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/02/23 18:26:28 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ int	get_new_size(char *input, int last_exit_code)
 {
 	int	i;
 	int	size;
-	int	start;
 
 	i = 0;
 	size = 0;
