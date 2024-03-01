@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 08:28:03 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:01:30 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ bool	check_tokens_valid(t_token *tokens)
 		return (false);
 	while (tokens)
 	{
-		// && and ||
 		if (tokens->next)
 			type = tokens->next->type;
 		if (tokens->type == AND || tokens->type == OR || tokens->type == PIPE)
@@ -33,7 +32,6 @@ bool	check_tokens_valid(t_token *tokens)
 				return (printf("%s: parse error near `%s'\n",
 						NAME, tokens->next->content), false);
 		}
-		// > and >>
 		if (tokens->type == REDIR_OUT || tokens->type == REDIR_APPEND)
 		{
 			if (!tokens->next)
@@ -44,7 +42,6 @@ bool	check_tokens_valid(t_token *tokens)
 				return (printf("%s: parse error near `%s'\n",
 						NAME, tokens->next->content), false);
 		}
-		// < and <<
 		if (tokens->type == REDIR_IN || tokens->type == HEREDOC)
 		{
 			if (!tokens->next)
@@ -88,7 +85,6 @@ bool	check_tokens_valid(t_token *tokens)
 				return (printf("cd: string not in pwd: `%s'\n",
 						tokens->next->content), false);
 		}
-		// echo, cd, pwd, export, unset, env
 	}
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 08:56:22 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:03:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ void		builtin_exit(int exit_code);
 void		builtin_export(char *var_string, t_env_var **env_vars);
 void		builtin_unset(char *keys, t_env_var **env_vars);
 
-// enironment variables
+// environment variables
 t_env_var	*init_envp(char **envp);
 t_env_var	*new_env_var(char *key, char *value);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
@@ -139,13 +139,13 @@ t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 void		free_tokens(t_token *token);
 t_tokentype	token_type(char *content, char *path);
+bool		check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree
 t_treenode	*build_ast(t_treenode *lin_tree);
 t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
-bool		check_nodes_valid(t_treenode *nodes);
 bool		node_is_operator(char *cmd);
 int			priority(char *cmd);
 
