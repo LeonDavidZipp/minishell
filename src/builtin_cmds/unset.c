@@ -6,40 +6,57 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:54:39 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 06:44:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:58:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+static void	unset_vars(char **key_arr, t_env_var **env_vars);
 static void	remove_env_var(t_env_var **env_vars, t_env_var *prev,
 				t_env_var *current);
 
-void	builtin_unset(char *key, t_env_var **env_vars)
+void	builtin_unset(char *keys, t_env_var **env_vars)
 {
-	t_env_var	*prev;
-	t_env_var	*current;
-	t_env_var	*next;
+	char		**key_arr;
 
-	if (!key || ft_strcmp(key, "") == 0)
+	if (!keys || ft_strcmp(keys, "") == 0)
 	{
 		printf("unset: not enough arguments\n");
 		return ;
 	}
-	current = *env_vars;
-	prev = NULL;
-	while (current)
+	key_arr = ft_split(keys, ' ');
+	if (!key_arr)
+		return ;
+	unset_vars(key_arr, env_vars);
+	ft_free_2d_arr((void **)key_arr);
+}
+
+static void	unset_vars(char **key_arr, t_env_var **env_vars)
+{
+	t_env_var	*prev;
+	t_env_var	*current;
+	t_env_var	*next;
+	int			i;
+
+	i = -1;
+	while (key_arr[++i])
 	{
-		next = current->next;
-		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
+		current = *env_vars;
+		prev = NULL;
+		while (current)
 		{
-			remove_env_var(env_vars, prev, current);
-			current = next;
-		}
-		else
-		{
-			prev = current;
-			current = next;
+			next = current->next;
+			if (ft_strcmp(current->key, key_arr[i]) == 0)
+			{
+				remove_env_var(env_vars, prev, current);
+				current = next;
+			}
+			else
+			{
+				prev = current;
+				current = next;
+			}
 		}
 	}
 }
@@ -74,7 +91,7 @@ static void	remove_env_var(t_env_var **env_vars, t_env_var *prev,
 //         temp = temp->next;
 //     }
 //     printf("----------------\n");
-//     builtin_unset("TEST", &env_vars);
+//     builtin_unset("TEST1 TEST2", &env_vars);
 //     temp = env_vars;
 //     while (temp)
 //     {

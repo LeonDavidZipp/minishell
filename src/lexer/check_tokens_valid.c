@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 06:37:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:28:03 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ bool	check_tokens_valid(t_token *tokens)
 				return (printf("%s: parse error near `%s'\n",
 						NAME, tokens->next->content), false);
 		}
-		if (ft_strcmpt(tokens->content, "cd") == 0)
+		if (ft_strcmp(tokens->content, "cd") == 0)
 		{
 			if (tokens->next && tokens->next->next
 				&& tokens->next->next->next

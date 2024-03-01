@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 06:54:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:56:22 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,8 @@ void		builtin_pwd(char *args);
 void		builtin_echo(char *str);
 void		builtin_env(char *new_var, t_env_var **env_vars);
 void		builtin_exit(int exit_code);
-void		builtin_export(t_env_var **env_vars, char *var_string);
+void		builtin_export(char *var_string, t_env_var **env_vars);
+void		builtin_unset(char *keys, t_env_var **env_vars);
 
 // enironment variables
 t_env_var	*init_envp(char **envp);

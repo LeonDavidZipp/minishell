@@ -7,7 +7,7 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
-	env.c \
+	unset.c \
 	../env_vars/init_environ.c \
 	../env_vars/env_vars.c \
 	../../lib/libft/src/ft_strdup.c \
