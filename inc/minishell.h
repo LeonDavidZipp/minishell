@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 14:44:04 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 16:40:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <readline/history.h>
 
 # define NAME "babash"
-# define PROMPT "\033[0;36mbabash →  \033[0m"
+# define PROMPT "\033[1;36mbabash →  \033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -69,7 +69,9 @@ typedef enum e_tokentype
 	WILDCARD,
 	BUILTIN_CMD,
 	OTHER_CMD,
-	ARG
+	ARG,
+	LEFT_BRACKET,
+	RIGHT_BRACKET
 }			t_tokentype;
 
 typedef struct s_env_var

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:38:06 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 14:42:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:51:44 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**env_vars_to_char_arr(t_env_var *env_vars)
 	}
 	envp = (char **)ft_calloc(i + 1, sizeof(char *));
 	if (!envp)
-		return ;
+		return (NULL);
 	temp = env_vars;
 	i = 0;
 	while (temp)
@@ -37,4 +37,5 @@ char	**env_vars_to_char_arr(t_env_var *env_vars)
 		i++;
 		temp = temp->next;
 	}
+	return (envp);
 }
