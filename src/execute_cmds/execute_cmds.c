@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 14:54:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:08:59 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,22 @@ static void	execute_execv(char *cmd, char *args, t_env_var *env_vars)
 	else
 		waitpid(pid, &status, 0);
 	free_2d_arr((void **)arg_arr);
+}
+
+static void	execute_builtin(char *cmd, char *args, t_env_var *env_vars)
+{
+	if (ft_strcmp(cmd, "cd") == 0)
+		builtin_cd(args);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		builtin_pwd(args);
+	else if (ft_strcmp(cmd, "echo") == 0)
+		builtin_echo(args);
+	else if (ft_strcmp(cmd, "env") == 0)
+		builtin_env(args, env_vars);
+	else if (ft_strcmp(cmd, "exit") == 0)
+		builtin_exit(0);
+	else if (ft_strcmp(cmd, "export") == 0)
+		builtin_export(args, &env_vars);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		builtin_unset(args, &env_vars);
 }
