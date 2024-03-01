@@ -3,80 +3,82 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/25 14:08:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 18:01:55 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	exit_code_expand(char **str, int *j, int last_exit_code)
+void	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 {
-	char	*exit_code;
-	int		i;
+	struct dirent	*entry;
 
-	exit_code = ft_itoa(last_exit_code);
-	if (!exit_code)
-		return (0);
-	i = 0;
-	while (exit_code[i])
+	entry = readdir(dir);
+	while (entry != NULL)
 	{
-		(*str)[*j] = exit_code[i];
-		(*j)++;
-		i++;
+		if (match(pattern, entry->d_name))
+		{
+			i[2] = 0;
+			while (entry->d_name[i[2]])
+				(*output)[i[1]++] = entry->d_name[i[2]++];
+			(*output)[i[1]++] = ' ';
+		}
+		entry = readdir(dir);
 	}
-	free(exit_code);
+}
+
+int	handle_wildcard(char *input, char **output, int *i)
+{
+	DIR				*dir;
+	char			*pattern;
+	int				position;
+	bool			flag;
+
+	flag = false;
+	pattern = get_pattern(input, &i[0], &position);
+	if (!pattern)
+		return (free(output), 0);
+	dir = opendir(".");
+	if (dir == NULL)
+		return (free(output), 0);
+	if (!flag)
+	{
+		i[1] -= position;
+		flag = true;
+	}
+	process_dir_entries(dir, pattern, output, i);
+	closedir(dir);
+	free(pattern);
 	return (1);
 }
 
-int	var_expand(char *input, char **output, int *j)
+void	handle_character(char *input, char **output, int *i, int exit_code)
 {
-	char	*name;
-	char	*value;
-	int		i;
+	bool	s_quote;
+	bool	d_quote;
 
-	i = 1;
-	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++;
-	name = ft_substr(input, 1, i - 1);
-	if (!name)
-		return (0);
-	value = getenv(name);
-	if (value)
+	s_quote = false;
+	d_quote = false;
+	handle_quotes(input[i[0]], &s_quote, &d_quote);
+	if (input[i[0]] == '$' && !s_quote)
 	{
-		i = 0;
-		while (value[i])
-			(*output)[(*j)++] = value[i++];
-		free(name);
+		if (!handle_dollar(input, output, i, exit_code))
+			return ;
+	}
+	else if (input[i[0]] == '*' && !s_quote && !d_quote)
+	{
+		if (!handle_wildcard(input, output, i))
+			return ;
+		i[1]--;
 	}
 	else
-		free(name);
-	return (1);
+		(*output)[i[1]++] = input[i[0]++];
 }
 
-char	*handle_expansion(char *input, char **output, int *i, t_app_data *app)
-{
-	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
-	{
-		if (!exit_code_expand(output, &i[1], app->last_exit_code))
-			return (free(*output), NULL);
-		i[0] += 2;
-	}
-	else if (input[i[0]] == '$')
-	{
-		if (!var_expand(input + i[0], output, &i[1]))
-			return (free(*output), NULL);
-		i[2] = 1;
-		while (ft_isalnum(input[i[0] + i[2]]) || input[i[0] + i[2]] == '_')
-			i[2]++;
-		i[0] += i[2];
-	}
-	return (*output);
-}
-
-char	*in_string_expansion(char *input, t_app_data *app)
+char	*expand(char *input, int exit_code)
 {
 	char	*output;
 	int		size;
@@ -84,30 +86,24 @@ char	*in_string_expansion(char *input, t_app_data *app)
 
 	i[0] = 0;
 	i[1] = 0;
-	size = get_new_size(input, app->last_exit_code);
+	size = get_new_size(input, exit_code);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
 	while (input[i[0]])
 	{
-		if (input[i[0]] == '$')
-		{
-			output = handle_expansion(input, &output, i, app);
-			if (!output)
-				return (NULL);
-		}
-		else
-			output[i[1]++] = input[i[0]++];
+		handle_character(input, &output, i, exit_code);
 	}
-	output[i[1]] = '\0';
+	if (output != NULL)
+		output[i[1]] = '\0';
 	return (output);
 }
 
-// int	main(int argc, char **argv, char **envp)
+// int	main()
 // {
-// 	char	*input = "hello $HAALO your number is $?"; // testing
-// 	int		i = 0;
-// 	char *output = in_string_expansion(input, envp, 0);
+// 	// char	*input = "hello $USER your number is $? * test"; // testing
+// 	char	*input = "*.c"; // testing
+// 	char	*output = expand(input, 0);
 // 	if (output)
 // 	{
 // 		printf("%s\n", output);

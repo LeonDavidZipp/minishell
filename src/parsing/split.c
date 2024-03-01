@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 15:49:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 19:56:22 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,70 +19,47 @@ static void	init_vars(int *count, bool *flags)
 	count[2] = 0;
 	flags[0] = false;
 	flags[1] = false;
-	flags[2] = false;
 }
 
 int	count_tokens(char *input)
 {
 	int		i;
 	int		amount;
-	bool	flags[3];
-	bool	was_flag;
+	bool	flags[2];
 
 	i = 0;
 	amount = 0;
 	flags[0] = false;
 	flags[1] = false;
-	flags[2] = false;
-	was_flag = false;
 	while (input[i])
 	{
-		quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
-		if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[i]))
-			&& (i == 0 || (is_space(input[i - 1]) || input[i - 1] == '\''
-					|| input[i - 1] == '"' || input[i - 1] == '(' || was_flag)))
-		{
+		while (input[i] && is_space(input[i]) && !flags[0]
+			&& !flags[1])
+			i++;
+		if (input[i])
 			amount++;
+		while (input[i] && (!is_space(input[i]) || flags[0]
+				|| flags[1]))
+		{
+			handle_quotes(input[i], &flags[0], &flags[1]);
+			i++;
 		}
-		was_flag = flags[0] || flags[1] || flags[2];
-		i++;
 	}
 	return (amount);
 }
 
-int	condition(char *input, int *count, bool *flags, bool was_flag)
-{
-	if ((!flags[0] && !flags[1] && !flags[2] && !is_space(input[count[1]]))
-		&& (count[1] == 0 || (is_space(input[count[1] - 1])
-				|| input[count[1] - 1] == '\'' || input[count[1] - 1] == '"'
-				|| input[count[1] - 1] == '(' || was_flag
-				|| (ft_isprint(input[count[1] - 1]) && (input[count[1]] == '\''
-						|| input[count[1]] == '"' || input[count[1]] == '(')))))
-	{
-		return (1);
-	}
-	return (0);
-}
-
 int	process_token(char *input, int *count, bool *flags, char **tokens)
 {
-	bool	was_flag;
-
-	was_flag = false;
 	while (input[count[0]] && is_space(input[count[0]])
-		&& !flags[0] && !flags[1] && !flags[2])
+		&& !flags[0] && !flags[1])
 		count[0]++;
 	count[1] = count[0];
-	while (input[count[1]])
+	while ((input[count[1]] && (!is_space(input[count[1]])
+				|| flags[0] || flags[1])))
 	{
-		quotes_brackets(input[count[1]], &flags[0], &flags[1], &flags[2]);
+		handle_quotes(input[count[1]], &flags[0], &flags[1]);
 		count[1]++;
-		was_flag = flags[0] || flags[1] || flags[2];
-		if (condition(input, count, flags, was_flag))
-			break ;
 	}
-	if (count[1] > 0 && input[count[1] - 1] == ' ')
-		count[1]--;
 	tokens[count[2]] = ft_substr(input, count[0], count[1] - count[0]);
 	if (!tokens[count[2]])
 		return (ft_free_2d_arr((void **)tokens), free(input), 0);
@@ -96,7 +73,7 @@ char	**split(char *input)
 	char	**tokens;
 	char	*new_input;
 	int		count[4];
-	bool	flags[3];
+	bool	flags[2];
 
 	init_vars(count, flags);
 	new_input = add_spaces(input);
@@ -118,16 +95,23 @@ char	**split(char *input)
 
 // int main()
 // {
-// 	char **str = split("'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi");
-// 	// char **str = split("echo hi");
-// 	for (int i = 0; str[i]; i++)
+// 	char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER, ((ls -l | 'wc -w'))";
+// 	if (check_input(input) == 1)
+// 		return (1);
+// 	char **str = split(input);
+// 	if (!str)
+// 		return 1;
+// 	char **tokens = expand_and_remove(str);
+// 	if (!tokens)
+// 		return 1;
+// 	for (int i = 0; tokens[i]; i++)
 // 	{
-// 		printf("%s\n", str[i]);
+// 		printf("%s\n", tokens[i]);
 // 	}
-// 	for (int i = 0; str[i]; i++)
+// 	for (int i = 0; tokens[i]; i++)
 // 	{
-// 		free(str[i]);
+// 		free(tokens[i]);
 // 	}
-// 	free(str);
+// 	free(tokens);
 // 	return 0;
 // }
