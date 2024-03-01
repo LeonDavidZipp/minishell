@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by intra             #+#    #+#             */
-/*   Updated: 2024/02/29 17:07:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 04:56:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,13 @@ static t_tokentype	token_type_2(char *content, char *path)
 
 static t_tokentype	othercmd_or_arg(char *content, char *path)
 {
-	struct	stat s;
-	char	**paths;
-	char	*exec_path;
-	int		i;
+	struct stat	s;
+	char		**paths;
+	char		*exec_path;
+	int			i;
 
 	if (access(content, X_OK) != -1 && stat(content, &s) == 0
-		&& S_ISREG(s.st_mode)
-		&& ft_strcmp(content, "..") != 0
+		&& S_ISREG(s.st_mode) && ft_strcmp(content, "..") != 0
 		&& ft_strcmp(content, ".") != 0)
 		return (OTHER_CMD);
 	paths = split_path(path);
@@ -82,10 +81,8 @@ static t_tokentype	othercmd_or_arg(char *content, char *path)
 	while (paths[++i])
 	{
 		exec_path = ft_strjoin(paths[i], content);
-		if (access(exec_path, X_OK) != -1
-			&& stat(exec_path, &s) == 0
-			&& S_ISREG(s.st_mode)
-			&& ft_strcmp(content, "..") != 0
+		if (access(exec_path, X_OK) != -1 && stat(exec_path, &s) == 0
+			&& S_ISREG(s.st_mode) && ft_strcmp(content, "..") != 0
 			&& ft_strcmp(content, ".") != 0)
 		{
 			ft_free_2d_arr((void **)paths);
