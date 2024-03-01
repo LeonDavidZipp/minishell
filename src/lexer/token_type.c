@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 04:56:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 05:00:52 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static t_tokentype	token_type_2(char *content, char *path);
 static t_tokentype	othercmd_or_arg(char *content, char *path);
+static t_tokentype	return_othercmd(char **paths, char *exec_path);
 
 t_tokentype	token_type(char *content, char *path)
 {
@@ -84,13 +85,16 @@ static t_tokentype	othercmd_or_arg(char *content, char *path)
 		if (access(exec_path, X_OK) != -1 && stat(exec_path, &s) == 0
 			&& S_ISREG(s.st_mode) && ft_strcmp(content, "..") != 0
 			&& ft_strcmp(content, ".") != 0)
-		{
-			ft_free_2d_arr((void **)paths);
-			free(exec_path);
-			return (OTHER_CMD);
-		}
+			return (return_othercmd(paths, exec_path));
 		free(exec_path);
 	}
 	ft_free_2d_arr((void **)paths);
 	return (ARG);
+}
+
+static t_tokentype	return_othercmd(char **paths, char *exec_path)
+{
+	ft_free_2d_arr((void **)paths);
+	free(exec_path);
+	return (OTHER_CMD);
 }
