@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 06:33:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:37:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,7 @@ bool	check_first_token(t_token *token)
 	if (token->type == ARG
 		|| token->type == OR
 		|| token->type == AND
-		|| token->type == PIPE
-		|| token->type == WILDCARD)
+		|| token->type == PIPE)
 		return (printf("%s: parse error near `%s'\n",
 				NAME, token->next->content), false);
 	return (true);
