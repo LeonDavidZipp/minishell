@@ -7,7 +7,6 @@ all:
 	remove_quotes.c \
 	expand.c \
 	expand_helpers.c \
-	expand_simple.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_numlens.c \
 	../../lib/libft/src/ft_calloc.c \
@@ -18,3 +17,4 @@ all:
 	../../lib/libft/src/ft_strtrim.c \
 	../../lib/libft/src/ft_strjoin.c \
 	../../lib/libft/src/ft_itoa.c \
+	../../lib/libft/src/ft_isalnum.c \

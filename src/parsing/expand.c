@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/27 19:21:55 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:05:48 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	var_expand(char *input, char **output, int *j)
 	return (1);
 }
 
-int	handle_dollar(char *input, char **output, int *i, t_app_data *app)
+int	handle_dollar(char *input, char **output, int *i, int exit) // change exit back to t_app_data *app
 {
 	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
 	{
-		if (!exit_code_expand(output, &i[1], app->last_exit_code))
+		if (!exit_code_expand(output, &i[1], exit)) // change exit back to t_app_data *app
 			return (free(*output), 0);
 		i[0] += 2;
 	}
@@ -84,11 +84,48 @@ void	handle_quotes(char c, bool *s_quote, bool *d_quote)
 		*d_quote = !*d_quote;
 }
 
-char	*expand(char *input, t_app_data *app)
+int	handle_wildcard(char *input, char **output, int *i)
+{
+	DIR *dir;
+	struct dirent *entry;
+	char *pattern;
+	int	position;
+	bool	flag;
+
+	flag = false;
+	pattern = get_pattern(input, &i[0], &position);
+	if (!pattern)
+		return (free(output), 0);
+	dir = opendir(".");
+	if (dir == NULL)
+		return (free(output), 0);
+	entry = readdir(dir);
+	while (entry != NULL)
+	{
+		if (match(pattern, entry->d_name))
+		{
+			if (!flag)
+			{
+				i[1] -= position;
+				flag = true;
+			}
+			i[2] = 0;
+			while (entry->d_name[i[2]])
+				(*output)[i[1]++] = entry->d_name[i[2]++];
+			(*output)[i[1]++] = ' ';
+		}
+		entry = readdir(dir);
+	}
+	closedir(dir);
+	free(pattern);
+	return (1);
+}
+
+char	*expand(char *input, int exit) // change exit back to t_app_data *app
 {
 	char	*output;
 	int		size;
-	int		i[2];
+	int		i[3];
 	bool	s_quote;
 	bool	d_quote;
 
@@ -96,7 +133,7 @@ char	*expand(char *input, t_app_data *app)
 	i[1] = 0;
 	s_quote = false;
 	d_quote = false;
-	size = get_new_size(input, app->last_exit_code); // TODO: modify get_new_size to handle quotes and wildcards
+	size = get_new_size(input, exit); // change exit back to t_app_data *app
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
@@ -105,51 +142,28 @@ char	*expand(char *input, t_app_data *app)
 		handle_quotes(input[i[0]], &s_quote, &d_quote);
 		if (input[i[0]] == '$' && !s_quote)
 		{
-			if (!handle_dollar(input, &output, i, app))
+			if (!handle_dollar(input, &output, i, exit)) // change exit back to t_app_data *app
 				return (NULL);
 		}
 		else if (input[i[0]] == '*' && !s_quote && !d_quote)
 		{
-			if (!handle_wildcard(input, &output, i, app)) // TODO: implement handle_wildcard
+			if (!handle_wildcard(input, &output, i))
 				return (NULL);
+			i[1]--;
 		}
 		else
 			output[i[1]++] = input[i[0]++];
 	}
+	output[i[1]] = '\0';
+	return (output);
 }
 
-// char	*in_string_expansion(char *input, t_app_data *app)
+// int	main()
 // {
-// 	char	*output;
-// 	int		size;
-// 	int		i[3];
-
-// 	i[0] = 0;
-// 	i[1] = 0;
-// 	size = get_new_size(input, app->last_exit_code);
-// 	output = (char *)ft_calloc((size + 1), sizeof(char));
-// 	if (!output)
-// 		return (NULL);
-// 	while (input[i[0]])
-// 	{
-// 		if (input[i[0]] == '$')
-// 		{
-// 			output = handle_expansion(input, &output, i, app);
-// 			if (!output)
-// 				return (NULL);
-// 		}
-// 		else
-// 			output[i[1]++] = input[i[0]++];
-// 	}
-// 	output[i[1]] = '\0';
-// 	return (output);
-// }
-
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	char	*input = "hello $HAALO your number is $?"; // testing
-// 	int		i = 0;
-// 	char *output = in_string_expansion(input, envp, 0);
+// 	// char	*input = "hello $USER your number is $? * test"; // testing
+// 	// char	*input = "'\"'\"'\"hello\"'\"'\"' test hallo echo hi&&echo hi'test' 'hallo' $USER $? *.c"; // testing
+// 	char	*input = "*.c"; // testing
+// 	char	*output = expand(input, 0);
 // 	if (output)
 // 	{
 // 		printf("%s\n", output);
