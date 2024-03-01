@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 10:10:09 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 11:26:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	lexer(t_app_data *app_data)
 	// printf("acces to bin: %d\n", access("/bin", F_OK));
 	if (check_input(app_data->input) == 1)
 	{
-		// print some shit
 		free_for_next_call(app_data);
+		return ;
 	}
 	// 2. then tokenize & 3. expand where needed
 	tokens = tokenize(app_data);
@@ -42,28 +42,12 @@ void	lexer(t_app_data *app_data)
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		handle_error(app_data);
-	t_treenode *temp2 = intermediate_tree;
-	while (temp2)
-	{
-		printf("cmds & args: %s | %s\n", temp2->cmd, temp2->args);
-		temp2 = temp2->left;
-	}
 	// 5. to binary tree (maybe together with step 4)
-	printf("building ast\n");
 	ast = build_ast(intermediate_tree);
-	printf("lexer done wit ast\n");
 	free_treenodes(intermediate_tree);
-	printf("lexer done with free\n");
 	if (!ast)
 		handle_error(app_data);
 	debug_printtree(ast, 0);
-	// t_token	*tmp = tokens;
-	// while (tmp)
-	// {
-	// 	printf("content: %s\ntype: %d\n-------\n", tmp->content, tmp->type);
-	// 	tmp = tmp->next;
-	// }
-	printf("lexer done\n");
 	// 6. execute
 	// execute(ast);
 	// 7. free memory
