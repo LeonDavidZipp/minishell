@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/29 15:53:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:00:33 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,32 +95,32 @@ char	**split(char *input)
 	return (tokens);
 }
 
-// int main()
-// {
-// 	char *input = "'\"'\"'\"hello\"'\"'\"' test'hi'";
-// 	if (check_input(input) == 1)
-// 		return (1);
-// 	char **str = split(input);
-// 	if (!str)
-// 		return 1;
-// 	char *temp;
-// 	char *expanded;
-// 	for (int i = 0; str[i]; i++)
-// 	{
-// 		expanded = expand(str[i], 123);
-// 		if (!expanded)
-// 			return 1;
-// 		temp = remove_quotes(expanded);
-// 		if (!temp)
-// 			return 1;
-// 		printf("%s\n", temp);
-// 		free(temp);
-// 		free(expanded);
-// 	}
-// 	for (int i = 0; str[i]; i++)
-// 	{
-// 		free(str[i]);
-// 	}
-// 	free(str);
-// 	return 0;
-// }
+int main()
+{
+	char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER e*";
+	if (check_input(input) == 1)
+		return (1);
+	char **str = split(input);
+	if (!str)
+		return 1;
+	char *temp;
+	char *expanded;
+	for (int i = 0; str[i]; i++)
+	{
+		expanded = expand(str[i], 123);
+		if (!expanded)
+			return 1;
+		temp = remove_quotes(expanded);
+		if (!temp)
+			return 1;
+		printf("%s\n", temp);
+		free(temp);
+		free(expanded);
+	}
+	for (int i = 0; str[i]; i++)
+	{
+		free(str[i]);
+	}
+	free(str);
+	return 0;
+}

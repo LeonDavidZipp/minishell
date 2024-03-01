@@ -7,8 +7,13 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
+	check_tokens_valid.c \
+	join_tokens.c \
 	tokenize.c \
+	tokenize_helpers.c \
 	token_type.c \
+	../abstract_syntax_tree/build_ast.c \
+	../abstract_syntax_tree/ast_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
 	../../lib/libft/src/ft_strcmp.c \

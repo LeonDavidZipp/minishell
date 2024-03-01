@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 12:41:26 by cgerling         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/03/01 13:46:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -31,7 +32,8 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-# define PROMPT "\033[0;36mchl	→	\033[0m"
+# define NAME "babash"
+# define PROMPT "\033[0;36mbabash →  \033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -55,16 +57,16 @@
 
 typedef enum e_tokentype
 {
-	FLAG,
-	SINGLE_QUOTE,
-	DOUBLE_QUOTE,
+	// FLAG,
+	// SINGLE_QUOTE,
+	// DOUBLE_QUOTE,
 	PIPE,
 	AND,
 	OR,
-	REDIR_OUT,
-	REDIR_IN,
-	REDIR_APPEND,
-	HEREDOC,
+	REDIR_OUT, // >
+	REDIR_IN, // <
+	REDIR_APPEND, // >>
+	HEREDOC, // <<
 	WILDCARD,
 	BUILTIN_CMD,
 	OTHER_CMD,
@@ -87,9 +89,8 @@ typedef struct s_token
 
 typedef struct s_treenode
 {
-	char				*command;
+	char				*cmd;
 	char				*args;
-	t_tokentype			type;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
@@ -107,18 +108,22 @@ void		signal_handler(void);
 
 // built-in commands
 void		builtin_cd(char *path);
+void		builtin_pwd(char *args);
 void		builtin_echo(char *str);
-void		builtin_env(t_env_var **env_vars);
+void		builtin_env(char *new_var, t_env_var **env_vars);
 void		builtin_exit(int exit_code);
-void		builtin_export(t_env_var **env_vars, char *var_string);
+void		builtin_export(char *var_string, t_env_var **env_vars);
+void		builtin_unset(char *keys, t_env_var **env_vars);
 
-// enironment variables
+// environment variables
 t_env_var	*init_envp(char **envp);
 t_env_var	*new_env_var(char *key, char *value);
 t_env_var	*copy_env_vars(t_env_var *env_vars);
-char		**split_envp(char *envp);
 void		update_env_vars(char *key, char *value, t_env_var **env_vars);
 void		free_env_vars(t_env_var *env_var);
+char		**split_envp(char *envp);
+char		**split_path(char *path);
+char		*get_path(t_env_var *env_vars);
 
 // parsing && input handling
 int			is_space(char c);
@@ -132,8 +137,19 @@ void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
+t_token		*join_arg_tokens(t_token *tokens);
+t_token		*join_after_echo(t_token *tokens);
 void		free_tokens(t_token *token);
-t_tokentype	token_type(char *content);
+t_tokentype	token_type(char *content, char *path);
+bool		check_tokens_valid(t_token *tokens);
+
+// abstract syntax tree
+t_treenode	*build_ast(t_treenode *lin_tree);
+t_treenode	*combine_cmds_args(t_token *tokens);
+void		free_treenodes(t_treenode *node);
+void		debug_printtree(t_treenode *root, int tabs);
+bool		node_is_operator(char *cmd);
+int			priority(char *cmd);
 
 // lexer
 void		lexer(t_app_data *app_data);

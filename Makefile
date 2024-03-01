@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: intra <intra@student.42.fr>                +#+  +:+       +#+         #
+#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/02/25 21:21:07 by intra            ###   ########.fr        #
+#    Updated: 2024/03/01 11:33:32 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,8 @@ LDFLAGS := -lreadline
 
 OBJDIR = ./obj
 SOURCES := $(addprefix src/, \
-abstract_syntax_tree/build_a_s_t.c \
+build_ast/build_ast.c \
+build_ast/ast_helpers.c \
 builtin_cmds/cd.c \
 builtin_cmds/echo.c \
 builtin_cmds/env.c \
@@ -28,10 +29,12 @@ builtin_cmds/pwd.c \
 builtin_cmds/unset.c \
 env_vars/env_vars.c \
 env_vars/init_environ.c \
+lexer/check_tokens_valid.c \
+lexer/join_tokens.c \
 lexer/lexer.c \
-lexer/order_tokens.c \
-lexer/tokenize.c \
 lexer/token_type.c \
+lexer/tokenize_helpers.c \
+lexer/tokenize.c \
 other_cmds/utils.c \
 parsing/check_input.c \
 parsing/expand_helpers.c \

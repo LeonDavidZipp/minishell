@@ -1,8 +1,13 @@
 all :
 	gcc -Wall -Werror -Wextra \
-	build_a_s_t.c \
+	build_ast.c \
+	ast_helpers.c \
 	../lexer/tokenize.c \
+	../lexer/tokenize_helpers.c \
 	../lexer/token_type.c \
+	../lexer/check_tokens_valid.c \
+	../lexer/join_tokens.c \
+	../lexer/lexer.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
 	../../lib/libft/src/ft_strcmp.c \

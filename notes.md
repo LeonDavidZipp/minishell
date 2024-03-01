@@ -5,3 +5,6 @@
 ## echo command
 - prints out everything behind it
 - stops printing and goes to next command when &&, ||
+
+## leaks
+- split.c leaks on line 84, 85 because the var created by ft_substr is not freed

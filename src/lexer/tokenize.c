@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/26 12:08:32 by intra            ###   ########.fr       */
+/*   Updated: 2024/02/29 16:26:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static t_token		*new_token(char *content, t_app_data *app);
-static void			join_tokens(t_token **join, t_token **prev,
-						t_token **tokens);
-static t_token		*join_arg_tokens(t_token *tokens);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -41,7 +38,9 @@ t_token	*tokenize(t_app_data *app)
 		prev = current;
 	}
 	ft_free_2d_arr((void **)token_contents);
-	return (join_arg_tokens(first));
+	first = join_arg_tokens(first);
+	first = join_after_echo(first);
+	return (first);
 }
 
 void	free_tokens(t_token *token)
@@ -61,91 +60,44 @@ static t_token	*new_token(char *content, t_app_data *app)
 {
 	t_token		*token;
 	char		*temp;
+	char		*path;
 
+	// cut out as soon as charlotte is done
 	if (content[0] == '\'')
 		temp = ft_substr(content, 1, ft_strlen(content) - 2);
-	else if (content[0] == '\"')
+	else if (content[0] == '\"' || content[0] == '$')
 	{
 		temp = in_string_expansion(content, app);
 		temp = ft_trim_in_place(temp, "\"");
 	}
-	else if (content[0] == '$')
-		temp = in_string_expansion(content, app);
 	else
 		temp = ft_strdup(content);
 	if (!temp)
 		return (NULL);
+	// end cut out
 	token = (t_token *)malloc(sizeof(t_token));
 	if (!token)
 		return (NULL);
+	path = get_path(app->env_vars);
 	token->content = ft_strdup(temp);
-	token->type = token_type(token->content);
+	token->type = token_type(token->content, path);
 	token->next = NULL;
 	free(temp);
+	free(path);
 	return (token);
-}
-
-static t_token	*join_arg_tokens(t_token *tokens)
-{
-	t_token		*first;
-	t_token		*prev;
-	t_token		*join;
-
-	first = tokens;
-	prev = NULL;
-	join = NULL;
-	while (tokens)
-	{
-		if (tokens->type == ARG || tokens->type == FLAG
-			|| tokens->type == )
-			join_tokens(&join, &prev, &tokens);
-		else if (tokens->type != ARG)
-		{
-			join = NULL;
-			prev = tokens;
-			tokens = tokens->next;
-		}
-		if (prev)
-			prev->next = tokens;
-		if (first == tokens && tokens->type == ARG)
-			first = join;
-	}
-	return (first);
-}
-
-static void	join_tokens(t_token **join, t_token **prev, t_token **tokens)
-{
-	if (*join)
-	{
-		(*join)->content = ft_join_in_place((*join)->content, " ");
-		(*join)->content = ft_join_in_place((*join)->content,
-				(*tokens)->content);
-		(*join)->next = (*tokens)->next;
-		free((*tokens)->content);
-		free(*tokens);
-		*tokens = (*join)->next;
-	}
-	else
-	{
-		*join = *tokens;
-		*prev = *tokens;
-		*tokens = (*tokens)->next;
-	}
 }
 
 // int main()
 // {
-// 	char	*input = ft_strdup("echo -n hi hello u geylord");
+// 	char	*input = ft_strdup("echo -n hi hello u geylord cd && echo hi");
 // 	t_token	*tokens;
 // 	t_app_data app;
 // 	app.input = input;
 // 	tokens = tokenize(&app);
 // 	t_token	*temp = tokens;
-// 	int i = 0;
 // 	while (temp)
 // 	{
-// 		printf("content: %s - type: %d\n", temp->content, temp->type);
-// 		printf("i: %d\n", i++);
+// 		printf("content: %s\ntype: %d\n--------\n", temp->content, temp->type);
 // 		temp = temp->next;
 // 	}
 // 	printf("done\n");

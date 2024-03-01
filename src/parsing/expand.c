@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/29 17:05:48 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:26:05 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,11 +86,11 @@ void	handle_quotes(char c, bool *s_quote, bool *d_quote)
 
 int	handle_wildcard(char *input, char **output, int *i)
 {
-	DIR *dir;
-	struct dirent *entry;
-	char *pattern;
-	int	position;
-	bool	flag;
+	DIR 			*dir;
+	struct dirent	*entry;
+	char			*pattern;
+	int				position;
+	bool			flag;
 
 	flag = false;
 	pattern = get_pattern(input, &i[0], &position);
@@ -121,7 +121,8 @@ int	handle_wildcard(char *input, char **output, int *i)
 	return (1);
 }
 
-char	*expand(char *input, int exit) // change exit back to t_app_data *app
+// change exit back to t_app_data *app
+char	*expand(char *input, int exit)
 {
 	char	*output;
 	int		size;

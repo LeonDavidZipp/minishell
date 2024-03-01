@@ -6,13 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/23 19:04:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 11:22:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 static char	*get_input(void);
+static void	print_logo(void);
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -26,6 +27,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	app_data.env_vars = init_envp(envp);
 	signal_handler();
+	print_logo();
 	while (true)
 	{
 		app_data.input = get_input();
@@ -60,4 +62,29 @@ static char	*get_input(void)
 	}
 	add_history(input);
 	return (input);
+}
+
+static void	print_logo(void)
+{
+	char	*lzipp;
+	char	*cgerling;
+
+	// font is ANSI Shadow
+	// https://patorjk.com/software/taag/#p
+	// =display&f=ANSI%20Shadow&t=babash
+	lzipp = "https://profile.intra.42.fr/users/lzipp";
+	cgerling = "https://profile.intra.42.fr/users/cgerling";
+	printf("\033[0;32m\n\n");
+	printf("	██████╗  █████╗ ██████╗  █████╗ ███████╗██╗  ██╗\n");
+	printf("	██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║\n");
+	printf("	██████╔╝███████║██████╔╝███████║███████╗███████║\n");
+	printf("	██╔══██╗██╔══██║██╔══██╗██╔══██║╚════██║██╔══██║\n");
+	printf("	██████╔╝██║  ██║██████╔╝██║  ██║███████║██║  ██║\n");
+	printf("	╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝");
+	printf("\033[0;33m\n\n");
+	printf("		   born again born again shell\n\n");
+	printf("\033[0;36m			");
+	printf("\e]8;;%s\alzipp\e]8;;\a && ", lzipp);
+	printf("\e]8;;%s\acgerling\e]8;;\a\n", cgerling);
+	printf("\033[0m\n");
 }
