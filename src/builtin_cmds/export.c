@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 08:38:15 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 08:59:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,7 @@ void	builtin_export(char *var_string, t_env_var **env_vars)
 			update_env_vars(temp[0], temp[1], env_vars);
 		free(temp);
 	}
-	// temp = split_envp(var_string);
-	// if (!temp)
-	// 	return ;
-	// if (ft_null_terminated_arr_len((void **)temp) != 2)
-	// 	update_env_vars(temp[0], "", env_vars);
-	// else
-	// 	update_env_vars(temp[0], temp[1], env_vars);
+	ft_free_2d_arr((void **)vars);
 }
 
 static void	print_vars(t_env_var *env_vars)
@@ -59,18 +53,18 @@ static void	print_vars(t_env_var *env_vars)
 	}
 }
 
-int main()
-{
-	t_env_var	*env_vars;
+// int main()
+// {
+// 	t_env_var	*env_vars;
 
-	env_vars = NULL;
-	update_env_vars("key1", "value1", &env_vars);
-	update_env_vars("key2", "value2", &env_vars);
-	update_env_vars("key3", "value3", &env_vars);
-	update_env_vars("key4", "value4", &env_vars);
-	// Add two new variables to the environment
-	builtin_export("VAR1=value1 VAR2=value2", &env_vars);
-	printf("\n----------------\n");
-	builtin_export(NULL, &env_vars);
-	return 0;
-}
+// 	env_vars = NULL;
+// 	update_env_vars("key1", "value1", &env_vars);
+// 	update_env_vars("key2", "value2", &env_vars);
+// 	update_env_vars("key3", "value3", &env_vars);
+// 	update_env_vars("key4", "value4", &env_vars);
+// 	// Add two new variables to the environment
+// 	builtin_export("VAR1=value1 VAR2=value2", &env_vars);
+// 	printf("\n----------------\n");
+// 	builtin_export(NULL, &env_vars);
+// 	return 0;
+// }
