@@ -6,13 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:45:10 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 15:47:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	execute_execv(char *cmd, char *args, t_env_var *env_vars);
+static void	execute_execv(char *cmd, char *args, t_env_var *env_vars);
+static void	execute_builtin(char *cmd, char *args, t_env_var *env_vars);
 
 void	execute_cmds(t_treenode *ast, t_env_var *env_vars)
 {
