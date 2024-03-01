@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check_tokens_valid.c                               :+:      :+:    :+:   */
+/*   check_current_valid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/03/01 10:01:30 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:15:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,75 +16,78 @@ bool	check_first_token(t_token *token);
 
 bool	check_tokens_valid(t_token *tokens)
 {
+	t_token		*current;
 	t_tokentype	type;
 
 	if (!check_first_token(tokens))
 		return (false);
-	while (tokens)
+	current = tokens;
+	while (current)
 	{
-		if (tokens->next)
-			type = tokens->next->type;
-		if (tokens->type == AND || tokens->type == OR || tokens->type == PIPE)
+		if (current->next)
+			type = current->next->type;
+		if (current->type == AND || current->type == OR || current->type == PIPE)
 		{
-			if (!tokens->next)
-				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			if (!current->next)
+				return (printf("%s: parse error near '\\n'\n", NAME), false);
 			else if (type == AND || type == OR || type == PIPE)
-				return (printf("%s: parse error near `%s'\n",
-						NAME, tokens->next->content), false);
+				return (printf("%s: parse error near '%s'\n",
+						NAME, current->next->content), false);
 		}
-		if (tokens->type == REDIR_OUT || tokens->type == REDIR_APPEND)
+		if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
 		{
-			if (!tokens->next)
-				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			if (!current->next)
+				return (printf("%s: parse error near '\\n'\n", NAME), false);
 			else if (type == AND || type == OR || type == PIPE
 				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
 				|| type == HEREDOC || type == WILDCARD)
-				return (printf("%s: parse error near `%s'\n",
-						NAME, tokens->next->content), false);
+				return (printf("%s: parse error near '%s'\n",
+						NAME, current->next->content), false);
 		}
-		if (tokens->type == REDIR_IN || tokens->type == HEREDOC)
+		if (current->type == REDIR_IN || current->type == HEREDOC)
 		{
-			if (!tokens->next)
-				return (printf("%s: parse error near `\\n'\n", NAME), false);
+			if (!current->next)
+				return (printf("%s: parse error near '\\n'\n", NAME), false);
 			else if (type == AND || type == OR || type == PIPE
 				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
 				|| type == HEREDOC || type == WILDCARD)
-				return (printf("%s: parse error near `%s'\n",
-						NAME, tokens->next->content), false);
+				return (printf("%s: parse error near '%s'\n",
+						NAME, current->next->content), false);
 		}
-		if (ft_strcmp(tokens->content, "cd") == 0)
+		if (ft_strcmp(current->content, "cd") == 0)
 		{
-			if (tokens->next && tokens->next->next
-				&& tokens->next->next->next
-				&& tokens->next->next->type != AND
-				&& tokens->next->next->type != OR
-				&& tokens->next->next->type != PIPE
-				&& tokens->next->next->type != REDIR_OUT
-				&& tokens->next->next->type != REDIR_APPEND
-				&& tokens->next->next->type != REDIR_IN
-				&& tokens->next->next->type != HEREDOC
-				&& tokens->next->next->type != WILDCARD
-				&& tokens->next->next->next->type != AND
-				&& tokens->next->next->next->type != OR
-				&& tokens->next->next->next->type != PIPE
-				&& tokens->next->next->next->type != REDIR_OUT
-				&& tokens->next->next->next->type != REDIR_APPEND
-				&& tokens->next->next->next->type != REDIR_IN
-				&& tokens->next->next->next->type != HEREDOC
-				&& tokens->next->next->next->type != WILDCARD)
+			if (current->next && current->next->next
+				&& current->next->next->next
+				&& current->next->next->type != AND
+				&& current->next->next->type != OR
+				&& current->next->next->type != PIPE
+				&& current->next->next->type != REDIR_OUT
+				&& current->next->next->type != REDIR_APPEND
+				&& current->next->next->type != REDIR_IN
+				&& current->next->next->type != HEREDOC
+				&& current->next->next->type != WILDCARD
+				&& current->next->next->next->type != AND
+				&& current->next->next->next->type != OR
+				&& current->next->next->next->type != PIPE
+				&& current->next->next->next->type != REDIR_OUT
+				&& current->next->next->next->type != REDIR_APPEND
+				&& current->next->next->next->type != REDIR_IN
+				&& current->next->next->next->type != HEREDOC
+				&& current->next->next->next->type != WILDCARD)
 				return (printf("cd: too many arguments\n"), false);
-			else if (tokens->next && tokens->next->next
-				&& tokens->next->next->type != AND
-				&& tokens->next->next->type != OR
-				&& tokens->next->next->type != PIPE
-				&& tokens->next->next->type != REDIR_OUT
-				&& tokens->next->next->type != REDIR_APPEND
-				&& tokens->next->next->type != REDIR_IN
-				&& tokens->next->next->type != HEREDOC
-				&& tokens->next->next->type != WILDCARD)
-				return (printf("cd: string not in pwd: `%s'\n",
-						tokens->next->content), false);
+			else if (current->next && current->next->next
+				&& current->next->next->type != AND
+				&& current->next->next->type != OR
+				&& current->next->next->type != PIPE
+				&& current->next->next->type != REDIR_OUT
+				&& current->next->next->type != REDIR_APPEND
+				&& current->next->next->type != REDIR_IN
+				&& current->next->next->type != HEREDOC
+				&& current->next->next->type != WILDCARD)
+				return (printf("cd: string not in pwd: '%s'\n",
+						current->next->content), false);
 		}
+		current = current->next;
 	}
 	return (true);
 }
@@ -95,7 +98,7 @@ bool	check_first_token(t_token *token)
 		|| token->type == OR
 		|| token->type == AND
 		|| token->type == PIPE)
-		return (printf("%s: parse error near `%s'\n",
+		return (printf("%s: parse error near '%s'\n",
 				NAME, token->next->content), false);
 	return (true);
 }

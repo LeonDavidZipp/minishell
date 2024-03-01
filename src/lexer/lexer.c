@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 16:27:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 10:10:09 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	lexer(t_app_data *app_data)
 	t_treenode	*ast;
 
 	// 1. first validate input (according to braces, quotes, etc.)
-	printf("acces to bin: %d\n", access("/bin", F_OK));
+	// printf("acces to bin: %d\n", access("/bin", F_OK));
 	if (check_input(app_data->input) == 1)
 	{
 		// print some shit
@@ -33,11 +33,11 @@ void	lexer(t_app_data *app_data)
 	if (!tokens)
 		handle_error(app_data);
 	// 4. check if the tree is valid
-	// if (!check_nodes_valid(tokens))
-	// {
-	// 	printf("%s", LEXER_ERR);
-	// 	free_for_next_call(app_data);
-	// }
+	if(!check_tokens_valid(tokens))
+	{
+		free_for_next_call(app_data);
+		return ;
+	}
 	intermediate_tree = combine_cmds_args(tokens);
 	free_tokens(tokens);
 	if (!intermediate_tree)
