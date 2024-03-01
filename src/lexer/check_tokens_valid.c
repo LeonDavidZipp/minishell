@@ -6,7 +6,7 @@
 /*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:23:10 by intra            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:25:52 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,44 +115,6 @@ bool	check_first_token(t_token *token)
 				NAME, token->next->content), false);
 	return (true);
 }
-
-// static bool	check_first_node(t_treenode *node);
-
-// bool	check_nodes_valid(t_treenode *nodes)
-// {
-// 	// t_treenode	*temp;
-// 	// t_tokentype	type;
-
-// 	// // if (!check_first_node(nodes))
-// 	// // 	return (false);
-// 	// temp = nodes->left;
-// 	// while (temp->left)
-// 	// {
-// 	// 	type = token_type(temp->cmd);
-// 	// 	if (type == ARG || type == WILDCARD)
-// 	// 		return (false);
-// 	// 	if ((type == PIPE || type == AND || type == OR)
-// 	// 		&& temp->args != NULL)
-// 	// 		return (false);
-// 	// 	temp = temp->left;
-// 	// }
-// 	return (true);
-// }
-
-// static bool	check_first_node(t_treenode *node)
-// {
-
-// 	if (token_type(node->cmd) == ARG
-// 		|| token_type(node->cmd) == OR
-// 		|| token_type(node->cmd) == AND
-// 		|| token_type(node->cmd) == PIPE
-// 		|| token_type(node->cmd) == REDIR_OUT
-// 		|| token_type(node->cmd) == REDIR_IN
-// 		|| token_type(node->cmd) == REDIR_APPEND
-// 		|| token_type(node->cmd) == HEREDOC)
-// 		return (false);
-// 	return (true);
-// }
 
 // int	main(void)
 // {
