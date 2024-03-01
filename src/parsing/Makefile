@@ -6,6 +6,7 @@ all:
 	check_input.c \
 	remove_quotes.c \
 	expand.c \
+	expand2.c \
 	expand_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_numlens.c \

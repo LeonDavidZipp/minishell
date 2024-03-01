@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:50:28 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/23 21:39:49 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:52:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,17 @@ int	new_input_length(char *input)
 	int		j;
 	bool	s_quote;
 	bool	d_quote;
-	bool	in_bracket;
 
 	i = 0;
 	j = 0;
 	s_quote = false;
 	d_quote = false;
-	in_bracket = false;
 	while (input[i])
 	{
-		quotes_brackets(input[i], &s_quote, &d_quote, &in_bracket);
-		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
-			&& !s_quote && !d_quote && !in_bracket)
+		handle_quotes(input[i], &s_quote, &d_quote);
+		if (input[i] && (input[i + 1] || input[i + 1] == '\0')
+			&& is_operator(input[i], input[i + 1])
+			&& !s_quote && !d_quote)
 		{
 			count_if_space_needed(input, &j, &i);
 		}
@@ -82,22 +81,22 @@ char	*add_spaces(char *input)
 	char	*new_input;
 	int		i;
 	int		j;
-	bool	flags[3];
+	bool	flags[2];
 
 	i = 0;
 	j = 0;
 	flags[0] = false;
 	flags[1] = false;
-	flags[2] = false;
 	new_input = malloc(sizeof(char) * ((ft_strlen(input)
 					+ new_input_length(input)) + 1));
 	if (!new_input)
 		return (NULL);
 	while (input[i])
 	{
-		quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
-		if (input[i] && input[i + 1] && is_operator(input[i], input[i + 1])
-			&& !flags[0] && !flags[1] && !flags[2])
+		handle_quotes(input[i], &flags[0], &flags[1]);
+		if (input[i] && (input[i + 1] || input[i + 1] == '\0')
+			&& is_operator(input[i], input[i + 1])
+			&& !flags[0] && !flags[1])
 			check_if_space_needed(input, new_input, &j, &i);
 		else
 			new_input[j++] = input[i++];

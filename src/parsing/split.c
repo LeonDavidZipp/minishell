@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 14:00:33 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:03:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,31 +19,29 @@ static void	init_vars(int *count, bool *flags)
 	count[2] = 0;
 	flags[0] = false;
 	flags[1] = false;
-	flags[2] = false;
 }
 
 int	count_tokens(char *input)
 {
 	int		i;
 	int		amount;
-	bool	flags[3];
+	bool	flags[2];
 
 	i = 0;
 	amount = 0;
 	flags[0] = false;
 	flags[1] = false;
-	flags[2] = false;
 	while (input[i])
 	{
 		while (input[i] && is_space(input[i]) && !flags[0]
-			&& !flags[1] && !flags[2])
+			&& !flags[1])
 			i++;
 		if (input[i])
 			amount++;
 		while (input[i] && (!is_space(input[i]) || flags[0]
-				|| flags[1] || flags[2]))
+				|| flags[1]))
 		{
-			quotes_brackets(input[i], &flags[0], &flags[1], &flags[2]);
+			handle_quotes(input[i], &flags[0], &flags[1]);
 			i++;
 		}
 	}
@@ -53,13 +51,13 @@ int	count_tokens(char *input)
 int	process_token(char *input, int *count, bool *flags, char **tokens)
 {
 	while (input[count[0]] && is_space(input[count[0]])
-		&& !flags[0] && !flags[1] && !flags[2])
+		&& !flags[0] && !flags[1])
 		count[0]++;
 	count[1] = count[0];
 	while ((input[count[1]] && (!is_space(input[count[1]])
-				|| flags[0] || flags[1] || flags[2])))
+				|| flags[0] || flags[1])))
 	{
-		quotes_brackets(input[count[1]], &flags[0], &flags[1], &flags[2]);
+		handle_quotes(input[count[1]], &flags[0], &flags[1]);
 		count[1]++;
 	}
 	tokens[count[2]] = ft_substr(input, count[0], count[1] - count[0]);
@@ -75,7 +73,7 @@ char	**split(char *input)
 	char	**tokens;
 	char	*new_input;
 	int		count[4];
-	bool	flags[3];
+	bool	flags[2];
 
 	init_vars(count, flags);
 	new_input = add_spaces(input);
@@ -95,32 +93,25 @@ char	**split(char *input)
 	return (tokens);
 }
 
-int main()
-{
-	char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER e*";
-	if (check_input(input) == 1)
-		return (1);
-	char **str = split(input);
-	if (!str)
-		return 1;
-	char *temp;
-	char *expanded;
-	for (int i = 0; str[i]; i++)
-	{
-		expanded = expand(str[i], 123);
-		if (!expanded)
-			return 1;
-		temp = remove_quotes(expanded);
-		if (!temp)
-			return 1;
-		printf("%s\n", temp);
-		free(temp);
-		free(expanded);
-	}
-	for (int i = 0; str[i]; i++)
-	{
-		free(str[i]);
-	}
-	free(str);
-	return 0;
-}
+// int main()
+// {
+// 	char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER, ((ls -l | 'wc -w'))";
+// 	if (check_input(input) == 1)
+// 		return (1);
+// 	char **str = split(input);
+// 	if (!str)
+// 		return 1;
+// 	char **tokens = expand_and_remove(str);
+// 	if (!tokens)
+// 		return 1;
+// 	for (int i = 0; tokens[i]; i++)
+// 	{
+// 		printf("%s\n", tokens[i]);
+// 	}
+// 	for (int i = 0; tokens[i]; i++)
+// 	{
+// 		free(tokens[i]);
+// 	}
+// 	free(tokens);
+// 	return 0;
+// }

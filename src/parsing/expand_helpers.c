@@ -6,38 +6,11 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 14:00:50 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 18:01:43 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-bool	match(char *pattern, char *string)
-{
-	while (*pattern && *string)
-	{
-		if (*pattern == '*')
-		{
-			while (*pattern == '*')
-				pattern++;
-			while (*string)
-			{
-				if (match(pattern, string))
-					return (true);
-				string++;
-			}
-			return (match(pattern, string));
-		}
-		else if (*pattern == *string)
-		{
-			pattern++;
-			string++;
-		}
-		else
-			return (false);
-	}
-	return (*pattern == *string);
-}
 
 int	env_var_size(char *input, int *i)
 {
@@ -59,30 +32,6 @@ int	env_var_size(char *input, int *i)
 		size = 0;
 	free(name);
 	return (size);
-}
-
-char	*get_pattern(char *input, int *i, int *position)
-{
-	int		start;
-	int		end;
-	int		tmp;
-	char	*pattern;
-
-	tmp = *i;
-	start = 0;
-	end = 0;
-	while (*i >= 0 && !is_space(input[*i]))
-		(*i)--;
-	start = *i + 1;
-	*position = tmp - start;
-	*i = tmp;
-	while (input[*i] && !is_space(input[*i]))
-		(*i)++;
-	end = *i;
-	pattern = ft_substr(input, start, end - start);
-	if (!pattern)
-		return (NULL);
-	return (pattern);
 }
 
 int	calc_wildcard_size(DIR *dir, char *pattern, int position)

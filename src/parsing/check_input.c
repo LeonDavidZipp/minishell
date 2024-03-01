@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:47:38 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/29 15:37:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:38:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ static void	init_flags(bool *flags)
 {
 	flags[0] = false;
 	flags[1] = false;
-	flags[2] = false;
 }
 
 int	check_input(char *str)
@@ -33,16 +32,16 @@ int	check_input(char *str)
 	int		d_quote;
 	int		bracket_1;
 	int		bracket_2;
-	bool	flags[3];
+	bool	flags[2];
 
 	init_flags(flags);
 	init_counts(&s_quote, &d_quote, &bracket_1, &bracket_2);
 	while (*str)
 	{
-		quotes_brackets(*str, &flags[0], &flags[1], &flags[2]);
-		if (*str == '\'' && !flags[1] && !flags[2])
+		handle_quotes(*str, &flags[0], &flags[1]);
+		if (*str == '\'' && !flags[1])
 			s_quote++;
-		if (*str == '\"' && !flags[0] && !flags[2])
+		if (*str == '\"' && !flags[0])
 			d_quote++;
 		if (*str == '(' && !flags[0] && !flags[1])
 			bracket_1++;

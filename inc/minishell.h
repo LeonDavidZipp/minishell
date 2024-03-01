@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/01 13:46:41 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/01 17:31:56 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,8 +132,8 @@ char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 char		*remove_quotes(char *token);
-void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
-				bool *in_bracket);
+// void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
+// 				bool *in_bracket);
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
@@ -155,15 +155,11 @@ int			priority(char *cmd);
 void		lexer(t_app_data *app_data);
 
 // expansion
-// char		*in_string_expansion(char *input, t_app_data *app);
-// char		*expand(char *input, t_app_data *app);
-char		*expand(char *input, int exit); // temporary for testing
-void		handle_quotes(char c, bool *s_quote, bool *d_quote); // temporary for testing maybe not temporary
+char		*expand(char *input, int exit);
+int			handle_dollar(char *input, char **output, int *i, int exit);
+void		handle_quotes(char c, bool *s_quote, bool *d_quote);
 int			get_new_size(char *input, int last_exit_code);
 bool		match(char *pattern, char *string);
-//char		**expand_wildcard(char *input);
-// char		*expand_var(char *input);
-// char		*expand_exit_code(int last_exit_code);
 bool		match(char *pattern, char *string);
 int			get_new_size(char *input, int last_exit_code);
 char		*get_pattern(char *input, int *i, int *position);
