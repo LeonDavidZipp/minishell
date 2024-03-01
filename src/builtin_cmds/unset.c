@@ -6,13 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:54:39 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 06:40:10 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 06:44:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	free_env_var(t_env_var *env_var);
+static void	remove_env_var(t_env_var **env_vars, t_env_var *prev,
+				t_env_var *current);
 
 void	builtin_unset(char *key, t_env_var **env_vars)
 {
@@ -32,11 +33,7 @@ void	builtin_unset(char *key, t_env_var **env_vars)
 		next = current->next;
 		if (ft_strncmp(current->key, key, ft_strlen(key)) == 0)
 		{
-			if (prev)
-				prev->next = next;
-			else
-				*env_vars = next;
-			free_env_var(current);
+			remove_env_var(env_vars, prev, current);
 			current = next;
 		}
 		else
@@ -47,11 +44,19 @@ void	builtin_unset(char *key, t_env_var **env_vars)
 	}
 }
 
-static void	free_env_var(t_env_var *env_var)
+static void	remove_env_var(t_env_var **env_vars, t_env_var *prev,
+				t_env_var *current)
 {
-	free(env_var->key);
-	free(env_var->value);
-	free(env_var);
+	t_env_var	*next;
+
+	next = current->next;
+	if (prev)
+		prev->next = next;
+	else
+		*env_vars = next;
+	free(current->key);
+	free(current->value);
+	free(current);
 }
 
 // int	main(void)
