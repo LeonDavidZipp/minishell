@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 11:26:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:06:50 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,14 @@ void	lexer(t_app_data *app_data)
 	tokens = tokenize(app_data);
 	if (!tokens)
 		handle_error(app_data);
+	t_token *temp = tokens;
+	while (temp)
+	{
+		printf("content: %s\n", temp->content);
+		printf("type: %d\n", temp->type);
+		temp = temp->next;
+	}
+	printf("--------------------\n");
 	// 4. check if the tree is valid
 	if(!check_tokens_valid(tokens))
 	{

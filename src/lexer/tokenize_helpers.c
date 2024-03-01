@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:49:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:11:23 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,11 @@ static void	join_after_echo_loop(int *echo_flag, t_token **tokens,
 			*echo_flag = 1;
 		else if (*echo_flag == 1)
 		{
-			if ((*tokens)->type == PIPE || (*tokens)->type == AND
+			if ((*tokens)->type == REDIR_APPEND || (*tokens)->type == AND
 				|| (*tokens)->type == OR || (*tokens)->type == REDIR_OUT
-				|| (*tokens)->type == REDIR_IN
-				|| (*tokens)->type == REDIR_APPEND
-				|| (*tokens)->type == HEREDOC)
+				|| (*tokens)->type == REDIR_IN || (*tokens)->type == PIPE
+				|| (*tokens)->type == HEREDOC || (*tokens)->type == LEFT_BRACKET
+				|| (*tokens)->type == RIGHT_BRACKET)
 				*echo_flag = 0;
 			else
 			{

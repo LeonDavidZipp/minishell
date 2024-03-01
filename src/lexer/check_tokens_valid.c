@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_tokens_valid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 16:03:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:23:10 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,18 @@ bool	check_tokens_valid(t_token *tokens)
 				&& current->next->next->type != WILDCARD)
 				return (printf("cd: string not in pwd: '%s'\n",
 						current->next->content), false);
+		}
+		if (ft_strcmp(current->content, "echo") == 0)
+		{
+			if (current->next && current->next->next
+				&& (current->next->type == LEFT_BRACKET
+				|| current->next->type == RIGHT_BRACKET))
+				return (printf("babash: syntax error near unexpected token \'%s\'\n",
+						current->next->next->content), false);
+			else if (current->next && (current->next->type == LEFT_BRACKET
+				|| current->next->type == RIGHT_BRACKET))
+				return (printf("babash: syntax error near unexpected token \'newline\'\n"),
+						false);
 		}
 		current = current->next;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 16:26:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 20:08:03 by intra            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,15 @@ void	free_tokens(t_token *token)
 static t_token	*new_token(char *content, t_app_data *app)
 {
 	t_token		*token;
-	char		*temp;
 	char		*path;
 
-	// cut out as soon as charlotte is done
-	if (content[0] == '\'')
-		temp = ft_substr(content, 1, ft_strlen(content) - 2);
-	else if (content[0] == '\"' || content[0] == '$')
-	{
-		temp = in_string_expansion(content, app);
-		temp = ft_trim_in_place(temp, "\"");
-	}
-	else
-		temp = ft_strdup(content);
-	if (!temp)
-		return (NULL);
-	// end cut out
 	token = (t_token *)malloc(sizeof(t_token));
-	if (!token)
-		return (NULL);
 	path = get_path(app->env_vars);
-	token->content = ft_strdup(temp);
+	if (!token || !path)
+		return (free(token), free(path), NULL);
+	token->content = ft_strdup(content);
 	token->type = token_type(token->content, path);
 	token->next = NULL;
-	free(temp);
 	free(path);
 	return (token);
 }

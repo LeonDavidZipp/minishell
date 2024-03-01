@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
+#    By: intra <intra@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/01 14:45:23 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/01 20:02:41 by intra            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,10 +39,11 @@ lexer/tokenize.c \
 other_cmds/utils.c \
 parsing/check_input.c \
 parsing/expand_helpers.c \
-parsing/expand_simple.c \
 parsing/expand.c \
+parsing/expand2.c \
+parsing/mix_helpers.c \
+parsing/need_name.c \
 parsing/split_helpers.c \
-parsing/split_helpers2.c \
 parsing/split.c \
 signals/signal_handler.c \
 main.c)
