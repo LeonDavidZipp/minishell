@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 11:14:35 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 11:22:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static void	print_logo(void)
 	char	*cgerling;
 
 	// font is ANSI Shadow
+	// https://patorjk.com/software/taag/#p
+	// =display&f=ANSI%20Shadow&t=babash
 	lzipp = "https://profile.intra.42.fr/users/lzipp";
 	cgerling = "https://profile.intra.42.fr/users/cgerling";
 	printf("\033[0;32m\n\n");
