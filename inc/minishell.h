@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/04 10:58:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/29 15:33:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 05:15:40 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ typedef enum e_tokentype
 	PIPE,
 	AND,
 	OR,
-	REDIR_OUT,
-	REDIR_IN,
-	REDIR_APPEND,
-	HEREDOC,
+	REDIR_OUT, // >
+	REDIR_IN, // <
+	REDIR_APPEND, // >>
+	HEREDOC, // <<
 	WILDCARD,
 	BUILTIN_CMD,
 	OTHER_CMD,

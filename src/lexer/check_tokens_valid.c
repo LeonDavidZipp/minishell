@@ -6,11 +6,61 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by intra             #+#    #+#             */
-/*   Updated: 2024/02/29 16:03:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 05:21:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+bool	check_first_token(t_token *token);
+
+bool	check_tokens_valid(t_token *tokens)
+{
+	t_tokentype	type;
+
+	if (!check_first_token(tokens))
+		return (false);
+	while (tokens)
+	{
+		// && and ||
+		if (tokens->type == AND || tokens->type == OR)
+		{
+			if (!tokens->next)
+				return (false);
+			type = token_type(tokens->next->content, NULL);
+			if (tokens->next->type == WILDCARD || tokens->next->type == REDIR_IN
+				|| tokens->next->type == HEREDOC || tokens->next->type == PIPE
+				|| tokens->next->type == AND || tokens->next->type == OR)
+				return (false);
+		}
+		// > and >>
+		if (tokens->type == REDIR_OUT || tokens->type == REDIR_APPEND)
+		{
+			if (!tokens->next)
+				return (false);
+			type = token_type(tokens->next->content, NULL);
+			if (tokens->next->type == WILDCARD || tokens->next->type == REDIR_IN
+				|| tokens->next->type == HEREDOC || tokens->next->type == PIPE
+				|| tokens->next->type == AND || tokens->next->type == OR)
+				return (false);
+		}
+		// < and <<
+		// echo, cd, pwd, export, unset, env
+
+	}
+	return (true);
+}
+
+bool	check_first_token(t_token *token)
+{
+	if (token->type == ARG
+		|| token->type == OR
+		|| token->type == AND
+		|| token->type == PIPE
+		|| token->type == WILDCARD)
+		return (false);
+	return (true);
+}
 
 // static bool	check_first_node(t_treenode *node);
 
