@@ -26,7 +26,8 @@ bool	check_tokens_valid(t_token *tokens)
 	{
 		if (current->next)
 			type = current->next->type;
-		if (current->type == AND || current->type == OR || current->type == PIPE)
+		if (current->type == AND || current->type == OR
+			|| current->type == PIPE)
 		{
 			if (!current->next)
 				return (printf("%s: parse error near '\\n'\n", NAME), false);
