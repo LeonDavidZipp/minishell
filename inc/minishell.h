@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/02 14:38:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 17:17:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <readline/history.h>
 
 # define NAME "babash"
-# define PROMPT "\033[1;36mbabash →  \033[0m"
+# define PROMPT "\033[1;36mbabash \033[1;32m→  \033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -88,7 +88,7 @@ typedef struct s_treenode
 {
 	char				*cmd;
 	char				*args;
-	bool				in_bracket;
+	int					bracket_lvl;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
@@ -132,7 +132,7 @@ char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 char		*remove_quotes(char *token);
 // void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
-// 				bool *in_bracket);
+// 				bool *bracket_lvl);
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
@@ -143,7 +143,8 @@ t_tokentype	token_type(char *content, t_tokentype prev_type);
 bool		check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree
-t_treenode	*build_ast(t_treenode *lin_tree);
+// t_treenode	*build_ast(t_treenode *lin_tree);
+t_treenode	*build_ast(t_treenode **lin_tree, int old_bracket_lvl);
 t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);

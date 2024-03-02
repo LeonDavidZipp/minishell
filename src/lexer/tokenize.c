@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 14:51:25 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 15:18:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token	*new_token(char *content, t_token *prev, t_app_data *app);
+static t_token	*new_token(char *content, t_token *prev);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -30,7 +30,7 @@ t_token	*tokenize(t_app_data *app)
 	i = -1;
 	while (token_contents[++i])
 	{
-		current = new_token(token_contents[i], prev, app);
+		current = new_token(token_contents[i], prev);
 		if (!prev)
 			first = current;
 		else
@@ -56,7 +56,7 @@ void	free_tokens(t_token *token)
 	}
 }
 
-static t_token	*new_token(char *content, t_token *prev, t_app_data *app)
+static t_token	*new_token(char *content, t_token *prev)
 {
 	t_token		*token;
 

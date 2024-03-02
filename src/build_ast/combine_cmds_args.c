@@ -6,14 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 14:48:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 17:22:51 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_treenode	*new_treenode(char *content, bool in_bracket);
-static void			combine_cmds_args_loop(t_token *temp, bool in_bracket,
+static t_treenode	*new_treenode(char *content, int bracket_lvl);
+static void			combine_cmds_args_loop(t_token *temp, int bracket_lvl,
 						t_treenode **first,
 						t_treenode **prev);
 static void			update_links(t_treenode **first, t_treenode **prev,
@@ -24,32 +24,34 @@ t_treenode	*combine_cmds_args(t_token *tokens)
 	t_token			*temp;
 	t_treenode		*prev;
 	t_treenode		*first;
-	bool			in_bracket;
+	int				bracket_lvl;
 
 	temp = tokens;
 	first = NULL;
 	prev = NULL;
-	in_bracket = false;
-	combine_cmds_args_loop(temp, in_bracket, &first, &prev);
+	bracket_lvl = 0;
+	combine_cmds_args_loop(temp, &bracket_lvl, &first, &prev);
 	return (first);
 }
 
-static t_treenode	*new_treenode(char *content, bool in_bracket)
+static t_treenode	*new_treenode(char *content, int bracket_lvl)
 {
 	t_treenode	*node;
 
 	node = (t_treenode *)malloc(sizeof(t_treenode));
 	if (!node)
 		return (NULL);
+	if (bracket_lvl < 0)
+		bracket_lvl = 0;
 	node->cmd = ft_strdup(content);
 	node->args = NULL;
-	node->in_bracket = in_bracket;
+	node->bracket_lvl = bracket_lvl;
 	node->left = NULL;
 	node->right = NULL;
 	return (node);
 }
 
-static void	combine_cmds_args_loop(t_token *temp, bool in_bracket,
+static void	combine_cmds_args_loop(t_token *temp, int bracket_lvl,
 								t_treenode **first, t_treenode **prev)
 {
 	t_treenode	*current;
@@ -60,16 +62,16 @@ static void	combine_cmds_args_loop(t_token *temp, bool in_bracket,
 		if (temp->type == LEFT_BRACKET)
 		{
 			temp = temp->next;
-			in_bracket = true;
+			bracket_lvl += 1;
 			continue ;
 		}
 		else if (temp->type == RIGHT_BRACKET)
 		{
 			temp = temp->next;
-			in_bracket = false;
+			bracket_lvl -= 1;
 			continue ;
 		}
-		current = new_treenode(temp->content, in_bracket);
+		current = new_treenode(temp->content, bracket_lvl);
 		if (temp->next && temp->next->type == ARG)
 		{
 			current->args = ft_strdup(temp->next->content);

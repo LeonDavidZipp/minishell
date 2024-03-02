@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:06:50 by intra            ###   ########.fr       */
+/*   Updated: 2024/03/02 17:18:23 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,9 @@ void	lexer(t_app_data *app_data)
 	if (!intermediate_tree)
 		handle_error(app_data);
 	// 5. to binary tree (maybe together with step 4)
-	ast = build_ast(intermediate_tree);
-	free_treenodes(intermediate_tree);
+	// ast = build_ast(intermediate_tree);
+	ast = build_ast(&intermediate_tree, 0);
+	// free_treenodes(intermediate_tree);
 	if (!ast)
 		handle_error(app_data);
 	debug_printtree(ast, 0);
