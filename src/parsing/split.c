@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 18:34:49 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:18:04 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,8 @@ char	**split(char *input)
 
 // int main()
 // {
-// 	char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER, ((ls -l | 'wc -w'))";
+// 	// char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER, ((ls -l | 'wc -w')) *";
+// 	// char *input = "echo *";
 // 	if (check_input(input) == 1)
 // 		return (1);
 // 	char **str = split(input);

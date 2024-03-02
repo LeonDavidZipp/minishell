@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/01 18:34:35 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:16:47 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,5 +166,6 @@ bool		match(char *pattern, char *string);
 bool		match(char *pattern, char *string);
 int			get_new_size(char *input, int last_exit_code);
 char		*get_pattern(char *input, int *i, int *position);
+char		**expand_and_remove(char **tokens);
 
 #endif

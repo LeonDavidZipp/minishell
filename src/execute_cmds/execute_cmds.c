@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:47:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/01 19:01:08 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	execute_execv(char *cmd, char *args, t_env_var *env_vars);
 static void	execute_builtin(char *cmd, char *args, t_env_var *env_vars);
 
-void	execute_cmds(t_treenode *ast, t_env_var *env_vars)
+void	execute_cmds(t_treenode *ast, t_env_var *env_vars) // nneds options for redirection and pipes
 {
 	t_tokentype	type;
 	char		*path;
@@ -35,7 +35,7 @@ void	execute_cmds(t_treenode *ast, t_env_var *env_vars)
 	}
 }
 
-static void	execute_execv(char *cmd, char *args, t_env_var *env_vars)
+static void	execute_execv(char *cmd, char *args, t_env_var *env_vars) // needs path find in execve call
 {
 	pid_t	pid;
 	int		status;
@@ -57,7 +57,7 @@ static void	execute_execv(char *cmd, char *args, t_env_var *env_vars)
 		exit(1);
 	}
 	else
-		waitpid(pid, &status, 0);
+		waitpid(pid, &status, 0); // needs to wait in the end for all processes and save each exit status in a list
 	free_2d_arr((void **)arg_arr);
 }
 
