@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 14:43:28 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:50:51 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,16 @@ void	free_tokens(t_token *token)
 static t_token	*new_token(char *content, t_token *prev, t_app_data *app)
 {
 	t_token		*token;
-	char		*path;
 
 	token = (t_token *)malloc(sizeof(t_token));
-	path = get_path(app->env_vars);
-	if (!token || !path)
-		return (free(token), free(path), NULL);
+	if (!token)
+		return (NULL);
 	token->content = ft_strdup(content);
 	if (prev)
 		token->type = token_type(token->content, prev->type);
 	else
 		token->type = token_type(token->content, FIRST);
 	token->next = NULL;
-	free(path);
 	return (token);
 }
 
