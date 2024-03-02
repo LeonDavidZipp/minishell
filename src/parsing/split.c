@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/02 12:26:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 12:33:40 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,20 +90,16 @@ char	**split(char *input)
 			return (free(new_input), free(tokens), NULL);
 	}
 	free(new_input);
-	return (tokens);
+	return (expand_and_remove(tokens));
 }
 
 // int main()
 // {
-// 	// char *input = "'\"'\"'\"hello\"'\"'\"' test'hi' $USER, ((ls -l | 'wc -w')) *";
-// 	// char *input = "echo *";
+// 	char *input = "echo *";
 // 	if (check_input(input) == 1)
 // 		return (1);
 // 	char **str = split(input);
 // 	if (!str)
-// 		return 1;
-// 	char **tokens = expand_and_remove(str);
-// 	if (!tokens)
 // 		return 1;
 // 	for (int i = 0; tokens[i]; i++)
 // 	{
