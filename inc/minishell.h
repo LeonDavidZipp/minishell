@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 20:29:55 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:30:03 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 12:16:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct s_treenode
 {
 	char				*cmd;
 	char				*args;
+	bool				in_bracket;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
