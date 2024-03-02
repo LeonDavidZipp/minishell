@@ -6,13 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 14:08:06 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:38:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token		*new_token(char *content, t_app_data *app);
+static t_token	*new_token(char *content, int i, t_token *prev,
+							t_app_data *app);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -30,7 +31,7 @@ t_token	*tokenize(t_app_data *app)
 	i = -1;
 	while (token_contents[++i])
 	{
-		current = new_token(token_contents[i], app);
+		current = new_token(token_contents[i], i, prev, app);
 		if (!prev)
 			first = current;
 		else
@@ -56,7 +57,8 @@ void	free_tokens(t_token *token)
 	}
 }
 
-static t_token	*new_token(char *content, t_app_data *app)
+static t_token	*new_token(char *content, int i, t_token *prev,
+							t_app_data *app)
 {
 	t_token		*token;
 	char		*path;
@@ -66,7 +68,10 @@ static t_token	*new_token(char *content, t_app_data *app)
 	if (!token || !path)
 		return (free(token), free(path), NULL);
 	token->content = ft_strdup(content);
-	token->type = token_type(token->content, path);
+	if (prev)
+		token->type = token_type(token->content, prev->type);
+	else
+		token->type = token_type(token->content, FIRST);
 	token->next = NULL;
 	free(path);
 	return (token);

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/02 14:08:25 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:38:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,9 @@
 
 typedef enum e_tokentype
 {
-	// FLAG,
-	// SINGLE_QUOTE,
-	// DOUBLE_QUOTE,
+	FIRST,
+	LEFT_BRACKET,
+	RIGHT_BRACKET,
 	PIPE,
 	AND,
 	OR,
@@ -66,11 +66,8 @@ typedef enum e_tokentype
 	REDIR_IN, // <
 	REDIR_APPEND, // >>
 	HEREDOC, // <<
-	BUILTIN_CMD,
-	OTHER_CMD,
-	ARG,
-	LEFT_BRACKET,
-	RIGHT_BRACKET
+	CMD,
+	ARG
 }			t_tokentype;
 
 typedef struct s_env_var
@@ -142,7 +139,7 @@ t_token		*tokenize(t_app_data *app);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 void		free_tokens(t_token *token);
-t_tokentype	token_type(char *content, char *path);
+t_tokentype	token_type(char *content, t_tokentype prev_type);
 bool		check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree

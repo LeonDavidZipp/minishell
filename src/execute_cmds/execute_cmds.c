@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_cmds.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 19:01:08 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/02 14:34:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	execute_cmds(t_treenode *ast, t_env_var *env_vars) // nneds options for red
 	{
 		path = get_path(env_vars);
 		type = token_type(ast->cmd, path);
-		if (type == OTHER_CMD)
+		if (type == CMD)
 			execute_execv(ast->cmd, ast->args, env_vars);
-		else if (type == BUILTIN_CMD)
+		else if (type == CMD)
 			execute_builtin(ast->cmd, ast->args, env_vars);
 	}
 }
