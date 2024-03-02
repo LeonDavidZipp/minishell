@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 18:01:55 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/02 12:53:07 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,20 +62,23 @@ void	handle_character(char *input, char **output, int *i, int exit_code)
 
 	s_quote = false;
 	d_quote = false;
-	handle_quotes(input[i[0]], &s_quote, &d_quote);
-	if (input[i[0]] == '$' && !s_quote)
+	while (input[i[0]])
 	{
-		if (!handle_dollar(input, output, i, exit_code))
-			return ;
+		handle_quotes(input[i[0]], &s_quote, &d_quote);
+		if (input[i[0]] == '$' && !s_quote)
+		{
+			if (!handle_dollar(input, output, i, exit_code))
+				return ;
+		}
+		if (input[i[0]] == '*' && !s_quote && !d_quote)
+		{
+			if (!handle_wildcard(input, output, i))
+				return ;
+			i[1]--;
+		}
+		else
+			(*output)[i[1]++] = input[i[0]++];
 	}
-	else if (input[i[0]] == '*' && !s_quote && !d_quote)
-	{
-		if (!handle_wildcard(input, output, i))
-			return ;
-		i[1]--;
-	}
-	else
-		(*output)[i[1]++] = input[i[0]++];
 }
 
 char	*expand(char *input, int exit_code)
@@ -90,10 +93,7 @@ char	*expand(char *input, int exit_code)
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
-	while (input[i[0]])
-	{
-		handle_character(input, &output, i, exit_code);
-	}
+	handle_character(input, &output, i, exit_code);
 	if (output != NULL)
 		output[i[1]] = '\0';
 	return (output);
