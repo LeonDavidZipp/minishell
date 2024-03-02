@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 12:21:21 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 13:58:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ t_treenode	*build_ast(t_treenode *lin_tree)
 	temp = lin_tree;
 	while (temp)
 	{
-		if (temp->in_bracket)
-		{
-			;
-		}
-		else
+		// if (temp->in_bracket)
+		// {
+		// 	;
+		// }
+		// else
 			ast = insert_node(ast, temp->cmd, temp->args);
 		temp = temp->left;
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:08:03 by intra            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:08:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,3 +90,6 @@ static t_token	*new_token(char *content, t_app_data *app)
 // 	free(input);
 // 	return (0);
 // }
+
+// everythin at beginning is cmd
+// everything after &&, || is cmd

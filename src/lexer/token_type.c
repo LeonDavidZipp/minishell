@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: intra <intra@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:05:48 by intra            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:09:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ t_tokentype	token_type(char *content, char *path)
 		return (AND);
 	else if (ft_strcmp(content, "||") == 0)
 		return (OR);
-	else if (ft_strcmp(content, "*") == 0)
-		return (WILDCARD);
 	else if (ft_strcmp(content, ">") == 0)
 		return (REDIR_OUT);
 	else if (ft_strcmp(content, ">>") == 0)

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/02 12:25:02 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:08:25 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ typedef enum e_tokentype
 	REDIR_IN, // <
 	REDIR_APPEND, // >>
 	HEREDOC, // <<
-	WILDCARD,
 	BUILTIN_CMD,
 	OTHER_CMD,
 	ARG,
