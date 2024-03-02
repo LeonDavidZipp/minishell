@@ -2,9 +2,9 @@ all:
 	@gcc -Wall -Wextra -Werror \
 	split.c \
 	split_helpers.c \
-	split_helpers2.c \
+	mix_helpers.c \
 	check_input.c \
-	remove_quotes.c \
+	need_name.c \
 	expand.c \
 	expand2.c \
 	expand_helpers.c \

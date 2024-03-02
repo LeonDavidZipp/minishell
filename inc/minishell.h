@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 20:29:55 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 12:16:56 by lzipp            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/03/02 12:25:02 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,5 +165,6 @@ int			get_new_size(char *input, int last_exit_code);
 bool		match(char *pattern, char *string);
 int			get_new_size(char *input, int last_exit_code);
 char		*get_pattern(char *input, int *i, int *position);
+char		**expand_and_remove(char **tokens);
 
 #endif
