@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 16:03:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/04 17:45:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ int	priority(char *cmd)
 		return (1);
 	else if (ft_strcmp(cmd, "|") == 0)
 		return (2);
-	else if (ft_strcmp(cmd, "&&") == 0)
+	else if (ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, "||") == 0)
 		return (3);
-	else if (ft_strcmp(cmd, "||") == 0)
-		return (4);
 	return (0);
 }
 
