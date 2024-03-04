@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 20:29:55 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:30:03 by lzipp            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/03/04 17:55:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@
 # include <readline/history.h>
 
 # define NAME "babash"
-# define PROMPT "\033[1;36mbabash →  \033[0m"
+# define PROMPT "\033[1;36mbabash \033[1;32m→  \033[0m"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -56,9 +56,9 @@
 
 typedef enum e_tokentype
 {
-	// FLAG,
-	// SINGLE_QUOTE,
-	// DOUBLE_QUOTE,
+	FIRST,
+	LEFT_BRACKET,
+	RIGHT_BRACKET,
 	PIPE,
 	AND,
 	OR,
@@ -66,12 +66,8 @@ typedef enum e_tokentype
 	REDIR_IN, // <
 	REDIR_APPEND, // >>
 	HEREDOC, // <<
-	WILDCARD,
-	BUILTIN_CMD,
-	OTHER_CMD,
-	ARG,
-	LEFT_BRACKET,
-	RIGHT_BRACKET
+	CMD,
+	ARG
 }			t_tokentype;
 
 typedef struct s_env_var
@@ -92,6 +88,8 @@ typedef struct s_treenode
 {
 	char				*cmd;
 	char				*args;
+	t_tokentype			cmd_type;
+	int					bracket_lvl;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
@@ -135,18 +133,20 @@ char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 char		*remove_quotes(char *token);
 // void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
-// 				bool *in_bracket);
+// 				bool *bracket_lvl);
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 void		free_tokens(t_token *token);
-t_tokentype	token_type(char *content, char *path);
+t_tokentype	token_type(char *content, t_tokentype prev_type);
 bool		check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree
-t_treenode	*build_ast(t_treenode *lin_tree);
+// t_treenode	*build_ast(t_treenode *lin_tree);
+// t_treenode	*build_ast(t_treenode **lin_tree, int old_bracket_lvl);
+t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
 t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
@@ -164,5 +164,6 @@ int			get_new_size(char *input, int last_exit_code);
 bool		match(char *pattern, char *string);
 int			get_new_size(char *input, int last_exit_code);
 char		*get_pattern(char *input, int *i, int *position);
+char		**expand_and_remove(char **tokens);
 
 #endif

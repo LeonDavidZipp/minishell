@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:49:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/04 18:51:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,8 @@ int	priority(char *cmd)
 		return (1);
 	else if (ft_strcmp(cmd, "|") == 0)
 		return (2);
-	else if (ft_strcmp(cmd, "&&") == 0)
+	else if (ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, "||") == 0)
 		return (3);
-	else if (ft_strcmp(cmd, "||") == 0)
-		return (4);
 	return (0);
 }
 
@@ -45,7 +43,8 @@ void	debug_printtree(t_treenode *root, int tabs)
 	if (root)
 	{
 		debug_print_tabs(tabs);
-		printf("content: %s, args: %s\n", root->cmd, root->args);
+		printf("content: %s, args: %s, in_b: %d\n", root->cmd,
+				root->args, root->bracket_lvl);
 		debug_print_tabs(tabs);
 		printf("left:\n");
 		debug_printtree(root->left, tabs + 1);
@@ -53,9 +52,9 @@ void	debug_printtree(t_treenode *root, int tabs)
 		printf("right:\n");
 		debug_printtree(root->right, tabs + 1);
 	}
-	else
-	{
-		debug_print_tabs(tabs);
-		printf("--is empty--\n");
-	}
+	// else
+	// {
+	// 	debug_print_tabs(tabs);
+	// 	printf("--is empty--\n");
+	// }
 }

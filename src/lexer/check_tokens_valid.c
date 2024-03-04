@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 20:30:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:30:40 by lzipp            ###   ########.fr       */
+/*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/04 20:33:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ bool	check_tokens_valid(t_token *tokens)
 				return (printf("%s: parse error near '\\n'\n", NAME), false);
 			else if (type == AND || type == OR || type == PIPE
 				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
-				|| type == HEREDOC || type == WILDCARD)
+				|| type == HEREDOC)
 				return (printf("%s: parse error near '%s'\n",
 						NAME, current->next->content), false);
 		}
@@ -51,7 +51,7 @@ bool	check_tokens_valid(t_token *tokens)
 				return (printf("%s: parse error near '\\n'\n", NAME), false);
 			else if (type == AND || type == OR || type == PIPE
 				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
-				|| type == HEREDOC || type == WILDCARD)
+				|| type == HEREDOC)
 				return (printf("%s: parse error near '%s'\n",
 						NAME, current->next->content), false);
 		}
@@ -66,15 +66,13 @@ bool	check_tokens_valid(t_token *tokens)
 				&& current->next->next->type != REDIR_APPEND
 				&& current->next->next->type != REDIR_IN
 				&& current->next->next->type != HEREDOC
-				&& current->next->next->type != WILDCARD
 				&& current->next->next->next->type != AND
 				&& current->next->next->next->type != OR
 				&& current->next->next->next->type != PIPE
 				&& current->next->next->next->type != REDIR_OUT
 				&& current->next->next->next->type != REDIR_APPEND
 				&& current->next->next->next->type != REDIR_IN
-				&& current->next->next->next->type != HEREDOC
-				&& current->next->next->next->type != WILDCARD)
+				&& current->next->next->next->type != HEREDOC)
 				return (printf("cd: too many arguments\n"), false);
 			else if (current->next && current->next->next
 				&& current->next->next->type != AND
@@ -83,8 +81,7 @@ bool	check_tokens_valid(t_token *tokens)
 				&& current->next->next->type != REDIR_OUT
 				&& current->next->next->type != REDIR_APPEND
 				&& current->next->next->type != REDIR_IN
-				&& current->next->next->type != HEREDOC
-				&& current->next->next->type != WILDCARD)
+				&& current->next->next->type != HEREDOC)
 				return (printf("cd: string not in pwd: '%s'\n",
 						current->next->content), false);
 		}

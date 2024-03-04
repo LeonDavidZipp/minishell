@@ -5,8 +5,13 @@
 #                                                     +:+ +:+         +:+      #
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
+<<<<<<< HEAD
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
 #    Updated: 2024/03/01 20:30:30 by lzipp            ###   ########.fr        #
+=======
+#    Created: 2024/02/04 10:54:39 by lzipp             #+#    #+#              #
+#    Updated: 2024/03/02 12:35:42 by lzipp            ###   ########.fr        #
+>>>>>>> 7bd721e33a5c05ac2347356256b3a2ae46f3154f
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +25,7 @@ OBJDIR = ./obj
 SOURCES := $(addprefix src/, \
 build_ast/build_ast.c \
 build_ast/ast_helpers.c \
+build_ast/combine_cmds_args.c \
 builtin_cmds/cd.c \
 builtin_cmds/echo.c \
 builtin_cmds/env.c \
@@ -31,7 +37,6 @@ env_vars/env_vars.c \
 env_vars/env_vars_2.c \
 env_vars/init_environ.c \
 lexer/check_tokens_valid.c \
-lexer/join_tokens.c \
 lexer/lexer.c \
 lexer/token_type.c \
 lexer/tokenize_helpers.c \

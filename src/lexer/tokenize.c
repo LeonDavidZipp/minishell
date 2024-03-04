@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 20:31:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 20:31:17 by lzipp            ###   ########.fr       */
+/*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/04 20:34:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token		*new_token(char *content, t_app_data *app);
+static t_token	*new_token(char *content, t_token *prev);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -30,7 +30,7 @@ t_token	*tokenize(t_app_data *app)
 	i = -1;
 	while (token_contents[++i])
 	{
-		current = new_token(token_contents[i], app);
+		current = new_token(token_contents[i], prev);
 		if (!prev)
 			first = current;
 		else
@@ -56,37 +56,18 @@ void	free_tokens(t_token *token)
 	}
 }
 
-static t_token	*new_token(char *content, t_app_data *app)
+static t_token	*new_token(char *content, t_token *prev)
 {
 	t_token		*token;
-	char		*path;
 
 	token = (t_token *)malloc(sizeof(t_token));
-	path = get_path(app->env_vars);
-	if (!token || !path)
-		return (free(token), free(path), NULL);
+	if (!token)
+		return (NULL);
 	token->content = ft_strdup(content);
-	token->type = token_type(token->content, path);
+	if (prev)
+		token->type = token_type(token->content, prev->type);
+	else
+		token->type = token_type(token->content, FIRST);
 	token->next = NULL;
-	free(path);
 	return (token);
 }
-
-// int main()
-// {
-// 	char	*input = ft_strdup("echo -n hi hello u geylord cd && echo hi");
-// 	t_token	*tokens;
-// 	t_app_data app;
-// 	app.input = input;
-// 	tokens = tokenize(&app);
-// 	t_token	*temp = tokens;
-// 	while (temp)
-// 	{
-// 		printf("content: %s\ntype: %d\n--------\n", temp->content, temp->type);
-// 		temp = temp->next;
-// 	}
-// 	printf("done\n");
-// 	free_tokens(tokens);
-// 	free(input);
-// 	return (0);
-// }

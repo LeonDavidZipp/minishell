@@ -1,12 +1,12 @@
 all :
 	gcc -Wall -Werror -Wextra \
-	build_ast.c \
+	build_ast_2.c \
 	ast_helpers.c \
+	combine_cmds_args.c \
 	../lexer/tokenize.c \
 	../lexer/tokenize_helpers.c \
 	../lexer/token_type.c \
 	../lexer/check_tokens_valid.c \
-	../lexer/join_tokens.c \
 	../lexer/lexer.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
@@ -22,10 +22,11 @@ all :
 	../../lib/libft/src/ft_itoa.c \
 	../../lib/libft/src/ft_strtrim.c \
 	../../lib/libft/src/ft_strjoin.c \
-	../parsing/split.c \
-	../parsing/split_helpers.c \
-	../parsing/split_helpers2.c \
-	../parsing/expand.c \
-	../parsing/expand_helpers.c \
-	../parsing/expand_simple.c \
 	../parsing/check_input.c \
+	../parsing/expand_helpers.c \
+	../parsing/expand.c \
+	../parsing/expand2.c \
+	../parsing/mix_helpers.c \
+	../parsing/need_name.c \
+	../parsing/split_helpers.c \
+	../parsing/split.c

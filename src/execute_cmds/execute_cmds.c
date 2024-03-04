@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:47:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/02 14:34:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	execute_execv(char *cmd, char *args, t_env_var *env_vars);
 static void	execute_builtin(char *cmd, char *args, t_env_var *env_vars);
 
-void	execute_cmds(t_treenode *ast, t_env_var *env_vars)
+void	execute_cmds(t_treenode *ast, t_env_var *env_vars) // nneds options for redirection and pipes
 {
 	t_tokentype	type;
 	char		*path;
@@ -28,14 +28,14 @@ void	execute_cmds(t_treenode *ast, t_env_var *env_vars)
 	{
 		path = get_path(env_vars);
 		type = token_type(ast->cmd, path);
-		if (type == OTHER_CMD)
+		if (type == CMD)
 			execute_execv(ast->cmd, ast->args, env_vars);
-		else if (type == BUILTIN_CMD)
+		else if (type == CMD)
 			execute_builtin(ast->cmd, ast->args, env_vars);
 	}
 }
 
-static void	execute_execv(char *cmd, char *args, t_env_var *env_vars)
+static void	execute_execv(char *cmd, char *args, t_env_var *env_vars) // needs path find in execve call
 {
 	pid_t	pid;
 	int		status;
@@ -57,7 +57,7 @@ static void	execute_execv(char *cmd, char *args, t_env_var *env_vars)
 		exit(1);
 	}
 	else
-		waitpid(pid, &status, 0);
+		waitpid(pid, &status, 0); // needs to wait in the end for all processes and save each exit status in a list
 	free_2d_arr((void **)arg_arr);
 }
 
