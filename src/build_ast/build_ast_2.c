@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/04 13:05:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/04 14:26:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,18 @@ t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
 	return (ast);
 }
 
-t_treenode *build_subtree(t_treenode sub, t_treenode **lin_tree, int bracket_lvl)
+t_treenode *build_subtree(t_treenode *sub, t_treenode **lin_tree, int bracket_lvl)
 {
 	t_treenode	*new;
 
-	if (!lin_tree)
-		return (ast);
+	if (!(*lin_tree))
+		return (sub);
 	// if the bracket lvl didnt increase, just insert the new node at the right place
 	if ((*lin_tree)->bracket_lvl == bracket_lvl)
 	{
 		new = new_treenode((*lin_tree)->cmd, (*lin_tree)->args, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
-		sub = build_subtree(ast, lin_tree->left, lin_tree->bracket_lvl);
+		sub = build_subtree(sub, (*lin_tree)->left, (*lin_tree)->bracket_lvl);
 	}
 }
 
