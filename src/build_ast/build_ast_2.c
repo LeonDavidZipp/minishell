@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/04 18:18:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/04 19:06:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,19 +52,23 @@ t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree, int bracket_lv
 
 	if (!(*lin_tree) || (*lin_tree)->bracket_lvl < bracket_lvl)
 	{
-		printf("went through whole bracket lvl\n");
 		return (sub);
 	}
+	// printf("cmd: %s, args: %s, lvl: %d\n", (*lin_tree)->cmd, (*lin_tree)->args, (*lin_tree)->bracket_lvl);
 	if ((*lin_tree)->bracket_lvl == bracket_lvl)
 	{
 		new = new_treenode((*lin_tree)->cmd, (*lin_tree)->args, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
+		debug_printtree(sub, 0);
+		printf("\n-----------------\n");
 		*lin_tree = (*lin_tree)->left;
 		sub = build_subtree(sub, lin_tree, bracket_lvl);
 	}
 	else
 	{
-		new = build_subtree_2(NULL, lin_tree, (*lin_tree)->bracket_lvl);
+		printf("building subtree\n");
+		new = build_subtree(NULL, lin_tree, (*lin_tree)->bracket_lvl);
+		printf("inserting node\n");
 		sub = insert_node(sub, new);
 		if (!(*lin_tree))
 			return (sub);
@@ -128,7 +132,7 @@ static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 		return (node);
 	// If the command is an operator and has higher precedence than the root
 	if (node_is_operator(node->cmd) && (priority(node->cmd) >= priority(root->cmd)
-			|| root->bracket_lvl > node->bracket_lvl))
+			|| root->bracket_lvl < node->bracket_lvl))
 	{
 		node->left = root;
 		return (node);
@@ -145,7 +149,7 @@ int	main(void)
 	t_treenode	*root;
 	t_treenode	*ast;
 
-	app.input = ft_strdup("(echo 1 && (echo 2 || echo 3)) | cat -e");
+	app.input = ft_strdup("echo 1 && (echo 2 && echo 3) | cat -e");
 	tokens = tokenize(&app);
 	root = combine_cmds_args(tokens);
 	// t_treenode *temp = root;
