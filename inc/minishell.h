@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/02 17:17:32 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/04 12:39:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef struct s_treenode
 {
 	char				*cmd;
 	char				*args;
+	t_tokentype			cmd_type;
 	int					bracket_lvl;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
@@ -144,7 +145,8 @@ bool		check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree
 // t_treenode	*build_ast(t_treenode *lin_tree);
-t_treenode	*build_ast(t_treenode **lin_tree, int old_bracket_lvl);
+// t_treenode	*build_ast(t_treenode **lin_tree, int old_bracket_lvl);
+t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
 t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);

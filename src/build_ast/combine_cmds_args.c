@@ -6,13 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/02 17:22:51 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/04 12:39:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_treenode	*new_treenode(char *content, int bracket_lvl);
+static t_treenode	*new_treenode(char *content, t_tokentype type,
+						int bracket_lvl);
 static void			combine_cmds_args_loop(t_token *temp, int bracket_lvl,
 						t_treenode **first,
 						t_treenode **prev);
@@ -30,11 +31,12 @@ t_treenode	*combine_cmds_args(t_token *tokens)
 	first = NULL;
 	prev = NULL;
 	bracket_lvl = 0;
-	combine_cmds_args_loop(temp, &bracket_lvl, &first, &prev);
+	combine_cmds_args_loop(temp, bracket_lvl, &first, &prev);
 	return (first);
 }
 
-static t_treenode	*new_treenode(char *content, int bracket_lvl)
+static t_treenode	*new_treenode(char *content, t_tokentype type,
+								int bracket_lvl)
 {
 	t_treenode	*node;
 
@@ -45,6 +47,7 @@ static t_treenode	*new_treenode(char *content, int bracket_lvl)
 		bracket_lvl = 0;
 	node->cmd = ft_strdup(content);
 	node->args = NULL;
+	node->cmd_type = type;
 	node->bracket_lvl = bracket_lvl;
 	node->left = NULL;
 	node->right = NULL;
@@ -71,7 +74,7 @@ static void	combine_cmds_args_loop(t_token *temp, int bracket_lvl,
 			bracket_lvl -= 1;
 			continue ;
 		}
-		current = new_treenode(temp->content, bracket_lvl);
+		current = new_treenode(temp->content, temp->type, bracket_lvl);
 		if (temp->next && temp->next->type == ARG)
 		{
 			current->args = ft_strdup(temp->next->content);
