@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/06 16:45:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 17:25:03 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -98,6 +99,8 @@ typedef struct s_app_data
 {
 	t_env_var	*env_vars;
 	int			last_exit_code;
+	int			in_fd;
+	int			out_fd;
 	int			in_fd;
 	int			out_fd;
 	char		*input;
