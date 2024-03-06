@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/04 17:55:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 16:45:36 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ typedef struct s_app_data
 {
 	t_env_var	*env_vars;
 	int			last_exit_code;
+	int			in_fd;
+	int			out_fd;
 	char		*input;
 	t_token		*tokens;
 }			t_app_data;
@@ -151,7 +153,7 @@ t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
 bool		node_is_operator(char *cmd);
-int			priority(char *cmd);
+int			priority(char *cmd, int bracket_lvl);
 
 // lexer
 void		lexer(t_app_data *app_data);

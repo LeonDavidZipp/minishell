@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/04 18:51:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 14:49:14 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,23 @@ bool	node_is_operator(char *cmd)
 		|| ft_strcmp(cmd, "<<") == 0);
 }
 
-int	priority(char *cmd)
+int	priority(char *cmd, int bracket_lvl)
 {
+	int		prio_1;
+	int		prio_2;
+	int		prio_3;
+
+	prio_1 = 1 - 3 * bracket_lvl;
+	prio_2 = 2 - 3 * bracket_lvl;
+	prio_3 = 3 - 3 * bracket_lvl;
 	if (ft_strcmp(cmd, ">") == 0 || ft_strcmp(cmd, ">>") == 0
 		|| ft_strcmp(cmd, "<") == 0 || ft_strcmp(cmd, "<<") == 0)
-		return (1);
+		return (prio_1);
 	else if (ft_strcmp(cmd, "|") == 0)
-		return (2);
+		return (prio_2);
 	else if (ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, "||") == 0)
-		return (3);
-	return (0);
+		return (prio_3);
+	return (-3 * bracket_lvl);
 }
 
 static void	debug_print_tabs(int tabs)
@@ -43,8 +50,8 @@ void	debug_printtree(t_treenode *root, int tabs)
 	if (root)
 	{
 		debug_print_tabs(tabs);
-		printf("content: %s, args: %s, in_b: %d\n", root->cmd,
-				root->args, root->bracket_lvl);
+		printf("content: %s, args: %s, prio: %d\n", root->cmd,
+				root->args, priority(root->cmd, root->bracket_lvl));
 		debug_print_tabs(tabs);
 		printf("left:\n");
 		debug_printtree(root->left, tabs + 1);
