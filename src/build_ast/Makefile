@@ -1,6 +1,6 @@
 all :
 	gcc -Wall -Werror -Wextra \
-	build_ast_3.c \
+	build_ast.c \
 	ast_helpers.c \
 	combine_cmds_args.c \
 	../lexer/tokenize.c \
