@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/06 17:12:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 17:17:40 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,20 +109,3 @@ static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 	root->right = insert_node(root->right, node);
 	return (root);
 }
-
-// int	main(void)
-// {
-// 	t_app_data	app;
-// 	t_token		*tokens;
-// 	t_treenode	*root;
-// 	t_treenode	*ast;
-
-// 	app.input = ft_strdup("(echo 1 && (echo 2 || echo 3 && echo 4)) | cat -e");
-// 	// app.input = ft_strdup("(echo 2 || echo 3) | cat -e");
-// 	tokens = tokenize(&app);
-// 	root = combine_cmds_args(tokens);
-// 	ast = NULL;
-// 	ast = build_ast(ast, root, 0);
-// 	debug_printtree(ast, 0);
-// 	return (0);
-// }
