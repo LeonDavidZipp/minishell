@@ -6,13 +6,93 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/04 20:33:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 20:21:44 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 bool	check_first_token(t_token *token);
+
+bool	check_and_or_pipe_redir_out_append(t_token *current)
+{
+	if (current->type == AND || current->type == OR || current->type == PIPE)
+	{
+		if (!current->next)
+			return (printf("%s: parse error near '\\n'\n", NAME), false);
+		else if (current->next->type == AND || current->next->type == OR
+			|| current->next->type == PIPE)
+			return (printf("%s: parse error near '%s'\n",
+					NAME, current->next->content), false);
+	}
+	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
+	{
+		if (!current->next)
+			return (printf("%s: parse error near '\\n'\n", NAME), false);
+		else if (current->next->type == AND || current->next->type == OR
+			|| current->next->type == PIPE || current->next->type == REDIR_IN
+			|| current->next->type == REDIR_OUT
+			|| current->next->type == REDIR_APPEND
+			|| current->next->type == HEREDOC)
+			return (printf("%s: parse error near '%s'\n",
+					NAME, current->next->content), false);
+	}
+	return (true);
+}
+
+bool	check_redir_in_heredoc(t_token *current)
+{
+	if (current->type == REDIR_IN || current->type == HEREDOC)
+	{
+		if (!current->next)
+			return (printf("%s: parse error near '\\n'\n", NAME), false);
+		else if (current->next->type == AND || current->next->type == OR
+			|| current->next->type == PIPE || current->next->type == REDIR_IN
+			|| current->next->type == REDIR_OUT
+			|| current->next->type == REDIR_APPEND
+			|| current->next->type == HEREDOC)
+			return (printf("%s: parse error near '%s'\n",
+					NAME, current->next->content), false);
+	}
+	return (true);
+}
+
+bool	check_cd_command(t_token *current)
+{
+	t_token		*cnnt;
+
+	cnnt = current->next;
+	if (ft_strcmp(current->content, "cd") == 0)
+	{
+		if (current && current->next && current->next->next
+			&& current->next->type != AND
+			&& current->next->type != OR
+			&& current->next->type != PIPE
+			&& current->next->type != REDIR_OUT
+			&& current->next->type != REDIR_APPEND
+			&& current->next->type != REDIR_IN
+			&& current->next->type != HEREDOC
+			&& current->next->next->type != AND
+			&& current->next->next->type != OR
+			&& current->next->next->type != PIPE
+			&& current->next->next->type != REDIR_OUT
+			&& current->next->next->type != REDIR_APPEND
+			&& current->next->next->type != REDIR_IN
+			&& current->next->next->type != HEREDOC)
+			return (printf("cd: too many arguments\n"), false);
+		else if (current->next && current->next
+			&& current->next->type != AND
+			&& current->next->type != OR
+			&& current->next->type != PIPE
+			&& current->next->type != REDIR_OUT
+			&& current->next->type != REDIR_APPEND
+			&& current->next->type != REDIR_IN
+			&& current->next->type != HEREDOC)
+			return (printf("cd: string not in pwd: '%s'\n",
+					current->next->content), false);
+	}
+	return (true);
+}
 
 bool	check_tokens_valid(t_token *tokens)
 {
@@ -26,35 +106,10 @@ bool	check_tokens_valid(t_token *tokens)
 	{
 		if (current->next)
 			type = current->next->type;
-		if (current->type == AND || current->type == OR
-			|| current->type == PIPE)
-		{
-			if (!current->next)
-				return (printf("%s: parse error near '\\n'\n", NAME), false);
-			else if (type == AND || type == OR || type == PIPE)
-				return (printf("%s: parse error near '%s'\n",
-						NAME, current->next->content), false);
-		}
-		if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
-		{
-			if (!current->next)
-				return (printf("%s: parse error near '\\n'\n", NAME), false);
-			else if (type == AND || type == OR || type == PIPE
-				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
-				|| type == HEREDOC)
-				return (printf("%s: parse error near '%s'\n",
-						NAME, current->next->content), false);
-		}
-		if (current->type == REDIR_IN || current->type == HEREDOC)
-		{
-			if (!current->next)
-				return (printf("%s: parse error near '\\n'\n", NAME), false);
-			else if (type == AND || type == OR || type == PIPE
-				|| type == REDIR_IN || type == REDIR_OUT || type == REDIR_APPEND
-				|| type == HEREDOC)
-				return (printf("%s: parse error near '%s'\n",
-						NAME, current->next->content), false);
-		}
+		if (!check_and_or_pipe_redir_out_append(current))
+			return (false);
+		if (!check_redir_in_heredoc(current))
+			return (false);
 		if (ft_strcmp(current->content, "cd") == 0)
 		{
 			if (current->next && current->next->next
