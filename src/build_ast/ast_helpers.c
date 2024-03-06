@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/06 17:12:30 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 18:57:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ void	debug_printtree(t_treenode *root, int tabs)
 	if (root)
 	{
 		debug_print_tabs(tabs);
-		printf("content: %s, args: %s, prio: %d\n", root->cmd,
-			root->args, priority(root->cmd, root->bracket_lvl));
+		printf("content: %s, args: %s, prio: %d, type: %d\n", root->cmd,
+			root->args, priority(root->cmd, root->bracket_lvl), root->cmd_type);
 		debug_print_tabs(tabs);
 		printf("left:\n");
 		debug_printtree(root->left, tabs + 1);

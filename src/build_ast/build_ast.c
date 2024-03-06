@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/06 17:17:40 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 19:01:40 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 // static t_treenode	*build_subtree(t_treenode **temp);
 t_treenode			*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 						int bracket_lvl);
-t_treenode			*build_subtree_2(t_treenode *sub, t_treenode **lin_tree,
-						int bracket_lvl);
-static t_treenode	*new_treenode(char *cmd, char *args, int bracket_lvl);
+static t_treenode	*new_treenode(char *cmd, char *args,
+						t_tokentype cmd_type, int bracket_lvl);
 static t_treenode	*insert_node(t_treenode *root, t_treenode *node);
 
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
@@ -29,7 +28,7 @@ t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
 	if (lin_tree->bracket_lvl <= bracket_lvl)
 	{
 		new = new_treenode(lin_tree->cmd, lin_tree->args,
-				lin_tree->bracket_lvl);
+				lin_tree->cmd_type, lin_tree->bracket_lvl);
 		ast = insert_node(ast, new);
 		ast = build_ast(ast, lin_tree->left, lin_tree->bracket_lvl);
 	}
@@ -54,7 +53,7 @@ t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 	if ((*lin_tree)->bracket_lvl == bracket_lvl)
 	{
 		new = new_treenode((*lin_tree)->cmd, (*lin_tree)->args,
-				(*lin_tree)->bracket_lvl);
+				(*lin_tree)->cmd_type, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
 		*lin_tree = (*lin_tree)->left;
 		if (!(*lin_tree))
@@ -72,13 +71,15 @@ t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 	return (sub);
 }
 
-static t_treenode	*new_treenode(char *cmd, char *args, int bracket_lvl)
+static t_treenode	*new_treenode(char *cmd, char *args,
+						t_tokentype cmd_type, int bracket_lvl)
 {
 	t_treenode		*node;
 
 	node = malloc(sizeof(t_treenode));
 	node->cmd = ft_strdup(cmd);
 	node->args = ft_strdup(args);
+	node->cmd_type = cmd_type;
 	node->bracket_lvl = bracket_lvl;
 	node->left = NULL;
 	node->right = NULL;
