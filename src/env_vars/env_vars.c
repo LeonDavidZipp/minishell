@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 18:15:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 18:14:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	update_env_vars(char *key, char *value, t_env_var **env_vars)
+void	update_env_vars(char *key, char *value, char **env_vars)
 {
 	t_env_var	*temp;
 	t_env_var	*new_var;
