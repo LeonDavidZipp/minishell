@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/04 20:35:21 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 19:32:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	lexer(t_app_data *app_data)
 	t_treenode	*ast;
 
 	// 1. first validate input (according to braces, quotes, etc.)
-	// printf("acces to bin: %d\n", access("/bin", F_OK));
 	if (check_input(app_data->input) == 1)
 	{
 		free_for_next_call(app_data);
