@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/06 19:29:55 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/07 16:36:21 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,7 +34,6 @@ lexer/lexer.c \
 lexer/token_type.c \
 lexer/tokenize_helpers.c \
 lexer/tokenize.c \
-other_cmds/utils.c \
 parsing/check_input.c \
 parsing/expand_helpers.c \
 parsing/expand.c \

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 12:45:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 16:36:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,84 +139,84 @@ static bool	check_echo(t_token *current)
 }
 
 
-int	main(void)
-{
-	char *test_cases[] = {
-	"echo hello && (echo hi)", // valid
-	"echo hello && echo hi", // valid
-	"echo hello && (echo hi", // invalid
-	"echo hello && echo hi)", // invalid
-	"echo hello && (echo hi))", // invalid
-	"(echo hello && echo hi)", // valid
-	"echo hello && (echo hi) && echo bye", // valid
-	"echo hello && ((echo hi) && echo bye)", // valid
-	"echo hello && ((echo hi) && echo bye", // invalid
-	"echo hello && ((echo hi) && echo bye))", // invalid
-	"echo hello && ((echo hi) && (echo bye))", // valid
-	"echo hello && ((echo hi) && (echo bye)", // invalid
-	"echo hello && ((echo hi) && (echo bye)))", // invalid
-	"echo hello && ((echo hi) && (echo bye)) && echo end", // valid
-	"echo hello && ((echo hi) && (echo bye)) && echo end)", // invalid
-	"echo hello && ((echo hi) && (echo bye)) && (echo end)", // valid
-	"echo hello && ((echo hi) && (echo bye)) && (echo end", // invalid
-	"echo hello && ((echo hi) && (echo bye)) && (echo end))", // invalid
-	"echo hello && ((echo hi) && (echo bye)) && (echo end)) && echo final", // invalid
-	"echo hello && ((echo hi) && (echo bye)) && (echo end) && echo final", // valid
-	"echo hello || (echo hi)", // valid
-	"echo hello || echo hi", // valid
-	"echo hello || (echo hi", // invalid
-	"echo hello || echo hi)", // invalid
-	"echo hello || (echo hi))", // invalid
-	"(echo hello || echo hi)", // valid
-	"echo hello || (echo hi) || echo bye", // valid
-	"echo hello || ((echo hi) || echo bye)", // valid
-	"echo hello || ((echo hi) || echo bye", // invalid
-	"echo hello || ((echo hi) || echo bye))", // invalid
-	"echo hello || ((echo hi) || (echo bye))", // valid
-	"echo hello || ((echo hi) || (echo bye)", // invalid
-	"echo hello || ((echo hi) || (echo bye)))", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || echo end", // valid
-	"echo hello || ((echo hi) || (echo bye)) || echo end)", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end)", // valid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end))", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end)) || echo final", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final", // valid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || echo last", // valid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last)", // valid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last))", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last)) || echo end", // invalid
-	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last) || echo end", // valid
-	"echo hello && (echo hi || (echo bye && echo end))", // valid
-	"echo hello && (echo hi || (echo bye && echo end)", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)))", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && echo final", // valid
-	"echo hello && (echo hi || (echo bye && echo end)) && echo final)", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final)", // valid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final))", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final)) && echo last", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last", // valid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || echo end", // valid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end)", // valid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end))", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end)) || echo final", // invalid
-	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end) || echo final", // valid
-	NULL // null terminated
-	};
-	for (int i = 0; test_cases[i]; i++)
-	{
-		t_app_data app;
-		app.tokens = tokenize(&app);
-		if (!app.tokens)
-			return (1);
-		printf("Test case %d: %s\n", i, test_cases[i]);
-		if (check_tokens_valid(app.tokens) == false)
-			printf("Test case %d failed\n", i);
-		else
-			printf("Test case %d passed\n", i);
-		free_tokens(app.tokens);
-	}
-}
+// int	main(void)
+// {
+// 	char *test_cases[] = {
+// 	"echo hello && (echo hi)", // valid
+// 	"echo hello && echo hi", // valid
+// 	"echo hello && (echo hi", // invalid
+// 	"echo hello && echo hi)", // invalid
+// 	"echo hello && (echo hi))", // invalid
+// 	"(echo hello && echo hi)", // valid
+// 	"echo hello && (echo hi) && echo bye", // valid
+// 	"echo hello && ((echo hi) && echo bye)", // valid
+// 	"echo hello && ((echo hi) && echo bye", // invalid
+// 	"echo hello && ((echo hi) && echo bye))", // invalid
+// 	"echo hello && ((echo hi) && (echo bye))", // valid
+// 	"echo hello && ((echo hi) && (echo bye)", // invalid
+// 	"echo hello && ((echo hi) && (echo bye)))", // invalid
+// 	"echo hello && ((echo hi) && (echo bye)) && echo end", // valid
+// 	"echo hello && ((echo hi) && (echo bye)) && echo end)", // invalid
+// 	"echo hello && ((echo hi) && (echo bye)) && (echo end)", // valid
+// 	"echo hello && ((echo hi) && (echo bye)) && (echo end", // invalid
+// 	"echo hello && ((echo hi) && (echo bye)) && (echo end))", // invalid
+// 	"echo hello && ((echo hi) && (echo bye)) && (echo end)) && echo final", // invalid
+// 	"echo hello && ((echo hi) && (echo bye)) && (echo end) && echo final", // valid
+// 	"echo hello || (echo hi)", // valid
+// 	"echo hello || echo hi", // valid
+// 	"echo hello || (echo hi", // invalid
+// 	"echo hello || echo hi)", // invalid
+// 	"echo hello || (echo hi))", // invalid
+// 	"(echo hello || echo hi)", // valid
+// 	"echo hello || (echo hi) || echo bye", // valid
+// 	"echo hello || ((echo hi) || echo bye)", // valid
+// 	"echo hello || ((echo hi) || echo bye", // invalid
+// 	"echo hello || ((echo hi) || echo bye))", // invalid
+// 	"echo hello || ((echo hi) || (echo bye))", // valid
+// 	"echo hello || ((echo hi) || (echo bye)", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)))", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || echo end", // valid
+// 	"echo hello || ((echo hi) || (echo bye)) || echo end)", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end)", // valid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end))", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end)) || echo final", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final", // valid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || echo last", // valid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last)", // valid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last))", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last)) || echo end", // invalid
+// 	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last) || echo end", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end))", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end)", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)))", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && echo final", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && echo final)", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final)", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final))", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final)) && echo last", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || echo end", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end)", // valid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end))", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end)) || echo final", // invalid
+// 	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end) || echo final", // valid
+// 	NULL // null terminated
+// 	};
+// 	for (int i = 0; test_cases[i]; i++)
+// 	{
+// 		t_app_data app;
+// 		app.tokens = tokenize(&app);
+// 		if (!app.tokens)
+// 			return (1);
+// 		printf("Test case %d: %s\n", i, test_cases[i]);
+// 		if (check_tokens_valid(app.tokens) == false)
+// 			printf("Test case %d failed\n", i);
+// 		else
+// 			printf("Test case %d passed\n", i);
+// 		free_tokens(app.tokens);
+// 	}
+// }
