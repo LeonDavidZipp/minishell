@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/04 20:34:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 16:23:49 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ t_token	*tokenize(t_app_data *app)
 	first = join_after_echo(first);
 	return (first);
 }
+// reorder tokens for redirections
+// >: arguments can be like this: arg1 > file1 arg2 ... argn
+// >>: exactly as above
+// after any redirect the first character or word is the argument and 
+// anything after that is an argument for the command
 
 void	free_tokens(t_token *token)
 {

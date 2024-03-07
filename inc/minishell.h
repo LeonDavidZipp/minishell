@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/07 13:59:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 14:30:36 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ char		**init_envp(char **env_vars);
 char		**update_env_vars(char *key, char *value, char **env_vars);
 char		**unset_env_var(char *key, char **env_vars);
 char		**split_path(char *path);
+char		**split_env(char *envp);
 
 // parsing && input handling
 int			is_space(char c);

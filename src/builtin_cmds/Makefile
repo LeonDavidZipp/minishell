@@ -7,8 +7,7 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
-	cd.c \
-	../env_vars/init_environ.c \
+	split_multiple_envp.c \
 	../env_vars/env_vars.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
@@ -21,3 +20,6 @@ all :
 	../../lib/libft/src/ft_strcmp.c \
 	../../lib/libft/src/ft_split.c \
 	../../lib/libft/src/ft_strjoin.c \
+	../../lib/libft/src/ft_recalloc.c \
+	../../lib/libft/src/ft_memmove.c \
+	../../lib/libft/src/ft_strtrim.c
