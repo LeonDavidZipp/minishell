@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/13 11:02:22 by cgerling          #+#    #+#             */
-/*   Updated: 2024/02/06 12:30:28 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/04 11:56:46 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*search_path_variable(char **envp)
 	path = NULL;
 	while (envp[i] != NULL)
 	{
-		if (strncmp(envp[i], "PATH=", 5) == 0)
+		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
 		{
 			path = envp[i] + 5;
 			break ;

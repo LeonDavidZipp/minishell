@@ -6,9 +6,10 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/07 12:34:31 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 13:59:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -101,11 +102,11 @@ typedef struct s_app_data
 void		signal_handler(void);
 
 // built-in commands
-// void		builtin_cd(char *path);
-// void		builtin_pwd(char *args);
-// void		builtin_echo(char *str);
-// void		builtin_env(char *new_var, t_env_var **env_vars);
-// void		builtin_exit(int exit_code);
+void		builtin_cd(char *path);
+void		builtin_pwd(char *args);
+void		builtin_echo(char *str);
+void		builtin_env(char *new_var, char **env_vars);
+void		builtin_exit(int exit_code);
 // void		builtin_export(char *var_string, t_env_var **env_vars);
 // void		builtin_unset(char *keys, t_env_var **env_vars);
 
