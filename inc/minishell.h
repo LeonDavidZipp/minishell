@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/06 19:53:21 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:03:57 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ typedef struct s_app_data
 {
 	char		**env_vars;
 	int			last_exit_code;
-	int			in_fd;
-	int			out_fd;
+	int			in_fd; // this needs to be in treenode
+	int			out_fd; // this needs to be in treenode
 	char		*input;
 	t_token		*tokens;
 }			t_app_data;

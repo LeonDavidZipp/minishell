@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 13:48:02 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/07 16:56:51 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 
 static void	execute_builtin(char *cmd, char *args, char **env_vars);
 void		execute_execve(char *cmd, char *args, char **env_vars);
+void		exec_cmds(t_treenode *ast, t_app_data *app);
+void		setup_redir(t_treenode *node, t_treenode *prev_node);
+void		traverse_tree(t_treenode *node, t_treenode *prev_node);
 
 // init_environ file funtion get_path i think is not needed anymore
 char	*find_path(char *command, char **envp);
@@ -31,21 +34,25 @@ int	is_builtin(char *cmd)
 int	is_redir(t_tokentype type)
 {
 	if (type == REDIR_IN || type == REDIR_OUT
-		|| type == REDIR_APPEND || type == HEREDOC)
+		|| type == REDIR_APPEND)
 		return (1);
 	return (0);
 }
 
-void	execute(t_treenode *ast, t_app_data *app)
+// void	execute(t_treenode *ast, t_app_data *app)
+// {
+// 	traverse_tree(ast, NULL); // this function is for setting the file descriptors for the commands if there are pipes or redirections
+// 	exec_cmds(ast, app);
+// }
+
+// need to implement heredoc separately from the rest of the redirections
+
+void	exec_cmds(t_treenode *ast, t_app_data *app)
 {
-	if (!ast)
-		return ;
-	// if (ast->cmd_type == PIPE)
-	// 	setup_pipe(ast, app);
-	// if (is_redir(ast->cmd_type))
-	// 	setup_redir(ast, app);
-	// if (ast->cmd_type == AND || ast->cmd_type == OR)
-	// 	execute_logical(ast, app);
+	if (ast->left)
+		exec_cmds(ast->left, app);
+	if (ast->right)
+		exec_cmds(ast->right, app);
 	if (ast->cmd_type == CMD)
 	{
 		if (is_builtin(ast->cmd))
@@ -53,10 +60,45 @@ void	execute(t_treenode *ast, t_app_data *app)
 		else
 			execute_execve(ast->cmd, ast->args, app->env_vars);
 	}
-	if (ast->left)
-		execute(ast->left, app);
-	if (ast->right)
-		execute(ast->right, app);
+}
+
+void	traverse_tree(t_treenode *node, t_treenode *prev_node)
+{
+	int	pipe_fd[2];
+	pid_t	pid;
+	
+	if (node->cmd_type == PIPE)
+	{
+		if (prev_node)
+		{
+			if (prev_node->out_fd != 1)
+			{
+				node->left->in_fd = prev_node->out_fd;
+			}
+		}
+		if (pipe(pipe_fd) == -1)
+			error_exit("Error: pipe failed\n", 1);
+		node->left->out_fd = pipe_fd[1];
+		node->right->in_fd = pipe_fd[0];
+	}
+	if (is_redir(node->cmd_type))
+		setup_redir(node, prev_node);
+	if (node->left)
+		traverse_tree(node->left, node);
+	if (node->right)
+		traverse_tree(node->right, node);
+}
+
+void	setup_redir(t_treenode *node, t_treenode *prev_node)
+{
+	if (node->cmd_type == REDIR_IN)
+	{
+		if (prev_node)
+		{
+			if (prev_node->in_fd == 0)
+				node->in_fd = open(node->args, O_RDONLY);
+		}
+	}
 }
 
 void	execute_execve(char *cmd, char *args, char **env_vars)
@@ -116,12 +158,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	app.env_vars = init_envp(envp);
-	app.input = ft_strdup("env TEST=1 TEST1 =2");
+	app.input = ft_strdup("echo hi > out > in");
 	tokens = tokenize(&app);
 	root = combine_cmds_args(tokens);
 	ast = NULL;
 	ast = build_ast(ast, root, 0);
 	debug_printtree(ast, 0);
-	execute(ast, &app);
+	// execute(ast, &app);
 	return (0);
 }
