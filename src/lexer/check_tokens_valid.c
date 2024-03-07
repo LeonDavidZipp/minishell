@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 12:00:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:01:59 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ bool	check_redir_in_heredoc(t_token *current)
 	return (true);
 }
 
-bool	check_cd_command(t_token *current)
+bool	check_cd(t_token *current)
 {
 	if (ft_strcmp(current->content, "cd") == 0)
 	{
