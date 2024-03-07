@@ -6,15 +6,45 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 12:01:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:13:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-bool	check_first_token(t_token *token);
+static bool	check_and_or_pipe_redir_out_append(t_token *current);
+static bool	check_redir_in_heredoc(t_token *current);
+static bool	check_cd(t_token *current);
+static bool	check_echo(t_token *current);
 
-bool	check_and_or_pipe_redir_out_append(t_token *current)
+bool	check_tokens_valid(t_token *tokens)
+{
+	t_token		*current;
+	t_tokentype	type;
+
+	if (tokens->type == ARG || tokens->type == OR || tokens->type == AND
+		|| tokens->type == PIPE)
+		return (printf("%s: parse error near '%s'\n",
+				NAME, tokens->next->content), false);
+	current = tokens;
+	while (current)
+	{
+		if (current->next)
+			type = current->next->type;
+		if (!check_and_or_pipe_redir_out_append(current))
+			return (false);
+		if (!check_redir_in_heredoc(current))
+			return (false);
+		if (!check_cd(current))
+			return (false);
+		if (!check_echo(current))
+			return (false);
+		current = current->next;
+	}
+	return (true);
+}
+
+static bool	check_and_or_pipe_redir_out_append(t_token *current)
 {
 	if (current->type == AND || current->type == OR || current->type == PIPE)
 	{
@@ -40,7 +70,7 @@ bool	check_and_or_pipe_redir_out_append(t_token *current)
 	return (true);
 }
 
-bool	check_redir_in_heredoc(t_token *current)
+static bool	check_redir_in_heredoc(t_token *current)
 {
 	if (current->type == REDIR_IN || current->type == HEREDOC)
 	{
@@ -57,7 +87,7 @@ bool	check_redir_in_heredoc(t_token *current)
 	return (true);
 }
 
-bool	check_cd(t_token *current)
+static bool	check_cd(t_token *current)
 {
 	if (ft_strcmp(current->content, "cd") == 0)
 	{
@@ -86,77 +116,25 @@ bool	check_cd(t_token *current)
 	return (true);
 }
 
-bool	check_tokens_valid(t_token *tokens)
+static bool	check_echo(t_token *current)
 {
-	t_token		*current;
-	t_tokentype	type;
-
-	if (!check_first_token(tokens))
-		return (false);
-	current = tokens;
-	while (current)
+	if (ft_strcmp(current->content, "echo") == 0)
 	{
-		if (current->next)
-			type = current->next->type;
-		if (!check_and_or_pipe_redir_out_append(current))
-			return (false);
-		if (!check_redir_in_heredoc(current))
-			return (false);
-		if (ft_strcmp(current->content, "cd") == 0)
-		{
-			if (current->next && current->next->next
-				&& current->next->next->next
-				&& current->next->next->type != AND
-				&& current->next->next->type != OR
-				&& current->next->next->type != PIPE
-				&& current->next->next->type != REDIR_OUT
-				&& current->next->next->type != REDIR_APPEND
-				&& current->next->next->type != REDIR_IN
-				&& current->next->next->type != HEREDOC
-				&& current->next->next->next->type != AND
-				&& current->next->next->next->type != OR
-				&& current->next->next->next->type != PIPE
-				&& current->next->next->next->type != REDIR_OUT
-				&& current->next->next->next->type != REDIR_APPEND
-				&& current->next->next->next->type != REDIR_IN
-				&& current->next->next->next->type != HEREDOC)
-				return (printf("cd: too many arguments\n"), false);
-			else if (current->next && current->next->next
-				&& current->next->next->type != AND
-				&& current->next->next->type != OR
-				&& current->next->next->type != PIPE
-				&& current->next->next->type != REDIR_OUT
-				&& current->next->next->type != REDIR_APPEND
-				&& current->next->next->type != REDIR_IN
-				&& current->next->next->type != HEREDOC)
-				return (printf("cd: string not in pwd: '%s'\n",
-						current->next->content), false);
-		}
-		if (ft_strcmp(current->content, "echo") == 0)
-		{
-			if (current->next && current->next->next
-				&& (current->next->type == LEFT_BRACKET
+		if (current && current->next && current->next->next
+			&& (current->next->type == LEFT_BRACKET
 				|| current->next->type == RIGHT_BRACKET))
-				return (printf("babash: syntax error near unexpected token \'%s\'\n",
-						current->next->next->content), false);
-			else if (current->next && (current->next->type == LEFT_BRACKET
-				|| current->next->type == RIGHT_BRACKET))
-				return (printf("babash: syntax error near unexpected token \'newline\'\n"),
-						false);
+		{
+			printf("babash: syntax error near unexpected token \'%s\'\n",
+				current->next->next->content);
+			return (false);
 		}
-		current = current->next;
+		else if (current->next && (current->next->type == LEFT_BRACKET
+				|| current->next->type == RIGHT_BRACKET))
+		{
+			printf("babash: syntax error near unexpected token \'newline\'\n");
+			return (false);
+		}
 	}
-	return (true);
-}
-
-bool	check_first_token(t_token *token)
-{
-	if (token->type == ARG
-		|| token->type == OR
-		|| token->type == AND
-		|| token->type == PIPE)
-		return (printf("%s: parse error near '%s'\n",
-				NAME, token->next->content), false);
 	return (true);
 }
 
