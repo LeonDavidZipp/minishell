@@ -8,7 +8,7 @@
 # init_environ.c
 all :
 	gcc -Wall -Werror -Wextra \
-	env_vars_char.c \
+	env_vars.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
 	../../lib/libft/src/ft_strncmp.c \
