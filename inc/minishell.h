@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/06 17:25:03 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/06 19:53:21 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,6 @@ typedef enum e_tokentype
 	ARG
 }			t_tokentype;
 
-typedef struct s_env_var
-{
-	char				*key;
-	char				*value;
-	struct s_env_var	*next;
-}			t_env_var;
-
 typedef struct s_token
 {
 	char			*content;
@@ -97,10 +90,8 @@ typedef struct s_treenode
 
 typedef struct s_app_data
 {
-	t_env_var	*env_vars;
+	char		**env_vars;
 	int			last_exit_code;
-	int			in_fd;
-	int			out_fd;
 	int			in_fd;
 	int			out_fd;
 	char		*input;
@@ -114,21 +105,16 @@ void		signal_handler(void);
 void		builtin_cd(char *path);
 void		builtin_pwd(char *args);
 void		builtin_echo(char *str);
-void		builtin_env(char *new_var, t_env_var **env_vars);
+void		builtin_env(char *new_var, char **env_vars);
 void		builtin_exit(int exit_code);
-void		builtin_export(char *var_string, t_env_var **env_vars);
-void		builtin_unset(char *keys, t_env_var **env_vars);
+// void		builtin_export(char *var_string, t_env_var **env_vars);
+// void		builtin_unset(char *keys, t_env_var **env_vars);
 
 // environment variables
-t_env_var	*init_envp(char **envp);
-t_env_var	*new_env_var(char *key, char *value);
-t_env_var	*copy_env_vars(t_env_var *env_vars);
-void		update_env_vars(char *key, char *value, t_env_var **env_vars);
-void		free_env_vars(t_env_var *env_var);
-char		**split_envp(char *envp);
+char		**init_envp(char **env_vars);
+char		**update_env_vars(char *key, char *value, char **env_vars);
+char		**unset_env_var(char *key, char **env_vars);
 char		**split_path(char *path);
-char		*get_path(t_env_var *env_vars);
-char		**env_vars_to_char_arr(t_env_var *env_vars);
 
 // parsing && input handling
 int			is_space(char c);
@@ -137,8 +123,6 @@ char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 char		*remove_quotes(char *token);
-// void		quotes_brackets(char c, bool *s_quote, bool *d_quote,
-// 				bool *bracket_lvl);
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
@@ -149,8 +133,6 @@ t_tokentype	token_type(char *content, t_tokentype prev_type);
 bool		check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree
-// t_treenode	*build_ast(t_treenode *lin_tree);
-// t_treenode	*build_ast(t_treenode **lin_tree, int old_bracket_lvl);
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
 t_treenode	*combine_cmds_args(t_token *tokens);
 void		free_treenodes(t_treenode *node);

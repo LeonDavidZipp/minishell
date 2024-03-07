@@ -3,139 +3,99 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 18:15:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/06 20:00:33 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	update_env_vars(char *key, char *value, t_env_var **env_vars)
+char	**update_env_vars(char *key, char *value, char **env_vars)
 {
-	t_env_var	*temp;
-	t_env_var	*new_var;
+	int		i;
+	char	*new_var;
 
-	temp = *env_vars;
-	if (!temp)
+	i = -1;
+	while (env_vars[++i])
 	{
-		*env_vars = new_env_var(key, value);
-		return ;
-	}
-	while (temp)
-	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0)
 		{
-			free(temp->value);
-			temp->value = ft_strdup(value);
-			return ;
+			free(env_vars[i]);
+			new_var = ft_strjoin(key, "=");
+			env_vars[i] = ft_strjoin(new_var, value);
+			free(new_var);
+			return (env_vars);
 		}
-		if (temp->next == NULL)
+	}
+	new_var = ft_strjoin(key, "=");
+	env_vars = ft_recalloc(env_vars,
+			ft_null_terminated_arr_len((void **)env_vars) + 2,
+			sizeof(char *));
+	if (!env_vars || !env_vars)
+		return (NULL);
+	env_vars[i] = ft_strjoin(new_var, value);
+	free(new_var);
+	return (env_vars);
+}
+
+char	**unset_env_var(char *key, char **env_vars)
+{
+	int		i;
+
+	i = -1;
+	while (env_vars[++i])
+	{
+		if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0)
+		{
+			printf("found match: %s\n", env_vars[i]);
+			while (env_vars[i])
+			{
+				free(env_vars[i]);
+				env_vars[i] = env_vars[i + 1];
+				i++;
+			}
 			break ;
-		temp = temp->next;
-	}
-	new_var = new_env_var(key, value);
-	temp->next = new_var;
-}
-
-t_env_var	*copy_env_vars(t_env_var *env_vars)
-{
-	t_env_var	*new_env_vars;
-	t_env_var	*temp;
-
-	new_env_vars = NULL;
-	temp = env_vars;
-	while (temp)
-	{
-		update_env_vars(temp->key, temp->value, &new_env_vars);
-		temp = temp->next;
-	}
-	return (new_env_vars);
-}
-
-t_env_var	*new_env_var(char *key, char *value)
-{
-	t_env_var	*env_var;
-
-	env_var = (t_env_var *)malloc(sizeof(t_env_var));
-	if (!env_var)
-		return (NULL);
-	env_var->key = ft_strdup(key);
-	if (!env_var->key)
-	{
-		free(env_var);
-		return (NULL);
-	}
-	if (!value)
-		env_var->value = ft_strdup("");
-	else
-		env_var->value = ft_strdup(value);
-	env_var->next = NULL;
-	return (env_var);
-}
-
-void	unset_env_var(char *key, t_env_var **env_vars)
-{
-	t_env_var	*temp;
-	t_env_var	*prev;
-
-	temp = *env_vars;
-	prev = NULL;
-	while (temp)
-	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
-		{
-			if (!prev)
-				*env_vars = temp->next;
-			else
-				prev->next = temp->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-			return ;
 		}
-		prev = temp;
-		temp = temp->next;
 	}
+	return (env_vars);
 }
 
-void	free_env_vars(t_env_var *env_var)
+char	**init_envp(char **env_vars)
 {
-	t_env_var	*temp;
+	int			i;
+	char		**envp;
 
-	while (env_var)
-	{
-		temp = env_var->next;
-		free(env_var->key);
-		free(env_var->value);
-		free(env_var);
-		env_var = temp;
-	}
+	i = -1;
+	envp = ft_calloc(ft_null_terminated_arr_len((void **)env_vars) + 1,
+			sizeof(char *));
+	if (!envp)
+		return (NULL);
+	while (env_vars[++i])
+		envp[i] = ft_strdup(env_vars[i]);
+	return (envp);
 }
 
-// int	main(void)
+// int	main(int argc, char **argv, char **environ)
 // {
-// 	t_env_var	*env_vars;
-// 	t_env_var	*new_env_vars;
-// 	t_env_var	*temp;
+// 	char	**env_vars;
 
-// 	env_vars = NULL;
-// 	update_env_vars("key1", "value1", &env_vars);
-// 	update_env_vars("key2", "value2", &env_vars);
-// 	update_env_vars("key3", "value3", &env_vars);
-// 	update_env_vars("key4", "value4", &env_vars);
-// 	temp = env_vars;
-// 	while (temp)
+// 	(void)argc;
+// 	(void)argv;
+// 	env_vars = init_envp(environ);
+// 	env_vars = update_env_vars("TEST", "test", env_vars);
+// 	env_vars = update_env_vars("TEST2", "test2", env_vars);
+// 	env_vars = update_env_vars("TEST3", "test3", env_vars);
+// 	int i = -1;
+// 	while (env_vars[++i])
 // 	{
-// 		printf("key: %s, value: %s\n", temp->key, temp->value);
-// 		temp = temp->next;
+// 		printf("%s\n", env_vars[i]);
 // 	}
-// 	new_env_vars = copy_env_vars(env_vars);
-// 	temp = new_env_vars;
-// 	while (temp)
+// 	env_vars = unset_env_var("TEST2", env_vars);
+// 	i = -1;
+// 	while (env_vars[++i])
 // 	{
-// 		printf("key: %s, value: %s\n", temp->key, temp->value);
-// 		temp = temp->next;
+// 		printf("%s\n", env_vars[i]);
 // 	}
 // }
