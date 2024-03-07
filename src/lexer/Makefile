@@ -8,12 +8,9 @@
 all :
 	gcc -Wall -Werror -Wextra \
 	check_tokens_valid.c \
-	join_tokens.c \
 	tokenize.c \
 	tokenize_helpers.c \
 	token_type.c \
-	../abstract_syntax_tree/build_ast.c \
-	../abstract_syntax_tree/ast_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
 	../../lib/libft/src/ft_strcmp.c \
@@ -28,10 +25,11 @@ all :
 	../../lib/libft/src/ft_itoa.c \
 	../../lib/libft/src/ft_strtrim.c \
 	../../lib/libft/src/ft_strjoin.c \
-	../parsing/split.c \
-	../parsing/split_helpers.c \
-	../parsing/split_helpers2.c \
-	../parsing/expand.c \
-	../parsing/expand_helpers.c \
-	../parsing/expand_simple.c \
 	../parsing/check_input.c \
+	../parsing/expand_helpers.c \
+	../parsing/expand.c \
+	../parsing/expand2.c \
+	../parsing/mix_helpers.c \
+	../parsing/need_name.c \
+	../parsing/split_helpers.c \
+	../parsing/split.c

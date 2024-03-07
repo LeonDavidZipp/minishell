@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 12:13:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:45:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,25 +138,85 @@ static bool	check_echo(t_token *current)
 	return (true);
 }
 
-// int	main(void)
-// {
-// 	t_treenode	*nodes;
-// 	t_treenode	*ast;
 
-// 	nodes = malloc(sizeof(t_treenode));
-// 	nodes->cmd = ft_strdup("echo");
-// 	nodes->args = ft_strdup("hello");
-// 	nodes->left = malloc(sizeof(t_treenode));
-// 	nodes->left->cmd = ft_strdup(">");
-// 	nodes->left->args = ft_strdup("file");
-// 	nodes->left->left = NULL;
-// 	nodes->left->right = NULL;
-// 	nodes->right = NULL;
-// 	ast = build_ast(nodes);
-// 	if (check_nodes_valid(ast))
-// 		printf("Valid\n");
-// 	else
-// 		printf("Invalid\n");
-// 	free_treenodes(ast);
-// 	return (0);
-// }
+int	main(void)
+{
+	char *test_cases[] = {
+	"echo hello && (echo hi)", // valid
+	"echo hello && echo hi", // valid
+	"echo hello && (echo hi", // invalid
+	"echo hello && echo hi)", // invalid
+	"echo hello && (echo hi))", // invalid
+	"(echo hello && echo hi)", // valid
+	"echo hello && (echo hi) && echo bye", // valid
+	"echo hello && ((echo hi) && echo bye)", // valid
+	"echo hello && ((echo hi) && echo bye", // invalid
+	"echo hello && ((echo hi) && echo bye))", // invalid
+	"echo hello && ((echo hi) && (echo bye))", // valid
+	"echo hello && ((echo hi) && (echo bye)", // invalid
+	"echo hello && ((echo hi) && (echo bye)))", // invalid
+	"echo hello && ((echo hi) && (echo bye)) && echo end", // valid
+	"echo hello && ((echo hi) && (echo bye)) && echo end)", // invalid
+	"echo hello && ((echo hi) && (echo bye)) && (echo end)", // valid
+	"echo hello && ((echo hi) && (echo bye)) && (echo end", // invalid
+	"echo hello && ((echo hi) && (echo bye)) && (echo end))", // invalid
+	"echo hello && ((echo hi) && (echo bye)) && (echo end)) && echo final", // invalid
+	"echo hello && ((echo hi) && (echo bye)) && (echo end) && echo final", // valid
+	"echo hello || (echo hi)", // valid
+	"echo hello || echo hi", // valid
+	"echo hello || (echo hi", // invalid
+	"echo hello || echo hi)", // invalid
+	"echo hello || (echo hi))", // invalid
+	"(echo hello || echo hi)", // valid
+	"echo hello || (echo hi) || echo bye", // valid
+	"echo hello || ((echo hi) || echo bye)", // valid
+	"echo hello || ((echo hi) || echo bye", // invalid
+	"echo hello || ((echo hi) || echo bye))", // invalid
+	"echo hello || ((echo hi) || (echo bye))", // valid
+	"echo hello || ((echo hi) || (echo bye)", // invalid
+	"echo hello || ((echo hi) || (echo bye)))", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || echo end", // valid
+	"echo hello || ((echo hi) || (echo bye)) || echo end)", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end)", // valid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end))", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end)) || echo final", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final", // valid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || echo last", // valid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last)", // valid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last))", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last)) || echo end", // invalid
+	"echo hello || ((echo hi) || (echo bye)) || (echo end) || echo final || (echo last) || echo end", // valid
+	"echo hello && (echo hi || (echo bye && echo end))", // valid
+	"echo hello && (echo hi || (echo bye && echo end)", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)))", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && echo final", // valid
+	"echo hello && (echo hi || (echo bye && echo end)) && echo final)", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final)", // valid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final))", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final)) && echo last", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last", // valid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || echo end", // valid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end)", // valid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end))", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end)) || echo final", // invalid
+	"echo hello && (echo hi || (echo bye && echo end)) && (echo final) && echo last || (echo end) || echo final", // valid
+	NULL // null terminated
+	};
+	for (int i = 0; test_cases[i]; i++)
+	{
+		t_app_data app;
+		app.tokens = tokenize(&app);
+		if (!app.tokens)
+			return (1);
+		printf("Test case %d: %s\n", i, test_cases[i]);
+		if (check_tokens_valid(app.tokens) == false)
+			printf("Test case %d failed\n", i);
+		else
+			printf("Test case %d passed\n", i);
+		free_tokens(app.tokens);
+	}
+}
