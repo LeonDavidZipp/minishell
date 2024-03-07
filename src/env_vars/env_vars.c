@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_vars_char.c                                    :+:      :+:    :+:   */
+/*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/06 19:21:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:37:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@ char	**unset_env_var(char *key, char **env_vars)
 	{
 		if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0)
 		{
-			printf("found match: %s\n", env_vars[i]);
 			while (env_vars[i])
 			{
 				free(env_vars[i]);
