@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 12:37:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:38:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,27 +74,4 @@ char	**init_envp(char **env_vars)
 	while (env_vars[++i])
 		envp[i] = ft_strdup(env_vars[i]);
 	return (envp);
-}
-
-int	main(int argc, char **argv, char **environ)
-{
-	char	**env_vars;
-
-	(void)argc;
-	(void)argv;
-	env_vars = init_envp(environ);
-	env_vars = update_env_vars("TEST", "test", env_vars);
-	env_vars = update_env_vars("TEST2", "test2", env_vars);
-	env_vars = update_env_vars("TEST3", "test3", env_vars);
-	int i = -1;
-	while (env_vars[++i])
-	{
-		printf("%s\n", env_vars[i]);
-	}
-	env_vars = unset_env_var("TEST2", env_vars);
-	i = -1;
-	while (env_vars[++i])
-	{
-		printf("%s\n", env_vars[i]);
-	}
 }
