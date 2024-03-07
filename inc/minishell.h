@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/07 11:54:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/07 12:16:14 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,13 +101,13 @@ typedef struct s_app_data
 void		signal_handler(void);
 
 // built-in commands
-// void		builtin_cd(char *path);
-// void		builtin_pwd(char *args);
-// void		builtin_echo(char *str);
-// void		builtin_env(char *new_var, t_env_var **env_vars);
-// void		builtin_exit(int exit_code);
-// void		builtin_export(char *var_string, t_env_var **env_vars);
-// void		builtin_unset(char *keys, t_env_var **env_vars);
+void		builtin_cd(char *path);
+void		builtin_pwd(char *args);
+void		builtin_echo(char *str);
+void		builtin_env(char *new_var, t_env_var **env_vars);
+void		builtin_exit(int exit_code);
+void		builtin_export(char *var_string, t_env_var **env_vars);
+void		builtin_unset(char *keys, t_env_var **env_vars);
 
 // environment variables
 char		**init_envp(char **env_vars);
