@@ -5,11 +5,10 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/07 14:30:36 by lzipp            ###   ########.fr       */
+/*   Created: 2024/03/08 14:44:30 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/08 14:47:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -92,8 +91,8 @@ typedef struct s_app_data
 {
 	char		**env_vars;
 	int			last_exit_code;
-	int			in_fd;
-	int			out_fd;
+	int			in_fd; // this needs to be in treenode
+	int			out_fd; // this needs to be in treenode
 	char		*input;
 	t_token		*tokens;
 }			t_app_data;
