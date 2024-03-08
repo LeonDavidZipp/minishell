@@ -6,14 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/08 12:23:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/08 13:11:59 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token	*new_token(char *content, t_token *prev);
-t_token 		*switch_args_for_redir(t_token *token);
+static t_token		*new_token(char *content, t_token *prev);
+static t_token		*switch_args_for_redir(t_token *token);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -41,39 +41,37 @@ t_token	*tokenize(t_app_data *app)
 	ft_free_2d_arr((void **)token_contents);
 	first = switch_args_for_redir(first);
 	first = join_arg_tokens(first);
-	first = join_after_echo(first);
-	return (first);
+	return (join_after_echo(first));
 }
-// reorder tokens for redirections
-// >: arguments can be like this: arg1 > file1 arg2 ... argn
-// >>: exactly as above
-// after any redirect the first character or word is the argument and 
-// anything after that is an argument for the command
 
-t_token *switch_args_for_redir(t_token *token)
+static t_token *switch_args_for_redir(t_token *token)
 {
-	t_token *current;
-	t_token *temp;
+	t_token	*current;
+	t_token	*temp[4];
 
 	current = token;
-	while (current && current->next && current->next->next)
+	while (current && current->next && current->next->next
+		&& current->next->next->next)
 	{
-		if (current->type == REDIR_OUT || current->type == REDIR_IN
-			|| current->type REDIR_APPEND || current->type == HEREDOC)
+		if ((current->next->type == REDIR_OUT || current->next->type == REDIR_IN
+				|| current->next->type == REDIR_APPEND
+				|| current->next->type == HEREDOC)
+			&& current->next->next->type == ARG
+			&& current->next->next->next->type == ARG)
 		{
-			if (current->next->next->type == ARG)
-			{
-				temp = current->next->next;
-				current->next->next = temp->next;
-				temp->next = current->next;
-				current->next = temp;
-			}
+			temp[0] = current->next;
+			temp[1] = current->next->next;
+			temp[2] = current->next->next->next;
+			temp[3] = current->next->next->next->next;
+			current->next = temp[2];
+			current->next->next = temp[0];
+			current->next->next->next = temp[1];
+			current->next->next->next->next = temp[3];
 		}
 		current = current->next;
 	}
 	return (token);
 }
-
 
 // {
 // 	t_token *temp;
