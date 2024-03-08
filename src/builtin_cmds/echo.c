@@ -3,29 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 15:49:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/08 13:21:34 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	builtin_echo(char *str)
+void	builtin_echo(char *str, int out_fd)
 {
 	char	*temp;
 
+	// out_fd = 1;
 	if (ft_strlen(str) >= 3 && ft_strncmp(str, "-n ", 3) == 0)
 	{
 		temp = ft_substr(str, 3, ft_strlen(str) - 3);
-		printf("%s", temp);
+		ft_putstr_fd(temp, out_fd);
+		// printf("%s", temp);
 		free(temp);
 	}
 	else if (ft_strlen(str) == 2 && ft_strncmp(str, "-n", 2) == 0)
-		printf("\n");
+	{
+		write(out_fd, "\n", 1);
+		// printf("\n");
+	}
 	else
-		printf("%s\n", str);
+	{
+		ft_putstr_fd(str, out_fd);
+		write(out_fd, "\n", 1);
+		// printf("%s\n", str);
+	}
 }
 
 // int	main(int argc, char **argv)

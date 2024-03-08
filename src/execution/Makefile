@@ -20,6 +20,7 @@ all:
 	../../lib/libft/src/ft_strtrim.c \
 	../../lib/libft/src/ft_recalloc.c \
 	../../lib/libft/src/ft_memmove.c \
+	../../lib/libft/src/ft_putstr_fd.c \
 	../builtin_cmds/cd.c \
 	../builtin_cmds/echo.c \
 	../builtin_cmds/env.c \

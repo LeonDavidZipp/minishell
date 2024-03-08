@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/07 16:03:57 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/08 17:21:46 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,10 @@ typedef struct s_treenode
 	char				*cmd;
 	char				*args;
 	t_tokentype			cmd_type;
+	int					in_fd;
+	int					out_fd;
+	int					err_val;
+	char				*err;
 	int					bracket_lvl;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
@@ -104,7 +108,8 @@ void		signal_handler(void);
 // built-in commands
 void		builtin_cd(char *path);
 void		builtin_pwd(char *args);
-void		builtin_echo(char *str);
+// void		builtin_echo(char *str);
+void	builtin_echo(char *str, int out_fd);
 void		builtin_env(char *new_var, char **env_vars);
 void		builtin_exit(int exit_code);
 // void		builtin_export(char *var_string, t_env_var **env_vars);
