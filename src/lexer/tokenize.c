@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 16:52:21 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/08 12:23:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,36 +53,23 @@ t_token	*tokenize(t_app_data *app)
 t_token *switch_args_for_redir(t_token *token)
 {
 	t_token *current;
-	t_token *prev;
-	t_token *next;
 	t_token *temp;
 
 	current = token;
-	prev = NULL;
-	next = NULL;
-	temp = NULL;
-	while (current && current->next)
+	while (current && current->next && current->next->next)
 	{
-		if ((current->type == REDIR_OUT || current->type == REDIR_IN
-			|| current->type == REDIR_APPEND || current->type == HEREDOC)
-			&& (current->next->type == ARG || current->next->type == CMD))
+		if (current->type == REDIR_OUT || current->type == REDIR_IN
+			|| current->type REDIR_APPEND || current->type == HEREDOC)
 		{
-			temp = current->next;
-			next = temp->next;
-			if (prev)
-				prev->next = temp;
-			else
-				token = temp;
-			temp->next = current;
-			current->next = next;
-			prev = current;
-			current = next;
+			if (current->next->next->type == ARG)
+			{
+				temp = current->next->next;
+				current->next->next = temp->next;
+				temp->next = current->next;
+				current->next = temp;
+			}
 		}
-		else
-		{
-			prev = current;
-			current = current->next;
-		}
+		current = current->next;
 	}
 	return (token);
 }
