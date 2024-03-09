@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_tokens_valid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/07 16:36:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/09 10:43:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ static bool	check_echo(t_token *current);
 bool	check_tokens_valid(t_token *tokens)
 {
 	t_token		*current;
-	t_tokentype	type;
 
 	if (tokens->type == ARG || tokens->type == OR || tokens->type == AND
 		|| tokens->type == PIPE)
@@ -29,8 +28,6 @@ bool	check_tokens_valid(t_token *tokens)
 	current = tokens;
 	while (current)
 	{
-		if (current->next)
-			type = current->next->type;
 		if (!check_and_or_pipe_redir_out_append(current))
 			return (false);
 		if (!check_redir_in_heredoc(current))

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/08 17:20:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/09 14:29:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,53 +19,77 @@ static char	*ft_split_str(const char *s, char c, int *i);
 
 char	***split_env_vars(char *envp)
 {
-	// char	***env_vars;
+	char	***env_vars;
 	char	**keys_values;
-	char	**temp;
-	int		i;
-	int		j;
+	int		len;
 
 	keys_values = split_env_var_string(envp, ' ');
 	if (!keys_values)
 		return (NULL);
-	// i = ft_null_terminated_arr_len((void **)keys_values);
-	i = -1;
-	while (keys_values[++i])
+	len = ft_null_terminated_arr_len((void **)keys_values);
+	env_vars = ft_calloc(len + 1, sizeof(char **));
+	if (!env_vars)
+		return (ft_free_2d_arr((void **)keys_values), NULL);
+	len = -1;
+	while (keys_values[++len])
 	{
-		j = -1;
-		printf("keys_values[%d]: |%s|\n", i, keys_values[i]);
-		temp = split_env_var(keys_values[i]);
-		printf("done\n");
-		while (temp[++j])
-			printf("temp[%d]: %s\n", j, temp[j]);
-		printf("\n----------------\n");
+		// printf("env string: %s\n", keys_values[len]);
+		env_vars[len] = split_env_var(keys_values[len]);
+		// printf("result: |%s| |%s|\n", env_vars[len][0], env_vars[len][1]);
 	}
-	return (NULL);
+	return (env_vars);
 }
+
+// char	**split_env_var(char *envp)
+// {
+// 	char		**key_value;
+// 	int			len;
+// 	key_value = ft_calloc(3, sizeof(char *));
+// 	if (!key_value)
+// 		return (NULL);
+// 	len = 0;
+// 	while (envp[len] && envp[len] != '=')
+// 	{
+// 		if (ft_isspace(envp[len]))
+// 			return (free(key_value), NULL);
+// 		len++;
+// 	}
+// 	// printf("len: %d\n", len);
+// 	if (ft_isspace(envp[len + 1]))
+// 		return (free(key_value), NULL);
+// 	key_value[0] = ft_substr(envp, 0, len);
+// 	// printf("char at len + 1: |%c|\n", envp[len + 1]);
+// 	key_value[1] = ft_substr(envp, len + 1, ft_strlen(envp) - len);
+// 	key_value[1] = ft_ntrim_in_place(key_value[1], "\"\'", 1);
+// 	printf("key & value: |%s| |%s|\n", key_value[0], key_value[1]);
+// 	// printf("key & value: |%s| |%s|\n", key_value[0], key_value[1]);
+// 	return (key_value);
+// }
 
 char	**split_env_var(char *envp)
 {
-	char		**key_value;
-	int			len;
-	key_value = ft_calloc(3, sizeof(char *));
-	if (!key_value)
+	char	**result;
+	int		len1;
+
+	result = ft_calloc(3, sizeof(char *));
+	if (!envp || !result)
 		return (NULL);
-	len = 0;
-	printf("before while");
-	while (envp[len] && envp[len] != '=')
+	len1 = 0;
+	while (envp[len1] && envp[len1] != '=')
 	{
-		if (ft_isspace(envp[len]))
-			return (free(key_value), NULL);
-		len++;
+		if (ft_isspace(envp[len1]))
+			return (ft_free_2d_arr((void **)result), NULL);
+		len1++;
 	}
-	printf("len: %d\n", len);
-	if (ft_isspace(envp[len + 1]))
-		return (free(key_value), NULL);
-	printf("len: %d\n", len);
-	key_value[0] = ft_substr(envp, 0, len);
-	key_value[1] = ft_substr(envp, len + 1, ft_strlen(envp) - len);
-	key_value[1] = ft_ntrim_in_place(key_value[1], "\"\'", 1);
-	return (key_value);
+	result[0] = ft_substr(envp, 0, len1);
+	if (envp[len1] && envp[len1] == '=' && !envp[len1 + 1])
+		result[1] = ft_strdup("");
+	else if (envp[len1] && envp[len1] == '=' && envp[len1 + 1])
+	{
+		result[1] = ft_substr(envp, len1 + 1, ft_strlen(envp) - len1);
+		result[1] = ft_ntrim_in_place(result[1], "\"\'", 1);
+	}
+	return (result);
 }
 
 char	**split_env_var_string(char *envp, char c)
@@ -136,19 +160,4 @@ static int	count_substr(char *s, char c)
 			count++;
 	}
 	return (count);
-}
-
-#include <stdio.h>
-int main(void)
-{
-	char ***env_vars;
-	char *envp = "KEY1= KEY2=VALUE2 KEY3=\" hey\" KEY4=        hi";
-	int i = 0;
-	env_vars = split_env_vars(envp);
-	while (env_vars[i])
-	{
-		printf("|Key: %s, Value: %s|\n", env_vars[i][0], env_vars[i][1]);
-		i++;
-	}
-	return 0;
 }
