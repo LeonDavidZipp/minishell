@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/08 18:46:00 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/09 17:06:27 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,23 +63,57 @@ void	exec_cmds(t_treenode *ast, t_app_data *app)
 void	traverse_tree(t_treenode *node, t_treenode *prev_node)
 {
 	int	pipe_fd[2];
+	t_treenode *cmd_node;
 	
 	if (node->cmd_type == PIPE)
 	{
-		// if (prev_node && prev_node->out_fd != 1)
-		// 	node->left->in_fd = prev_node->out_fd;
 		if (pipe(pipe_fd) == -1)
 		{
-			node->left->err_val = errno;
-			node->right->err_val = -1;
+			cmd_node = node->left;
+			while (cmd_node->cmd_type == REDIR_IN || cmd_node->cmd_type == REDIR_OUT
+				|| cmd_node->cmd_type == REDIR_APPEND || cmd_node->cmd_type == PIPE
+				|| cmd_node->cmd_type == HEREDOC)
+			{
+				if (cmd_node->right)
+					cmd_node = cmd_node->right;
+				else if (cmd_node->left)
+					cmd_node = cmd_node->left;
+				else
+					break;
+			}
+			cmd_node->err_val = errno;
+			cmd_node->err = "pipe error";
 		}
 		else
 		{
-			if (node->left->cmd_type == PIPE)
-				node->left->right->out_fd = pipe_fd[1];
+		cmd_node = node->left;
+		while (cmd_node->cmd_type == REDIR_IN || cmd_node->cmd_type == REDIR_OUT
+			|| cmd_node->cmd_type == REDIR_APPEND || cmd_node->cmd_type == PIPE
+			|| cmd_node->cmd_type == HEREDOC)
+		{
+			if (cmd_node->right)
+				cmd_node = cmd_node->right;
+			else if (cmd_node->left)
+				cmd_node = cmd_node->left;
 			else
-				node->left->out_fd = pipe_fd[1];
-			node->right->in_fd = pipe_fd[0];
+				break;
+		}
+		// printf("this is the cmd_node: %s and the new out_fd is %d\n", cmd_node->cmd, pipe_fd[1]);
+		cmd_node->out_fd = pipe_fd[1];
+		cmd_node = node->right;
+		while (cmd_node->cmd_type == REDIR_IN || cmd_node->cmd_type == REDIR_OUT
+			|| cmd_node->cmd_type == REDIR_APPEND || cmd_node->cmd_type == PIPE
+			|| cmd_node->cmd_type == HEREDOC)
+		{
+			if (cmd_node->right)
+				cmd_node = cmd_node->right;
+			else if (cmd_node->left)
+				cmd_node = cmd_node->left;
+			else
+				break;
+		}
+		// printf("this is the node->right: %s and the new in_fd is %d\n", node->right->cmd, pipe_fd[0]);
+		cmd_node->in_fd = pipe_fd[0];
 		}
 	}
 	if (is_redir(node->cmd_type))
@@ -92,99 +126,176 @@ void	traverse_tree(t_treenode *node, t_treenode *prev_node)
 
 void	setup_redir(t_treenode *node, t_treenode *prev_node)
 {
-	int	tmp_fd;
+	int			tmp_fd;
+	t_treenode *cmd_node;
 
 	if (node->cmd_type == REDIR_IN)
 	{
 		if (prev_node)
 		{
-			if (prev_node->cmd_type == REDIR_IN && prev_node->in_fd == 0)
+			tmp_fd = open(node->args, O_RDONLY);
+			if (tmp_fd == -1)
 			{
-				node->left->in_fd = open(node->args, O_RDONLY);
-				if (node->left->in_fd == -1)
-					node->left->err_val = errno;
+				cmd_node = node->left;
+				while (cmd_node->cmd_type == REDIR_IN)
+				{
+					if (cmd_node->right)
+						cmd_node = cmd_node->right;
+					else if (cmd_node->left)
+						cmd_node = cmd_node->left;
+					else
+						break;
+				}
+				if (!cmd_node->err_val || (cmd_node->err_val && ft_strcmp(cmd_node->err, "pipe error") != 0))
+				{
+					printf("setting err_val to errno at node %s\n", cmd_node->cmd);
+					cmd_node->err_val = errno;
+					cmd_node->err = node->args;
+				}
 			}
 			else
 			{
-				node->left->in_fd = prev_node->in_fd;
-				tmp_fd = open(node->args, O_RDONLY);
-				if (tmp_fd == -1 || node->err_val > 0)
+				// printf("opened tmp_fd: %d\n", tmp_fd);
+				if (prev_node->cmd_type != REDIR_IN)
 				{
-					if (node->err_val > 0)
+					cmd_node = node->left;
+					while (cmd_node->cmd_type == REDIR_IN)
 					{
-						node->left->err_val = node->err_val;
-						node->left->err = node->err;
+						if (cmd_node->right)
+							cmd_node = cmd_node->right;
+						else if (cmd_node->left)
+							cmd_node = cmd_node->left;
+						else
+							break;
 					}
-					else
-					{
-						node->left->err_val = errno;
-						node->left->err = node->args;
-					}
+					// printf("this would be the cmd_node: %s\n", cmd_node->cmd);
+					// printf("node_fd: %d will now change to %d\n", node->in_fd, tmp_fd);
+					cmd_node->in_fd = tmp_fd;
 				}
-				close(tmp_fd);
+				else
+				{
+					close(tmp_fd);
+					// printf("closed tmp_fd %d\n", tmp_fd);
+				}
 			}
 		}
 		else
 		{
-			node->left->in_fd = open(node->args, O_RDONLY);
-			if (node->left->in_fd == -1)
+			tmp_fd = open(node->args, O_RDONLY);
+			if (tmp_fd == -1)
 			{
-				node->left->err_val = errno;
-				node->left->err = node->args;
+				cmd_node = node->left;
+				while (cmd_node->cmd_type == REDIR_IN)
+				{
+					if (cmd_node->right)
+						cmd_node = cmd_node->right;
+					else if (cmd_node->left)
+						cmd_node = cmd_node->left;
+					else
+						break;
+				}
+				cmd_node->err_val = errno;
+				cmd_node->err = node->args;
 			}
-			node->in_fd = node->left->in_fd;
+			else
+			{
+				cmd_node = node->left;
+				while (cmd_node->cmd_type == REDIR_IN)
+				{
+					if (cmd_node->right)
+						cmd_node = cmd_node->right;
+					else if (cmd_node->left)
+						cmd_node = cmd_node->left;
+					else
+						break;
+				}
+				cmd_node->in_fd = tmp_fd;
+			}
 		}
 	}
 	else if (node->cmd_type == REDIR_OUT || node->cmd_type == REDIR_APPEND)
 	{
 		if (prev_node)
 		{
-			if ((prev_node->cmd_type == REDIR_OUT || prev_node->cmd_type == REDIR_APPEND) && prev_node->out_fd == 1)
+			if (node->cmd_type == REDIR_OUT)
+				tmp_fd = open(node->args, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			else
+				tmp_fd = open(node->args, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (tmp_fd == -1)
 			{
-				if (node->cmd_type == REDIR_OUT)
-					node->left->out_fd = open(node->args, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				else
-					node->left->out_fd = open(node->args, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (node->left->out_fd == -1)
+				cmd_node = node->left;
+				while (cmd_node->cmd_type == REDIR_OUT || cmd_node->cmd_type == REDIR_APPEND)
 				{
-					node->left->err_val = errno;
-					node->left->err = node->args;
+					if (cmd_node->right)
+						cmd_node = cmd_node->right;
+					else if (cmd_node->left)
+						cmd_node = cmd_node->left;
+					else
+						break;
+				}
+				if (!cmd_node->err_val || (cmd_node->err_val && ft_strcmp(cmd_node->err, "pipe error") != 0))
+				{
+					cmd_node->err_val = errno;
+					cmd_node->err = node->args;
 				}
 			}
 			else
 			{
-				node->left->out_fd = prev_node->out_fd;
-				if (node->cmd_type == REDIR_OUT)
-					tmp_fd = open(node->args, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-					tmp_fd = open(node->args, O_WRONLY | O_CREAT | O_APPEND, 0644);
-				if (tmp_fd == -1 || node->err_val > 0) 
+				if (prev_node->cmd_type != REDIR_OUT && prev_node->cmd_type != REDIR_APPEND)
 				{
-					if (node->err_val > 0)
+					cmd_node = node->left;
+					while (cmd_node->cmd_type == REDIR_OUT || cmd_node->cmd_type == REDIR_APPEND)
 					{
-						node->left->err_val = node->err_val;
-						node->left->err = node->err;
+						if (cmd_node->right)
+							cmd_node = cmd_node->right;
+						else if (cmd_node->left)
+							cmd_node = cmd_node->left;
+						else
+							break;
 					}
-					else
-					{
-						node->left->err_val = errno;
-						node->left->err = node->args;
-					}
+					cmd_node->out_fd = tmp_fd;
 				}
-				close(tmp_fd);
+				else
+				{
+					close(tmp_fd);
+				}
 			}
 		}
 		else
 		{
 			if (node->cmd_type == REDIR_OUT)
-				node->left->out_fd = open(node->args, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+				tmp_fd = open(node->args, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			else
-				node->left->out_fd = open(node->args, O_WRONLY | O_CREAT | O_APPEND, 0644);
-			if (node->left->out_fd == -1)
+				tmp_fd = open(node->args, O_WRONLY | O_CREAT | O_APPEND, 0644);
+			if (tmp_fd == -1)
 			{
-				node->left->err_val = errno;
-				node->left->err = node->args;
+				cmd_node = node->left;
+				while (cmd_node->cmd_type == REDIR_OUT || cmd_node->cmd_type == REDIR_APPEND)
+				{
+					if (cmd_node->right)
+						cmd_node = cmd_node->right;
+					else if (cmd_node->left)
+						cmd_node = cmd_node->left;
+					else
+						break;
+				}
+				cmd_node->err_val = errno;
+				cmd_node->err = node->args;
 			}
-			node->out_fd = node->left->out_fd;
+			else
+			{
+				cmd_node = node->left;
+				while (cmd_node->cmd_type == REDIR_OUT || cmd_node->cmd_type == REDIR_APPEND)
+				{
+					if (cmd_node->right)
+						cmd_node = cmd_node->right;
+					else if (cmd_node->left)
+						cmd_node = cmd_node->left;
+					else
+						break;
+				}
+				cmd_node->out_fd = tmp_fd;
+			}
 		}
 	}
 }
@@ -194,15 +305,15 @@ void	execute_execve(t_treenode *ast, char **env_vars)
 	pid_t	pid;
 	int		status;
 	char	**arg_arr;
-	char	*tmp;
+	char	*cmd_node;
 
-	tmp = ft_strjoin(ast->cmd, " ");
-	if (!tmp)
+	cmd_node = ft_strjoin(ast->cmd, " ");
+	if (!cmd_node)
 		return ;
 	if (ast->args)
-		arg_arr = ft_split(ft_strjoin(tmp, ast->args), ' ');
+		arg_arr = ft_split(ft_strjoin(cmd_node, ast->args), ' ');
 	else
-		arg_arr = ft_split(tmp, ' ');
+		arg_arr = ft_split(cmd_node, ' ');
 	if (!arg_arr)
 		return ;
 	pid = fork();
@@ -290,13 +401,13 @@ int	main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	app.env_vars = init_envp(envp);
-	app.input = ft_strdup("echo hello | ls -l | wc -l > out"); // when updated version check if (< in cat -e) segfaults
+	app.input = ft_strdup("ls -l | wc -l > out > out2");
 	tokens = tokenize(&app);
 	root = combine_cmds_args(tokens);
 	ast = NULL;
 	ast = build_ast(ast, root, 0);
 	traverse_tree(ast, NULL);
-	debug_printtree(ast, 0);
+	//debug_printtree(ast, 0);
 	exec_cmds(ast, &app);
 	return (0);
 }

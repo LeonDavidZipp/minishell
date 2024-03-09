@@ -1,5 +1,5 @@
 all:
-	@cc -Wall -Wextra -Werror -g \
+	@cc -Wall -Wextra -Werror -fsanitize=address -g \
 	execute.c \
 	execute_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
