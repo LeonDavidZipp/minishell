@@ -6,16 +6,16 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/09 14:29:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/09 18:33:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static int	count_substr(char *s, char c);
-char		**split_env_var_string(char *envp, char c);
-char		**split_env_var(char *envp);
-static char	*ft_split_str(const char *s, char c, int *i);
+static int		count_substr(char *s, char c);
+static char		**split_env_var_string(char *envp, char c);
+static char		**split_env_var(char *envp);
+static char		*ft_split_str(const char *s, char c, int *i);
 
 char	***split_env_vars(char *envp)
 {
@@ -32,41 +32,11 @@ char	***split_env_vars(char *envp)
 		return (ft_free_2d_arr((void **)keys_values), NULL);
 	len = -1;
 	while (keys_values[++len])
-	{
-		// printf("env string: %s\n", keys_values[len]);
 		env_vars[len] = split_env_var(keys_values[len]);
-		// printf("result: |%s| |%s|\n", env_vars[len][0], env_vars[len][1]);
-	}
 	return (env_vars);
 }
 
-// char	**split_env_var(char *envp)
-// {
-// 	char		**key_value;
-// 	int			len;
-// 	key_value = ft_calloc(3, sizeof(char *));
-// 	if (!key_value)
-// 		return (NULL);
-// 	len = 0;
-// 	while (envp[len] && envp[len] != '=')
-// 	{
-// 		if (ft_isspace(envp[len]))
-// 			return (free(key_value), NULL);
-// 		len++;
-// 	}
-// 	// printf("len: %d\n", len);
-// 	if (ft_isspace(envp[len + 1]))
-// 		return (free(key_value), NULL);
-// 	key_value[0] = ft_substr(envp, 0, len);
-// 	// printf("char at len + 1: |%c|\n", envp[len + 1]);
-// 	key_value[1] = ft_substr(envp, len + 1, ft_strlen(envp) - len);
-// 	key_value[1] = ft_ntrim_in_place(key_value[1], "\"\'", 1);
-// 	printf("key & value: |%s| |%s|\n", key_value[0], key_value[1]);
-// 	// printf("key & value: |%s| |%s|\n", key_value[0], key_value[1]);
-// 	return (key_value);
-// }
-
-char	**split_env_var(char *envp)
+static char	**split_env_var(char *envp)
 {
 	char	**result;
 	int		len1;
@@ -92,7 +62,7 @@ char	**split_env_var(char *envp)
 	return (result);
 }
 
-char	**split_env_var_string(char *envp, char c)
+static char	**split_env_var_string(char *envp, char c)
 {
 	int		str_count;
 	char	**result;

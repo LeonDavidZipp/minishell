@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/07 16:36:21 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/09 18:32:39 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,7 @@ builtin_cmds/env.c \
 builtin_cmds/exit.c \
 builtin_cmds/export.c \
 builtin_cmds/pwd.c \
+builtin_cmds/split_multiple_envp.c \
 builtin_cmds/unset.c \
 env_vars/env_vars.c \
 lexer/check_tokens_valid.c \
