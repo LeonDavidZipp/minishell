@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/04 20:34:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/09 14:51:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,11 +95,11 @@ char	**split(char *input)
 
 // int main()
 // {
-// 	char *input = "echo *";
+// 	char *input = "hello \"world\"";
 // 	if (check_input(input) == 1)
 // 		return (1);
-// 	char **str = split(input);
-// 	if (!str)
+// 	char **tokens = split(input);
+// 	if (!tokens)
 // 		return 1;
 // 	for (int i = 0; tokens[i]; i++)
 // 	{

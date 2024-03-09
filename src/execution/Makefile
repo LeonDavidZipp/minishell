@@ -1,5 +1,5 @@
 all:
-	@cc -Wall -Wextra -Werror -g \
+	@cc -Wall -Wextra -Werror -fsanitize=address -g \
 	execute.c \
 	execute_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
@@ -20,6 +20,7 @@ all:
 	../../lib/libft/src/ft_strtrim.c \
 	../../lib/libft/src/ft_recalloc.c \
 	../../lib/libft/src/ft_memmove.c \
+	../../lib/libft/src/ft_putstr_fd.c \
 	../builtin_cmds/cd.c \
 	../builtin_cmds/echo.c \
 	../builtin_cmds/env.c \

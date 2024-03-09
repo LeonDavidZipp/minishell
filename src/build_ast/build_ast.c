@@ -6,7 +6,11 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/03/07 13:59:49 by lzipp            ###   ########.fr       */
+=======
+/*   Updated: 2024/03/08 17:12:09 by cgerling         ###   ########.fr       */
+>>>>>>> 5-command-execution
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +87,10 @@ static t_treenode	*new_treenode(char *cmd, char *args,
 	node->bracket_lvl = bracket_lvl;
 	node->left = NULL;
 	node->right = NULL;
+	node->in_fd = 0; // this is the default value
+	node->out_fd = 1; // this is the default value
+	node->err_val = 0; // this is the default value
+	node->err = NULL; // this is the default value
 	return (node);
 }
 

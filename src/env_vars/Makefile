@@ -19,4 +19,5 @@ all :
 	../../lib/libft/src/ft_isspace.c \
 	../../lib/libft/src/ft_strjoin.c \
 	../../lib/libft/src/ft_recalloc.c \
-	../../lib/libft/src/ft_memmove.c
+	../../lib/libft/src/ft_memmove.c \
+	../../lib/libft/src/ft_split.c

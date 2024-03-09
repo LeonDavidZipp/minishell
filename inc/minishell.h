@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 14:44:30 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/09 18:34:22 by lzipp            ###   ########.fr       */
+/*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/09 20:04:36 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,10 @@ typedef struct s_treenode
 	char				*cmd;
 	char				*args;
 	t_tokentype			cmd_type;
+	int					in_fd;
+	int					out_fd;
+	int					err_val;
+	char				*err;
 	int					bracket_lvl;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
@@ -103,7 +107,8 @@ void		signal_handler(void);
 // built-in commands
 void		builtin_cd(char *path);
 void		builtin_pwd(char *args);
-void		builtin_echo(char *str);
+// void		builtin_echo(char *str);
+void		builtin_echo(char *str, int out_fd);
 void		builtin_env(char *new_var, char **env_vars);
 void		builtin_exit(int exit_code);
 // void		builtin_export(char *var_string, t_env_var **env_vars);
@@ -113,7 +118,8 @@ char		***split_env_vars(char *envp);
 // environment variables
 char		**init_envp(char **env_vars);
 char		**update_env_vars(char *key, char *value, char **env_vars);
-char		**unset_env_var(char *key, char **env_vars);
+void		unset_env_var(char *key, char ***env_vars);
+void		unset_env_vars(char *keys_string, char ***env_vars);
 char		**split_path(char *path);
 char		**split_env(char *envp);
 
