@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 16:03:30 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 11:41:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	main(int argc, char **argv, char **envp)
 		return (1);
 	}
 	app_data.env_vars = init_envp(envp);
+	app_data.input = NULL;
 	signal_handler();
 	print_logo();
 	while (true)
