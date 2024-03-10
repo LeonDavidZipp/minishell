@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 10:48:32 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 11:22:23 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ typedef struct s_token
 typedef struct s_treenode
 {
 	char				*cmd;
-	char				*args;
 	t_tokentype			cmd_type;
+	char				*args;
+	int					bracket_lvl;
 	int					in_fd;
 	int					out_fd;
 	int					err_val;
 	char				*err;
-	int					bracket_lvl;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
@@ -95,10 +95,7 @@ typedef struct s_app_data
 {
 	char		**env_vars;
 	int			last_exit_code;
-	int			in_fd; // this needs to be in treenode
-	int			out_fd; // this needs to be in treenode
 	char		*input;
-	t_token		*tokens;
 }			t_app_data;
 
 // signal handling
@@ -143,7 +140,7 @@ bool		check_tokens_valid(t_token *tokens);
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
 t_treenode	*combine_cmds_args(t_token *tokens);
 t_treenode	*new_treenode(char *cmd, char *args,
-						t_tokentype cmd_type, int bracket_lvl);
+				t_tokentype cmd_type, int bracket_lvl);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
 bool		node_is_operator(char *cmd);

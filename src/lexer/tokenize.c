@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/08 13:11:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 11:18:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ t_token	*tokenize(t_app_data *app)
 	return (join_after_echo(first));
 }
 
-static t_token *switch_args_for_redir(t_token *token)
+static t_token	*switch_args_for_redir(t_token *token)
 {
 	t_token	*current;
 	t_token	*temp[4];
@@ -72,28 +72,6 @@ static t_token *switch_args_for_redir(t_token *token)
 	}
 	return (token);
 }
-
-// {
-// 	t_token *temp;
-// 	int redir_index;
-// 	int args_start_index;
-
-// 	redir_index = -1;
-// 	while (arr && arr[++redir_index])
-// 	{
-// 		args_start_index = 0;
-// 		if (arr[redir_index]->type == TOK_REDIR)
-// 			args_start_index = redir_index + 1;
-// 		if (args_start_index > 0 && arr[++args_start_index] && arr[args_start_index]->type == TOK_CMD_ARG)
-// 		{
-// 			temp = arr[args_start_index];
-// 			arr[args_start_index] = arr[redir_index + 1];
-// 			arr[redir_index + 1] = arr[redir_index];
-// 			arr[redir_index] = temp;
-// 		}
-// 	}
-// 	return (arr);
-// }
 
 void	free_tokens(t_token *token)
 {
