@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:22:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 11:23:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,9 +72,9 @@ typedef enum e_tokentype
 
 typedef struct s_token
 {
-	char			*content;
-	t_tokentype		type;
-	struct s_token	*next;
+	char				*content;
+	t_tokentype			type;
+	struct s_token		*next;
 }			t_token;
 
 typedef struct s_treenode
@@ -93,9 +93,9 @@ typedef struct s_treenode
 
 typedef struct s_app_data
 {
-	char		**env_vars;
-	int			last_exit_code;
-	char		*input;
+	char				**env_vars;
+	int					last_exit_code;
+	char				*input;
 }			t_app_data;
 
 // signal handling
