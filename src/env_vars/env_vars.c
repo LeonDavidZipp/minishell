@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/09 20:37:33 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 11:14:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,27 +40,6 @@ char	**update_env_vars(char *key, char *value, char **env_vars)
 	free(new_var);
 	return (env_vars);
 }
-
-// char	**unset_env_var(char *key, char **env_vars)
-// {
-// 	int		i;
-
-// 	i = -1;
-// 	while (env_vars[++i])
-// 	{
-// 		if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0)
-// 		{
-// 			while (env_vars[i])
-// 			{
-// 				free(env_vars[i]);
-// 				env_vars[i] = env_vars[i + 1];
-// 				i++;
-// 			}
-// 			break ;
-// 		}
-// 	}
-// 	return (env_vars);
-// }
 
 void	unset_env_var(char *key, char ***env_vars)
 {
@@ -97,7 +76,7 @@ void	unset_env_vars(char *keys_string, char ***env_vars)
 	{
 		unset_env_var(keys[i], env_vars);
 	}
-	free(keys);
+	ft_free_2d_arr((void **)keys);
 	i = -1;
 }
 
@@ -138,4 +117,8 @@ char	**init_envp(char **env_vars)
 // 	i = -1;
 // 	while (envp[++i])
 // 		printf("%s\n", envp[i]);
+// 	ft_free_2d_arr((void **)env_vars);
+// 	ft_free_2d_arr((void **)envp);
+// 	free(key_string);
+// 	return (0);
 // }
