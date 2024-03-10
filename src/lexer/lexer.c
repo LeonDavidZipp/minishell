@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/09 20:47:28 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 20:53:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	lexer(t_app_data *app_data)
 	// 5. to binary tree
 	ast = NULL;
 	ast = build_ast(ast, intermediate_tree, 0);
-	// free_treenodes(intermediate_tree);
+	free_treenodes(intermediate_tree);
 	if (!ast)
 		handle_error(app_data);
 	debug_printtree(ast, 0);
