@@ -7,7 +7,7 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
-	split_multiple_envp.c \
+	../env_vars/split_multiple_envp.c \
 	../env_vars/env_vars.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
