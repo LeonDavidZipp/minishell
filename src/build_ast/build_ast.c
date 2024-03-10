@@ -6,21 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/03/07 13:59:49 by lzipp            ###   ########.fr       */
-=======
-/*   Updated: 2024/03/08 17:12:09 by cgerling         ###   ########.fr       */
->>>>>>> 5-command-execution
+/*   Updated: 2024/03/10 10:48:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// static t_treenode	*build_subtree(t_treenode **temp);
 t_treenode			*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 						int bracket_lvl);
-static t_treenode	*new_treenode(char *cmd, char *args,
-						t_tokentype cmd_type, int bracket_lvl);
 static t_treenode	*insert_node(t_treenode *root, t_treenode *node);
 
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
@@ -75,12 +68,16 @@ t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 	return (sub);
 }
 
-static t_treenode	*new_treenode(char *cmd, char *args,
+t_treenode	*new_treenode(char *cmd, char *args,
 						t_tokentype cmd_type, int bracket_lvl)
 {
 	t_treenode		*node;
 
 	node = malloc(sizeof(t_treenode));
+	if (!node)
+		return (NULL);
+	if (bracket_lvl < 0)
+		bracket_lvl = 0;
 	node->cmd = ft_strdup(cmd);
 	node->args = ft_strdup(args);
 	node->cmd_type = cmd_type;
@@ -102,6 +99,7 @@ void	free_treenodes(t_treenode *node)
 		free_treenodes(node->right);
 	free(node->cmd);
 	free(node->args);
+	free(node->err);
 	free(node);
 }
 

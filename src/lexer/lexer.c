@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/06 19:32:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/09 20:47:28 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,6 @@ void	lexer(t_app_data *app_data)
 	tokens = tokenize(app_data);
 	if (!tokens)
 		handle_error(app_data);
-	t_token *temp = tokens;
-	while (temp)
-	{
-		printf("content: %s\n", temp->content);
-		printf("type: %d\n", temp->type);
-		temp = temp->next;
-	}
-	printf("--------------------\n");
 	// 4. check if the tree is valid
 	if(!check_tokens_valid(tokens))
 	{
@@ -49,8 +41,7 @@ void	lexer(t_app_data *app_data)
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		handle_error(app_data);
-	// 5. to binary tree (maybe together with step 4)
-	// ast = build_ast(intermediate_tree);
+	// 5. to binary tree
 	ast = NULL;
 	ast = build_ast(ast, intermediate_tree, 0);
 	// free_treenodes(intermediate_tree);
