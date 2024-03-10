@@ -6,13 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:41:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 20:41:31 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-static char	*get_input(void);
+static void	init_app_data(t_app_data *app_data, char **envp);
+static char	*get_input(t_app_data *app_data);
 static void	print_logo(void);
 
 int	main(int argc, char **argv, char **envp)
@@ -25,13 +26,12 @@ int	main(int argc, char **argv, char **envp)
 		printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
-	app_data.env_vars = init_envp(envp);
-	app_data.input = NULL;
+	init_app_data(&app_data, envp);
 	signal_handler();
 	print_logo();
 	while (true)
 	{
-		app_data.input = get_input();
+		app_data.input = get_input(&app_data);
 		if (app_data.input == NULL)
 			continue ;
 		lexer(&app_data);
@@ -39,7 +39,7 @@ int	main(int argc, char **argv, char **envp)
 	return (0);
 }
 
-static char	*get_input(void)
+static char	*get_input(t_app_data *app_data)
 {
 	char	*input;
 
@@ -47,7 +47,7 @@ static char	*get_input(void)
 	if (input == NULL)
 	{
 		// maybe change exit code
-		builtin_exit(0);
+		builtin_exit(app_data, 0);
 	}
 	else if (ft_strlen(input) == 0)
 	{
@@ -59,10 +59,17 @@ static char	*get_input(void)
 		add_history(input);
 		free(input);
 		// maybe change exit code
-		builtin_exit(0);
+		builtin_exit(app_data, 0);
 	}
 	add_history(input);
 	return (input);
+}
+
+static void	init_app_data(t_app_data *app_data, char **envp)
+{
+	app_data->env_vars = init_envp(envp);
+	app_data->last_exit_code = 0;
+	app_data->input = NULL;
 }
 
 static void	print_logo(void)

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:42:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 20:39:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,11 @@ void	builtin_exit(t_app_data *app, int exit_code)
 	exit(exit_code);
 }
 
-static void	free_app_data(t_app_data *app)
+static void	free_app_data(t_app_data *app_data)
 {
-	ft_free_2d_arr((void **)app->env_vars);
-	app->env_vars = NULL;
-	free(app->input);
-	app->input = NULL;
-	free(app);
+	ft_free_2d_arr((void **)app_data->env_vars);
+	app_data->env_vars = NULL;
+	free(app_data->input);
+	app_data->input = NULL;
+	// free(app_data);
 }
