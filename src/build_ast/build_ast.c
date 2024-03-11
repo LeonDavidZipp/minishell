@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 10:48:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 13:46:51 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ t_treenode	*new_treenode(char *cmd, char *args,
 	node->out_fd = 1; // this is the default value
 	node->err_val = 0; // this is the default value
 	node->err = NULL; // this is the default value
+	node->in_type = 0; // this is the default value
+	node->out_type = 0; // this is the default value
 	return (node);
 }
 

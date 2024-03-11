@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 14:20:54 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 13:46:28 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	debug_printtree(t_treenode *root, int tabs)
 		printf("\033[1;3%dmcontent: %s, args: %s, prio: %d, type: %d, br_lvl: %d \033[0m", 1 + tabs,
 			root->cmd, root->args, priority(root->cmd, root->bracket_lvl),
 			root->cmd_type, root->bracket_lvl);
-		printf("\033[1;31min_fd: %d, \033[0m", root->in_fd);
+		printf("\033[1;34min_fd: %d, \033[0m", root->in_fd);
 		printf("\033[1;32mout_fd: %d, \033[0m", root->out_fd);
 		printf("\033[1;33merr_val: %d\033[0m\n", root->err_val);
 		debug_print_tabs(tabs);

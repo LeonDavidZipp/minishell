@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:39:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 16:10:54 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ typedef struct s_treenode
 	int					in_fd;
 	int					out_fd;
 	int					err_val;
+	int					in_type;
+	int					out_type;
 	char				*err;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
@@ -97,6 +99,12 @@ typedef struct s_app_data
 	int					last_exit_code;
 	char				*input;
 }			t_app_data;
+
+typedef struct s_pid_list
+{
+	pid_t				pid;
+	struct s_pid_list	*next;
+}			t_pid_list;
 
 // signal handling
 void		signal_handler(void);
@@ -110,6 +118,7 @@ void		builtin_exit(t_app_data *app, int exit_code);
 // void		builtin_export(char *var_string, t_env_var **env_vars);
 // void		builtin_unset(char *keys, t_env_var **env_vars);
 char		***split_env_vars(char *envp);
+void		builtin_env(char *new_var, char **env_vars);
 
 // environment variables
 char		**init_envp(char **env_vars);
