@@ -3,57 +3,57 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/06 19:52:20 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/11 13:41:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// static void	print_vars(t_env_var *env_vars);
+static void	print_vars(char **env_vars);
 
-// void	builtin_export(char *var_string, t_env_var **env_vars)
-// {
-// 	char	**vars;
-// 	char	**temp;
-// 	int		i;
+int	builtin_export(char *var_string, char **env_vars, int fd)
+{
+	char	**vars;
+	char	**temp;
+	int		i;
 
-// 	if (!var_string)
-// 	{
-// 		print_vars(*env_vars);
-// 		return ;
-// 	}
-// 	vars = ft_split(var_string, ' ');
-// 	if (!vars)
-// 		return ;
-// 	i = -1;
-// 	while (vars[++i])
-// 	{
-// 		temp = split_envp(vars[i]);
-// 		if (!temp)
-// 			continue ;
-// 		if (ft_null_terminated_arr_len((void **)temp) != 2)
-// 			update_env_vars(temp[0], "", env_vars);
-// 		else
-// 			update_env_vars(temp[0], temp[1], env_vars);
-// 		free(temp);
-// 	}
-// 	ft_free_2d_arr((void **)vars);
-// }
+	if (!var_string)
+	{
+		print_vars(*env_vars);
+		return (0);
+	}
+	vars = ft_split(var_string, ' ');
+	if (!vars)
+		return (1);
+	i = -1;
+	while (vars[++i])
+	{
+		temp = split_envp(vars[i]);
+		if (!temp)
+			continue ;
+		if (ft_null_terminated_arr_len((void **)temp) != 2)
+			update_env_vars(temp[0], "", env_vars);
+		else
+			update_env_vars(temp[0], temp[1], env_vars);
+		free(temp);
+	}
+	ft_free_2d_arr((void **)vars);
+}
 
-// static void	print_vars(t_env_var *env_vars)
-// {
-// 	while (env_vars)
-// 	{
-// 		if (env_vars->value)
-// 			printf("declare -x %s=\"%s\"\n", env_vars->key, env_vars->value);
-// 		else
-// 			printf("declare -x %s\n", env_vars->key);
-// 		env_vars = env_vars->next;
-// 	}
-// }
+static void	print_vars(t_env_var *env_vars)
+{
+	while (env_vars)
+	{
+		if (env_vars->value)
+			printf("declare -x %s=\"%s\"\n", env_vars->key, env_vars->value);
+		else
+			printf("declare -x %s\n", env_vars->key);
+		env_vars = env_vars->next;
+	}
+}
 
 // int main()
 // {
