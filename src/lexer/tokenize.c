@@ -6,14 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:18:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 21:33:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static t_token		*new_token(char *content, t_token *prev);
-static t_token		*switch_args_for_redir(t_token *token);
 
 t_token	*tokenize(t_app_data *app)
 {
@@ -42,35 +41,6 @@ t_token	*tokenize(t_app_data *app)
 	first = switch_args_for_redir(first);
 	first = join_arg_tokens(first);
 	return (join_after_echo(first));
-}
-
-static t_token	*switch_args_for_redir(t_token *token)
-{
-	t_token	*current;
-	t_token	*temp[4];
-
-	current = token;
-	while (current && current->next && current->next->next
-		&& current->next->next->next)
-	{
-		if ((current->next->type == REDIR_OUT || current->next->type == REDIR_IN
-				|| current->next->type == REDIR_APPEND
-				|| current->next->type == HEREDOC)
-			&& current->next->next->type == ARG
-			&& current->next->next->next->type == ARG)
-		{
-			temp[0] = current->next;
-			temp[1] = current->next->next;
-			temp[2] = current->next->next->next;
-			temp[3] = current->next->next->next->next;
-			current->next = temp[2];
-			current->next->next = temp[0];
-			current->next->next->next = temp[1];
-			current->next->next->next->next = temp[3];
-		}
-		current = current->next;
-	}
-	return (token);
 }
 
 void	free_tokens(t_token *token)

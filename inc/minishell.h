@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:39:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 21:48:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,10 +101,14 @@ typedef struct s_app_data
 // signal handling
 void		signal_handler(void);
 
+// execution
+void		exec_cmds(t_treenode *ast, t_app_data *app);
+
 // built-in commands
 void		builtin_cd(char *path);
 void		builtin_pwd(char *args);
 // void		builtin_echo(char *str);
+void		builtin_env(char *new_var, char **env_vars);
 void		builtin_echo(char *str, int out_fd);
 void		builtin_exit(t_app_data *app, int exit_code);
 // void		builtin_export(char *var_string, t_env_var **env_vars);
@@ -129,6 +133,7 @@ char		*remove_quotes(char *token);
 
 // tokenization
 t_token		*tokenize(t_app_data *app);
+t_token		*switch_args_for_redir(t_token *token);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 void		free_tokens(t_token *token);

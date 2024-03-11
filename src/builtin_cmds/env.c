@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:31 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:25:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 13:38:08 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	builtin_env(char *new_var, char **env_vars)
 	char	**key;
 	char	**split;
 	int		i;
-	
+
 	if (new_var)
 	{
 		split = ft_split(new_var, ' ');
@@ -52,7 +52,7 @@ void	builtin_env(char *new_var, char **env_vars)
 		if (env_vars[i])
 			printf("%s\n", env_vars[i]);
 	}
-	ft_free_2d_arr((void **)env_vars); // need to check freeing and leaking
+	// ft_free_2d_arr((void **)env_vars); // need to check freeing and leaking
 }
 
 char	**split_env(char *envp)

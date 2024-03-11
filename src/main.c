@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 20:41:31 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 21:32:42 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 static void	init_app_data(t_app_data *app_data, char **envp);
 static char	*get_input(t_app_data *app_data);
+static bool	is_all_spaces(char *str);
 static void	print_logo(void);
 
 int	main(int argc, char **argv, char **envp)
@@ -44,9 +45,11 @@ static char	*get_input(t_app_data *app_data)
 	char	*input;
 
 	input = readline(PROMPT);
-	if (input == NULL)
+	if (input == NULL
+		|| ft_strncmp(input, "exit", ft_strlen(input)) == 0)
 	{
-		// maybe change exit code
+		add_history("exit");
+		free(input);
 		builtin_exit(app_data, 0);
 	}
 	else if (ft_strlen(input) == 0)
@@ -54,15 +57,26 @@ static char	*get_input(t_app_data *app_data)
 		free(input);
 		return (NULL);
 	}
-	else if (ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+	else if (is_all_spaces(input))
 	{
-		add_history(input);
 		free(input);
-		// maybe change exit code
-		builtin_exit(app_data, 0);
+		return (NULL);
 	}
 	add_history(input);
 	return (input);
+}
+
+static bool	is_all_spaces(char *str)
+{
+	int	i;
+
+	i = -1;
+	while (str[++i])
+	{
+		if (!ft_isspace(str[i]))
+			return (false);
+	}
+	return (true);
 }
 
 static void	init_app_data(t_app_data *app_data, char **envp)

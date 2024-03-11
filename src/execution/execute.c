@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/09 17:06:27 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/10 21:49:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -379,8 +379,8 @@ static void	execute_builtin(t_treenode *ast, char **env_vars)
 		builtin_echo(ast->args, STDOUT_FILENO);
 	else if (ft_strcmp(ast->cmd, "env") == 0)
 		builtin_env(ast->args, env_vars);
-	else if (ft_strcmp(ast->cmd, "exit") == 0)
-		builtin_exit(0);
+	// else if (ft_strcmp(ast->cmd, "exit") == 0)
+	// 	builtin_exit(0);
 	// else if (ft_strcmp(ast->cmd, "export") == 0)
 	// 	builtin_export(ast->args, env_vars);
 	// else if (ft_strcmp(ast->cmd, "unset") == 0)
@@ -391,23 +391,23 @@ static void	execute_builtin(t_treenode *ast, char **env_vars)
 	close(stdout_fd);
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_app_data	app;
-	t_token		*tokens;
-	t_treenode	*root;
-	t_treenode	*ast;
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_app_data	app;
+// 	t_token		*tokens;
+// 	t_treenode	*root;
+// 	t_treenode	*ast;
 
-	(void)argc;
-	(void)argv;
-	app.env_vars = init_envp(envp);
-	app.input = ft_strdup("ls -l | wc -l > out > out2");
-	tokens = tokenize(&app);
-	root = combine_cmds_args(tokens);
-	ast = NULL;
-	ast = build_ast(ast, root, 0);
-	traverse_tree(ast, NULL);
-	//debug_printtree(ast, 0);
-	exec_cmds(ast, &app);
-	return (0);
-}
+// 	(void)argc;
+// 	(void)argv;
+// 	app.env_vars = init_envp(envp);
+// 	app.input = ft_strdup("ls -l | wc -l > out > out2");
+// 	tokens = tokenize(&app);
+// 	root = combine_cmds_args(tokens);
+// 	ast = NULL;
+// 	ast = build_ast(ast, root, 0);
+// 	traverse_tree(ast, NULL);
+// 	//debug_printtree(ast, 0);
+// 	exec_cmds(ast, &app);
+// 	return (0);
+// }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_tokens_valid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/09 10:43:46 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 22:00:28 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,14 +101,14 @@ static bool	check_cd(t_token *current)
 			&& current->next->next->type != REDIR_IN
 			&& current->next->next->type != HEREDOC)
 			return (printf("cd: too many arguments\n"), false);
-		else if (current->next && current->next && current->next->type != AND
-			&& current->next->type != OR && current->next->type != PIPE
-			&& current->next->type != REDIR_OUT
-			&& current->next->type != REDIR_APPEND
-			&& current->next->type != REDIR_IN
-			&& current->next->type != HEREDOC)
-			return (printf("cd: string not in pwd: '%s'\n",
-					current->next->content), false);
+		// else if (current->next && current->next && current->next->type != AND
+		// 	&& current->next->type != OR && current->next->type != PIPE
+		// 	&& current->next->type != REDIR_OUT
+		// 	&& current->next->type != REDIR_APPEND
+		// 	&& current->next->type != REDIR_IN
+		// 	&& current->next->type != HEREDOC)
+		// 	return (printf("cd: string not in pwd: '%s'\n",
+		// 			current->next->content), false);
 	}
 	return (true);
 }

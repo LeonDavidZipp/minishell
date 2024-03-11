@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/10 14:12:55 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/10 21:47:41 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,9 @@ NAME := minishell
 CC := cc
 CFLAGS := -Wextra -Wall -Werror
 LDFLAGS := -lreadline
+# CFLAGS := -Wextra -Wall -Werror -fsanitize=address -fsanitize=undefined
+# LDFLAGS := -lreadline -fsanitize=address -fsanitize=undefined
+
 
 OBJDIR = ./obj
 SOURCES := $(addprefix src/, \
@@ -30,6 +33,8 @@ builtin_cmds/pwd.c \
 builtin_cmds/unset.c \
 env_vars/env_vars.c \
 env_vars/split_multiple_envp.c \
+execution/execute_helpers.c \
+execution/execute.c \
 lexer/check_tokens_valid.c \
 lexer/lexer.c \
 lexer/token_type.c \

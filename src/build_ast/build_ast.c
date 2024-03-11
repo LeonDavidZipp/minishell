@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 10:48:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/10 21:35:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-t_treenode			*build_subtree(t_treenode *sub, t_treenode **lin_tree,
+static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 						int bracket_lvl);
 static t_treenode	*insert_node(t_treenode *root, t_treenode *node);
 
@@ -40,7 +40,7 @@ t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
 	return (ast);
 }
 
-t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
+static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 				int bracket_lvl)
 {
 	t_treenode	*new;
@@ -91,18 +91,6 @@ t_treenode	*new_treenode(char *cmd, char *args,
 	return (node);
 }
 
-void	free_treenodes(t_treenode *node)
-{
-	if (node->left)
-		free_treenodes(node->left);
-	if (node->right)
-		free_treenodes(node->right);
-	free(node->cmd);
-	free(node->args);
-	free(node->err);
-	free(node);
-}
-
 static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 {
 	if (!root)
@@ -115,4 +103,16 @@ static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 	}
 	root->right = insert_node(root->right, node);
 	return (root);
+}
+
+void	free_treenodes(t_treenode *node)
+{
+	if (node->left)
+		free_treenodes(node->left);
+	if (node->right)
+		free_treenodes(node->right);
+	free(node->cmd);
+	free(node->args);
+	free(node->err);
+	free(node);
 }
