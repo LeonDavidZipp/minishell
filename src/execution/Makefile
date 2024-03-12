@@ -45,3 +45,5 @@ all:
 	../build_ast/build_ast.c \
 	../build_ast/ast_helpers.c \
 	../build_ast/combine_cmds_args.c \
+	../../lib/libft/src/ft_bzero.c \
+	../../lib/libft/src/get_next_line.c \
