@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 14:20:54 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/13 15:06:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ int	priority(char *cmd, int bracket_lvl)
 	prio_2 = 2 - 3 * bracket_lvl;
 	prio_3 = 3 - 3 * bracket_lvl;
 	if (ft_strcmp(cmd, ">") == 0 || ft_strcmp(cmd, ">>") == 0
-		|| ft_strcmp(cmd, "<") == 0 || ft_strcmp(cmd, "<<") == 0)
+		|| ft_strcmp(cmd, "<") == 0)
 		return (prio_1);
+	else if (ft_strcmp(cmd, "<<") == 0)
+		return (-3 * bracket_lvl);
 	else if (ft_strcmp(cmd, "|") == 0)
 		return (prio_2);
 	else if (ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, "||") == 0)

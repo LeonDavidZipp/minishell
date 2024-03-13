@@ -6,62 +6,49 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/13 14:53:03 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/13 20:13:08 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token	*switch_first_arg_for_redir(t_token *token);
-
-t_token	*switch_args_for_redir(t_token *token)
+t_token	*switch_tokens_for_redir(t_token *tokens)
 {
 	t_token			*current;
-	t_token			*temp[4];
+	t_token			*prev;
+	t_token			*before_first;
 
-	token = switch_first_arg_for_redir(token);
-	current = token;
-	while (current && current->next && current->next->next
-		&& current->next->next->next)
+	current = tokens;
+	before_first = NULL;
+	while (current)
 	{
-		if ((current->next->type >= REDIR_OUT && current->next->type <= HEREDOC)
-			&& current->next->next->type == ARG
-			&& current->next->next->next->type == ARG)
+		if (!before_first)
 		{
-			temp[0] = current->next;
-			temp[1] = current->next->next;
-			temp[2] = current->next->next->next;
-			temp[3] = current->next->next->next->next;
-			current->next = temp[2];
-			current->next->next = temp[0];
-			current->next->next->next = temp[1];
-			current->next->next->next->next = temp[3];
+			// we are before redirect
+			if (current->next && current->type >= REDIR_OUT
+				&& current->type <= HEREDOC)
+			{
+				before_first = current;
+			}
+			// we are on a redirect
+			else if (current->type >= REDIR_OUT && current->type <= HEREDOC
+					&& current->next && current->next)
+			{
+			before_first = current->next->next;
+			before_first->next = current;
+			before_first->next->next = current->next;
+			before_first->next->next->next = current->next->next->next;
+			tokens = before_first;
+			current = before_first->next;
+			}
 		}
-		current = current->next;
+		break ;
 	}
-	return (token);
-}
-
-static t_token	*switch_first_arg_for_redir(t_token *token)
-{
-	t_token			*current;
-	t_token			*temp[4];
-
-	current = token;
-	if (current && (current->type >= REDIR_OUT && current->type <= HEREDOC)
-		&& current->next && current->next->type == ARG
-		&& current->next->next && current->next->next->type == ARG)
+	t_token *temp = tokens;
+	while (temp)
 	{
-		temp[0] = current;
-		temp[1] = current->next;
-		temp[2] = current->next->next;
-		temp[3] = current->next->next->next;
-		current = temp[2];
-		current->type = CMD;
-		current->next = temp[0];
-		current->next->next = temp[1];
-		current->next->next->next = temp[3];
-		token = current;
+		printf("content: %s\n", temp->content);
+		temp = temp->next;
 	}
-	return (token);
+	return (tokens);
 }
