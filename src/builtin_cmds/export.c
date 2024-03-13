@@ -6,52 +6,62 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/11 13:41:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 13:55:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	print_vars(char **env_vars);
+static void	print_vars(char **env_vars, int fd);
 
-int	builtin_export(char *var_string, char **env_vars, int fd)
+int	builtin_export(char *var_string, char ***env_vars, int fd)
 {
-	char	**vars;
+	char	***vars;
 	char	**temp;
 	int		i;
 
 	if (!var_string)
 	{
-		print_vars(*env_vars);
+		print_vars(*env_vars, fd);
 		return (0);
 	}
-	vars = ft_split(var_string, ' ');
+	vars = split_env_vars(var_string);
 	if (!vars)
 		return (1);
 	i = -1;
 	while (vars[++i])
 	{
-		temp = split_envp(vars[i]);
+		temp = update_env_vars(vars[i][0], vars[i][1], *env_vars);
 		if (!temp)
-			continue ;
-		if (ft_null_terminated_arr_len((void **)temp) != 2)
-			update_env_vars(temp[0], "", env_vars);
-		else
-			update_env_vars(temp[0], temp[1], env_vars);
-		free(temp);
+		{
+			ft_free_3d_arr((void ***)vars);
+			return (1);
+		}
+		ft_free_2d_arr((void **)temp);
 	}
-	ft_free_2d_arr((void **)vars);
+	ft_free_3d_arr((void ***)vars);
+	return (0);
 }
 
-static void	print_vars(t_env_var *env_vars)
+static void	print_vars(char **env_vars, int fd)
 {
-	while (env_vars)
+	char	**key_value;
+	int		i;
+
+	i = -1;
+	while (env_vars[++i])
 	{
-		if (env_vars->value)
-			printf("declare -x %s=\"%s\"\n", env_vars->key, env_vars->value);
-		else
-			printf("declare -x %s\n", env_vars->key);
-		env_vars = env_vars->next;
+		key_value = split_env_var(env_vars[i]);
+		ft_putstr_fd("declare -x ", fd);
+		ft_putstr_fd(key_value[0],fd);
+		ft_putstr_fd("=", fd);
+		if (key_value[1])
+		{
+			ft_putstr_fd("\"", fd);
+			ft_putstr_fd(key_value[1], fd);
+			ft_putstr_fd("\"", fd);
+		}
+		ft_putstr_fd("\n", fd);
 	}
 }
 

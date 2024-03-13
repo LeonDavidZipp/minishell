@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/10 21:47:41 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/13 14:54:01 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,9 +36,10 @@ env_vars/split_multiple_envp.c \
 execution/execute_helpers.c \
 execution/execute.c \
 lexer/check_tokens_valid.c \
+lexer/join_tokens.c \
 lexer/lexer.c \
+lexer/switch_tokens_for_redir.c \
 lexer/token_type.c \
-lexer/tokenize_helpers.c \
 lexer/tokenize.c \
 parsing/check_input.c \
 parsing/expand_helpers.c \

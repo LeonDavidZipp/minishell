@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 21:48:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 13:47:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,6 @@ void		builtin_echo(char *str, int out_fd);
 void		builtin_exit(t_app_data *app, int exit_code);
 // void		builtin_export(char *var_string, t_env_var **env_vars);
 // void		builtin_unset(char *keys, t_env_var **env_vars);
-char		***split_env_vars(char *envp);
 
 // environment variables
 char		**init_envp(char **env_vars);
@@ -122,6 +121,8 @@ void		unset_env_var(char *key, char ***env_vars);
 void		unset_env_vars(char *keys_string, char ***env_vars);
 char		**split_path(char *path);
 char		**split_env(char *envp);
+char		***split_env_vars(char *envp);
+char		**split_env_var(char *envp);
 
 // parsing && input handling
 int			is_space(char c);

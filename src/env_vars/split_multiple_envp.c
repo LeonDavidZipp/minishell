@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/09 18:33:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/11 13:46:30 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static int		count_substr(char *s, char c);
 static char		**split_env_var_string(char *envp, char c);
-static char		**split_env_var(char *envp);
 static char		*ft_split_str(const char *s, char c, int *i);
 
 char	***split_env_vars(char *envp)
@@ -36,7 +35,7 @@ char	***split_env_vars(char *envp)
 	return (env_vars);
 }
 
-static char	**split_env_var(char *envp)
+char	**split_env_var(char *envp)
 {
 	char	**result;
 	int		len1;

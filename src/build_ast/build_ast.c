@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 21:35:56 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/13 13:26:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,10 @@ static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 {
 	if (!root)
 		return (node);
-	if (node_is_operator(node->cmd) && priority(node->cmd, node->bracket_lvl)
+	if (node_is_operator(node->cmd) 
+		// && node->cmd_type != REDIR_APPEND && node->cmd_type != REDIR_IN
+		// && node->cmd_type != REDIR_OUT && node->cmd_type != HEREDOC
+		&& priority(node->cmd, node->bracket_lvl)
 		>= priority(root->cmd, root->bracket_lvl))
 	{
 		node->left = root;
