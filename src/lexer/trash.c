@@ -34,7 +34,7 @@ t_token	*switch_args_for_redir(t_token *token)
 {
 	t_token			*current;
 	t_token			*before_first_redir;
-	t_token			*temp;
+	t_token			*temp[4];
 
 	current = token;
 	before_first_redir = NULL;
