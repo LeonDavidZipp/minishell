@@ -6,37 +6,16 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/14 14:20:44 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/14 14:44:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// #include <stdlib.h>
-// #include <stdio.h>
-
-// typedef enum e_tokentype
-// {
-// 	FIRST,
-// 	LEFT_BRACKET,
-// 	RIGHT_BRACKET,
-// 	PIPE,
-// 	AND,
-// 	OR,
-// 	REDIR_OUT, // >
-// 	REDIR_IN, // <
-// 	REDIR_APPEND, // >>
-// 	HEREDOC, // <<
-// 	CMD,
-// 	ARG
-// }			t_tokentype;
-
-// typedef struct s_token
-// {
-// 	char				*content;
-// 	t_tokentype			type;
-// 	struct s_token		*next;
-// }			t_token;
+// static void	rearrange_first_time(t_token **tokens, t_token **current,
+// 		t_token **before_first);
+// static void	rearrange_tokens_after_first(t_token **current,
+// 		t_token **before_first);
 
 t_token	*switch_tokens_for_redir(t_token *tokens)
 {
@@ -54,43 +33,73 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 				&& current->next->type <= HEREDOC)
 				before_first = current;
 			if (current->type >= REDIR_OUT && current->type <= HEREDOC
-					&& current->next && current->next->next)
+				&& current->next && current->next->next)
 			{
-			temp[0] = current;
-			temp[1] = current->next;
-			temp[2] = current->next->next;
-			temp[3] = current->next->next->next;
-			before_first = temp[2];
-			before_first->next = temp[0];
-			before_first->next->next = temp[1];
-			before_first->next->next->next = temp[3];
-			tokens = before_first;
-			current = before_first;
-			continue ;
-			}
-		}
-		else
-		{
-			if (current->type >= REDIR_OUT && current->type <= HEREDOC
-				&& current->next && (current->next->type == ARG
-					|| current->next->type == CMD)
-				&& current->next->next && (current->next->next->type == ARG
-					|| current->next->next->type == CMD))
-			{
-				temp[0] = current->next->next;
-				temp[1] = before_first->next;
-				temp[2] = current->next->next->next;
+				temp[0] = current;
+				temp[1] = current->next;
+				temp[2] = current->next->next;
+				temp[3] = current->next->next->next;
+				before_first = temp[2];
 				before_first->next = temp[0];
 				before_first->next->next = temp[1];
-				current->next->next = temp[2];
-				before_first = before_first->next;
+				before_first->next->next->next = temp[3];
+				tokens = before_first;
+				current = tokens;
+				// rearrange_first_time(&tokens, &current, &before_first);
 				continue ;
 			}
+		}
+		else if (before_first && current->type >= REDIR_OUT
+			&& current->type <= HEREDOC && current->next && current->next->next
+			&& (current->next->type == ARG || current->next->type == CMD)
+			&& (current->next->next->type == ARG
+				|| current->next->next->type == CMD))
+		{
+			temp[0] = current->next->next;
+			temp[1] = before_first->next;
+			temp[2] = current->next->next->next;
+			before_first->next = temp[0];
+			before_first->next->next = temp[1];
+			current->next->next = temp[2];
+			before_first = before_first->next;
+			// rearrange_tokens_after_first(&current, &before_first);
+			continue ;
 		}
 		current = current->next;
 	}
 	return (tokens);
 }
+
+// static void	rearrange_first_time(t_token **tokens, t_token **current,
+// 		t_token **before_first)
+// {
+// 	t_token			*temp[4];
+
+// 	temp[0] = *current;
+// 	temp[1] = (*current)->next;
+// 	temp[2] = (*current)->next->next;
+// 	temp[3] = (*current)->next->next->next;
+// 	*before_first = temp[2];
+// 	(*before_first)->next = temp[0];
+// 	(*before_first)->next->next = temp[1];
+// 	(*before_first)->next->next->next = temp[3];
+// 	*tokens = *before_first;
+// 	*current = *tokens;
+// }
+
+// static void	rearrange_tokens_after_first(t_token **current,
+// 		t_token **before_first)
+// {
+// 	t_token			*temp[3];
+
+// 	temp[0] = (*current)->next->next;
+// 	temp[1] = (*before_first)->next;
+// 	temp[2] = (*current)->next->next->next;
+// 	(*before_first)->next = temp[0];
+// 	(*before_first)->next->next = temp[1];
+// 	(*current)->next->next = temp[2];
+// 	*before_first = (*before_first)->next;
+// }
 
 // int main(void)
 // {
