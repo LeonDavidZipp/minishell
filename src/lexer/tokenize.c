@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/14 15:01:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/15 13:20:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ t_token	*tokenize(t_app_data *app)
 		prev = current;
 	}
 	ft_free_2d_arr((void **)token_contents);
+	printf("before switch\n");
 	first = switch_tokens_for_redir(first);
+	printf("before join\n");
 	first = join_arg_tokens(first);
+	printf("before return\n");
 	return (join_after_echo(first));
 }
 
