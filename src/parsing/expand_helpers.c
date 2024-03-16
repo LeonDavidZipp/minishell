@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/01 18:01:43 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:09:51 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ int	env_var_size(char *input, int *i)
 	char	*name;
 	char	*value;
 
-	start = *i;
-	while (ft_isalnum(input[*i]) || input[*i] == '_')
-		(*i)++;
-	name = ft_substr(input, start, *i - start);
+	start = i[0];
+	while (ft_isalnum(input[i[0]]) || input[i[0]] == '_')
+		i[0]++;
+	name = ft_substr(input, start, i[0] - start);
 	if (!name)
 		return (0);
 	value = getenv(name);
@@ -66,7 +66,7 @@ int	wildcard_size(char *input, int *i)
 	int				size;
 	DIR				*dir;
 
-	pattern = get_pattern(input, i, &position);
+	pattern = get_pattern(input, &i[0], &position);
 	if (!pattern)
 		return (0);
 	dir = opendir(".");
@@ -78,45 +78,46 @@ int	wildcard_size(char *input, int *i)
 	return (size);
 }
 
-int	calculate_size(char *input, int *i, int last_exit, bool *quotes)
+int	calculate_size(char *input, int *i, int exit_code, bool *quotes)
 {
 	int		size;
 
 	size = 0;
-	handle_quotes(input[*i], &quotes[0], &quotes[1]);
-	if (input[*i] == '$' && input[*i + 1] == '?' && !quotes[0])
+	handle_quotes(input[i[0]], &quotes[0], &quotes[1]);
+	if (input[i[0]] == '$' && input[i[0] + 1] == '?' && !quotes[0])
 	{
-		size += ft_dec_len(last_exit);
-		*i += 2;
+		size += ft_dec_len(exit_code);
+		i[0] += 2;
 	}
-	else if (input[*i] == '$' && !quotes[0])
+	else if (input[i[0]] == '$' && !quotes[0])
 	{
-		(*i)++;
+		i[0]++;
 		size += env_var_size(input, i);
 	}
-	else if (input[*i] == '*' && !quotes[0] && !quotes[1])
+	else if (input[i[0]] == '*' && !quotes[0] && !quotes[1] && i[1] == 0)
 		size += wildcard_size(input, i) - 1;
 	else
 	{
 		size++;
-		(*i)++;
+		i[0]++;
 	}
 	return (size);
 }
 
-int	get_new_size(char *input, int last_exit_code)
+int	get_new_size(char *input, int exit_code, int flag)
 {
-	int		i;
+	int		i[2];
 	int		size;
 	bool	quotes[2];
 
-	i = 0;
+	i[0] = 0;
+	i[1] = flag;
 	size = 0;
 	quotes[0] = false;
 	quotes[1] = false;
-	while (input[i])
+	while (input[i[0]])
 	{
-		size += calculate_size(input, &i, last_exit_code, quotes);
+		size += calculate_size(input, i, exit_code, quotes);
 	}
 	return (size);
 }

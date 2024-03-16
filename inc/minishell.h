@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/11 16:10:54 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:18:21 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ char		**split_env(char *envp);
 // parsing && input handling
 int			is_space(char c);
 int			check_input(char *str);
-char		**split(char *input);
+char		**split(char *input, int exit_code);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
 char		*remove_quotes(char *token);
@@ -158,13 +158,12 @@ int			priority(char *cmd, int bracket_lvl);
 void		lexer(t_app_data *app_data);
 
 // expansion
-char		*expand(char *input, int exit);
+char		*expand(char *input, int exit_code, int flag);
 int			handle_dollar(char *input, char **output, int *i, int exit);
 void		handle_quotes(char c, bool *s_quote, bool *d_quote);
-int			get_new_size(char *input, int last_exit_code);
+int			get_new_size(char *input, int exit_code, int flag);
 bool		match(char *pattern, char *string);
-int			get_new_size(char *input, int last_exit_code);
 char		*get_pattern(char *input, int *i, int *position);
-char		**expand_and_remove(char **tokens);
+char		**expand_and_remove(char **tokens, int exit_code);
 
 #endif
