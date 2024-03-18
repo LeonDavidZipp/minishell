@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/13 13:26:10 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/18 17:54:47 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ t_treenode	*new_treenode(char *cmd, char *args,
 	node->out_fd = 1; // this is the default value
 	node->err_val = 0; // this is the default value
 	node->err = NULL; // this is the default value
+	node->in_type = 0; // this is the default value
+	node->out_type = 0; // this is the default value
 	return (node);
 }
 

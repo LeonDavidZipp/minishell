@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 18:01:55 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/14 13:03:10 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	handle_character(char *input, char **output, int *i, int exit_code)
 		if (!handle_dollar(input, output, i, exit_code))
 			return ;
 	}
-	else if (input[i[0]] == '*' && !s_quote && !d_quote)
+	else if (input[i[0]] == '*' && !s_quote && !d_quote && i[3] == 0)
 	{
 		if (!handle_wildcard(input, output, i))
 			return ;
@@ -78,15 +78,16 @@ void	handle_character(char *input, char **output, int *i, int exit_code)
 		(*output)[i[1]++] = input[i[0]++];
 }
 
-char	*expand(char *input, int exit_code)
+char	*expand(char *input, int exit_code, int flag)
 {
 	char	*output;
 	int		size;
-	int		i[3];
+	int		i[4];
 
 	i[0] = 0;
 	i[1] = 0;
-	size = get_new_size(input, exit_code);
+	i[3] = flag;
+	size = get_new_size(input, exit_code, flag);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);

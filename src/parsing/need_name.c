@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 18:08:16 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/14 14:14:52 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,33 +49,44 @@ char	*remove_quotes(char *token)
 	return (output);
 }
 
-char	**fill_new_tokens(char **tokens, char **new_tokens)
+char	**fill_new_tokens(char **tokens, char **new_tokens, int exit_code)
 {
 	char	*temp;
 	char	*expanded;
+	int		is_heredoc;
 	int		i;
 
 	i = 0;
+	is_heredoc = 0;
 	while (tokens[i])
 	{
-		expanded = expand(tokens[i], 123);
+		expanded = expand(tokens[i], exit_code, 0);
 		if (!expanded)
 			return (ft_free_2d_arr((void **)tokens), \
 			ft_free_2d_arr((void **)new_tokens), NULL);
-		temp = remove_quotes(expanded);
-		if (!temp)
-			return (ft_free_2d_arr((void **)tokens), \
-			ft_free_2d_arr((void **)new_tokens), free(expanded), NULL);
-		new_tokens[i] = temp;
-		free(expanded);
-		free(tokens[i]);
+		if (i > 0 && ft_strcmp(tokens[i - 1], "<<") == 0)
+			is_heredoc = 1;
+		if (is_heredoc == 1)
+		{
+			new_tokens[i] = expanded;
+			is_heredoc = 0;
+		}
+		else
+		{
+			temp = remove_quotes(expanded);
+			if (!temp)
+				return (ft_free_2d_arr((void **)tokens), \
+				ft_free_2d_arr((void **)new_tokens), free(expanded), NULL);
+			new_tokens[i] = temp;
+			free(expanded);
+		}
 		i++;
 	}
-	free(tokens);
+	ft_free_2d_arr((void **)tokens);
 	return (new_tokens);
 }
 
-char	**expand_and_remove(char **tokens)
+char	**expand_and_remove(char **tokens, int exit_code)
 {
 	char	**new_tokens;
 	int		i;
@@ -87,7 +98,7 @@ char	**expand_and_remove(char **tokens)
 	if (!new_tokens)
 		return (ft_free_2d_arr((void **)tokens), NULL);
 	new_tokens[i] = NULL;
-	return (fill_new_tokens(tokens, new_tokens));
+	return (fill_new_tokens(tokens, new_tokens, exit_code));
 }
 
 // int main()

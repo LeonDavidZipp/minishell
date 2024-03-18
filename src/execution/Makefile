@@ -1,5 +1,5 @@
 all:
-	@cc -Wall -Wextra -Werror -fsanitize=address -g \
+	@cc -Wall -Wextra -Werror \
 	execute.c \
 	execute_helpers.c \
 	../../lib/libft/src/ft_strdup.c \
@@ -45,3 +45,5 @@ all:
 	../build_ast/build_ast.c \
 	../build_ast/ast_helpers.c \
 	../build_ast/combine_cmds_args.c \
+	../../lib/libft/src/ft_bzero.c \
+	../../lib/libft/src/get_next_line.c \
