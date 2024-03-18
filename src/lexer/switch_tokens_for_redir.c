@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/18 14:55:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/18 17:14:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,14 @@
 
 static void		skip_tokens(t_token **before_first, t_token **current);
 static void		rearrange_first_element(t_token **tokens, t_token **current,
-				t_token **before_first);
+					t_token **before_first);
 static void		rearrange_following_element(t_token **current,
-				t_token **before_first);
+					t_token **before_first);
 static t_token	*reassign_type(t_token *token);
-
-// go through all tokens: while loop
-// while there is no redir operator, simply go to next: second while loop
-// 		while (current->next && current->next->type >= REDIR_OUT && current->next->type <= HEREDOC)
-// 			current = current->next;
-// if the next token is a redir
-// 		1. before_first doesnt exist
-// 		before_first is set to current
-// 		2. does exist
-// 		before_first->next is set to curren
-// if ||, && is encountered, before_first = NULL
+static bool	rearrange(bool *first_rearrange, t_token **before_first,
+					t_token **tokens, t_token **current);
+static bool		rearrange_condition(t_token *current);
+static bool		before_first_condition(t_token *current);
 
 t_token	*switch_tokens_for_redir(t_token *tokens)
 {
@@ -42,44 +35,62 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 	while (current)
 	{
 		skip_tokens(&before_first, &current);
-		if (!before_first && current && current->next && current->next->type >= REDIR_OUT && current->next->type <= HEREDOC)
+		if (!before_first && before_first_condition(current))
 			before_first = current;
-		if (!before_first && current && current->next
-			&& current->next->next
-			&& current->type >= REDIR_OUT && current->type <= HEREDOC
-			&& (current->next->type == ARG || current->next->type == CMD)
-			&& (current->next->next->type == ARG
-				|| current->next->next->type == CMD))
-		{
-			rearrange_first_element(&tokens, &current, &before_first);
-			if (first_rearrange)
-			{
-				tokens = before_first;
-				first_rearrange = false;
-			}
+		if (rearrange(&first_rearrange, &before_first, &tokens, &current))
 			continue ;
-		}
-		else if (before_first && current && current->next
-			&& current->next->next
-			&& current->type >= REDIR_OUT && current->type <= HEREDOC
-			&& (current->next->type == ARG || current->next->type == CMD)
-			&& (current->next->next->type == ARG
-				|| current->next->next->type == CMD))
-		{
-			rearrange_following_element(&current, &before_first);
-			continue ;
-		}
 		if (current && (current->type == AND || current->type == OR))
 		{
-			first_rearrange = false;
 			before_first = NULL;
-			if (current->next && current->next->type >= REDIR_OUT
-				&& current->next->type <= HEREDOC)
+			first_rearrange = false;
+			if (before_first_condition(current))
 				before_first = current;
 		}
 		current = current->next;
 	}
 	return (reassign_type(tokens));
+}
+
+static bool	rearrange(bool *first_rearrange, t_token **before_first, t_token **tokens,
+		t_token **current)
+{
+	if (!*before_first && rearrange_condition(*current))
+	{
+		rearrange_first_element(tokens, current, before_first);
+		if (*first_rearrange)
+		{
+			*tokens = *before_first;
+			*first_rearrange = false;
+		}
+		return true;
+	}
+	else if (*before_first && rearrange_condition(*current))
+	{
+		rearrange_following_element(current, before_first);
+		return true;
+	}
+	return false;
+}
+
+static bool	rearrange_condition(t_token *current)
+{
+	if (current && current->next
+		&& current->next->next
+		&& current->type >= REDIR_OUT && current->type <= HEREDOC
+		&& (current->next->type == ARG || current->next->type == CMD)
+		&& (current->next->next->type == ARG
+			|| current->next->next->type == CMD))
+		return (true);
+	return (false);
+}
+
+static bool	before_first_condition(t_token *current)
+{
+	if (current && current->next
+		&& current->next->type >= REDIR_OUT
+		&& current->next->type <= HEREDOC)
+		return (true);
+	return (false);
 }
 
 static void	skip_tokens(t_token **before_first, t_token **current)
@@ -91,8 +102,9 @@ static void	skip_tokens(t_token **before_first, t_token **current)
 		*current = (*current)->next;
 	while (*current && (*current)->next && (*current)->next->next
 		&& (((*current)->type >= REDIR_OUT && (*current)->type <= HEREDOC
-		&& ((*current)->next->type == CMD || (*current)->next->type == ARG)
-			&& (*current)->next->next->type != CMD
+				&& ((*current)->next->type == CMD
+					|| (*current)->next->type == ARG)
+				&& (*current)->next->next->type != CMD
 				&& (*current)->next->next->type != ARG)))
 		*current = (*current)->next->next;
 }
