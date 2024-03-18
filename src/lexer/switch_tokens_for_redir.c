@@ -6,59 +6,44 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/16 20:15:22 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/18 14:55:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	skip_tokens(t_token **before_first, t_token **current);
-static void	rearrange_first_element(t_token **tokens, t_token **current,
+static void		skip_tokens(t_token **before_first, t_token **current);
+static void		rearrange_first_element(t_token **tokens, t_token **current,
 				t_token **before_first);
-static void	rearrange_following_element(t_token **current,
+static void		rearrange_following_element(t_token **current,
 				t_token **before_first);
+static t_token	*reassign_type(t_token *token);
+
+// go through all tokens: while loop
+// while there is no redir operator, simply go to next: second while loop
+// 		while (current->next && current->next->type >= REDIR_OUT && current->next->type <= HEREDOC)
+// 			current = current->next;
+// if the next token is a redir
+// 		1. before_first doesnt exist
+// 		before_first is set to current
+// 		2. does exist
+// 		before_first->next is set to curren
+// if ||, && is encountered, before_first = NULL
 
 t_token	*switch_tokens_for_redir(t_token *tokens)
 {
 	t_token			*current;
-	t_token			*prev;
 	bool			first_rearrange;
 	t_token			*before_first;
 
 	current = tokens;
-	prev = NULL;
 	first_rearrange = true;
 	before_first = NULL;
-	if (current->next && current->next->type >= REDIR_OUT
-		&& current->next->type <= HEREDOC)
-		before_first = current;
 	while (current)
 	{
 		skip_tokens(&before_first, &current);
-		if (prev && current && current->next && (current->next->type == ARG || current->next->type == CMD)
-			&& (current->next->type == ARG || current->next->type == CMD))
+		if (!before_first && current && current->next && current->next->type >= REDIR_OUT && current->next->type <= HEREDOC)
 			before_first = current;
-		if (current && (current->type == AND || current->type == OR))
-		{
-			first_rearrange = false;
-			before_first = NULL;
-			// first case: redir directly afterwards && or ||
-			if (current->next && current->next->type >= REDIR_OUT
-				&& current->next->type <= HEREDOC)
-			{
-				before_first = current;
-				current = current->next;
-			}
-			t_token *temp = tokens;
-			while (temp)
-			{
-				printf("content: %s\n", temp->content);
-				temp = temp->next;
-			}
-			printf("----------\n");
-			// second case: after && comes cmd or arg!
-			continue ;
-		}
 		if (!before_first && current && current->next
 			&& current->next->next
 			&& current->type >= REDIR_OUT && current->type <= HEREDOC
@@ -68,7 +53,10 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 		{
 			rearrange_first_element(&tokens, &current, &before_first);
 			if (first_rearrange)
+			{
 				tokens = before_first;
+				first_rearrange = false;
+			}
 			continue ;
 		}
 		else if (before_first && current && current->next
@@ -81,24 +69,22 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 			rearrange_following_element(&current, &before_first);
 			continue ;
 		}
-		// printf("current->type: %s\n", current->content);
-		// printf("next->type: %s\n", current->next->content);
-		prev = current;
+		if (current && (current->type == AND || current->type == OR))
+		{
+			first_rearrange = false;
+			before_first = NULL;
+			if (current->next && current->next->type >= REDIR_OUT
+				&& current->next->type <= HEREDOC)
+				before_first = current;
+		}
 		current = current->next;
 	}
-	t_token *temp = tokens;
-	while (temp)
-	{
-		printf("content: %s\n", temp->content);
-		temp = temp->next;
-	}
-	printf("----------\n");
-	return (tokens);
+	return (reassign_type(tokens));
 }
 
 static void	skip_tokens(t_token **before_first, t_token **current)
 {
-	while (!*before_first && (*current)->next
+	while (!*before_first && (*current) && (*current)->next
 		&& !((*current)->type >= REDIR_OUT && (*current)->type <= HEREDOC)
 		&& !((*current)->next->type >= REDIR_OUT
 			&& (*current)->next->type <= HEREDOC))
@@ -136,4 +122,23 @@ static void	rearrange_following_element(t_token **current, t_token **before_firs
 	(*before_first)->next->next = temp[1];
 	(*current)->next->next = temp[2];
 	*before_first = (*before_first)->next;
+}
+
+static t_token	*reassign_type(t_token *tokens)
+{
+	t_token	*current;
+	t_token	*prev;
+
+	current = tokens;
+	prev = NULL;
+	while (current)
+	{
+		if (prev)
+			current->type = token_type(current->content, prev->type);
+		else
+			current->type = token_type(current->content, FIRST);
+		prev = current;
+		current = current->next;
+	}
+	return (tokens);
 }
