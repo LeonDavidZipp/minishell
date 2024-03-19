@@ -6,15 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/13 14:20:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/19 10:59:40 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static t_tokentype	check_cmd_or_arg(char *content, t_tokentype prev_type);
-// static t_tokentype	othercmd_or_arg(char *content, char *path);
-// static t_tokentype	return_othercmd(char **paths, char *exec_path);
 
 t_tokentype	token_type(char *content, t_tokentype prev_type)
 {
