@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/18 17:55:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/18 17:56:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -470,17 +470,16 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app)
 // 	t_token		*tokens;
 // 	t_treenode	*root;
 // 	t_treenode	*ast;
-
-	(void)argc;
-	(void)argv;
-	app.env_vars = init_envp(envp);
-	app.input = ft_strdup("> out | > out1");
-	app.last_exit_code = 0;
-	tokens = tokenize(&app);
-	root = combine_cmds_args(tokens);
-	ast = NULL;
-	ast = build_ast(ast, root, 0);
-	execute(&app, ast);
-	free(app.input);
-	return (0);
-}
+// 	(void)argc;
+// 	(void)argv;
+// 	app.env_vars = init_envp(envp);
+// 	app.input = ft_strdup("> out | > out1");
+// 	app.last_exit_code = 0;
+// 	tokens = tokenize(&app);
+// 	root = combine_cmds_args(tokens);
+// 	ast = NULL;
+// 	ast = build_ast(ast, root, 0);
+// 	execute(&app, ast);
+// 	free(app.input);
+// 	return (0);
+// }

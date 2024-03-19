@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/18 17:53:40 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/19 10:51:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,23 +22,27 @@ bool	node_is_operator(char *cmd)
 
 int	priority(char *cmd, int bracket_lvl)
 {
-	int		prio_1;
-	int		prio_2;
-	int		prio_3;
+	int		lowest_prio;
+	int		low_prio;
+	int		mid_prio;
+	int		high_prio;
+	int		highest_prio;
 
-	prio_1 = 1 - 3 * bracket_lvl;
-	prio_2 = 2 - 3 * bracket_lvl;
-	prio_3 = 3 - 3 * bracket_lvl;
+	lowest_prio = 0 - 4 * bracket_lvl;
+	low_prio = 1 - 4 * bracket_lvl;
+	mid_prio = 2 - 4 * bracket_lvl;
+	high_prio = 3 - 4 * bracket_lvl;
+	highest_prio = 4 - 4 * bracket_lvl;
 	if (ft_strcmp(cmd, ">") == 0 || ft_strcmp(cmd, ">>") == 0
 		|| ft_strcmp(cmd, "<") == 0)
-		return (prio_1);
+		return (mid_prio);
 	else if (ft_strcmp(cmd, "<<") == 0)
-		return (-3 * bracket_lvl);
+		return (lowest_prio);
 	else if (ft_strcmp(cmd, "|") == 0)
-		return (prio_2);
+		return (high_prio);
 	else if (ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, "||") == 0)
-		return (prio_3);
-	return (-3 * bracket_lvl);
+		return (highest_prio);
+	return (low_prio);
 }
 
 static void	debug_print_tabs(int tabs)
