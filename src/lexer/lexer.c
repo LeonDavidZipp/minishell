@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/13 15:30:56 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 14:52:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,13 @@ void	lexer(t_app_data *app_data)
 	if (!tokens)
 		handle_error(app_data);
 	// 4. check if the tree is valid
-	// if(!check_tokens_valid(tokens))
-	// {
-	// 	free_for_next_call(app_data);
-	// 	return ;
-	// }
+	if(!check_tokens_valid(tokens))
+	{
+		free_for_next_call(app_data);
+		return ;
+	}
 	intermediate_tree = combine_cmds_args(tokens);
+	intermediate_tree = switch_heredocs(intermediate_tree);
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		handle_error(app_data);

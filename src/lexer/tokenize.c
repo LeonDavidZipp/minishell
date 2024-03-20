@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/19 10:33:35 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 11:26:38 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,38 +37,9 @@ t_token	*tokenize(t_app_data *app)
 			prev->next = current;
 		prev = current;
 	}
-	t_token	*temp = first;
-	printf("before any switching\n");
-	while (temp)
-	{
-		printf("content: %s, type: %d\n", temp->content, temp->type);
-		temp = temp->next;
-	}
-	printf("--------------------\n");
 	ft_free_2d_arr((void **)token_contents);
-	printf("before redir switching\n");
-	while (temp)
-	{
-		printf("content: %s, type: %d\n", temp->content, temp->type);
-		temp = temp->next;
-	}
-	printf("--------------------\n");
 	first = switch_tokens_for_redir(first);
-	printf("before joining args\n");
-	while (temp)
-	{
-		printf("content: %s, type: %d\n", temp->content, temp->type);
-		temp = temp->next;
-	}
-	printf("--------------------\n");
 	first = join_arg_tokens(first);
-	printf("before after echo join\n");
-	while (temp)
-	{
-		printf("content: %s, type: %d\n", temp->content, temp->type);
-		temp = temp->next;
-	}
-	printf("--------------------\n");
 	return (join_after_echo(first));
 }
 
