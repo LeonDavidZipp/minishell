@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 21:32:42 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:29:23 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static bool	is_all_spaces(char *str)
 {
 	int	i;
 
+	if (!str)
+		return (false);
 	i = -1;
 	while (str[++i])
 	{
