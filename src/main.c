@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 16:29:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:57:04 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ static char	*get_input(t_app_data *app_data)
 	char	*input;
 
 	input = readline(PROMPT);
-	if (input == NULL
-		|| ft_strncmp(input, "exit", ft_strlen(input)) == 0)
+	if (input && ft_strlen(input) == 0)
+	{
+		free(input);
+		return (NULL);
+	}
+	else if (input == NULL
+		|| ft_strncmp(input, "exit", ft_strlen("exit")) == 0)
 	{
 		add_history("exit");
 		free(input);
 		builtin_exit(app_data, 0);
-	}
-	else if (ft_strlen(input) == 0)
-	{
-		free(input);
-		return (NULL);
 	}
 	else if (is_all_spaces(input))
 	{

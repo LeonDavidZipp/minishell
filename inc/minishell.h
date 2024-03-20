@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 15:46:55 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:14:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,8 @@ typedef struct s_pid_list
 void		signal_handler(void);
 
 // execution
-void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
+void		exec_cmds(t_treenode *ast, t_app_data *app,
+				t_pid_list **pid_list);
 
 // built-in commands
 void		builtin_cd(char *path);
