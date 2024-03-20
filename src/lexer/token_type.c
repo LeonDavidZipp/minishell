@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 16:04:55 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 16:18:04 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,12 @@ t_tokentype	token_type(char *content, t_tokentype prev_type)
 static t_tokentype	check_cmd_or_arg(char *content, t_tokentype prev_type)
 {
 	if ((ft_strcmp(content, "echo") == 0 || ft_strcmp(content, "cd") == 0
-		|| ft_strcmp(content, "pwd") == 0 || ft_strcmp(content, "export") == 0
-		|| ft_strcmp(content, "unset") == 0 || ft_strcmp(content, "env") == 0
-		|| ft_strcmp(content, "exit") == 0) && prev_type != CMD)
+			|| ft_strcmp(content, "pwd") == 0
+			|| ft_strcmp(content, "export") == 0
+			|| ft_strcmp(content, "unset") == 0
+			|| ft_strcmp(content, "env") == 0
+			|| ft_strcmp(content, "exit") == 0)
+		&& prev_type != CMD)
 		return (CMD);
 	else if (prev_type == FIRST || prev_type == PIPE || prev_type == AND
 		|| prev_type == OR || prev_type == LEFT_BRACKET)
