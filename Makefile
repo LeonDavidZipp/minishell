@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/18 17:27:13 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/20 14:32:09 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,7 @@ execution/execute.c \
 lexer/check_tokens_valid.c \
 lexer/join_tokens.c \
 lexer/lexer.c \
+lexer/switch_heredocs.c \
 lexer/switch_tokens_for_redir.c \
 lexer/switch_tokens_for_redir_2.c \
 lexer/token_type.c \

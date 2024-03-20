@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/18 18:16:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 14:30:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,6 +149,9 @@ bool		before_first_condition(t_token *current);
 void		rearrange_first_element(t_token **tokens, t_token **current,
 				t_token **before_first);
 void		rearrange_following_element(t_token **current, t_token **before_first);
+
+// heredoc switching
+t_treenode	*switch_heredocs(t_treenode *lintree);
 
 // tokenization
 t_token		*tokenize(t_app_data *app);

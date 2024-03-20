@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/13 14:39:33 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 15:17:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,14 @@ bool	check_tokens_valid(t_token *tokens)
 {
 	t_token		*current;
 
-	if (tokens->type == ARG || tokens->type == OR || tokens->type == AND
-		|| tokens->type == PIPE)
-		return (printf("%s: parse error near first '%s'\n",
-				NAME, tokens->next->content), false);
+	if (tokens->type == OR || tokens->type == AND || tokens->type == PIPE)
+	{
+		if (tokens->next)
+			return (printf("%s: parse error near '%s'\n",
+					NAME, tokens->next->content), false);
+		return (printf("%s: syntax error near unexpected token '%s'\n",
+				NAME, tokens->content), false);
+	}
 	current = tokens;
 	while (current)
 	{
@@ -49,7 +53,7 @@ static bool	check_and_or_pipe_redir_out_append(t_token *current)
 			return (printf("%s: parse error near '\\n'\n", NAME), false);
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE)
-			return (printf("%s: parse error near chicken'%s'\n",
+			return (printf("%s: parse error near '%s'\n",
 					NAME, current->next->content), false);
 	}
 	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
@@ -61,7 +65,7 @@ static bool	check_and_or_pipe_redir_out_append(t_token *current)
 			|| current->next->type == REDIR_OUT
 			|| current->next->type == REDIR_APPEND
 			|| current->next->type == HEREDOC)
-			return (printf("%s: parse error near cock '%s'\n",
+			return (printf("%s: parse error near '%s'\n",
 					NAME, current->next->content), false);
 	}
 	return (true);
@@ -78,7 +82,7 @@ static bool	check_redir_in_heredoc(t_token *current)
 			|| current->next->type == REDIR_OUT
 			|| current->next->type == REDIR_APPEND
 			|| current->next->type == HEREDOC)
-			return (printf("%s: parse error near dick '%s'\n",
+			return (printf("%s: parse error near '%s'\n",
 					NAME, current->next->content), false);
 	}
 	return (true);
