@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/19 10:16:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 12:34:08 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,13 @@ t_treenode	*new_treenode(char *cmd, char *args,
 	node->bracket_lvl = bracket_lvl;
 	node->left = NULL;
 	node->right = NULL;
-	node->in_fd = 0; // this is the default value
-	node->out_fd = 1; // this is the default value
-	node->err_val = 0; // this is the default value
-	node->err = NULL; // this is the default value
-	node->in_type = 0; // this is the default value
-	node->out_type = 0; // this is the default value
+	node->in_fd = 0;
+	node->out_fd = 1;
+	node->err_val = 0;
+	node->err = NULL;
+	node->in_type = 0;
+	node->out_type = 0;
+	node->pipe = false;
 	return (node);
 }
 

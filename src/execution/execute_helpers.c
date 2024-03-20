@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/06 19:24:24 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:23:42 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*search_path_variable(char **envp)
 		i++;
 	}
 	if (path == NULL)
-		return (printf("Error: PATH not found\n"), NULL);
+		return (printf("Error: PATH not found\n"), NULL); // maybe different error?!
 	return (path);
 }
 
@@ -55,4 +55,22 @@ char	*find_path(char *command, char **envp)
 	}
 	ft_free_2d_arr((void **)temp);
 	return (printf("Error: Command not found\n"), NULL);
+}
+
+int	is_builtin(char *cmd)
+{
+	if (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0
+		|| ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "env") == 0
+		|| ft_strcmp(cmd, "exit") == 0 || ft_strcmp(cmd, "export") == 0
+		|| ft_strcmp(cmd, "unset") == 0)
+		return (1);
+	return (0);
+}
+
+int	is_redir(t_tokentype type)
+{
+	if (type == REDIR_IN || type == REDIR_OUT
+		|| type == REDIR_APPEND || type == HEREDOC)
+		return (1);
+	return (0);
 }
