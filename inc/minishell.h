@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 14:30:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 15:46:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,7 @@ t_treenode	*switch_heredocs(t_treenode *lintree);
 t_token		*tokenize(t_app_data *app);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
+t_token		*remove_after_cd(t_token *tokens);
 void		free_tokens(t_token *token);
 t_tokentype	token_type(char *content, t_tokentype prev_type);
 bool		check_tokens_valid(t_token *tokens);

@@ -7,10 +7,7 @@
 
 all :
 	gcc -Wall -Werror -Wextra \
-	check_tokens_valid.c \
-	tokenize.c \
-	tokenize_helpers.c \
-	token_type.c \
+	remove_after_cd.c \
 	../../lib/libft/src/ft_strdup.c \
 	../../lib/libft/src/ft_strlen.c \
 	../../lib/libft/src/ft_strcmp.c \

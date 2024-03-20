@@ -6,15 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 21:48:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/10 11:06:28 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 15:26:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static void			combine_cmds_args_loop(t_token *temp, int bracket_lvl,
-						t_treenode **first,
-						t_treenode **prev);
+						t_treenode **first, t_treenode **prev);
 static void			update_links(t_treenode **first, t_treenode **prev,
 						t_treenode *current, t_token **temp);
 

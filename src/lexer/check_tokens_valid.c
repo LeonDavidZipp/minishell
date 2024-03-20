@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 15:17:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 15:28:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,14 @@ static bool	check_redir_in_heredoc(t_token *current)
 	if (current->type == REDIR_IN || current->type == HEREDOC)
 	{
 		if (!current->next)
-			return (printf("%s: parse error near '\\n'\n", NAME), false);
+			return (printf("%s: syntax error near unexpected token '\\n'\n",
+					NAME), false);
 		if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE || current->next->type == REDIR_IN
 			|| current->next->type == REDIR_OUT
 			|| current->next->type == REDIR_APPEND
 			|| current->next->type == HEREDOC)
-			return (printf("%s: parse error near '%s'\n",
+			return (printf("%s: syntax error near unexpected token '%s'\n",
 					NAME, current->next->content), false);
 	}
 	return (true);
@@ -104,15 +105,9 @@ static bool	check_cd(t_token *current)
 			&& current->next->next->type != REDIR_APPEND
 			&& current->next->next->type != REDIR_IN
 			&& current->next->next->type != HEREDOC)
-			return (printf("cd: too many arguments\n"), false);
-		// else if (current->next && current->next && current->next->type != AND
-		// 	&& current->next->type != OR && current->next->type != PIPE
-		// 	&& current->next->type != REDIR_OUT
-		// 	&& current->next->type != REDIR_APPEND
-		// 	&& current->next->type != REDIR_IN
-		// 	&& current->next->type != HEREDOC)
-		// 	return (printf("cd: string not in pwd: '%s'\n",
-		// 			current->next->content), false);
+			return (printf("%s: cd: %s: too many arguments\n", current->next->content,
+					NAME), false);
+		
 	}
 	return (true);
 }
