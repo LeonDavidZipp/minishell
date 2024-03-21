@@ -6,13 +6,13 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/11 11:55:03 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:50:15 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	builtin_echo(char *str, int out_fd)
+int	builtin_echo(char *str, int out_fd)
 {
 	char	*temp;
 
@@ -31,6 +31,7 @@ void	builtin_echo(char *str, int out_fd)
 		ft_putstr_fd(str, out_fd);
 		write(out_fd, "\n", 1);
 	}
+	return (0);
 }
 
 // int	main(int argc, char **argv)

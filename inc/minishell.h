@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 16:14:06 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/21 11:38:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct s_treenode
 	int					in_type;
 	int					out_type;
 	char				*err;
+	bool				pipe;
 	struct s_treenode	*left;
 	struct s_treenode	*right;
 }			t_treenode;
@@ -114,23 +115,20 @@ void		exec_cmds(t_treenode *ast, t_app_data *app,
 				t_pid_list **pid_list);
 
 // built-in commands
-void		builtin_cd(char *path);
-void		builtin_pwd(char *args);
-// void		builtin_echo(char *str);
-void		builtin_env(char *new_var, char **env_vars);
-void		builtin_echo(char *str, int out_fd);
+int			builtin_cd(char *path);
+int			builtin_pwd(char *args);
+int			builtin_env(char *new_var, char **env_vars);
+int			builtin_echo(char *str, int out_fd);
 void		builtin_exit(t_app_data *app, int exit_code);
-// void		builtin_export(char *var_string, t_env_var **env_vars);
-// void		builtin_unset(char *keys, t_env_var **env_vars);
+int			builtin_unset(char *keys, char **env_vars);
+int			builtin_export(char *var_string, char ***env_vars, int fd);
 char		***split_env_vars(char *envp);
-void		builtin_env(char *new_var, char **env_vars);
 
 // environment variables
 char		**init_envp(char **env_vars);
 char		**update_env_vars(char *key, char *value, char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
-void		unset_env_vars(char *keys_string, char ***env_vars);
-char		**split_path(char *path);
+int			unset_env_vars(char *keys_string, char ***env_vars);
 char		**split_env(char *envp);
 char		***split_env_vars(char *envp);
 char		**split_env_var(char *envp);

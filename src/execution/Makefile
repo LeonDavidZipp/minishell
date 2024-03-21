@@ -29,11 +29,16 @@ all:
 	../builtin_cmds/unset.c \
 	../builtin_cmds/exit.c \
 	../env_vars/env_vars.c \
+	../env_vars/split_multiple_envp.c \
 	../lexer/tokenize.c \
-	../lexer/tokenize_helpers.c \
+	../lexer/join_tokens.c \
+	../lexer/switch_tokens_for_redir_2.c \
+	../lexer/switch_tokens_for_redir.c \
 	../lexer/token_type.c \
 	../lexer/check_tokens_valid.c \
 	../lexer/lexer.c \
+	../lexer/switch_heredocs.c \
+	../lexer/remove_after_cd.c \
 	../parsing/check_input.c \
 	../parsing/expand_helpers.c \
 	../parsing/expand.c \

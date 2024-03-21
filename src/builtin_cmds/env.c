@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:31 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/11 13:38:08 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 11:51:34 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 char	**split_env(char *env);
 
-void	builtin_env(char *new_var, char **env_vars)
+int	builtin_env(char *new_var, char **env_vars)
 {
 	char	**key;
 	char	**split;
@@ -31,18 +31,18 @@ void	builtin_env(char *new_var, char **env_vars)
 	{
 		split = ft_split(new_var, ' ');
 		if (!split)
-			return ;
+			return (1);
 		i = -1;
 		while (split[++i])
 		{
 			key = split_env(split[i]);
 			if (!key)
-				return ;
+				return (1);
 			for (int j = 0; j < 2; j++)
 				printf("key%d: %s\n", j, key[j]);
 			env_vars = update_env_vars(key[0], key[1], env_vars);
 			if (!env_vars)
-				return ;
+				return (1);
 			ft_free_2d_arr((void **)key);
 		}
 	}
@@ -52,7 +52,7 @@ void	builtin_env(char *new_var, char **env_vars)
 		if (env_vars[i])
 			printf("%s\n", env_vars[i]);
 	}
-	// ft_free_2d_arr((void **)env_vars); // need to check freeing and leaking
+	return (0);
 }
 
 char	**split_env(char *envp)

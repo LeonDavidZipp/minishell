@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/11 13:57:28 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/20 11:54:43 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,14 +62,14 @@ void	unset_env_var(char *key, char ***env_vars)
 	}
 }
 
-void	unset_env_vars(char *keys_string, char ***env_vars)
-	{
+int	unset_env_vars(char *keys_string, char ***env_vars)
+{
 	char	**keys;
 	int		i;
 
 	keys = ft_split(keys_string, ' ');
 	if (!keys)
-		return ;
+		return (1);
 	i = -1;
 	while (keys[++i])
 	{
@@ -77,6 +77,7 @@ void	unset_env_vars(char *keys_string, char ***env_vars)
 	}
 	ft_free_2d_arr((void **)keys);
 	i = -1;
+	return (0);
 }
 
 char	**init_envp(char **env_vars)
