@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 11:43:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/21 14:42:47 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 	t_pid_list	*next;
 	int			status;
 
+	g_exit_signal = 1;
 	tmp = *pid_list;
 	while (tmp)
 	{
@@ -66,6 +67,7 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 		tmp = next;
 	}
 	*pid_list = NULL;
+	g_exit_signal = 0;
 }
 
 int	check_for_errors(t_treenode *ast)

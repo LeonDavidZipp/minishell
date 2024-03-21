@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 11:42:32 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/21 13:36:49 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@
 # define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
+
+extern int g_exit_signal;
 
 typedef enum e_tokentype
 {

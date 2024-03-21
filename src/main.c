@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 16:57:04 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/21 14:40:22 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ static void	init_app_data(t_app_data *app_data, char **envp);
 static char	*get_input(t_app_data *app_data);
 static bool	is_all_spaces(char *str);
 static void	print_logo(void);
+
+int	g_exit_signal = 0;
 
 int	main(int argc, char **argv, char **envp)
 {
@@ -32,6 +34,7 @@ int	main(int argc, char **argv, char **envp)
 	print_logo();
 	while (true)
 	{
+		g_exit_signal = 0;
 		app_data.input = get_input(&app_data);
 		if (app_data.input == NULL)
 			continue ;

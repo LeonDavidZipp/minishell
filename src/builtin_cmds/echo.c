@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 11:50:15 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:55:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int	builtin_echo(char *str, int out_fd)
 {
 	char	*temp;
 
+	if (!str)
+	{
+		write(out_fd, "\n", 1);
+		return (0);
+	}
 	if (ft_strlen(str) >= 3 && ft_strncmp(str, "-n ", 3) == 0)
 	{
 		temp = ft_substr(str, 3, ft_strlen(str) - 3);
