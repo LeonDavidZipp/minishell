@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/20 16:23:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 13:26:23 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*find_path(char *command, char **envp)
 		i++;
 	}
 	ft_free_2d_arr((void **)temp);
-	return (printf("Error: Command not found\n"), NULL);
+	return (printf("%s: %s: command not found\n", NAME, command), NULL);
 }
 
 int	is_builtin(char *cmd)

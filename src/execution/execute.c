@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 11:43:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/21 16:38:23 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 // memory leaks!
 // norminette!!!!!!!
 // need to protect dup2!!!
+// maybe need to change exit code expansion, because right now it doesn't account for
+// the exit codes of the previous commands in the command line, only the last exit status of the last command line
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_list);
@@ -39,8 +41,11 @@ int	execute(t_app_data *app, t_treenode *ast)
 	t_pid_list	*pid_list;
 
 	pid_list = NULL;
-	if (setup_fd(ast, app->last_exit_code) == 2)
+	if (setup_fd(ast, app->last_exit_code) == 2 || g_exit_signal == 2)
+	{
+		app->last_exit_code = 1;
 		return (1);
+	}
 	// debug_printtree(ast, 0);
 	exec_cmds(ast, app, &pid_list);
 	wait_and_free(app, &pid_list);
@@ -53,6 +58,7 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 	t_pid_list	*next;
 	int			status;
 
+	g_exit_signal = 1;
 	tmp = *pid_list;
 	while (tmp)
 	{
@@ -66,13 +72,14 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 		tmp = next;
 	}
 	*pid_list = NULL;
+	g_exit_signal = 0;
 }
 
 int	check_for_errors(t_treenode *ast)
 {
 	if (ast->err_val != 0)
 	{
-		printf("Error: %s: %s\n", ast->err, strerror(ast->err_val));
+		printf("%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		return 1;
 	}
 	return 0;
@@ -121,7 +128,7 @@ t_treenode *find_cmd_node(t_treenode *node)
 	return (node);
 }
 
-int	get_input(char *delimiter, int write_fd, int exit_code)
+int	read_input(char *delimiter, int write_fd, int exit_code)
 {
 	char	*line;
 	char	*expanded;
@@ -129,6 +136,7 @@ int	get_input(char *delimiter, int write_fd, int exit_code)
 	char	*new_del;
 	bool	should_expand;
 
+	g_exit_signal = 2;
 	should_expand = true;
 	if (delimiter[0] == '\'' || delimiter[0] == '"')
 	{
@@ -163,7 +171,8 @@ int	get_input(char *delimiter, int write_fd, int exit_code)
 		write(0, "> ", 2);
 		line = get_next_line(0);
 	}
-	free(tmp);
+	if (line)
+		g_exit_signal = 0;
 	free(line);
 	close(write_fd);
 	return (0);
@@ -178,7 +187,7 @@ int	setup_fd(t_treenode *node, int exit_code)
 	{
 		if (pipe(pipe_fd) == -1)
 		{
-			printf("Error: pipe error: %s\n", strerror(errno));
+			printf("%s: pipe error: %s\n", NAME, strerror(errno));
 			return (2);
 		}
 		else
@@ -226,9 +235,8 @@ int	handle_heredoc(t_treenode *node, int exit_code)
 		else
 			set_error_vars(cmd_node, "heredoc pipe error");
 	}
-	if (get_input(node->args, pipe_fd[1], exit_code))
+	if (read_input(node->args, pipe_fd[1], exit_code))
 	{
-		// some error handling like heredoc eror: quote removal or expanding failed
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 		return (1);
@@ -358,25 +366,32 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 	pid_t	pid;
 	char	**arg_arr;
 	char	*cmd_node;
+	char	*tmp;
 
 	cmd_node = ft_strjoin(ast->cmd, " ");
 	if (!cmd_node)
 		return 1;
 	if (ast->args)
-		arg_arr = ft_split(ft_strjoin(cmd_node, ast->args), ' ');
+	{
+		tmp = ft_strjoin(cmd_node, ast->args);
+		if (!tmp)
+			return 1;
+		arg_arr = ft_split(tmp, ' ');
+		free(tmp);
+	}
 	else
 		arg_arr = ft_split(cmd_node, ' ');
 	if (!arg_arr)
 		return 1;
 	if (ast->err_val != 0)
 	{
-		printf("Error: %s: %s\n", ast->err, strerror(ast->err_val));
+		printf("%s: %s: %s\n", ast->err, NAME, strerror(ast->err_val));
 		return 1;
 	}
 	pid = fork();
 	if (pid == -1)
 	{
-		printf("Error: fork error: %s\n", strerror(errno));
+		printf("%s: fork error: %s\n", NAME, strerror(errno));
 		return 1;
 	}
 	if (pid == 0)
@@ -403,6 +418,7 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 		if (ast->out_fd != 1)
 			close(ast->out_fd);
 	}
+	free(cmd_node);
 	ft_free_2d_arr((void **)arg_arr);
 	return 0;
 }
@@ -417,7 +433,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	exit_code = 0;
 	if (ast->err_val != 0)
 	{
-		printf("Error: %s: %s\n", ast->err, strerror(ast->err_val));
+		printf("%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		return (1);
 	}
 	stdin_fd = dup(STDIN_FILENO);
@@ -437,7 +453,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		pid = fork();
 		if (pid == -1)
 		{
-			printf("Error: fork error: %s\n", strerror(errno));
+			printf("%s: fork error: %s\n", NAME, strerror(errno));
 			return (1);
 		}
 		if (pid == 0)

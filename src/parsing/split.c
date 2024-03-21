@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/14 13:18:06 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:54:45 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,8 @@ char	**split(char *input, int exit_code)
 	count[3] = count_tokens(new_input);
 	tokens = malloc(sizeof(char *) * (count[3] + 1));
 	if (!tokens)
-		return (free(new_input), NULL);
+		return (printf("%s: malloc: %s\n", NAME, strerror(errno)),
+			free(new_input), NULL);
 	tokens[count[3]] = NULL;
 	while (count[2] < count[3])
 	{

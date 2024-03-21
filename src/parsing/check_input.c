@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:47:38 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 17:38:41 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:38:07 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,8 @@ int	check_input(char *str)
 		str++;
 	}
 	if (s_quote % 2 != 0 || d_quote % 2 != 0 || bracket_1 != bracket_2)
-		return (printf("Error: invalid input - "
-				"quotes or brackets not closed\n"), 1);
+		return (printf("%s: invalid input: "
+				"quotes or brackets not closed\n", NAME), 1);
 	return (0);
 }
 
