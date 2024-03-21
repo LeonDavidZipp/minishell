@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/01 16:27:24 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:33:48 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	var_expand(char *input, char **output, int *j)
 	return (1);
 }
 
-int	handle_dollar(char *input, char **output, int *i, int exit_code)
+int	handle_dollar(char *input, char **output, int *i)
 {
 	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
 	{
-		if (!exit_code_expand(output, &i[1], exit_code))
+		if (!exit_code_expand(output, &i[1], i[4]))
 			return (free(*output), 0);
 		i[0] += 2;
 	}

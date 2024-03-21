@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 16:38:23 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:57:54 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 // need to protect dup2!!!
 // maybe need to change exit code expansion, because right now it doesn't account for
 // the exit codes of the previous commands in the command line, only the last exit status of the last command line
+// sleep 5 | cat /dev/urandom | head -5 (doesn't work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!) FUUUUUUUUUCCCCCCCCCCCKKKKKKKKKKKKKKKK
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_list);
@@ -323,7 +324,7 @@ int	setup_redir(t_treenode *node, int exit_code)
 		else
 			set_fd(node, tmp_fd, 2);
 	}
-	else if (node->cmd_type == HEREDOC)
+	else if (node->cmd_type == HEREDOC && g_exit_signal != 2)
 		return (handle_heredoc(node, exit_code));
 	else if (node->cmd_type == REDIR_OUT || node->cmd_type == REDIR_APPEND)
 	{

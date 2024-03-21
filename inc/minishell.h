@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 15:01:19 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:32:49 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,7 +181,7 @@ int			execute(t_app_data *app, t_treenode *ast);
 
 // expansion
 char		*expand(char *input, int exit_code, int flag);
-int			handle_dollar(char *input, char **output, int *i, int exit);
+int			handle_dollar(char *input, char **output, int *i);
 void		handle_quotes(char c, bool *s_quote, bool *d_quote);
 int			get_new_size(char *input, int exit_code, int flag);
 bool		match(char *pattern, char *string);
