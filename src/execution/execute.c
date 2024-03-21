@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 17:59:51 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/21 11:43:52 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	execute(t_app_data *app, t_treenode *ast)
 	pid_list = NULL;
 	if (setup_fd(ast, app->last_exit_code) == 2)
 		return (1);
-	debug_printtree(ast, 0);
+	// debug_printtree(ast, 0);
 	exec_cmds(ast, app, &pid_list);
 	wait_and_free(app, &pid_list);
 	return (0);
@@ -488,23 +488,23 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	return (exit_code);
 }
 
-int	main(int argc, char **argv, char **envp)
-{
-	t_app_data	app;
-	t_token		*tokens;
-	t_treenode	*root;
-	t_treenode	*ast;
-	(void)argc;
-	(void)argv;
-	app.env_vars = init_envp(envp);
-	app.input = ft_strdup("ls -l > out > out1");
-	app.last_exit_code = 0;
-	tokens = tokenize(&app);
-	root = combine_cmds_args(tokens);
-	root = switch_heredocs(root);
-	ast = NULL;
-	ast = build_ast(ast, root, 0);
-	execute(&app, ast);
-	free(app.input);
-	return (0);
-}
+// int	main(int argc, char **argv, char **envp)
+// {
+// 	t_app_data	app;
+// 	t_token		*tokens;
+// 	t_treenode	*root;
+// 	t_treenode	*ast;
+// 	(void)argc;
+// 	(void)argv;
+// 	app.env_vars = init_envp(envp);
+// 	app.input = ft_strdup("ls -l > out > out1");
+// 	app.last_exit_code = 0;
+// 	tokens = tokenize(&app);
+// 	root = combine_cmds_args(tokens);
+// 	root = switch_heredocs(root);
+// 	ast = NULL;
+// 	ast = build_ast(ast, root, 0);
+// 	execute(&app, ast);
+// 	free(app.input);
+// 	return (0);
+// }

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 11:38:45 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/21 11:42:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,6 +173,9 @@ int			priority(char *cmd, int bracket_lvl);
 
 // lexer
 void		lexer(t_app_data *app_data);
+
+// execution
+int			execute(t_app_data *app, t_treenode *ast);
 
 // expansion
 char		*expand(char *input, int exit_code, int flag);
