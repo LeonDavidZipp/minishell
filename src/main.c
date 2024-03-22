@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 16:33:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 16:37:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,10 @@ static char	*get_input(t_app_data *app_data)
 		return (NULL);
 	}
 	else if (input == NULL)
-		// || (ft_strncmp(input, "exit", ft_strlen("exit")) == 0
-		// 	&& is_all_spaces(&input[ft_strlen("exit")]) == true))
 	{
 		free(input);
 		builtin_exit(app_data, NULL);
 	}
-	// else if (is_all_spaces(input))
 	else if (ft_str_isspaces(input))
 	{
 		free(input);

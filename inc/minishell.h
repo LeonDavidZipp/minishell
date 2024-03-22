@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 15:19:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 17:01:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 # define NAME "babash"
 # define PROMPT "\033[1;36mbabash \033[1;32m→  \033[0m"
+# define SYNTAX_ERR_MSG "syntax error near unexpected token"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
