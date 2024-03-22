@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/22 14:46:22 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:19:24 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,17 @@ char	*remove_quotes(char *token)
 	}
 	output[i[1]] = '\0';
 	return (output);
+}
+
+char	*quote_remove_in_place(char *token)
+{
+	char	*result;
+
+	result = remove_quotes(token);
+	if (!result)
+		return (NULL);
+	free(token);
+	return (result);
 }
 
 char	**fill_new_tokens(char **tokens, char **new_tokens, int exit_code)

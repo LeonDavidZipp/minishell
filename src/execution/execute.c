@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 15:02:08 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 17:30:58 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 // maybe need to change exit code expansion, because right now it doesn't account for
 // the exit codes of the previous commands in the command line, only the last exit status of the last command line
 // sleep 5 | cat /dev/urandom | head -5 (doesn't work!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!) FUUUUUUUUUCCCCCCCCCCCKKKKKKKKKKKKKKKK
+// exit code is different for cat /dev/urandom | > out to bash
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_list);
@@ -47,7 +48,7 @@ int	execute(t_app_data *app, t_treenode *ast)
 		app->last_exit_code = 1;
 		return (1);
 	}
-	// debug_printtree(ast, 0);
+	debug_printtree(ast, 0);
 	exec_cmds(ast, app, &pid_list);
 	wait_and_free(app, &pid_list);
 	return (0);
@@ -196,7 +197,10 @@ int	setup_fd(t_treenode *node, int exit_code)
 		{
 			cmd_node = find_cmd_node(node->left);
 			if (cmd_node->cmd_type != CMD)
+			{
+				printf("closing pipe_fd[0]: %d because there is no cmd\n", pipe_fd[0]);
 				close(pipe_fd[1]);
+			}
 			else
 			{
 				cmd_node->out_fd = pipe_fd[1];
@@ -204,7 +208,10 @@ int	setup_fd(t_treenode *node, int exit_code)
 			}
 			cmd_node = find_cmd_node(node->right);
 			if (cmd_node->cmd_type != CMD)
+			{
+				printf("closing pipe_fd[1]: %d because there is no cmd\n", pipe_fd[1]);
 				close(pipe_fd[0]);
+			}
 			else
 			{
 				cmd_node->in_fd = pipe_fd[0];
@@ -363,6 +370,20 @@ int	add_to_pid_list(pid_t pid, t_pid_list **pidlist)
 	return (0);
 }
 
+// int	add_to_pid_list(pid_t pid, t_pid_list **pidlist)
+// {
+//     t_pid_list	*new;
+    
+//     new = (t_pid_list *)malloc(sizeof(t_pid_list));
+//     if (!new)
+//         return (1);
+//     new->pid = pid;
+//     new->next = *pidlist;
+//     *pidlist = new;
+
+//     return (0);
+// }
+
 static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_list)
 {
 	pid_t	pid;
@@ -417,17 +438,17 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 	else
 	{
 		if (add_to_pid_list(pid, pid_list))
-			return 1;
+			return 1; // need to free here as well
+		if (ast->in_fd != 0)
+		{
+			printf("closing in_fd: %d for cmd: %s\n", ast->in_fd, ast->cmd);
+			close(ast->in_fd);
+		}
 		if (ast->out_fd != 1)
 		{
 			printf("closing out_fd: %d for cmd: %s\n", ast->out_fd, ast->cmd);
 			close(ast->out_fd);
 		}
-	}
-	if (ast->in_fd != 0)
-	{
-		printf("closing in_fd: %d for cmd: %s\n", ast->in_fd, ast->cmd);
-		close(ast->in_fd);
 	}
 	free(cmd_node);
 	ft_free_2d_arr((void **)arg_arr);
