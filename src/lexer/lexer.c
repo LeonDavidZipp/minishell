@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 17:09:37 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 12:32:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,3 +67,17 @@ static void	handle_error(t_app_data *app_data)
 	printf("%s", LEXER_ERR);
 	free_for_next_call(app_data);
 }
+
+// static bool check_exit(t_treenode *intermediate_tree, t_app_data *app_data)
+// {
+	
+// 	/// memory not correctly freed yet!!!
+// 	while (intermediate_tree)
+// 	{
+// 		if (ft_strcmp(intermediate_tree->cmd, "exit") == 0
+// 			&& !intermediate_tree->args && !intermediate_tree->left)
+// 			builtin_exit(app_data, 0);
+// 		else if ()
+// 		intermediate_tree = intermediate_tree->left;
+// 	}
+// }

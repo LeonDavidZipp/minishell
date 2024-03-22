@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 15:20:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 13:49:04 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -453,7 +453,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 			else if (ft_strcmp(ast->cmd, "env") == 0)
 				exit_code = builtin_env(ast->args, app->env_vars);
 			else if (ft_strcmp(ast->cmd, "exit") == 0)
-				builtin_exit(app, 0);
+				builtin_exit(app, ast->args);
 			else if (ft_strcmp(ast->cmd, "export") == 0)
 				exit_code = builtin_export(ast->args, &app->env_vars, STDOUT_FILENO);
 			else if (ft_strcmp(ast->cmd, "unset") == 0)
@@ -477,7 +477,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		else if (ft_strcmp(ast->cmd, "env") == 0)
 			exit_code = builtin_env(ast->args, app->env_vars);
 		else if (ft_strcmp(ast->cmd, "exit") == 0)
-			builtin_exit(app, 0);
+			builtin_exit(app, ast->args);
 		else if (ft_strcmp(ast->cmd, "export") == 0)
 			exit_code = builtin_export(ast->args, &app->env_vars, STDOUT_FILENO);
 		else if (ft_strcmp(ast->cmd, "unset") == 0)
