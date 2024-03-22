@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 17:57:54 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:02:08 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 	tmp = *pid_list;
 	while (tmp)
 	{
+		printf("waiting for pid: %d\n", tmp->pid);
 		waitpid(tmp->pid, &status, 0);
 		if (WIFEXITED(status))
 			app->last_exit_code = WEXITSTATUS(status);
@@ -390,6 +391,7 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 		return 1;
 	}
 	pid = fork();
+	printf("forked pid: %d\n", pid);
 	if (pid == -1)
 	{
 		printf("%s: fork error: %s\n", NAME, strerror(errno));
@@ -400,11 +402,13 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 		if (ast->in_fd != 0)
 		{
 			dup2(ast->in_fd, STDIN_FILENO);
+			printf("closing in_fd: %d for cmd: %s after dup2\n", ast->in_fd, ast->cmd);
 			close(ast->in_fd);
 		}
 		if (ast->out_fd != 1)
 		{
 			dup2(ast->out_fd, STDOUT_FILENO);
+			printf("closing out_fd: %d for cmd: %s after dup2\n", ast->out_fd, ast->cmd);
 			close(ast->out_fd);
 		}
 		execve(find_path(ast->cmd, env_vars), arg_arr, env_vars);
@@ -414,10 +418,16 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 	{
 		if (add_to_pid_list(pid, pid_list))
 			return 1;
-		if (ast->in_fd != 0)
-			close(ast->in_fd);
 		if (ast->out_fd != 1)
+		{
+			printf("closing out_fd: %d for cmd: %s\n", ast->out_fd, ast->cmd);
 			close(ast->out_fd);
+		}
+	}
+	if (ast->in_fd != 0)
+	{
+		printf("closing in_fd: %d for cmd: %s\n", ast->in_fd, ast->cmd);
+		close(ast->in_fd);
 	}
 	free(cmd_node);
 	ft_free_2d_arr((void **)arg_arr);

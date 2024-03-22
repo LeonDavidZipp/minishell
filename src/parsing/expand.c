@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/21 17:31:48 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:59:40 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,12 @@ int	handle_wildcard(char *input, char **output, int *i)
 void	handle_character(char *input, char **output, int *i, bool *quotes)
 {
 	handle_quotes(input[i[0]], &quotes[0], &quotes[1]);
-	if (input[i[0]] == '$' && !quotes[0])
+	if (input[i[0]] == '$' && !quotes[0] && !is_space(input[i[0] + 1]))
 	{
 		if (!handle_dollar(input, output, i))
 			return ;
 	}
-	else if (input[i[0]] == '*' && !quotes[0] && quotes[1] && i[3] == 0)
+	else if (input[i[0]] == '*' && !quotes[0] && !quotes[1] && i[3] == 0)
 	{
 		if (!handle_wildcard(input, output, i))
 			return ;

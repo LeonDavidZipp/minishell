@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/21 17:34:32 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:00:09 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ char	**split(char *input, int exit_code)
 
 // int main()
 // {
-// 	char *input = "echo $?";
+// 	char *input = "echo \"> >> < * ? [ ] | ; [ ] || && ( ) $  <<\"";
 // 	if (check_input(input) == 1)
 // 		return (1);
 // 	char **tokens = split(input, 0);
