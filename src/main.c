@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 15:20:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 16:33:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,28 +60,14 @@ static char	*get_input(t_app_data *app_data)
 		free(input);
 		builtin_exit(app_data, NULL);
 	}
-	else if (is_all_spaces(input))
+	// else if (is_all_spaces(input))
+	else if (ft_str_isspaces(input))
 	{
 		free(input);
 		return (NULL);
 	}
 	add_history(input);
 	return (input);
-}
-
-static bool	is_all_spaces(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (false);
-	i = -1;
-	while (str[++i])
-	{
-		if (!ft_isspace(str[i]))
-			return (false);
-	}
-	return (true);
 }
 
 static void	init_app_data(t_app_data *app_data, char **envp)
