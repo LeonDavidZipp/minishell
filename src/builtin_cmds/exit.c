@@ -6,14 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 13:55:05 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 14:18:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static void	free_app_data(t_app_data *app);
-static void	handle_first_arg_non_digit(t_app_data *app, char **arg_arr);
+static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr);
 static void	handle_too_many_args(t_app_data *app, char **arg_arr);
 
 void	builtin_exit(t_app_data *app, char *args)
@@ -32,8 +32,8 @@ void	builtin_exit(t_app_data *app, char *args)
 	arg_arr = ft_split(args, ' ');
 	if (!arg_arr)
 		return ;
-	if (!ft_str_isdigit(arg_arr[0]))
-		handle_first_arg_non_digit(app, arg_arr);
+	if (!ft_str_isnumber(arg_arr[0]))
+		handle_first_arg_non_number(app, arg_arr);
 	else if (ft_null_terminated_arr_len((void **)arg_arr) > 1)
 		handle_too_many_args(app, arg_arr);
 	else
@@ -53,7 +53,7 @@ static void	free_app_data(t_app_data *app_data)
 	// free(app_data);
 }
 
-static void	handle_first_arg_non_digit(t_app_data *app, char **arg_arr)
+static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 {
 	printf("exit\n");
 	printf("minishell: exit: %s: numeric argument required\n", arg_arr[0]);
