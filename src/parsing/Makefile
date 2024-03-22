@@ -19,3 +19,4 @@ all:
 	../../lib/libft/src/ft_strjoin.c \
 	../../lib/libft/src/ft_itoa.c \
 	../../lib/libft/src/ft_isalnum.c \
+	../../lib/libft/src/ft_strcmp.c \

@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/14 13:03:10 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:59:40 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,15 @@ int	handle_wildcard(char *input, char **output, int *i)
 	return (1);
 }
 
-void	handle_character(char *input, char **output, int *i, int exit_code)
+void	handle_character(char *input, char **output, int *i, bool *quotes)
 {
-	bool	s_quote;
-	bool	d_quote;
-
-	s_quote = false;
-	d_quote = false;
-	handle_quotes(input[i[0]], &s_quote, &d_quote);
-	if (input[i[0]] == '$' && !s_quote)
+	handle_quotes(input[i[0]], &quotes[0], &quotes[1]);
+	if (input[i[0]] == '$' && !quotes[0] && !is_space(input[i[0] + 1]))
 	{
-		if (!handle_dollar(input, output, i, exit_code))
+		if (!handle_dollar(input, output, i))
 			return ;
 	}
-	else if (input[i[0]] == '*' && !s_quote && !d_quote && i[3] == 0)
+	else if (input[i[0]] == '*' && !quotes[0] && !quotes[1] && i[3] == 0)
 	{
 		if (!handle_wildcard(input, output, i))
 			return ;
@@ -82,18 +77,22 @@ char	*expand(char *input, int exit_code, int flag)
 {
 	char	*output;
 	int		size;
-	int		i[4];
+	int		i[5];
+	bool	quotes[2];
 
 	i[0] = 0;
 	i[1] = 0;
 	i[3] = flag;
+	i[4] = exit_code;
+	quotes[0] = false;
+	quotes[1] = false;
 	size = get_new_size(input, exit_code, flag);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
 	while (input[i[0]])
 	{
-		handle_character(input, &output, i, exit_code);
+		handle_character(input, &output, i, quotes);
 	}
 	if (output != NULL)
 		output[i[1]] = '\0';

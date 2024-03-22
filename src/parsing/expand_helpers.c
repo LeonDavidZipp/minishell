@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/14 13:09:51 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/22 14:50:35 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ int	calculate_size(char *input, int *i, int exit_code, bool *quotes)
 		size += ft_dec_len(exit_code);
 		i[0] += 2;
 	}
-	else if (input[i[0]] == '$' && !quotes[0])
+	else if (input[i[0]] == '$' && !quotes[0] && !is_space(input[i[0] + 1]))
 	{
 		i[0]++;
 		size += env_var_size(input, i);

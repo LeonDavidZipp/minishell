@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 14:32:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 15:20:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ void	lexer(t_app_data *app_data)
 	// debug_printtree(ast, 0);
 	// 6. execute
 	execute(app_data, ast);
+	g_exit_signal = 0;
 	// 7. free memory
 	free_treenodes(ast);
 	free_for_next_call(app_data);

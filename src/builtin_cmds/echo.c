@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 14:55:45 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 15:19:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ int	builtin_echo(char *str, int out_fd)
 {
 	char	*temp;
 
+	if (!str)
+	{
+		write(out_fd, "\n", 1);
+		return (0);
+	}
 	if (!str)
 	{
 		write(out_fd, "\n", 1);

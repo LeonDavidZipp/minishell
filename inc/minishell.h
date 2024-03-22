@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 13:46:03 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/22 15:19:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@
 # define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
+
+extern int g_exit_signal;
 
 extern int g_exit_signal;
 
@@ -181,7 +183,7 @@ int			execute(t_app_data *app, t_treenode *ast);
 
 // expansion
 char		*expand(char *input, int exit_code, int flag);
-int			handle_dollar(char *input, char **output, int *i, int exit);
+int			handle_dollar(char *input, char **output, int *i);
 void		handle_quotes(char c, bool *s_quote, bool *d_quote);
 int			get_new_size(char *input, int exit_code, int flag);
 bool		match(char *pattern, char *string);
