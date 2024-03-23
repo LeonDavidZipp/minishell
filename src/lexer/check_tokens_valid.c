@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 17:07:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/23 13:40:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ static bool	check_redir_in_heredoc(t_token *current)
 			|| current->next->type == REDIR_OUT
 			|| current->next->type == REDIR_APPEND
 			|| current->next->type == HEREDOC)
-			return (ft_fprintf(2,
-					"%s: %s '%s'\n",
+			return (ft_fprintf(2, "%s: %s '%s'\n",
 					NAME, SYNTAX_ERR_MSG, current->next->content), false);
 	}
 	return (true);
@@ -100,8 +99,7 @@ static bool	check_echo(t_token *current)
 		else if (current->next && (current->next->type == LEFT_BRACKET
 				|| current->next->type == RIGHT_BRACKET))
 		{
-			ft_fprintf(2, "%s: %s '\\n'\n",
-				NAME);
+			ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNTAX_ERR_MSG);
 			return (false);
 		}
 	}
