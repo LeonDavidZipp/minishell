@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 12:09:03 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/23 18:38:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,20 @@
 
 static void	print_vars(char **env_vars, int fd);
 
+// wrong. when i do export hi hello, export without any arguments lists them, whereas env doesnt list them, meaning this doesnt get actually added to the env vars
+
+// GitHub Copilot
+// In Unix-like operating systems, export is a shell built-in function that sets environment variables in the context of the current shell session. When you use export without any arguments, it lists all environment variables in the current shell session, including those you've just added with export.
+
+// On the other hand, env is a standalone command that runs another program in a custom environment. When you run env without any arguments, it prints out the environment variables that would be passed to a program run without any customizations.
+
+// So, if you run export hi=hello and then env, you might not see hi in the output because env is not run in the same shell session where hi was set. But if you run export without any arguments, you should see hi because it's listing the variables in the current shell session.
+
+// In your C code, if you want to add a variable to the environment of the processes that the program spawns, you should use setenv or putenv instead of manipulating env_vars directly. These functions change the environment that's passed to new processes.
+
 int	builtin_export(char *var_string, char ***env_vars, int fd)
 {
 	char	***vars;
-	char	**temp;
 	int		i;
 
 	if (!var_string)
@@ -31,13 +41,7 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 	i = -1;
 	while (vars[++i])
 	{
-		temp = update_env_vars(vars[i][0], vars[i][1], *env_vars);
-		if (!temp)
-		{
-			ft_free_3d_arr((void ***)vars);
-			return (1);
-		}
-		ft_free_2d_arr((void **)temp);
+		*env_vars = update_env_vars(vars[i][0], vars[i][1], *env_vars);
 	}
 	ft_free_3d_arr((void ***)vars);
 	return (0);

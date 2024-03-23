@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/20 11:54:43 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/23 18:37:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static bool	var_name_valid(char *key);
 
 char	**update_env_vars(char *key, char *value, char **env_vars)
 {
@@ -29,14 +31,19 @@ char	**update_env_vars(char *key, char *value, char **env_vars)
 			return (env_vars);
 		}
 	}
-	new_var = ft_strjoin(key, "=");
-	env_vars = ft_recalloc(env_vars,
-			ft_null_terminated_arr_len((void **)env_vars) + 2,
-			sizeof(char *));
-	if (!env_vars || !env_vars)
-		return (NULL);
-	env_vars[i] = ft_strjoin(new_var, value);
-	free(new_var);
+	if (var_name_valid(key))
+	{
+		new_var = ft_strjoin(key, "=");
+		env_vars = ft_recalloc(env_vars,
+				ft_null_terminated_arr_len((void **)env_vars) + 2,
+				sizeof(char *));
+		if (!env_vars)
+			return (NULL);
+		env_vars[i] = ft_strjoin(new_var, value);
+		free(new_var);
+	}
+	else
+		ft_fprintf(2, "%s: export: `%s': not a valid identifier\n", NAME, key);
 	return (env_vars);
 }
 
@@ -93,6 +100,21 @@ char	**init_envp(char **env_vars)
 	while (env_vars[++i])
 		envp[i] = ft_strdup(env_vars[i]);
 	return (envp);
+}
+
+static bool	var_name_valid(char *key)
+{
+	int		i;
+
+	i = 0;
+	if (!ft_isalpha(key[0]) && key[0] != '_')
+		return (false);
+	while (key[++i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (false);
+	}
+	return (true);
 }
 
 // int main(void)

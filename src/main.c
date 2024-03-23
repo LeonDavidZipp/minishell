@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 16:37:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/23 14:37:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 static void	init_app_data(t_app_data *app_data, char **envp);
 static char	*get_input(t_app_data *app_data);
-static bool	is_all_spaces(char *str);
 // static void	print_logo(void);
 
 int	g_exit_signal = 0;

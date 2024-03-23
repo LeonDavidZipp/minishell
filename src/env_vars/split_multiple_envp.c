@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/11 13:46:30 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/23 18:17:15 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,12 +44,10 @@ char	**split_env_var(char *envp)
 	if (!envp || !result)
 		return (NULL);
 	len1 = 0;
-	while (envp[len1] && envp[len1] != '=')
-	{
-		if (ft_isspace(envp[len1]))
-			return (ft_free_2d_arr((void **)result), NULL);
+	if (envp[len1] == '=')
 		len1++;
-	}
+	while (envp[len1] && envp[len1] != '=')
+		len1++;
 	result[0] = ft_substr(envp, 0, len1);
 	if (envp[len1] && envp[len1] == '=' && !envp[len1 + 1])
 		result[1] = ft_strdup("");
