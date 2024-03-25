@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 17:01:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/25 14:57:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,13 @@ typedef struct s_pid_list
 	struct s_pid_list	*next;
 }			t_pid_list;
 
+typedef struct s_envvar
+{
+	char				*key;
+	char				*value;
+	bool				includes_equal;
+}			t_envvar;
+
 // signal handling
 void		signal_handler(void);
 
@@ -122,21 +129,25 @@ void		exec_cmds(t_treenode *ast, t_app_data *app,
 // built-in commands
 int			builtin_cd(char *path);
 int			builtin_pwd(char *args);
-int			builtin_env(char *new_var, char **env_vars);
+int			builtin_env(char *var_string, char ***env_vars);
 int			builtin_echo(char *str, int out_fd);
 void		builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
 int			builtin_export(char *var_string, char ***env_vars, int fd);
-char		***split_env_vars(char *envp);
 
 // environment variables
 char		**init_envp(char **env_vars);
-char		**update_env_vars(char *key, char *value, char **env_vars);
+// char		**update_env_vars(char *key, char *value, char **env_vars);
+char		**update_env_vars(char *key, char *value, bool inc_equal,
+				char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
 int			unset_env_vars(char *keys_string, char ***env_vars);
 char		**split_env(char *envp);
-char		***split_env_vars(char *envp);
-char		**split_env_var(char *envp);
+// char		***split_env_vars(char *envp);
+// char		**split_env_var(char *envp);
+t_envvar	**split_env_vars(char *envp);
+t_envvar	*split_env_var(char *envp);
+void		free_vars(t_envvar **vars);
 
 // parsing && input handling
 int			is_space(char c);

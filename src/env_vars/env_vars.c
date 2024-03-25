@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/03/23 18:37:24 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/25 16:53:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,35 @@
 
 static bool	var_name_valid(char *key);
 
-char	**update_env_vars(char *key, char *value, char **env_vars)
+char	**update_env_vars(char *key, char *value, bool inc_equal,
+				char **env_vars)
 {
 	int		i;
 	char	*new_var;
 
 	i = -1;
+	printf("before update key: %s\n", key);
 	while (env_vars[++i])
 	{
-		if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0)
-		{
-			free(env_vars[i]);
-			new_var = ft_strjoin(key, "=");
-			env_vars[i] = ft_strjoin(new_var, value);
-			free(new_var);
-			return (env_vars);
-		}
+		
+		printf("i: %d, str: %s\n", i, env_vars[i]);
+		// if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0 && inc_equal)
+		// {
+		// 	printf("in if\n");
+		// 	free(env_vars[i]);
+		// 	new_var = ft_strjoin(key, "=");
+		// 	env_vars[i] = ft_strjoin(new_var, value);
+		// 	free(new_var);
+		// 	return (env_vars);
+		// }
 	}
+	printf("before adding new var\n");
 	if (var_name_valid(key))
 	{
-		new_var = ft_strjoin(key, "=");
+		if (inc_equal)
+			new_var = ft_strjoin(key, "=");
+		else
+			new_var = ft_strdup(key);
 		env_vars = ft_recalloc(env_vars,
 				ft_null_terminated_arr_len((void **)env_vars) + 2,
 				sizeof(char *));

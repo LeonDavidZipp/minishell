@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/23 18:38:06 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/25 16:55:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,32 @@ static void	print_vars(char **env_vars, int fd);
 
 // In your C code, if you want to add a variable to the environment of the processes that the program spawns, you should use setenv or putenv instead of manipulating env_vars directly. These functions change the environment that's passed to new processes.
 
+// int	builtin_export(char *var_string, char ***env_vars, int fd)
+// {
+// 	char	***vars;
+// 	int		i;
+
+// 	if (!var_string)
+// 	{
+// 		print_vars(*env_vars, fd);
+// 		return (0);
+// 	}
+// 	vars = split_env_vars(var_string);
+// 	if (!vars)
+// 		return (1);
+// 	i = -1;
+// 	while (vars[++i])
+// 	{
+// 		*env_vars = update_env_vars(vars[i][0], vars[i][1], *env_vars);
+// 	}
+// 	ft_free_3d_arr((void ***)vars);
+// 	return (0);
+// }
+
 int	builtin_export(char *var_string, char ***env_vars, int fd)
 {
-	char	***vars;
-	int		i;
+	t_envvar	**vars;
+	int			i;
 
 	if (!var_string)
 	{
@@ -41,32 +63,48 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 	i = -1;
 	while (vars[++i])
 	{
-		*env_vars = update_env_vars(vars[i][0], vars[i][1], *env_vars);
+		*env_vars = update_env_vars(vars[i]->key, vars[i]->value,
+			vars[i]->includes_equal, *env_vars);
 	}
-	ft_free_3d_arr((void ***)vars);
+	free_vars(vars);
 	return (0);
 }
 
 static void	print_vars(char **env_vars, int fd)
 {
-	char	**key_value;
-	int		i;
+	t_envvar	*var;
+	int			i;
 
 	i = -1;
 	while (env_vars[++i])
 	{
-		key_value = split_env_var(env_vars[i]);
+		var = split_env_var(env_vars[i]);
 		ft_putstr_fd("declare -x ", fd);
-		ft_putstr_fd(key_value[0],fd);
-		ft_putstr_fd("=", fd);
-		if (key_value[1])
+		ft_putstr_fd(var->key,fd);
+		if (var->includes_equal)
+			ft_putstr_fd("=", fd);
+		if (var->value)
 		{
 			ft_putstr_fd("\"", fd);
-			ft_putstr_fd(key_value[1], fd);
+			ft_putstr_fd(var->value, fd);
 			ft_putstr_fd("\"", fd);
 		}
 		ft_putstr_fd("\n", fd);
 	}
+}
+
+void	free_vars(t_envvar **vars)
+{
+	int	i;
+
+	i = -1;
+	while (vars[++i])
+	{
+		free(vars[i]->key);
+		free(vars[i]->value);
+		free(vars[i]);
+	}
+	free(vars);
 }
 
 // int main()
