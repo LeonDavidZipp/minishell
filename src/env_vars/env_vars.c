@@ -6,14 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 17:45:24 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/25 17:47:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static bool	var_name_valid(char *key);
-static bool update_existing_env_var(char *key, char *value, int inc_equal,
+static bool	update_existing_env_var(char *key, char *value, int inc_equal,
 				char ***env_vars_ptr);
 
 char	**update_env_vars(char *key, char *value, bool inc_equal,
@@ -81,7 +81,7 @@ int	unset_env_vars(char *keys_string, char ***env_vars)
 	return (0);
 }
 
-static bool update_existing_env_var(char *key, char *value, int inc_equal,
+static bool	update_existing_env_var(char *key, char *value, int inc_equal,
 				char ***env_vars_ptr)
 {
 	int			i;
@@ -98,10 +98,10 @@ static bool update_existing_env_var(char *key, char *value, int inc_equal,
 			new_var = ft_strjoin(key, "=");
 			env_vars[i] = ft_strjoin(new_var, value);
 			free(new_var);
-			return true;
+			return (true);
 		}
 	}
-	return false;
+	return (false);
 }
 
 static bool	var_name_valid(char *key)
