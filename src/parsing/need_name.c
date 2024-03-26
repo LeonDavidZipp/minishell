@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 11:17:18 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:49:17 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char	*remove_quotes(char *str)
 // 	{
 // 		expanded = expand(str[i], exit_code, 0);
 // 		if (!expanded)
-// 			return (ft_free_2d_arr((void **)str), \
+// 			return (ft_free_2d_arr((void **)str),
 // 			ft_free_2d_arr((void **)new_str), NULL);
 // 		if (i > 0 && ft_strcmp(str[i - 1], "<<") == 0)
 // 			is_heredoc = 1;
@@ -75,7 +75,7 @@ char	*remove_quotes(char *str)
 // 		{
 // 			temp = remove_quotes(expanded);
 // 			if (!temp)
-// 				return (ft_free_2d_arr((void **)str), \
+// 				return (ft_free_2d_arr((void **)str),
 // 				ft_free_2d_arr((void **)new_str), free(expanded), NULL);
 // 			new_str[i] = temp;
 // 			free(expanded);
@@ -101,12 +101,12 @@ char	*remove_quotes(char *str)
 // 	return (fill_new_str(str, new_str, exit_code));
 // }
 
-char	*expand_and_remove(char *str, int exit_code)
+char	*expand_and_remove(char *str, int exit_code, char **env_vars)
 {
 	char	*expanded;
 	char	*result;
 	
-	expanded = expand(str, exit_code, 0);
+	expanded = expand(str, exit_code, env_vars, 0);
 	if (!expanded)
 		return (NULL);
 	result = remove_quotes(expanded);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   data.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 10:43:26 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/22 14:59:40 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:03:35 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,44 +55,55 @@ int	handle_wildcard(char *input, char **output, int *i)
 	return (1);
 }
 
-void	handle_character(char *input, char **output, int *i, bool *quotes)
+void	handle_character(t_expand *data)
 {
-	handle_quotes(input[i[0]], &quotes[0], &quotes[1]);
-	if (input[i[0]] == '$' && !quotes[0] && !is_space(input[i[0] + 1]))
+	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
+	if (data->input[data->i[0]] == '$' && !data->quotes[0] && !is_space(data->input[data->i[0] + 1]))
 	{
-		if (!handle_dollar(input, output, i))
+		if (!handle_dollar(data))
 			return ;
 	}
-	else if (input[i[0]] == '*' && !quotes[0] && !quotes[1] && i[3] == 0)
+	else if (data->input[data->i[0]] == '*' && !data->quotes[0] && !data->quotes[1] && data->i[3] == 0)
 	{
-		if (!handle_wildcard(input, output, i))
+		if (!handle_wildcard(data->input, data->output, data->i))
 			return ;
-		i[1]--;
+		data->i[1]--;
 	}
 	else
-		(*output)[i[1]++] = input[i[0]++];
+		(*data->output)[data->i[1]++] = data->input[data->i[0]++];
 }
 
-char	*expand(char *input, int exit_code, int flag)
+static	void	init_vars(int *i, bool *quotes)
 {
-	char	*output;
-	int		size;
-	int		i[5];
-	bool	quotes[2];
-
 	i[0] = 0;
 	i[1] = 0;
-	i[3] = flag;
-	i[4] = exit_code;
 	quotes[0] = false;
 	quotes[1] = false;
-	size = get_new_size(input, exit_code, flag);
+}
+
+char	*expand(char *input, int exit_code, char **env_vars, int flag)
+{
+	char		*output;
+	int			size;
+	int			i[3];
+	bool		quotes[2];
+	t_expand	data;
+
+	init_vars(i, quotes);
+	data.env_vars = env_vars;
+	data.flag = flag;
+	data.exit_code = exit_code;
+	data.i = i;
+	data.quotes = quotes;
+	data.input = input;
+	size = get_new_size(input, exit_code, env_vars, flag);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
+	data.output = &output;
 	while (input[i[0]])
 	{
-		handle_character(input, &output, i, quotes);
+		handle_character(&data);
 	}
 	if (output != NULL)
 		output[i[1]] = '\0';
@@ -103,7 +114,7 @@ char	*expand(char *input, int exit_code, int flag)
 // {
 // 	// char	*input = "hello $USER your number is $? * test"; // testing
 // 	char	*input = "*.c"; // testing
-// 	char	*output = expand(input, 0);
+// 	char	*output = data(input, 0);
 // 	if (output)
 // 	{
 // 		printf("%s\n", output);

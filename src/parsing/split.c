@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 11:50:09 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 12:22:53 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	process_token(char *input, int *count, bool *flags, char **tokens)
 	return (1);
 }
 
-char	**split(char *input, int exit_code)
+char	**split(char *input)
 {
 	char	**tokens;
 	char	*new_input;
@@ -91,7 +91,7 @@ char	**split(char *input, int exit_code)
 			return (free(new_input), free(tokens), NULL);
 	}
 	free(new_input);
-	return (expand_and_remove(tokens, exit_code));
+	return (tokens);
 }
 
 // int main()
