@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:24:10 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 11:53:17 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:34:49 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,7 @@ int	builtin_pwd(char *args)
 {
 	char	*pwd;
 
-	if (args)
-	{
-		printf("pwd: too many arguments\n");
-		return (1);
-	}
+	(void)args;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 	{

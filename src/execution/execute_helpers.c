@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/21 13:26:23 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:08:51 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*search_path_variable(char **envp)
 		i++;
 	}
 	if (path == NULL)
-		return (printf("Error: PATH not found\n"), NULL); // maybe different error?!
+		return (ft_fprintf(2, "%s: Error: PATH not found\n", NAME), NULL); // maybe different error?!
 	return (path);
 }
 
@@ -54,7 +54,7 @@ char	*find_path(char *command, char **envp)
 		i++;
 	}
 	ft_free_2d_arr((void **)temp);
-	return (printf("%s: %s: command not found\n", NAME, command), NULL);
+	return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
 }
 
 int	is_builtin(char *cmd)

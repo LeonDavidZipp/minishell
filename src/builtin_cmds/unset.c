@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:54:39 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 15:08:00 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:32:31 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,7 @@
 int	builtin_unset(char *keys, char **env_vars)
 {
 	if (!keys || ft_strcmp(keys, "") == 0)
-	{
 		return (1);
-	}
 	if (unset_env_vars(keys, &env_vars) == 1)
 		return (1);
 	return (0);

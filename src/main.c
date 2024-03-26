@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 18:16:29 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/25 15:09:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 static void	init_app_data(t_app_data *app_data, char **envp);
 static char	*get_input(t_app_data *app_data);
-static bool	is_all_spaces(char *str);
-static void	print_logo(void);
+// static void	print_logo(void);
 
 int	g_exit_signal = 0;
 
@@ -31,9 +30,10 @@ int	main(int argc, char **argv, char **envp)
 	}
 	init_app_data(&app_data, envp);
 	signal_handler();
-	print_logo();
+	// print_logo();
 	while (true)
 	{
+		g_exit_signal = 0;
 		app_data.input = get_input(&app_data);
 		if (app_data.input == NULL)
 			continue ;
@@ -52,35 +52,18 @@ static char	*get_input(t_app_data *app_data)
 		free(input);
 		return (NULL);
 	}
-	else if (input == NULL
-		|| ft_strncmp(input, "exit", ft_strlen("exit")) == 0)
+	else if (input == NULL)
 	{
-		add_history("exit");
 		free(input);
-		builtin_exit(app_data, 0);
+		builtin_exit(app_data, NULL);
 	}
-	else if (is_all_spaces(input))
+	else if (ft_str_isspaces(input))
 	{
 		free(input);
 		return (NULL);
 	}
 	add_history(input);
 	return (input);
-}
-
-static bool	is_all_spaces(char *str)
-{
-	int	i;
-
-	if (!str)
-		return (false);
-	i = -1;
-	while (str[++i])
-	{
-		if (!ft_isspace(str[i]))
-			return (false);
-	}
-	return (true);
 }
 
 static void	init_app_data(t_app_data *app_data, char **envp)
@@ -90,24 +73,24 @@ static void	init_app_data(t_app_data *app_data, char **envp)
 	app_data->input = NULL;
 }
 
-static void	print_logo(void)
-{
-	char	*lzipp;
-	char	*cgerling;
+// static void	print_logo(void)
+// {
+// 	char	*lzipp;
+// 	char	*cgerling;
 
-	lzipp = "https://profile.intra.42.fr/users/lzipp";
-	cgerling = "https://profile.intra.42.fr/users/cgerling";
-	printf("\033[0;32m\n\n");
-	printf("	██████╗  █████╗ ██████╗  █████╗ ███████╗██╗  ██╗\n");
-	printf("	██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║\n");
-	printf("	██████╔╝███████║██████╔╝███████║███████╗███████║\n");
-	printf("	██╔══██╗██╔══██║██╔══██╗██╔══██║╚════██║██╔══██║\n");
-	printf("	██████╔╝██║  ██║██████╔╝██║  ██║███████║██║  ██║\n");
-	printf("	╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝");
-	printf("\033[1;33m\n\n");
-	printf("		   born again born again shell\n\n");
-	printf("\033[1;36m			");
-	printf("\e]8;;%s\alzipp\e]8;;\a && ", lzipp);
-	printf("\e]8;;%s\acgerling\e]8;;\a\n", cgerling);
-	printf("\033[0m\n");
-}
+// 	lzipp = "https://profile.intra.42.fr/users/lzipp";
+// 	cgerling = "https://profile.intra.42.fr/users/cgerling";
+// 	printf("\033[0;32m\n\n");
+// 	printf("	██████╗  █████╗ ██████╗  █████╗ ███████╗██╗  ██╗\n");
+// 	printf("	██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║\n");
+// 	printf("	██████╔╝███████║██████╔╝███████║███████╗███████║\n");
+// 	printf("	██╔══██╗██╔══██║██╔══██╗██╔══██║╚════██║██╔══██║\n");
+// 	printf("	██████╔╝██║  ██║██████╔╝██║  ██║███████║██║  ██║\n");
+// 	printf("	╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝");
+// 	printf("\033[1;33m\n\n");
+// 	printf("		   born again born again shell\n\n");
+// 	printf("\033[1;36m			");
+// 	printf("\e]8;;%s\alzipp\e]8;;\a && ", lzipp);
+// 	printf("\e]8;;%s\acgerling\e]8;;\a\n", cgerling);
+// 	printf("\033[0m\n");
+// }

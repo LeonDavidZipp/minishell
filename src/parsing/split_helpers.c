@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_helpers.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 20:50:28 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/21 11:38:40 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:11:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ char	*add_spaces(char *input)
 	new_input = malloc(sizeof(char) * ((ft_strlen(input)
 					+ new_input_length(input)) + 1));
 	if (!new_input)
-		return (printf("%s: malloc: %s\n", NAME, strerror(errno)), NULL);
+		return (ft_fprintf(2, "%s: malloc: %s\n", NAME, strerror(errno)), NULL);
 	while (input[i])
 	{
 		handle_quotes(input[i], &flags[0], &flags[1]);
