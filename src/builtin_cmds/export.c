@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 13:51:32 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 13:59:07 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,7 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 		return (1);
 	i = -1;
 	while (vars[++i])
-	{
 		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
-	}
 	free_vars(vars);
 	return (exit_code);
 }

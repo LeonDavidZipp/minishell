@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 13:51:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 14:01:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,9 @@ char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 			(*var)->includes_equal, &env_vars))
 		return (env_vars);
 	len = ft_null_terminated_arr_len((void **)env_vars);
+	// printf("key: %s\n", (*var)->key);
+	// printf("value: %s\n", (*var)->value);
+	// printf("includes_equal: %d\n", (*var)->includes_equal);
 	if (var_name_valid((*var)->key))
 	{
 		if ((*var)->includes_equal)
