@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:25:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 17:47:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 11:26:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,58 @@ static bool	var_name_valid(char *key);
 static bool	update_existing_env_var(char *key, char *value, int inc_equal,
 				char ***env_vars_ptr);
 
-char	**update_env_vars(char *key, char *value, bool inc_equal,
-				char **env_vars)
+// char	**update_env_vars(char *key, char *value, bool inc_equal,
+// 				char **env_vars)
+// {
+// 	char	*new_var;
+// 	int		len;
+
+// 	if (update_existing_env_var(key, value, inc_equal, &env_vars))
+// 		return (env_vars);
+// 	len = ft_null_terminated_arr_len((void **)env_vars);
+// 	if (var_name_valid(key))
+// 	{
+// 		if (inc_equal)
+// 			new_var = ft_strjoin(key, "=");
+// 		else
+// 			new_var = ft_strdup(key);
+// 		env_vars = ft_recalloc(env_vars, len + 2, sizeof(char *));
+// 		if (!env_vars)
+// 			return (NULL);
+// 		env_vars[len] = ft_strjoin(new_var, value);
+// 		free(new_var);
+// 	}
+// 	else
+// 		ft_fprintf(2, "%s: export: `%s': not a valid identifier\n", NAME, key);
+// 	return (env_vars);
+// }
+
+char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 {
 	char	*new_var;
 	int		len;
 
-	if (update_existing_env_var(key, value, inc_equal, &env_vars))
+	if (update_existing_env_var((*var)->key, (*var)->value,
+			(*var)->includes_equal, &env_vars))
 		return (env_vars);
 	len = ft_null_terminated_arr_len((void **)env_vars);
-	if (var_name_valid(key))
+	if (var_name_valid((*var)->key))
 	{
-		if (inc_equal)
-			new_var = ft_strjoin(key, "=");
+		if ((*var)->includes_equal)
+			new_var = ft_strjoin((*var)->key, "=");
 		else
-			new_var = ft_strdup(key);
+			new_var = ft_strdup((*var)->key);
 		env_vars = ft_recalloc(env_vars, len + 2, sizeof(char *));
 		if (!env_vars)
 			return (NULL);
-		env_vars[len] = ft_strjoin(new_var, value);
+		env_vars[len] = ft_strjoin(new_var, (*var)->value);
 		free(new_var);
 	}
 	else
-		ft_fprintf(2, "%s: export: `%s': not a valid identifier\n", NAME, key);
+	{
+		ft_fprintf(2, "%s: export: `%s': %s\n", NAME, (*var)->key, INVALID_ID);
+		*exit_code = 1;
+	}
 	return (env_vars);
 }
 

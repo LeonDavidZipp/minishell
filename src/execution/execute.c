@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 15:08:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 11:12:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	check_for_errors(t_treenode *ast)
 {
 	if (ast->err_val != 0)
 	{
-		printf("%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		return 1;
 	}
 	return 0;
@@ -189,7 +189,7 @@ int	setup_fd(t_treenode *node, int exit_code)
 	{
 		if (pipe(pipe_fd) == -1)
 		{
-			printf("%s: pipe error: %s\n", NAME, strerror(errno));
+			ft_fprintf(2, "%s: pipe error: %s\n", NAME, strerror(errno));
 			return (2);
 		}
 		else
@@ -387,14 +387,14 @@ static int	execute_execve(t_treenode *ast, char **env_vars, t_pid_list **pid_lis
 		return 1;
 	if (ast->err_val != 0)
 	{
-		printf("%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		return 1;
 	}
 	pid = fork();
 	// printf("forked pid: %d\n", pid);
 	if (pid == -1)
 	{
-		printf("%s: fork error: %s\n", NAME, strerror(errno));
+		ft_fprintf(2, "%s: fork error: %s\n", NAME, strerror(errno));
 		return 1;
 	}
 	if (pid == 0)
@@ -444,7 +444,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	exit_code = 0;
 	if (ast->err_val != 0)
 	{
-		printf("%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		ft_fprintf(2,"%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		return (1);
 	}
 	stdin_fd = dup(STDIN_FILENO);
@@ -464,7 +464,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		pid = fork();
 		if (pid == -1)
 		{
-			printf("%s: fork error: %s\n", NAME, strerror(errno));
+			ft_fprintf(2, "%s: fork error: %s\n", NAME, strerror(errno));
 			return (1);
 		}
 		if (pid == 0)

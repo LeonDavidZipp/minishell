@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:47:38 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/21 11:38:07 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 11:05:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	check_input(char *str)
 		str++;
 	}
 	if (s_quote % 2 != 0 || d_quote % 2 != 0 || bracket_1 != bracket_2)
-		return (printf("%s: invalid input: "
+		return (ft_fprintf(2, "%s: invalid input: "
 				"quotes or brackets not closed\n", NAME), 1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 14:57:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 11:27:47 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define NAME "babash"
 # define PROMPT "\033[1;36mbabash \033[1;32m→  \033[0m"
 # define SYNTAX_ERR_MSG "syntax error near unexpected token"
+# define INVALID_ID "not a valid identifier"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -138,8 +139,9 @@ int			builtin_export(char *var_string, char ***env_vars, int fd);
 // environment variables
 char		**init_envp(char **env_vars);
 // char		**update_env_vars(char *key, char *value, char **env_vars);
-char		**update_env_vars(char *key, char *value, bool inc_equal,
-				char **env_vars);
+// char		**update_env_vars(char *key, char *value, bool inc_equal,
+// 				char **env_vars);
+char		**update_env_vars(t_envvar **var, int *exit_code, char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
 int			unset_env_vars(char *keys_string, char ***env_vars);
 char		**split_env(char *envp);

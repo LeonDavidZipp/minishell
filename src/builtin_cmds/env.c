@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:31 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 17:13:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 11:31:03 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ int	builtin_env(char *var_string, char ***env_vars)
 {
 	t_envvar	**vars;
 	int			i;
+	int			exit_code;
 
+	exit_code = 0;
 	if (var_string)
 	{
 		vars = split_env_vars(var_string);
@@ -24,10 +26,7 @@ int	builtin_env(char *var_string, char ***env_vars)
 			return (1);
 		i = -1;
 		while (vars[++i])
-		{
-			*env_vars = update_env_vars(vars[i]->key, vars[i]->value,
-				vars[i]->includes_equal, *env_vars);
-		}
+			*env_vars = update_env_vars(&vars[i], &exit_code, *env_vars);
 		free_vars(vars);
 	}
 	i = 0;
@@ -37,5 +36,5 @@ int	builtin_env(char *var_string, char ***env_vars)
 			printf("%s\n", (*env_vars)[i]);
 		i++;
 	}
-	return (0);
+	return (exit_code);
 }

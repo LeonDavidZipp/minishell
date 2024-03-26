@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 16:55:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 11:28:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,11 +51,13 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 {
 	t_envvar	**vars;
 	int			i;
+	int			exit_code;
 
+	exit_code = 0;
 	if (!var_string)
 	{
 		print_vars(*env_vars, fd);
-		return (0);
+		return (exit_code);
 	}
 	vars = split_env_vars(var_string);
 	if (!vars)
@@ -63,11 +65,12 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 	i = -1;
 	while (vars[++i])
 	{
-		*env_vars = update_env_vars(vars[i]->key, vars[i]->value,
-			vars[i]->includes_equal, *env_vars);
+		// *env_vars = update_env_vars(vars[i]->key, vars[i]->value,
+		// 	vars[i]->includes_equal, *env_vars);
+		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
 	}
 	free_vars(vars);
-	return (0);
+	return (exit_code);
 }
 
 static void	print_vars(char **env_vars, int fd)

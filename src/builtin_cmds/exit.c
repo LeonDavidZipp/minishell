@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 14:18:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 11:07:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ static void	free_app_data(t_app_data *app_data)
 static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 {
 	printf("exit\n");
-	printf("minishell: exit: %s: numeric argument required\n", arg_arr[0]);
+	ft_fprintf(2, "minishell: exit: %s: numeric argument required\n",
+			arg_arr[0]);
 	ft_free_2d_arr((void **)arg_arr);
 	free_app_data(app);
 	exit(255);
@@ -65,7 +66,7 @@ static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 static void	handle_too_many_args(t_app_data *app, char **arg_arr)
 {
 	printf("exit\n");
-	printf("minishell: exit: too many arguments\n");
+	ft_fprintf(2, "minishell: exit: too many arguments\n");
 	ft_free_2d_arr((void **)arg_arr);
 	free_app_data(app);
 	exit(ft_atoi(arg_arr[0]));
