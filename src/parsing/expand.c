@@ -58,11 +58,12 @@ int	handle_wildcard(char *input, char **output, int *i)
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
-	if (data->input[data->i[0]] == '$'
-		&& !ft_isspace(data->input[data->i[0] + 1])
+	if ((data->input[data->i[0]] == '$' && data->input[data->i[0] + 1] == '\0')
+		|| (data->input[data->i[0]] == '$'
+		&& data->input[data->i[0] + 1]
 		&& !(ft_isalnum(data->input[data->i[0] + 1])
 			|| data->input[data->i[0] + 1] == '_'
-			|| data->input[data->i[0] + 1] == '?'))
+			|| data->input[data->i[0] + 1] == '?')))
 	{
 		(*data->output)[data->i[1]++] = data->input[data->i[0]++];
 		return ;
@@ -107,6 +108,7 @@ char	*expand(char *input, int exit_code, char **env_vars, int flag)
 	data.quotes = quotes;
 	data.input = input;
 	size = get_new_size(input, exit_code, env_vars, flag);
+
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
