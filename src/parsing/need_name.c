@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   need_name.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 13:49:17 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:01:06 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,9 @@ char	*expand_and_remove(char *str, int exit_code, char **env_vars)
 {
 	char	*expanded;
 	char	*result;
-	
+
+	if (!str)
+		return (NULL);
 	expanded = expand(str, exit_code, env_vars, 0);
 	if (!expanded)
 		return (NULL);

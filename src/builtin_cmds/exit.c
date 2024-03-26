@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 11:50:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 14:42:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,3 +72,5 @@ static void	handle_too_many_args(t_app_data *app, char **arg_arr)
 	// exit(ft_atoi(arg_arr[0]));
 	exit(1);
 }
+
+// 
