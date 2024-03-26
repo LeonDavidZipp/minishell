@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 11:27:47 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 13:43:21 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,6 @@
 # define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
 # define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
 # define CMD_NOT_EXIT "Error: Failed to exit\n"
-
-extern int g_exit_signal;
 
 extern int g_exit_signal;
 
@@ -120,6 +118,17 @@ typedef struct s_envvar
 	bool				includes_equal;
 }			t_envvar;
 
+typedef struct s_expand
+{
+	char				*input;
+	char				**output;
+	int					*i;
+	bool				*quotes;
+	char				**env_vars;
+	int					exit_code;
+	int					flag;
+}		t_expand;
+
 // signal handling
 void		signal_handler(void);
 
@@ -144,7 +153,6 @@ char		**init_envp(char **env_vars);
 char		**update_env_vars(t_envvar **var, int *exit_code, char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
 int			unset_env_vars(char *keys_string, char ***env_vars);
-char		**split_env(char *envp);
 // char		***split_env_vars(char *envp);
 // char		**split_env_var(char *envp);
 t_envvar	**split_env_vars(char *envp);
@@ -154,10 +162,10 @@ void		free_vars(t_envvar **vars);
 // parsing && input handling
 int			is_space(char c);
 int			check_input(char *str);
-char		**split(char *input, int exit_code);
+char		**split(char *input);
 char		*add_spaces(char *input);
 int			is_operator(char c, char d);
-char		*remove_quotes(char *token);
+char		*remove_quotes(char *str);
 
 // redirection switching
 t_token		*switch_tokens_for_redir(t_token *tokens);
@@ -196,12 +204,14 @@ void		lexer(t_app_data *app_data);
 int			execute(t_app_data *app, t_treenode *ast);
 
 // expansion
-char		*expand(char *input, int exit_code, int flag);
-int			handle_dollar(char *input, char **output, int *i);
+char		*expand(char *input, int exit_code, char **env_vars, int flag);
+int			handle_dollar(t_expand *data);
 void		handle_quotes(char c, bool *s_quote, bool *d_quote);
-int			get_new_size(char *input, int exit_code, int flag);
+int			get_new_size(char *input, int exit_code, char **env_vars, int flag);
 bool		match(char *pattern, char *string);
 char		*get_pattern(char *input, int *i, int *position);
-char		**expand_and_remove(char **tokens, int exit_code);
+// char		**expand_and_remove(char **str, int exit_code);
+char		*expand_and_remove(char *str, int exit_code, char **env_vars);
+char		*ft_getenv(char *name, char **env_vars);
 
 #endif

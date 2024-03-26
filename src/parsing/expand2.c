@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/21 17:33:48 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 13:33:10 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	exit_code_expand(char **str, int *j, int last_exit_code)
 	return (1);
 }
 
-int	var_expand(char *input, char **output, int *j)
+int	var_expand(char *input, char **output, int *j, char **env_vars)
 {
 	char	*name;
 	char	*value;
@@ -43,7 +43,8 @@ int	var_expand(char *input, char **output, int *j)
 	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (0);
-	value = getenv(name);
+	// value = getenv(name); // need custom getenv
+	value = ft_getenv(name, env_vars);
 	if (value)
 	{
 		i = 0;
@@ -56,22 +57,22 @@ int	var_expand(char *input, char **output, int *j)
 	return (1);
 }
 
-int	handle_dollar(char *input, char **output, int *i)
+int	handle_dollar(t_expand *data)
 {
-	if (input[i[0]] == '$' && input[i[0] + 1] == '?')
+	if (data->input[data->i[0]] == '$' && data->input[data->i[0] + 1] == '?')
 	{
-		if (!exit_code_expand(output, &i[1], i[4]))
-			return (free(*output), 0);
-		i[0] += 2;
+		if (!exit_code_expand(data->output, &data->i[1], data->exit_code))
+			return (free(*data->output), 0);
+		data->i[0] += 2;
 	}
-	else if (input[i[0]] == '$')
+	else if (data->input[data->i[0]] == '$')
 	{
-		if (!var_expand(input + i[0], output, &i[1]))
-			return (free(*output), 0);
-		i[2] = 1;
-		while (ft_isalnum(input[i[0] + i[2]]) || input[i[0] + i[2]] == '_')
-			i[2]++;
-		i[0] += i[2];
+		if (!var_expand(data->input + data->i[0], data->output, &data->i[1], data->env_vars))
+			return (free(*data->output), 0);
+		data->i[2] = 1;
+		while (ft_isalnum(data->input[data->i[0] + data->i[2]]) || data->input[data->i[0] + data->i[2]] == '_')
+			data->i[2]++;
+		data->i[0] += data->i[2];
 	}
 	return (1);
 }

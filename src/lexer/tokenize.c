@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 14:34:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 12:24:10 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_token	*tokenize(t_app_data *app)
 	t_token			*first;
 	int				i;
 
-	token_contents = split(app->input, app->last_exit_code);
+	token_contents = split(app->input);
 	if (!token_contents)
 		return (NULL);
 	first = NULL;
