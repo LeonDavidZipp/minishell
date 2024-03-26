@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 11:54:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 13:51:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,9 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 	i = -1;
 	while (vars[++i])
 	{
-		printf("key: %s\n", vars[i]->key);
 		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
 	}
-	printf("before freeing\n");
 	free_vars(vars);
-	printf("after freeing\n");
 	return (exit_code);
 }
 
@@ -50,17 +47,15 @@ static void	print_vars(char **env_vars, int fd)
 	while (env_vars[++i])
 	{
 		var = split_env_var(env_vars[i]);
-		ft_putstr_fd("declare -x ", fd);
-		ft_putstr_fd(var->key,fd);
+		ft_fprintf(fd, "declare -x %s", var->key);
 		if (var->includes_equal)
-			ft_putstr_fd("=", fd);
+			ft_fprintf(fd, "=");
 		if (var->value)
-		{
-			ft_putstr_fd("\"", fd);
-			ft_putstr_fd(var->value, fd);
-			ft_putstr_fd("\"", fd);
-		}
-		ft_putstr_fd("\n", fd);
+			ft_fprintf(fd, "\"%s\"", var->value);
+		ft_fprintf(fd, "\n");
+		free(var->key);
+		free(var->value);
+		free(var);
 	}
 }
 
