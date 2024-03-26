@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 13:46:26 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:10:15 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,16 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes);
 int	env_var_size(char *input, int *i, char **env_vars);
 int	wildcard_size(char *input, int *i);
 int	calc_wildcard_size(DIR *dir, char *pattern, int position);
+
+int	is_valid_dollar(char *input, int i)
+{
+	if (input[i] == '$' && !ft_isspace(input[i + 1])
+		&& !(ft_isalnum(input[i + 1])
+			|| input[i + 1] == '_'
+			|| input[i + 1] == '?'))
+		return (0);
+	return (1);
+}
 
 char	*ft_getenv(char *name, char **env_vars)
 {
@@ -71,7 +81,7 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes)
 		size += ft_dec_len(i[2]);
 		i[0] += 2;
 	}
-	else if (input[i[0]] == '$' && !quotes[0] && !is_space(input[i[0] + 1]))
+	else if (input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0]))
 	{
 		i[0]++;
 		size += env_var_size(input, i, env_vars);
@@ -99,7 +109,6 @@ int	env_var_size(char *input, int *i, char **env_vars)
 	name = ft_substr(input, start, i[0] - start);
 	if (!name)
 		return (0);
-	// value = getenv(name); // need custom getenv
 	value = ft_getenv(name, env_vars);
 	if (value)
 		size = ft_strlen(value);
@@ -152,4 +161,3 @@ int	calc_wildcard_size(DIR *dir, char *pattern, int position)
 	}
 	return (size);
 }
-

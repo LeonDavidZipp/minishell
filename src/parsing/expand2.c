@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 13:33:10 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:05:42 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	var_expand(char *input, char **output, int *j, char **env_vars)
 	name = ft_substr(input, 1, i - 1);
 	if (!name)
 		return (0);
-	// value = getenv(name); // need custom getenv
 	value = ft_getenv(name, env_vars);
 	if (value)
 	{
@@ -67,10 +66,12 @@ int	handle_dollar(t_expand *data)
 	}
 	else if (data->input[data->i[0]] == '$')
 	{
-		if (!var_expand(data->input + data->i[0], data->output, &data->i[1], data->env_vars))
+		if (!var_expand(data->input + data->i[0],
+				data->output, &data->i[1], data->env_vars))
 			return (free(*data->output), 0);
 		data->i[2] = 1;
-		while (ft_isalnum(data->input[data->i[0] + data->i[2]]) || data->input[data->i[0] + data->i[2]] == '_')
+		while (ft_isalnum(data->input[data->i[0] + data->i[2]])
+			|| data->input[data->i[0] + data->i[2]] == '_')
 			data->i[2]++;
 		data->i[0] += data->i[2];
 	}

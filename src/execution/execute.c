@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 14:11:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 15:59:43 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // need to expand right before executing each command
 // exit code is different for cat /dev/urandom | > out to bash
 // exit minishell when too many open fds?!
-// checken zum beispiel ls '>' out bash macht error (ls: >: No such file or directory\n ls: out: No such file or directory) minishell macht nichts
+// checken ob wir echo $_ expansion in minishell machen müssen
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);

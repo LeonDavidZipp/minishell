@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 13:43:21 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:06:23 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,7 +210,6 @@ void		handle_quotes(char c, bool *s_quote, bool *d_quote);
 int			get_new_size(char *input, int exit_code, char **env_vars, int flag);
 bool		match(char *pattern, char *string);
 char		*get_pattern(char *input, int *i, int *position);
-// char		**expand_and_remove(char **str, int exit_code);
 char		*expand_and_remove(char *str, int exit_code, char **env_vars);
 char		*ft_getenv(char *name, char **env_vars);
 
