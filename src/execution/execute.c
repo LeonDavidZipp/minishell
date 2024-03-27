@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 12:40:07 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/27 13:04:44 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -391,11 +391,9 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		return (1);
 	if (ast->args)
 	{
-		printf("args: %s\n", ast->args);
-		tmp = ft_join_in_place(expand_and_remove(cmd_node, app->last_exit_code, app->env_vars), ast->args);
+		tmp = ft_join_in_place(expand_and_remove(cmd_node, app->last_exit_code, app->env_vars), expand_and_remove(ast->args, app->last_exit_code, app->env_vars)); // probably need to change ast->args to expand and remove to seperate variable because of free
 		if (!tmp)
 			return (free(cmd_node), 1);
-		printf("tmp: %s\n", tmp);
 		arg_arr = ft_split(tmp, ' ');
 		free(tmp);
 	}
