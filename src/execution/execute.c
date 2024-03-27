@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 18:25:45 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:05:23 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 		should_expand = false;
 	}
 	else
-		new_del = delimiter;
+		new_del = ft_strdup(delimiter);
 	write(0, "> ", 2);
 	line = get_next_line(0);
 	while (line != NULL)
@@ -170,10 +170,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 		else
 			expanded = ft_strdup(line);
 		if (!expanded)
-		{
-			free(line);
-			return (1);
-		}
+			return (free(line), free(new_del), 1);
 		write(write_fd, expanded, ft_strlen(expanded));
 		free(expanded);
 		free(line);
@@ -183,6 +180,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 	if (line)
 		g_exit_signal = 0;
 	free(line);
+	free(new_del);
 	close(write_fd);
 	return (0);
 }
@@ -306,6 +304,8 @@ void	set_fd(t_treenode *node, int fd, int flag)
 			close(fd);
 		else
 		{
+			if (cmd_node->out_fd != STDOUT_FILENO)
+				close(cmd_node->out_fd);
 			cmd_node->out_fd = fd;
 			cmd_node->out_type = 1;
 		}
@@ -316,6 +316,8 @@ void	set_fd(t_treenode *node, int fd, int flag)
 			close(fd);
 		else
 		{
+			if (cmd_node->in_fd != STDIN_FILENO)
+				close(cmd_node->in_fd);
 			cmd_node->in_fd = fd;
 			cmd_node->in_type = 1;
 		}
@@ -337,7 +339,7 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 			set_fd(node, tmp_fd, 2);
 	}
 	else if (node->cmd_type == HEREDOC && g_exit_signal != 2)
-		return (handle_heredoc(node, app));
+		return (free(tmp), handle_heredoc(node, app));
 	else if (node->cmd_type == REDIR_OUT || node->cmd_type == REDIR_APPEND)
 	{
 		if (node->cmd_type == REDIR_OUT)
@@ -389,9 +391,11 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		return (1);
 	if (ast->args)
 	{
+		printf("args: %s\n", ast->args);
 		tmp = ft_join_in_place(expand_and_remove(cmd_node, app->last_exit_code, app->env_vars), ast->args);
 		if (!tmp)
 			return (free(cmd_node), 1);
+		printf("tmp: %s\n", tmp);
 		arg_arr = ft_split(tmp, ' ');
 		free(tmp);
 	}
