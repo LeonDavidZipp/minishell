@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 12:05:23 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/27 12:27:11 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,9 +296,9 @@ void	set_fd(t_treenode *node, int fd, int flag)
 		return ;
 	}
 	cmd_node = find_cmd_node(node->left);
-	if (cmd_node->cmd_type != CMD)
+	if (cmd_node && cmd_node->cmd_type != CMD)
 		close(fd);
-	if (flag == 1)
+	if (cmd_node && flag == 1)
 	{
 		if (cmd_node->out_type == 1)
 			close(fd);
@@ -450,6 +450,8 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	return 0;
 }
 
+static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
+
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 {
 	int		stdin_fd;
@@ -498,20 +500,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		}
 		if (pid == 0)
 		{
-			if (ft_strcmp(cmd, "cd") == 0)
-				exit_code = builtin_cd(args);
-			else if (ft_strcmp(cmd, "pwd") == 0)
-				exit_code = builtin_pwd(args);
-			else if (ft_strcmp(cmd, "echo") == 0)
-				exit_code = builtin_echo(args, STDOUT_FILENO);
-			else if (ft_strcmp(cmd, "env") == 0)
-				exit_code = builtin_env(args, &app->env_vars);
-			else if (ft_strcmp(cmd, "exit") == 0)
-				builtin_exit(app, 0);
-			else if (ft_strcmp(cmd, "export") == 0)
-				exit_code = builtin_export(ast->args, &app->env_vars, STDOUT_FILENO);
-			else if (ft_strcmp(cmd, "unset") == 0)
-				exit_code = builtin_unset(args, app->env_vars);
+			exit_code = execute_cmd(cmd, args, ast->args, app);
 			exit(exit_code);
 		}
 		else
@@ -521,22 +510,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		}
 	}
 	else
-	{
-		if (ft_strcmp(cmd, "cd") == 0)
-			exit_code = builtin_cd(args);
-		else if (ft_strcmp(cmd, "pwd") == 0)
-			exit_code = builtin_pwd(args);
-		else if (ft_strcmp(cmd, "echo") == 0)
-			exit_code = builtin_echo(args, STDOUT_FILENO);
-		else if (ft_strcmp(cmd, "env") == 0)
-			exit_code = builtin_env(args, &app->env_vars);
-		else if (ft_strcmp(cmd, "exit") == 0)
-			builtin_exit(app, 0);
-		else if (ft_strcmp(cmd, "export") == 0)
-			exit_code = builtin_export(ast->args, &app->env_vars, STDOUT_FILENO);
-		else if (ft_strcmp(cmd, "unset") == 0)
-			exit_code = builtin_unset(args, app->env_vars);
-	}
+		exit_code = execute_cmd(cmd, args, ast->args, app);
 	dup2(stdin_fd, STDIN_FILENO);
 	close(stdin_fd);
 	dup2(stdout_fd, STDOUT_FILENO);
@@ -547,25 +521,26 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	return (exit_code);
 }
 
-// int g_exit_signal = 0;
+static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
+{
+	int	exit_code;
 
-// int	main(int argc, char **argv, char **envp)
-// {
-// 	t_app_data	app;
-// 	t_token		*tokens;
-// 	t_treenode	*root;
-// 	t_treenode	*ast;
-// 	(void)argc;
-// 	(void)argv;
-// 	app.env_vars = init_envp(envp);
-// 	app.input = ft_strdup("");
-// 	app.last_exit_code = 0;
-// 	tokens = tokenize(&app);
-// 	root = combine_cmds_args(tokens);
-// 	root = switch_heredocs(root);
-// 	ast = NULL;
-// 	ast = build_ast(ast, root, 0);
-// 	execute(&app, ast);
-// 	free(app.input);
-// 	return (0);
-// }
+	exit_code = 0;
+	if (ft_strcmp(cmd, "cd") == 0)
+		exit_code = builtin_cd(args);
+	else if (ft_strcmp(cmd, "pwd") == 0)
+		exit_code = builtin_pwd(args);
+	else if (ft_strcmp(cmd, "echo") == 0)
+		exit_code = builtin_echo(args, STDOUT_FILENO);
+	else if (ft_strcmp(cmd, "env") == 0)
+		exit_code = builtin_env(args, &app->env_vars);
+	else if (ft_strcmp(cmd, "exit") == 0)
+		builtin_exit(app, args);
+	else if (ft_strcmp(cmd, "export") == 0)
+		exit_code = builtin_export(ast_args, &app->env_vars, STDOUT_FILENO);
+	else if (ft_strcmp(cmd, "unset") == 0)
+		exit_code = builtin_unset(args, app->env_vars);
+	else
+		exit_code = 127;
+	return (exit_code);
+}

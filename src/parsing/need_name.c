@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   need_name.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 17:00:04 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:21:05 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,3 @@ char	*expand_and_remove(char *str, int exit_code, char **env_vars)
 	free(expanded);
 	return (result);
 }
-
-// int main()
-// {
-// 	char *str = "'\"'\"'\"hello\"'\"'\"'";
-// 	printf("%s\n", remove_quotes(str));
-// 	return 0;
-// }

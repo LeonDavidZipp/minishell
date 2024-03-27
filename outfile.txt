@@ -1,0 +1,5 @@
+CFLAGS := -Wextra -Wall -Werror -g
+# CFLAGS := -Wextra -Wall -Werror -fsanitize=address -fsanitize=undefined
+all: $(NAME)
+re: fclean all
+.PHONY: all clean fclean re

@@ -6,14 +6,14 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/25 17:46:04 by lzipp            ###   ########.fr        #
+#    Updated: 2024/03/26 13:40:01 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
-CC := cc
-CFLAGS := -Wextra -Wall -Werror
+CC := gcc
+CFLAGS := -Wextra -Wall -Werror -g
 LDFLAGS := -lreadline
 # CFLAGS := -Wextra -Wall -Werror -fsanitize=address -fsanitize=undefined
 # LDFLAGS := -lreadline -fsanitize=address -fsanitize=undefined

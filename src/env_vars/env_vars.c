@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 17:25:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 11:31:46 by lzipp            ###   ########.fr       */
+/*   Created: 2024/03/26 18:14:00 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/26 18:20:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,9 @@ static bool	update_existing_env_var(char *key, char *value, int inc_equal,
 			free(new_var);
 			return (true);
 		}
+		else if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0
+			&& !inc_equal)
+			return (true);
 	}
 	return (false);
 }

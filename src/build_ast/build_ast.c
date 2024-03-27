@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/20 12:34:08 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/26 17:35:38 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,8 @@ static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 
 void	free_treenodes(t_treenode *node)
 {
+	if (!node)
+		return ;
 	if (node->left)
 		free_treenodes(node->left);
 	if (node->right)
