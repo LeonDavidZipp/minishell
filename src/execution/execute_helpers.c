@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 11:08:51 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:03:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*find_path(char *command, char **envp)
 	while (temp[i] != NULL)
 	{
 		path = ft_strjoin(temp[i], "/");
-		path = ft_strjoin(path, command);
+		path = ft_join_in_place(path, command);
 		if (access(path, X_OK) == 0)
 		{
 			ft_free_2d_arr((void **)temp);
