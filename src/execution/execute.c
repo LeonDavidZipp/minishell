@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 15:16:42 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:20:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,11 +105,7 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		if (is_builtin(ast->cmd))
 			app->last_exit_code = execute_builtin(ast, app, pid_list);
 		else
-		{
 			app->last_exit_code = execute_execve(ast, app, pid_list);
-			// if (app->last_exit_code == 1)
-			// 	app->last_exit_code = execute_path_command(ast, app);
-		}
 	}
 	else if (ast->cmd_type == PIPE || is_redir(ast->cmd_type))
 		app->last_exit_code = check_for_errors(ast, app->last_exit_code);
@@ -126,20 +122,6 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 			exec_cmds(ast->right, app, pid_list);
 	}
 }
-
-// int	execute_path_command(t_treenode *ast, t_app_data *app)
-// {
-// 	if (access(ast->cmd, F_OK) != 0)
-// 		return (1);
-// 	if (access(ast->cmd, X_OK) != 0)
-// 	{
-// 		printf("minishell: %s: Permission denied\n", ast->cmd);
-// 		return (2);
-// 	}
-// 	if (execute(ast->cmd, ast->args, ast->cmd, shell))
-// 		return (0);
-// 	return (1);
-// }
 
 t_treenode *find_cmd_node(t_treenode *node)
 {

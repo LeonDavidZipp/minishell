@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 12:07:10 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:34:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,17 @@ static char	*get_input(t_app_data *app_data)
 {
 	char	*input;
 
-	input = readline(PROMPT);
+	(void)app_data;
+	if (isatty(fileno(stdin)))
+		input = readline(PROMPT);
+	else
+	{
+		char *line;
+		line = get_next_line(fileno(stdin));
+		input = ft_strtrim(line, "\n");
+		free(line);
+	}
+	// input = readline(PROMPT);
 	if (input && ft_strlen(input) == 0)
 	{
 		free(input);

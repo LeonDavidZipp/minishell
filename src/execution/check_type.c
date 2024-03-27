@@ -1,61 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_helpers.c                                  :+:      :+:    :+:   */
+/*   check_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/27 15:25:31 by lzipp            ###   ########.fr       */
+/*   Created: 2024/03/27 15:24:20 by lzipp             #+#    #+#             */
+/*   Updated: 2024/03/27 15:24:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
-
-char	*search_path_variable(char **envp)
-{
-	char	*path;
-	int		i;
-
-	i = 0;
-	path = NULL;
-	while (envp[i] != NULL)
-	{
-		if (ft_strncmp(envp[i], "PATH=", 5) == 0)
-		{
-			path = envp[i] + 5;
-			break ;
-		}
-		i++;
-	}
-	if (path == NULL)
-		return (ft_fprintf(2, "%s: Error: PATH not found\n", NAME), NULL); // maybe different error?!
-	return (path);
-}
-
-char	*find_path(char *command, char **envp)
-{
-	char	*path;
-	char	**temp;
-	int		i;
-
-	temp = ft_split(search_path_variable(envp), ':');
-	i = 0;
-	while (temp[i] != NULL)
-	{
-		path = ft_strjoin(temp[i], "/");
-		path = ft_join_in_place(path, command);
-		if (access(path, X_OK) == 0)
-		{
-			ft_free_2d_arr((void **)temp);
-			return (path);
-		}
-		free(path);
-		i++;
-	}
-	ft_free_2d_arr((void **)temp);
-	return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
-}
 
 int	is_builtin(char *cmd)
 {
@@ -74,3 +29,4 @@ int	is_redir(t_tokentype type)
 		return (1);
 	return (0);
 }
+

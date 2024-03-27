@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 17:49:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/27 15:43:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	lexer(t_app_data *app_data)
 	tokens = tokenize(app_data->input);
 	if (!tokens || !check_tokens_valid(tokens))
 	{
+		app_data->last_exit_code = 2;
 		free_for_next_call(app_data, NULL);
 		return ;
 	}
@@ -48,4 +49,5 @@ static void	free_for_next_call(t_app_data *app_data, t_treenode *ast)
 	free(app_data->input);
 	app_data->input = NULL;
 	free_treenodes(ast);
+	ast = NULL;
 }
