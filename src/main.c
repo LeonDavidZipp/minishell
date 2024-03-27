@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 12:13:14 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:59:05 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (argc != 1)
 	{
-		printf("\033[0;31mUsage: ./minishell\033[0m\n");
+		// printf("\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
 	init_app_data(&app_data, envp);
@@ -46,7 +46,16 @@ static char	*get_input(t_app_data *app_data)
 {
 	char	*input;
 
-	input = readline(PROMPT);
+	// input = readline(PROMPT);
+	if (isatty(STDIN_FILENO))
+		input = readline(PROMPT);
+	else
+	{
+		char	*line;
+		line = get_next_line(fileno(stdin));
+		input = ft_strtrim(line, "\n");
+		free(line);
+	}
 	if (input && ft_strlen(input) == 0)
 	{
 		free(input);

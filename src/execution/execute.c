@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 13:04:44 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/27 16:59:55 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int	setup_fd(t_treenode *node, t_app_data *app, int *ret)
 	{
 		if (pipe(pipe_fd) == -1)
 		{
-			printf("%s: pipe error: %s\n", NAME, strerror(errno));
+			ft_fprintf(2, "%s: pipe error: %s\n", NAME, strerror(errno));
 			exit(1); // if we exit here, ret can be removed
 			*ret = 2;
 			return (2);
@@ -431,7 +431,10 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 				close(fd);
 			fd++;
 		}
-		execve(find_path(ast->cmd, app->env_vars), arg_arr, app->env_vars);
+		if (access(ast->cmd, X_OK) == 0)
+			execve(ast->cmd, arg_arr, app->env_vars);
+		else
+			execve(find_path(ast->cmd, app->env_vars), arg_arr, app->env_vars);
 		exit(127);
 	}
 	else
