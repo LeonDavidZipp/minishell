@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 15:09:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 17:51:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	init_app_data(t_app_data *app_data, char **envp);
 static char	*get_input(t_app_data *app_data);
-// static void	print_logo(void);
+static void	print_logo(void);
 
 int	g_exit_signal = 0;
 
@@ -30,7 +30,7 @@ int	main(int argc, char **argv, char **envp)
 	}
 	init_app_data(&app_data, envp);
 	signal_handler();
-	// print_logo();
+	print_logo();
 	while (true)
 	{
 		g_exit_signal = 0;
@@ -73,24 +73,24 @@ static void	init_app_data(t_app_data *app_data, char **envp)
 	app_data->input = NULL;
 }
 
-// static void	print_logo(void)
-// {
-// 	char	*lzipp;
-// 	char	*cgerling;
+static void	print_logo(void)
+{
+	char	*lzipp;
+	char	*cgerling;
 
-// 	lzipp = "https://profile.intra.42.fr/users/lzipp";
-// 	cgerling = "https://profile.intra.42.fr/users/cgerling";
-// 	printf("\033[0;32m\n\n");
-// 	printf("	██████╗  █████╗ ██████╗  █████╗ ███████╗██╗  ██╗\n");
-// 	printf("	██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║\n");
-// 	printf("	██████╔╝███████║██████╔╝███████║███████╗███████║\n");
-// 	printf("	██╔══██╗██╔══██║██╔══██╗██╔══██║╚════██║██╔══██║\n");
-// 	printf("	██████╔╝██║  ██║██████╔╝██║  ██║███████║██║  ██║\n");
-// 	printf("	╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝");
-// 	printf("\033[1;33m\n\n");
-// 	printf("		   born again born again shell\n\n");
-// 	printf("\033[1;36m			");
-// 	printf("\e]8;;%s\alzipp\e]8;;\a && ", lzipp);
-// 	printf("\e]8;;%s\acgerling\e]8;;\a\n", cgerling);
-// 	printf("\033[0m\n");
-// }
+	lzipp = "https://profile.intra.42.fr/users/lzipp";
+	cgerling = "https://profile.intra.42.fr/users/cgerling";
+	printf("\033[0;32m\n\n");
+	printf("	██████╗  █████╗ ██████╗  █████╗ ███████╗██╗  ██╗\n");
+	printf("	██╔══██╗██╔══██╗██╔══██╗██╔══██╗██╔════╝██║  ██║\n");
+	printf("	██████╔╝███████║██████╔╝███████║███████╗███████║\n");
+	printf("	██╔══██╗██╔══██║██╔══██╗██╔══██║╚════██║██╔══██║\n");
+	printf("	██████╔╝██║  ██║██████╔╝██║  ██║███████║██║  ██║\n");
+	printf("	╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝");
+	printf("\033[1;33m\n\n");
+	printf("		   born again born again shell\n\n");
+	printf("\033[1;36m			");
+	printf("\e]8;;%s\alzipp\e]8;;\a && ", lzipp);
+	printf("\e]8;;%s\acgerling\e]8;;\a\n", cgerling);
+	printf("\033[0m\n");
+}

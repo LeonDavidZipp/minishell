@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 17:20:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/26 18:28:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -296,9 +296,9 @@ void	set_fd(t_treenode *node, int fd, int flag)
 		return ;
 	}
 	cmd_node = find_cmd_node(node->left);
-	if (cmd_node->cmd_type != CMD)
+	if (cmd_node && cmd_node->cmd_type != CMD)
 		close(fd);
-	if (flag == 1)
+	if (cmd_node && flag == 1)
 	{
 		if (cmd_node->out_type == 1)
 			close(fd);
@@ -307,16 +307,14 @@ void	set_fd(t_treenode *node, int fd, int flag)
 			cmd_node->out_fd = fd;
 			cmd_node->out_type = 1;
 		}
+		return ;
 	}
-	else
+	if (cmd_node && (cmd_node->in_type == 1 || cmd_node->in_type == 2))
+		close(fd);
+	else if (cmd_node)
 	{
-		if (cmd_node->in_type == 1 || cmd_node->in_type == 2)
-			close(fd);
-		else
-		{
-			cmd_node->in_fd = fd;
-			cmd_node->in_type = 1;
-		}
+		cmd_node->in_fd = fd;
+		cmd_node->in_type = 1;
 	}
 }
 
