@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 18:28:24 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/27 12:10:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,15 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 	g_exit_signal = 0;
 }
 
-int	check_for_errors(t_treenode *ast)
+int	check_for_errors(t_treenode *ast, int last_exit_code)
 {
 	if (ast->err_val != 0)
 	{
 		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		return (1);
 	}
+	if (last_exit_code != 0)
+		return (last_exit_code);
 	return (0);
 }
 
@@ -106,7 +108,7 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 			app->last_exit_code = execute_execve(ast, app, pid_list);
 	}
 	else if (ast->cmd_type == PIPE || is_redir(ast->cmd_type))
-		app->last_exit_code = check_for_errors(ast);
+		app->last_exit_code = check_for_errors(ast, app->last_exit_code);
 	else if (ast->cmd_type == AND || ast->cmd_type == OR)
 	{
 		wait_and_free(app, pid_list);
