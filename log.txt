@@ -1,2 +1,0 @@
-minishell$
-minishell$ test 42 2a

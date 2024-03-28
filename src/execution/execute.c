@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 15:20:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/28 16:06:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 		should_expand = false;
 	}
 	else
-		new_del = delimiter;
+		new_del = ft_strdup(delimiter);
 	write(0, "> ", 2);
 	line = get_next_line(0);
 	while (line != NULL)
@@ -170,10 +170,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 		else
 			expanded = ft_strdup(line);
 		if (!expanded)
-		{
-			free(line);
-			return (1);
-		}
+			return (free(line), free(new_del), 1);
 		write(write_fd, expanded, ft_strlen(expanded));
 		free(expanded);
 		free(line);
@@ -183,6 +180,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 	if (line)
 		g_exit_signal = 0;
 	free(line);
+	free(new_del);
 	close(write_fd);
 	return (0);
 }
@@ -196,7 +194,7 @@ int	setup_fd(t_treenode *node, t_app_data *app, int *ret)
 	{
 		if (pipe(pipe_fd) == -1)
 		{
-			printf("%s: pipe error: %s\n", NAME, strerror(errno));
+			ft_fprintf(2, "%s: pipe error: %s\n", NAME, strerror(errno));
 			exit(1); // if we exit here, ret can be removed
 			*ret = 2;
 			return (2);
@@ -306,17 +304,23 @@ void	set_fd(t_treenode *node, int fd, int flag)
 			close(fd);
 		else
 		{
+			if (cmd_node->out_fd != STDOUT_FILENO)
+				close(cmd_node->out_fd);
 			cmd_node->out_fd = fd;
 			cmd_node->out_type = 1;
 		}
-		return ;
 	}
-	if (cmd_node && (cmd_node->in_type == 1 || cmd_node->in_type == 2))
-		close(fd);
-	else if (cmd_node)
+	else
 	{
-		cmd_node->in_fd = fd;
-		cmd_node->in_type = 1;
+		if (cmd_node->in_type == 1 || cmd_node->in_type == 2)
+			close(fd);
+		else
+		{
+			if (cmd_node->in_fd != STDIN_FILENO)
+				close(cmd_node->in_fd);
+			cmd_node->in_fd = fd;
+			cmd_node->in_type = 1;
+		}
 	}
 }
 
@@ -335,7 +339,7 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 			set_fd(node, tmp_fd, 2);
 	}
 	else if (node->cmd_type == HEREDOC && g_exit_signal != 2)
-		return (handle_heredoc(node, app));
+		return (free(tmp), handle_heredoc(node, app));
 	else if (node->cmd_type == REDIR_OUT || node->cmd_type == REDIR_APPEND)
 	{
 		if (node->cmd_type == REDIR_OUT)
@@ -381,22 +385,31 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	char	*tmp;
 	int		fd;
 
-	
-	cmd_node = ft_join_in_place(expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars), " ");
+	cmd_node = ft_strjoin(ast->cmd, " ");
 	if (!cmd_node)
 		return (1);
 	if (ast->args)
 	{
-		tmp = ft_join_in_place(expand_and_remove(cmd_node, app->last_exit_code, app->env_vars), ast->args);
+		tmp = ft_strjoin(cmd_node, ast->args);
 		if (!tmp)
 			return (free(cmd_node), 1);
-		arg_arr = ft_split(tmp, ' ');
+		arg_arr = split(tmp);
 		free(tmp);
 	}
 	else
-		arg_arr = ft_split(cmd_node, ' ');
+		arg_arr = split(cmd_node);
 	if (!arg_arr)
 		return 1;
+	int i = 0; // need to put that loop in a separate function
+	while (arg_arr[i])
+	{
+		char *temp = expand_and_remove(arg_arr[i], app->last_exit_code, app->env_vars);
+		if (!temp)
+			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), 1);
+		free(arg_arr[i]);
+		arg_arr[i] = temp;
+		i++;
+	}
 	if (ast->err_val != 0)
 	{
 		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
@@ -427,11 +440,10 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 				close(fd);
 			fd++;
 		}
-		if (access(ast->cmd, X_OK) == 0)
-			execve(ast->cmd, arg_arr, app->env_vars);
+		if (access(arg_arr[0], X_OK) == 0)
+			execve(arg_arr[0], arg_arr, app->env_vars);
 		else
-			execve(find_path(ast->cmd, app->env_vars), arg_arr, app->env_vars);
-		execve(ast->cmd, arg_arr, app->env_vars);
+			execve(find_path(arg_arr[0], app->env_vars), arg_arr, app->env_vars);
 		exit(127);
 	}
 	else
