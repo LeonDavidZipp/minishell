@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 16:59:55 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/28 15:38:27 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,22 +385,31 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	char	*tmp;
 	int		fd;
 
-	
-	cmd_node = ft_join_in_place(expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars), " ");
+	cmd_node = ft_strjoin(ast->cmd, " ");
 	if (!cmd_node)
 		return (1);
 	if (ast->args)
 	{
-		tmp = ft_join_in_place(expand_and_remove(cmd_node, app->last_exit_code, app->env_vars), expand_and_remove(ast->args, app->last_exit_code, app->env_vars)); // probably need to change ast->args to expand and remove to seperate variable because of free
+		tmp = ft_strjoin(cmd_node, ast->args);
 		if (!tmp)
 			return (free(cmd_node), 1);
-		arg_arr = ft_split(tmp, ' ');
+		arg_arr = split(tmp);
 		free(tmp);
 	}
 	else
-		arg_arr = ft_split(cmd_node, ' ');
+		arg_arr = split(cmd_node);
 	if (!arg_arr)
 		return 1;
+	int i = 0; // need to put that loop in a separate function
+	while (arg_arr[i])
+	{
+		char *temp = expand_and_remove(arg_arr[i], app->last_exit_code, app->env_vars);
+		if (!temp)
+			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), 1);
+		free(arg_arr[i]);
+		arg_arr[i] = temp;
+		i++;
+	}
 	if (ast->err_val != 0)
 	{
 		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
@@ -431,10 +440,10 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 				close(fd);
 			fd++;
 		}
-		if (access(ast->cmd, X_OK) == 0)
-			execve(ast->cmd, arg_arr, app->env_vars);
+		if (access(arg_arr[0], X_OK) == 0)
+			execve(arg_arr[0], arg_arr, app->env_vars);
 		else
-			execve(find_path(ast->cmd, app->env_vars), arg_arr, app->env_vars);
+			execve(find_path(arg_arr[0], app->env_vars), arg_arr, app->env_vars);
 		exit(127);
 	}
 	else

@@ -58,7 +58,7 @@ int	handle_wildcard(char *input, char **output, int *i)
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
-	if (data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0])) // implement is_valid_dollar
+	if (data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0]))
 	{
 		if (!handle_dollar(data))
 			return ;
