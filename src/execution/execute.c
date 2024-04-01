@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/01 10:37:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/01 12:17:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -511,6 +511,8 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		if (pid == 0)
 		{
 			exit_code = execute_cmd(cmd, args, ast->args, app);
+			printf("args: %s\n", args);
+			printf("ast_args: %s\n", ast->args);
 			exit(exit_code);
 		}
 		else

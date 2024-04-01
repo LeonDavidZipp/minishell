@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/23 13:40:46 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/01 12:52:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 static bool	check_and_or_pipe_redir_out_append(t_token *current);
 static bool	check_redir_in_heredoc(t_token *current);
 static bool	check_echo(t_token *current);
+static bool	check_brackets(t_token *current);
 
 bool	check_tokens_valid(t_token *tokens)
 {
@@ -36,6 +37,8 @@ bool	check_tokens_valid(t_token *tokens)
 			return (false);
 		if (!check_echo(current))
 			return (false);
+		if (!check_brackets(current))
+			return (false);
 		current = current->next;
 	}
 	return (true);
@@ -46,7 +49,7 @@ static bool	check_and_or_pipe_redir_out_append(t_token *current)
 	if (current->type == AND || current->type == OR || current->type == PIPE)
 	{
 		if (!current->next)
-			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME), false);
+			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNTAX_ERR_MSG), false);
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE)
 			return (ft_fprintf(2, "%s: %s '%s'\n",
@@ -55,7 +58,7 @@ static bool	check_and_or_pipe_redir_out_append(t_token *current)
 	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
 	{
 		if (!current->next)
-			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME), false);
+			return (ft_fprintf(2, "%s: %s '\\n'\n", SYNTAX_ERR_MSG, NAME), false);
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE || current->next->type == REDIR_IN
 			|| current->next->type == REDIR_OUT
@@ -102,6 +105,32 @@ static bool	check_echo(t_token *current)
 			ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNTAX_ERR_MSG);
 			return (false);
 		}
+	}
+	return (true);
+}
+
+static bool	check_brackets(t_token *current)
+{
+	if (current->type == LEFT_BRACKET)
+	{
+		if (!current->next)
+			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNTAX_ERR_MSG), false);
+		else if (current->next->type == AND || current->next->type == OR
+			|| current->next->type == PIPE || current->next->type == REDIR_IN
+			|| current->next->type == REDIR_OUT
+			|| current->next->type == REDIR_APPEND
+			|| current->next->type == HEREDOC || current->next->type == RIGHT_BRACKET)
+			return (ft_fprintf(2, "%s: %s '%s'\n",
+					NAME, SYNTAX_ERR_MSG, current->next->content), false);
+	}
+	else if (current->type == RIGHT_BRACKET)
+	{
+		if (!current->next)
+			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNTAX_ERR_MSG), false);
+		else if (current->next->type == CMD || current->next->type == ARG
+			|| current->next->type == LEFT_BRACKET)
+			return (ft_fprintf(2, "%s: %s '%s'\n",
+					NAME, SYNTAX_ERR_MSG, current->next->content), false);
 	}
 	return (true);
 }

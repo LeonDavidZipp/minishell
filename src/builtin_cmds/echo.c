@@ -6,42 +6,31 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/01 10:36:17 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/01 11:57:59 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	builtin_echo(char *str, int out_fd)
+int	builtin_echo(char *args, int out_fd)
 {
 	char	*temp;
 
-	printf("echo triggered\n");
-	if (!str)
+	if (!args)
 	{
-		write(out_fd, "\n", 1);
+		ft_fprintf(out_fd, "\n");
 		return (0);
 	}
-	if (!str)
+	if (ft_strlen(args) >= 3 && ft_strncmp(args, "-n ", 3) == 0)
 	{
-		write(out_fd, "\n", 1);
-		return (0);
-	}
-	if (ft_strlen(str) >= 3 && ft_strncmp(str, "-n ", 3) == 0)
-	{
-		temp = ft_substr(str, 3, ft_strlen(str) - 3);
+		temp = ft_substr(args, 3, ft_strlen(args) - 3);
 		ft_putstr_fd(temp, out_fd);
 		free(temp);
 	}
-	else if (ft_strlen(str) == 2 && ft_strncmp(str, "-n", 2) == 0)
-	{
-		write(out_fd, "\n", 1);
-	}
+	else if (ft_strlen(args) == 2 && ft_strncmp(args, "-n", 2) == 0)
+		ft_fprintf(out_fd, "\n");
 	else
-	{
-		ft_putstr_fd(str, out_fd);
-		write(out_fd, "\n", 1);
-	}
+		ft_fprintf(out_fd, "%s\n", args);
 	return (0);
 }
 
