@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/22 15:19:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/28 11:47:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	builtin_echo(char *str, int out_fd)
 {
 	char	*temp;
 
+	printf("echo triggered\n");
 	if (!str)
 	{
 		write(out_fd, "\n", 1);

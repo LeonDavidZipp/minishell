@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/21 12:00:21 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/28 11:41:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	debug_printtree(t_treenode *root, int tabs)
 		printf("\033[1;3%dmleft:\n", 1 + tabs);
 		debug_printtree(root->left, tabs + 1);
 		debug_print_tabs(tabs);
-		printf("\033[1;3%dmright:\n", 1 + tabs);
+		printf("\033[1;3%dmright:\033[0m\n", 1 + tabs);
 		debug_printtree(root->right, tabs + 1);
 	}
 }

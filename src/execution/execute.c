@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/27 15:20:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/03/28 11:49:49 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,11 +383,14 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 
 	
 	cmd_node = ft_join_in_place(expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars), " ");
+	printf("cmd_node: %s\n", cmd_node);
 	if (!cmd_node)
 		return (1);
 	if (ast->args)
 	{
 		tmp = ft_join_in_place(expand_and_remove(cmd_node, app->last_exit_code, app->env_vars), ast->args);
+		// cmd = expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars);
+		printf("tmp: %s\n", tmp);
 		if (!tmp)
 			return (free(cmd_node), 1);
 		arg_arr = ft_split(tmp, ' ');
