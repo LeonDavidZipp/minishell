@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 17:10:15 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/03/28 14:35:54 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,6 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes);
 int	env_var_size(char *input, int *i, char **env_vars);
 int	wildcard_size(char *input, int *i);
 int	calc_wildcard_size(DIR *dir, char *pattern, int position);
-
-int	is_valid_dollar(char *input, int i)
-{
-	if (input[i] == '$' && !ft_isspace(input[i + 1])
-		&& !(ft_isalnum(input[i + 1])
-			|| input[i + 1] == '_'
-			|| input[i + 1] == '?'))
-		return (0);
-	return (1);
-}
 
 char	*ft_getenv(char *name, char **env_vars)
 {
@@ -70,6 +60,15 @@ int	get_new_size(char *input, int exit_code, char **env_vars, int flag)
 	return (size);
 }
 
+int	is_valid_dollar(char *input, int i)
+{
+	if (input[i + 1] == '?' || ft_isalnum(input[i + 1]) || input[i + 1] == '_')
+		return (1);
+	if ((input[i + 1] == '\"' || input[i + 1] == '\'') && ((ft_isalnum(input[i + 2]) || input[i + 2] == '_')))
+		return (1);
+	return (0);
+}
+
 int	calculate_size(char *input, int *i, char **env_vars, bool *quotes)
 {
 	int		size;
@@ -81,7 +80,7 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes)
 		size += ft_dec_len(i[2]);
 		i[0] += 2;
 	}
-	else if (input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0]))
+	else if (input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0])) // implement is_valid_dollar
 	{
 		i[0]++;
 		size += env_var_size(input, i, env_vars);
