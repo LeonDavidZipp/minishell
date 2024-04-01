@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/01 12:52:33 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/01 13:04:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ bool	check_tokens_valid(t_token *tokens)
 {
 	t_token		*current;
 
-	if (!tokens)
-		return (true);
 	if (tokens->type == OR || tokens->type == AND || tokens->type == PIPE)
-	{
 		return (ft_fprintf(2, "%s: %s '%s'\n",
 				NAME, SYNTAX_ERR_MSG, tokens->content), false);
-	}
+	if (ft_strcmp(tokens->content, ".") == 0 && !tokens->next)
+		return (ft_fprintf(2, "%s: .: filename argument required\n%s\n",
+				NAME, ".: usage: . filename [arguments]", tokens->content),
+				false);
 	current = tokens;
 	while (current)
 	{
