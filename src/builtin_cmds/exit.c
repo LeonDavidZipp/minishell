@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/01 10:37:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/02 14:35:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ void	builtin_exit(t_app_data *app, char *args)
 	if (!args)
 	{
 		// printf("exit\n");
-		// printf("exit\n");
 		free_app_data(app);
 		exit(0);
 	}
@@ -41,7 +40,6 @@ void	builtin_exit(t_app_data *app, char *args)
 	{
 	free_app_data(app);
 	// printf("exit\n");
-	// printf("exit\n");
 	exit(ft_atoi(arg_arr[0]));
 	}
 }
@@ -52,13 +50,10 @@ static void	free_app_data(t_app_data *app_data)
 	app_data->env_vars = NULL;
 	free(app_data->input);
 	app_data->input = NULL;
-	// free(app_data);
 }
 
 static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 {
-	// printf("exit\n");
-	// printf("exit\n");
 	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
 			NAME, arg_arr[0]);
 	ft_free_2d_arr((void **)arg_arr);
@@ -68,13 +63,8 @@ static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 
 static void	handle_too_many_args(t_app_data *app, char **arg_arr)
 {
-	// printf("exit\n");
-	// printf("exit\n");
 	ft_fprintf(2, "%s: exit: too many arguments\n", NAME);
 	ft_free_2d_arr((void **)arg_arr);
 	free_app_data(app);
-	// exit(ft_atoi(arg_arr[0]));
 	exit(1);
 }
-
-// 

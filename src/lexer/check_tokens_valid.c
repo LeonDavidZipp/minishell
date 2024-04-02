@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/02 14:09:42 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/02 14:11:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ int	check_tokens_valid(t_token *tokens)
 			exit_code = check_brackets(current);
 		current = current->next;
 	}
-	printf("exit code in fucntion: %d\n", exit_code);
 	return (exit_code);
 }
 
