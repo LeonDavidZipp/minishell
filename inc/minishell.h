@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/28 14:30:45 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/02 14:03:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,10 @@
 
 # define NAME "babash"
 # define PROMPT "\033[1;36mbabash \033[1;32m→  \033[0m"
-# define SYNTAX_ERR_MSG "syntax error near unexpected token"
+# define SYNT_MSG "syntax error near unexpected token"
 # define INVALID_ID "not a valid identifier"
+# define DOT_MSG ": .: filename argument required\n"
+# define DOT_MSG2 ".: usage: . filename [arguments]\n"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"
@@ -185,7 +187,7 @@ t_token		*join_after_echo(t_token *tokens);
 t_token		*remove_after_cd(t_token *tokens);
 void		free_tokens(t_token *token);
 t_tokentype	token_type(char *content, t_tokentype prev_type);
-bool		check_tokens_valid(t_token *tokens);
+int			check_tokens_valid(t_token *tokens);
 
 // abstract syntax tree
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
@@ -198,7 +200,7 @@ bool		node_is_operator(char *cmd);
 int			priority(char *cmd, int bracket_lvl);
 
 // lexer
-void		lexer(t_app_data *app_data);
+int			lexer(t_app_data *app_data);
 
 // execution
 int			execute(t_app_data *app, t_treenode *ast);
