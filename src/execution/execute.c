@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/01 12:17:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/03 18:23:11 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 // exit code is different for cat /dev/urandom | > out to bash
 // exit minishell when too many open fds?!
 // checken ob wir echo $_ expansion in minishell machen müssen
+// implement stderr redirection 2>file
+// ctrl c sets exit code to 1 used on an empty line
+// env needs error handling for when it is called with arguments (the subjetct states: env with no options or arguments)
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
@@ -511,8 +514,6 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		if (pid == 0)
 		{
 			exit_code = execute_cmd(cmd, args, ast->args, app);
-			printf("args: %s\n", args);
-			printf("ast_args: %s\n", ast->args);
 			exit(exit_code);
 		}
 		else
