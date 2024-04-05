@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/03 18:03:09 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/04 14:23:06 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,14 @@ char	*find_path(char *command, char **envp)
 	char	**temp;
 	int		i;
 
+	if (command == NULL || *command == '\0')
+		return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
+	if (ft_strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
+		return (ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command), NULL);
+	}
 	temp = ft_split(search_path_variable(envp), ':');
 	i = 0;
 	while (temp[i] != NULL)
