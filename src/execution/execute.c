@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 12:05:45 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 14:39:15 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
 // need to protect dup2 and dup!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // exit code is different for cat /dev/urandom | > out to bash
 // exit minishell when too many open fds?!
-// checken ob wir echo $_ expansion in minishell machen müssen
-// implement stderr redirection 2>file
+// implement stderr redirection 2>[file]
 // ctrl c sets exit code to 1 used on an empty line
+
 // env needs error handling for when it is called with arguments (the subjetct states: env with no options or arguments)
 // heredoc still needs to open when a syntax error occurs
 
@@ -567,7 +567,7 @@ static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		exit_code = builtin_pwd(args);
 	else if (ft_strcmp(cmd, "echo") == 0)
-		exit_code = builtin_echo(ast_args, STDOUT_FILENO);
+		exit_code = builtin_echo(ast_args, STDOUT_FILENO, app);
 	else if (ft_strcmp(cmd, "env") == 0)
 		exit_code = builtin_env(args, &app->env_vars);
 	else if (ft_strcmp(cmd, "exit") == 0)

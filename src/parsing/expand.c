@@ -64,7 +64,7 @@ void	handle_character(t_expand *data)
 			return ;
 	}
 	else if (data->input[data->i[0]] == '*' && !data->quotes[0]
-		&& !data->quotes[1] && data->i[3] == 0)
+		&& !data->quotes[1] && data->flag == 0)
 	{
 		if (!handle_wildcard(data->input, data->output, data->i))
 			return ;

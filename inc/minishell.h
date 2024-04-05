@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/04 19:09:49 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/05 14:38:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,7 +142,7 @@ void		exec_cmds(t_treenode *ast, t_app_data *app,
 int			builtin_cd(char *path);
 int			builtin_pwd(char *args);
 int			builtin_env(char *var_string, char ***env_vars);
-int			builtin_echo(char *str, int out_fd);
+int			builtin_echo(char *args, int out_fd, t_app_data *app);
 void		builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
 int			builtin_export(char *var_string, char ***env_vars, int fd);
