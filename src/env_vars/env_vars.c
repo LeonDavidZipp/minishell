@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/26 18:14:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 18:20:21 by lzipp            ###   ########.fr       */
+/*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/05 13:42:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 			new_var = ft_strjoin((*var)->key, "=");
 		else
 			new_var = ft_strdup((*var)->key);
-		env_vars = ft_recalloc(env_vars, len + 2, sizeof(char *));
+		env_vars = ft_recalloc(env_vars, len + 2, len, sizeof(char *));
 		if (!env_vars)
 			return (NULL);
 		env_vars[len] = ft_strjoin(new_var, (*var)->value);

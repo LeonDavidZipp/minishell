@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 14:11:47 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 13:23:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,16 @@ t_envvar	*split_env_var(char *envp)
 {
 	t_envvar	*result;
 	int			len1;
+	
 
 	result = (t_envvar *)malloc(sizeof(t_envvar));
 	if (!envp || !result)
 		return (NULL);
 	len1 = 0;
+	// ft_printf("BEFORE: %c\n", *envp);
 	if (envp[len1] == '=')
 		len1++;
+	// ft_printf("After: %p\n", envp);
 	while (envp[len1] && envp[len1] != '=')
 		len1++;
 	result->key = ft_substr(envp, 0, len1);
