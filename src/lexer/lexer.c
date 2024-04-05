@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 13:43:40 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 13:46:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,13 +33,6 @@ int	lexer(t_app_data *app_data)
 		free_tokens(tokens);
 		return (free_for_next_call(app_data, NULL), 1);
 	}
-	// need to update last_exit_code but only if tmp is not 0!!!!!!
-	// app_data->last_exit_code = check_tokens_valid(tokens);
-	// if (app_data->last_exit_code != 0)
-	// {
-	// 	free_tokens(tokens);
-	// 	return (free_for_next_call(app_data, NULL), 1);
-	// }
 	intermediate_tree = switch_heredocs(combine_cmds_args(tokens));
 	free_tokens(tokens);
 	if (!intermediate_tree)
