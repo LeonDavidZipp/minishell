@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 11:33:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 12:05:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,19 @@
 // memory leaks!
 // norminette!!!!!!!
 // need to protect dup2 and dup!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// need to expand right before executing each command
 // exit code is different for cat /dev/urandom | > out to bash
 // exit minishell when too many open fds?!
 // checken ob wir echo $_ expansion in minishell machen müssen
+// implement stderr redirection 2>file
+// ctrl c sets exit code to 1 used on an empty line
+// env needs error handling for when it is called with arguments (the subjetct states: env with no options or arguments)
+// heredoc still needs to open when a syntax error occurs
+
+// if there is time, if you type a path to a file that does not exist, the error message in bash is for example:
+// bash: /bin/echo test1: No such file or directory instead of command not found error
+// probably can be included in the find_path function
+
+// handle . error
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
@@ -144,18 +153,20 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 	char	*tmp;
 	char	*new_del;
 	bool	should_expand;
+	int		i;
 
+	i = 0;
 	g_exit_signal = 2;
 	should_expand = true;
-	if (delimiter[0] == '\'' || delimiter[0] == '"')
+	while (delimiter[i] != '\0')
 	{
-		new_del = remove_quotes(delimiter);
-		if (!new_del)
-			return (1);
-		should_expand = false;
+		if (delimiter[i] == '\'' || delimiter[i] == '"')
+			should_expand = false;
+		i++;
 	}
-	else
-		new_del = ft_strdup(delimiter);
+	new_del = remove_quotes(delimiter);
+	if (!new_del)
+		return (1);
 	write(0, "> ", 2);
 	line = get_next_line(0);
 	while (line != NULL)
@@ -385,6 +396,15 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	char	*tmp;
 	int		fd;
 
+	if (ast->err_val != 0)
+	{
+		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		if (ast->in_fd != 0)
+			close(ast->in_fd);
+		if (ast->out_fd != 1)
+			close(ast->out_fd);
+		return 1;
+	}
 	cmd_node = ft_strjoin(ast->cmd, " ");
 	if (!cmd_node)
 		return (1);
@@ -410,11 +430,6 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		arg_arr[i] = temp;
 		i++;
 	}
-	if (ast->err_val != 0)
-	{
-		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
-		return 1;
-	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -439,6 +454,13 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 			if (fd != STDIN_FILENO && fd != STDOUT_FILENO)
 				close(fd);
 			fd++;
+		}
+		struct stat path_stat;
+		stat(arg_arr[0], &path_stat);
+		if (S_ISDIR(path_stat.st_mode))
+		{
+			ft_fprintf(2, "%s: %s: is a directory\n", NAME, arg_arr[0]);
+			exit(126);
 		}
 		if (access(arg_arr[0], X_OK) == 0)
 			execve(arg_arr[0], arg_arr, app->env_vars);
@@ -471,6 +493,15 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	char	*cmd;
 	char	*args;
 
+	if (ast->err_val != 0)
+	{
+		ft_fprintf(2,"%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		if (ast->in_fd != 0)
+			close(ast->in_fd);
+		if (ast->out_fd != 1)
+			close(ast->out_fd);
+		return (1);
+	}
 	cmd = expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars);
 	if (!cmd)
 		return (1);
@@ -483,11 +514,6 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	else
 		args = NULL;
 	exit_code = 0;
-	if (ast->err_val != 0)
-	{
-		ft_fprintf(2,"%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
-		return (1);
-	}
 	stdin_fd = dup(STDIN_FILENO);
 	stdout_fd = dup(STDOUT_FILENO);
 	if (ast->in_fd != 0)
@@ -511,8 +537,6 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		if (pid == 0)
 		{
 			exit_code = execute_cmd(cmd, args, ast->args, app);
-			printf("args: %s\n", args);
-			printf("ast_args: %s\n", ast->args);
 			exit(exit_code);
 		}
 		else

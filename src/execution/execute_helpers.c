@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execute_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/01 10:37:47 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/04 14:23:06 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+// remove path not found error, should just go through the code and print the error at the end of find_path
 
 char	*search_path_variable(char **envp)
 {
@@ -39,6 +41,14 @@ char	*find_path(char *command, char **envp)
 	char	**temp;
 	int		i;
 
+	if (command == NULL || *command == '\0')
+		return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
+	if (ft_strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
+		return (ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command), NULL);
+	}
 	temp = ft_split(search_path_variable(envp), ':');
 	i = 0;
 	while (temp[i] != NULL)
