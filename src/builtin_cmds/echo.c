@@ -6,32 +6,50 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/01 11:57:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 11:55:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
+static char	*remove_n_flags(char *args);
+
 int	builtin_echo(char *args, int out_fd)
 {
 	char	*temp;
+	char	*expanded;
+	bool	n_in_string;
 
-	if (!args)
+	if (!args || (ft_strlen(args) == 2 && ft_strncmp(args, "-n", 2) == 0))
+		return (ft_fprintf(out_fd, "\n"), 0);
+	n_in_string = false;
+	if (args[0] == '\"' || args[0] == '\'')
 	{
-		ft_fprintf(out_fd, "\n");
-		return (0);
+		expanded = expand_and_remove(args, 0, NULL);
+		n_in_string = true;
 	}
-	if (ft_strlen(args) >= 3 && ft_strncmp(args, "-n ", 3) == 0)
+	if (ft_strlen(args) >= 3 && ft_strncmp(args, "-n ", 3) == 0 && !n_in_string)
 	{
-		temp = ft_substr(args, 3, ft_strlen(args) - 3);
-		ft_putstr_fd(temp, out_fd);
+		temp = remove_n_flags(args);
+		expanded = expand_and_remove(temp, 0, NULL);
+		ft_fprintf(out_fd, "%s", expanded);
 		free(temp);
+		free(expanded);
 	}
-	else if (ft_strlen(args) == 2 && ft_strncmp(args, "-n", 2) == 0)
-		ft_fprintf(out_fd, "\n");
-	else
-		ft_fprintf(out_fd, "%s\n", args);
+	else if (n_in_string)
+		return(ft_fprintf(out_fd, "%s\n", expanded), free(expanded), 0);
+	else if (!n_in_string)
+		return (ft_fprintf(out_fd, "%s\n", args), 0);
 	return (0);
+}
+
+static char	*remove_n_flags(char *args)
+{
+	int i = 0;
+
+	while (ft_strlen(args + i) >= 3 && ft_strncmp(args + i, "-n ", 3) == 0)
+		i += 3;
+	return ft_substr(args, i, ft_strlen(args) - i);
 }
 
 // int	main(int argc, char **argv)
