@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/04 14:23:06 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/05 13:47:18 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*search_path_variable(char **envp)
 		i++;
 	}
 	if (path == NULL)
-		return (ft_fprintf(2, "%s: Error: PATH not found\n", NAME), NULL); // maybe different error?!
+		return (NULL);
 	return (path);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/02 12:28:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 11:15:11 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,13 @@ int	main(int argc, char **argv, char **envp)
 	{
 		g_exit_signal = 0;
 		app_data.input = get_input(&app_data);
+		if (!isatty(fileno(stdin)) && app_data.input == NULL)
+			break ;
 		if (app_data.input == NULL)
 			continue ;
 		lexer(&app_data);
 	}
-	return (0);
+	return (app_data.last_exit_code);
 }
 
 static char	*get_input(t_app_data *app_data)
@@ -53,6 +55,8 @@ static char	*get_input(t_app_data *app_data)
 	{
 		char *line;
 		line = get_next_line(fileno(stdin));
+		if (line == NULL)
+			return (NULL);
 		input = ft_strtrim(line, "\n");
 		free(line);
 	}
