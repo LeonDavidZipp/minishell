@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 18:24:59 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/06 14:41:04 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,20 @@ int	var_expand(char *input, char **output, int *j, char **env_vars)
 	int		i;
 
 	i = 1;
-	while (ft_isalnum(input[i]) || input[i] == '_')
-		i++;
-	name = ft_substr(input, 1, i - 1);
-	if (!name)
-		return (0);
-	value = ft_getenv(name, env_vars);
+	if (input[i - 1] == '~')
+		name = ft_strdup("HOME"); // NULL check
+	else
+	{
+		while (ft_isalnum(input[i]) || input[i] == '_')
+			i++;
+		name = ft_substr(input, 1, i - 1);
+		if (!name)
+			return (0);
+	}
+	if (input[i - 1] == '~')
+		value = getenv(name);
+	else
+		value = ft_getenv(name, env_vars);
 	if (value)
 	{
 		i = 0;
@@ -64,7 +72,7 @@ int	handle_dollar(t_expand *data)
 			return (free(*data->output), 0);
 		data->i[0] += 2;
 	}
-	else if (data->input[data->i[0]] == '$')
+	else if (data->input[data->i[0]] == '$' || data->input[data->i[0]] == '~')
 	{
 		if (!var_expand(data->input + data->i[0],
 				data->output, &data->i[1], data->env_vars))

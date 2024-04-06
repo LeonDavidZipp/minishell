@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 12:05:59 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/05 14:43:08 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static char	*remove_n_flags(char *args);
 
-int	builtin_echo(char *args, int out_fd)
+int	builtin_echo(char *args, int out_fd, t_app_data *app)
 {
 	char	*temp;
 	char	*expanded;
@@ -25,30 +25,42 @@ int	builtin_echo(char *args, int out_fd)
 	n_in_string = false;
 	if (args[0] == '\"' || args[0] == '\'')
 	{
-		expanded = expand_and_remove(args, 0, NULL);
+		expanded = expand_and_remove(args, app->last_exit_code, app->env_vars);
 		n_in_string = true;
 	}
 	if (ft_strlen(args) >= 3 && ft_strncmp(args, "-n ", 3) == 0 && !n_in_string)
 	{
 		temp = remove_n_flags(args);
-		expanded = expand_and_remove(temp, 0, NULL);
-		ft_fprintf(out_fd, "%s", expanded);
-		free(temp);
-		free(expanded);
+		expanded = expand_and_remove(temp, app->last_exit_code, app->env_vars);
+		return(ft_fprintf(out_fd, "\n"), free(temp), free(expanded), 0);
 	}
 	else if (n_in_string)
 		return(ft_fprintf(out_fd, "%s\n", expanded), free(expanded), 0);
-	else if (!n_in_string)
-		return (ft_fprintf(out_fd, "%s\n", args), 0);
-	return (0);
+	else
+	{
+		expanded = expand_and_remove(args, app->last_exit_code, app->env_vars);
+		return (ft_fprintf(out_fd, "%s\n", expanded), free(expanded), 0);
+	}
 }
 
 static char	*remove_n_flags(char *args)
 {
-	int i = 0;
+	int		i;
+	bool	n_flag;
 
-	while (ft_strlen(args + i) >= 3 && ft_strncmp(args + i, "-n ", 3) == 0)
-		i += 3;
+	i = -1;
+	while (args[++i])
+	{
+		while (ft_strlen(args + i) >= 3 && ft_strncmp(args + i, "-n ", 3) == 0)
+			i += 3;
+		if (ft_strncmp(args + i, "-n", 2) == 0 && args[i + 2] && (args[i + 2] == ' ' || args[i + 2] == 'n'))
+		{
+			n_flag = true;
+			i += 2;
+		}
+		while (n_flag && args[i] == 'n')
+			i++;
+	}
 	return ft_substr(args, i, ft_strlen(args) - i);
 }
 

@@ -12,22 +12,28 @@
 
 #include "../../inc/minishell.h"
 
-void	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
+int	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 {
+	bool			flag;
 	struct dirent	*entry;
 
+	flag = false;
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
 		if (match(pattern, entry->d_name))
 		{
 			i[2] = 0;
+			flag = true;
 			while (entry->d_name[i[2]])
 				(*output)[i[1]++] = entry->d_name[i[2]++];
 			(*output)[i[1]++] = ' ';
 		}
 		entry = readdir(dir);
 	}
+	if (flag)
+		return (1);
+	return (0);
 }
 
 int	handle_wildcard(char *input, char **output, int *i)
@@ -36,9 +42,11 @@ int	handle_wildcard(char *input, char **output, int *i)
 	char			*pattern;
 	int				position;
 	bool			flag;
+	int				start;
 
 	flag = false;
-	pattern = get_pattern(input, &i[0], &position);
+	start = 0;
+	pattern = get_pattern(input, &i[0], &position, &start);
 	if (!pattern)
 		return (free(output), 0);
 	dir = opendir(".");
@@ -49,7 +57,12 @@ int	handle_wildcard(char *input, char **output, int *i)
 		i[1] -= position;
 		flag = true;
 	}
-	process_dir_entries(dir, pattern, output, i);
+	if (!process_dir_entries(dir, pattern, output, i))
+	{
+		while(!is_space(input[start]))
+			(*output)[i[1]++] = input[start++];
+		i[1]++;
+	}
 	closedir(dir);
 	free(pattern);
 	return (1);
@@ -58,7 +71,8 @@ int	handle_wildcard(char *input, char **output, int *i)
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
-	if (data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0]))
+	if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0]))
+		|| (data->input[data->i[0]] == '~' && !data->quotes[0] && !data->quotes[1]))
 	{
 		if (!handle_dollar(data))
 			return ;
@@ -98,7 +112,6 @@ char	*expand(char *input, int exit_code, char **env_vars, int flag)
 	data.quotes = quotes;
 	data.input = input;
 	size = get_new_size(input, exit_code, env_vars, flag);
-
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 13:50:22 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:47:42 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 // probably can be included in the find_path function
 
 // handle . error
+// heredoc ctrl d cant't exit on a line where something is written
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
@@ -567,7 +568,7 @@ static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		exit_code = builtin_pwd(args);
 	else if (ft_strcmp(cmd, "echo") == 0)
-		exit_code = builtin_echo(ast_args, STDOUT_FILENO);
+		exit_code = builtin_echo(ast_args, STDOUT_FILENO, app);
 	else if (ft_strcmp(cmd, "env") == 0)
 		exit_code = builtin_env(args, &app->env_vars);
 	else if (ft_strcmp(cmd, "exit") == 0)

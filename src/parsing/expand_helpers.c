@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/28 14:35:54 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:09:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,8 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes)
 		size += ft_dec_len(i[2]);
 		i[0] += 2;
 	}
-	else if (input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0])) // implement is_valid_dollar
+	else if ((input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0]))
+		|| (input[i[0]] == '~' && !quotes[0] && !quotes[1]))
 	{
 		i[0]++;
 		size += env_var_size(input, i, env_vars);
@@ -103,11 +104,16 @@ int	env_var_size(char *input, int *i, char **env_vars)
 	char	*value;
 
 	start = i[0];
-	while (ft_isalnum(input[i[0]]) || input[i[0]] == '_')
-		i[0]++;
-	name = ft_substr(input, start, i[0] - start);
-	if (!name)
-		return (0);
+	if (input[i[0] - 1] == '~')
+		name = ft_strdup("HOME"); // NULL check ?! but then too many lines
+	else
+	{
+		while (ft_isalnum(input[i[0]]) || input[i[0]] == '_')
+			i[0]++;
+		name = ft_substr(input, start, i[0] - start);
+		if (!name)
+			return (0);
+	}
 	value = ft_getenv(name, env_vars);
 	if (value)
 		size = ft_strlen(value);
@@ -122,15 +128,20 @@ int	wildcard_size(char *input, int *i)
 	char			*pattern;
 	int				position;
 	int				size;
+	int				start;
 	DIR				*dir;
 
-	pattern = get_pattern(input, &i[0], &position);
+	size = 0;
+	start = 0;
+	pattern = get_pattern(input, &i[0], &position, &start);
 	if (!pattern)
 		return (0);
 	dir = opendir(".");
 	if (dir == NULL)
 		return (0);
 	size = calc_wildcard_size(dir, pattern, position);
+	if (size == 0)
+		size = ft_strlen(pattern) + 1;
 	closedir(dir);
 	free(pattern);
 	return (size);
