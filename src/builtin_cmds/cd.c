@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:56:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 14:43:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/06 14:49:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,6 @@ static int	update_pwds(char ***env_vars, int *last_exit_code)
 	free(oldpwd_string);
 	*env_vars = update_env_vars(&new_pwd, last_exit_code, *env_vars);
 	*env_vars = update_env_vars(&new_oldpwd, last_exit_code, *env_vars);
+	ft_fprintf(1, "%s\n", new_pwd->value);
 	return (*last_exit_code != 0);
 }
