@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:56:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 14:37:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/06 14:43:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ static int	update_pwds(char ***env_vars, int *last_exit_code);
 
 int	builtin_cd(char *path, char ***env_vars, int *last_exit_code)
 {
-	(void)last_exit_code;
 	if (!path)
 	{
 		path = getenv("HOME");
