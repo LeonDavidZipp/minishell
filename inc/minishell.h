@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 14:38:56 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/06 12:52:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void		exec_cmds(t_treenode *ast, t_app_data *app,
 				t_pid_list **pid_list);
 
 // built-in commands
-int			builtin_cd(char *path);
+int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
 int			builtin_pwd(char *args);
 int			builtin_env(char *var_string, char ***env_vars);
 int			builtin_echo(char *args, int out_fd, t_app_data *app);

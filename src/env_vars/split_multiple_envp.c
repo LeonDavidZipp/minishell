@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 13:23:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/06 13:05:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_envvar	**split_env_vars(char *envp)
 	len = -1;
 	while (keys_values[++len])
 		env_vars[len] = split_env_var(keys_values[len]);
+	ft_free_2d_arr((void **)keys_values);
 	return (env_vars);
 }
 
@@ -45,10 +46,8 @@ t_envvar	*split_env_var(char *envp)
 	if (!envp || !result)
 		return (NULL);
 	len1 = 0;
-	// ft_printf("BEFORE: %c\n", *envp);
 	if (envp[len1] == '=')
 		len1++;
-	// ft_printf("After: %p\n", envp);
 	while (envp[len1] && envp[len1] != '=')
 		len1++;
 	result->key = ft_substr(envp, 0, len1);
