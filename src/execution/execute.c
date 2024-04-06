@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 14:52:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/06 16:56:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 // probably can be included in the find_path function
 
 // handle . error
+// heredoc ctrl d cant't exit on a line where something is written
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);

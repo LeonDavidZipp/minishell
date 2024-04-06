@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:56:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 14:49:24 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/06 17:00:25 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 // implement cd ~ and cd -
 static int	handle_minus(char ***env_vars, int *last_exit_code);
-static int	update_pwds(char ***env_vars, int *last_exit_code);
+static int	update_pwds(char ***env_vars, int *last_exit_code, bool in_minus);
 
 int	builtin_cd(char *path, char ***env_vars, int *last_exit_code)
 {
@@ -34,7 +34,7 @@ int	builtin_cd(char *path, char ***env_vars, int *last_exit_code)
 		ft_fprintf(2, "%s: cd: %s: %s\n", NAME, path, strerror(errno));
 		return (1);
 	}
-	return (update_pwds(env_vars, last_exit_code));
+	return (update_pwds(env_vars, last_exit_code, false));
 }
 
 
@@ -60,11 +60,11 @@ static int	handle_minus(char ***env_vars, int *last_exit_code)
 		ft_fprintf(2, "%s: cd: %s: %s\n", NAME, oldpwd, strerror(errno));
 		return (1);
 	}
-	update_pwds(env_vars, last_exit_code);
+	update_pwds(env_vars, last_exit_code, true);
 	return (0);
 }
 
-static int	update_pwds(char ***env_vars, int *last_exit_code)
+static int	update_pwds(char ***env_vars, int *last_exit_code, bool in_minus)
 {
 	char		*oldpwd_string;
 	char		*pwd_string;
@@ -85,6 +85,7 @@ static int	update_pwds(char ***env_vars, int *last_exit_code)
 	free(oldpwd_string);
 	*env_vars = update_env_vars(&new_pwd, last_exit_code, *env_vars);
 	*env_vars = update_env_vars(&new_oldpwd, last_exit_code, *env_vars);
-	ft_fprintf(1, "%s\n", new_pwd->value);
+	if (in_minus)
+		ft_fprintf(1, "%s\n", new_pwd->value);
 	return (*last_exit_code != 0);
 }

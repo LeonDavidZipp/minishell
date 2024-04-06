@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 21:41:13 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/04 11:14:50 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/06 16:21:10 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,25 +37,25 @@ void	handle_quotes(char c, bool *s_quote, bool *d_quote)
 		*d_quote = !*d_quote;
 }
 
-char	*get_pattern(char *input, int *i, int *position)
+char	*get_pattern(char *input, int *i, int *position, int *start)
 {
-	int		start;
+	// int		start;
 	int		end;
 	int		tmp;
 	char	*pattern;
 
 	tmp = *i;
-	start = 0;
+	// start = 0;
 	end = 0;
 	while (*i >= 0 && !is_space(input[*i]))
 		(*i)--;
-	start = *i + 1;
-	*position = tmp - start;
+	*start = *i + 1;
+	*position = tmp - *start;
 	*i = tmp;
 	while (input[*i] && !is_space(input[*i]))
 		(*i)++;
 	end = *i;
-	pattern = ft_substr(input, start, end - start);
+	pattern = ft_substr(input, *start, end - *start);
 	if (!pattern)
 		return (NULL);
 	return (pattern);
