@@ -6,13 +6,12 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 13:42:55 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/07 12:58:07 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	var_name_valid(char *key);
 static bool	update_existing_env_var(char *key, char *value, int inc_equal,
 				char ***env_vars_ptr);
 
@@ -71,17 +70,40 @@ int	unset_env_vars(char *keys_string, char ***env_vars)
 {
 	char	**keys;
 	int		i;
+	int		exit_code;
 
+	exit_code = 0;
 	keys = ft_split(keys_string, ' ');
 	if (!keys)
 		return (1);
 	i = -1;
 	while (keys[++i])
 	{
-		unset_env_var(keys[i], env_vars);
+		if (var_name_valid(keys[i]))
+			unset_env_var(keys[i], env_vars);
+		else
+		{
+			ft_fprintf(2, "%s: unset: `%s': %s\n", NAME, keys[i], INVALID_ID);
+			exit_code = 1;
+		}
 	}
 	ft_free_2d_arr((void **)keys);
-	return (0);
+	return (exit_code);
+}
+
+bool	var_name_valid(char *key)
+{
+	int		i;
+
+	i = 0;
+	if (!ft_isalpha(key[0]) && key[0] != '_')
+		return (false);
+	while (key[++i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (false);
+	}
+	return (true);
 }
 
 static bool	update_existing_env_var(char *key, char *value, int inc_equal,
@@ -108,19 +130,4 @@ static bool	update_existing_env_var(char *key, char *value, int inc_equal,
 			return (true);
 	}
 	return (false);
-}
-
-static bool	var_name_valid(char *key)
-{
-	int		i;
-
-	i = 0;
-	if (!ft_isalpha(key[0]) && key[0] != '_')
-		return (false);
-	while (key[++i])
-	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (false);
-	}
-	return (true);
 }
