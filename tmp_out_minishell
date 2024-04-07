@@ -1,0 +1,15 @@
+[1;31mcontent: touch, args: tmp_out1, prio: 0, type: 10, br_lvl: 0 [0m
+[1;31mleft:
+[1;31mright:[0m
+[1;31mcontent: touch, args: tmp_out2, prio: 0, type: 10, br_lvl: 0 [0m
+[1;31mleft:
+[1;31mright:[0m
+[1;31mcontent: /bin/echo, args: 42, prio: 0, type: 10, br_lvl: 0 [0m
+[1;31mleft:
+	[1;32mcontent: >, args: tmp_out*, prio: 1, type: 6, br_lvl: 0 [0m
+	[1;32mleft:
+	[1;32mright:[0m
+[1;31mright:[0m
+[1;31mcontent: rm, args: -f "tmp_out*", prio: 0, type: 10, br_lvl: 0 [0m
+[1;31mleft:
+[1;31mright:[0m
