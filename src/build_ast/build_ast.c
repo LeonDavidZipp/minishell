@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 17:35:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/07 17:00:13 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,17 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 		new = new_treenode((*lin_tree)->cmd, (*lin_tree)->args,
 				(*lin_tree)->cmd_type, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
-		*lin_tree = (*lin_tree)->left;
-		if (!(*lin_tree))
+		if (!(*lin_tree)->left)
 			return (sub);
-		sub = build_subtree(sub, lin_tree, (*lin_tree)->bracket_lvl);
+		sub = build_subtree(sub, &(*lin_tree)->left, (*lin_tree)->bracket_lvl);
 	}
 	else
 	{
 		new = build_subtree(NULL, lin_tree, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
-		if (!(*lin_tree))
+		if (!(*lin_tree)->left)
 			return (sub);
-		sub = build_subtree(sub, lin_tree, (*lin_tree)->bracket_lvl);
+		sub = build_subtree(sub, &(*lin_tree)->left, (*lin_tree)->bracket_lvl);
 	}
 	return (sub);
 }
