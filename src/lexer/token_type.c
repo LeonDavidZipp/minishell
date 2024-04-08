@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 16:08:00 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:02:36 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,6 @@ t_tokentype	token_type(char *content, t_tokentype prev_type)
 
 static t_tokentype	check_cmd_or_arg(char *content, t_tokentype prev_type)
 {
-	// if ((ft_strcmp(content, "echo") == 0 || ft_strcmp(content, "cd") == 0
-	// 		|| ft_strcmp(content, "pwd") == 0
-	// 		|| ft_strcmp(content, "export") == 0
-	// 		|| ft_strcmp(content, "unset") == 0
-	// 		|| ft_strcmp(content, "env") == 0
-	// 		|| ft_strcmp(content, "exit") == 0)
 	char	*temp;
 	temp = remove_quotes(content);
 	if ((ft_strcmp(temp, "echo") == 0 || ft_strcmp(temp, "cd") == 0

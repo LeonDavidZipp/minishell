@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/05 13:47:18 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:07:42 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	*find_path(char *command, char **envp)
 	{
 		if (access(command, X_OK) == 0)
 			return (ft_strdup(command));
-		return (ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command), NULL);
+		return (ft_fprintf(2, "%s: %s: %s\n", NAME, command, strerror(errno)), NULL);
 	}
 	temp = ft_split(search_path_variable(envp), ':');
 	i = 0;
@@ -69,11 +69,15 @@ char	*find_path(char *command, char **envp)
 
 int	is_builtin(char *cmd)
 {
-	if (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0
-		|| ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "env") == 0
-		|| ft_strcmp(cmd, "exit") == 0 || ft_strcmp(cmd, "export") == 0
-		|| ft_strcmp(cmd, "unset") == 0)
-		return (1);
+	char	*tmp;
+
+	tmp = remove_quotes(cmd);
+	if (ft_strcmp(tmp, "cd") == 0 || ft_strcmp(tmp, "pwd") == 0
+		|| ft_strcmp(tmp, "echo") == 0 || ft_strcmp(tmp, "env") == 0
+		|| ft_strcmp(tmp, "exit") == 0 || ft_strcmp(tmp, "export") == 0
+		|| ft_strcmp(tmp, "unset") == 0)
+		return (free(tmp), 1);
+	free(tmp);
 	return (0);
 }
 
