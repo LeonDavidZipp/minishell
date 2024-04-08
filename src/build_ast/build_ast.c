@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/07 23:29:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 11:01:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 	t_treenode	*new;
 	int			prev_bracket_lvl;
 
-	printf("start of build_subtree\n");
+	// printf("start of build_subtree\n");
 	if (!(*lin_tree)) // || ((*lin_tree)->bracket_lvl < bracket_lvl))
 		return (sub);
 	if ((*lin_tree)->bracket_lvl < bracket_lvl)
@@ -59,14 +59,17 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 		// printf("in first if\n");
 		new = new_treenode((*lin_tree)->cmd, (*lin_tree)->args,
 				(*lin_tree)->cmd_type, (*lin_tree)->bracket_lvl);
-		printf("generated new node: %s %s %d\n", (*lin_tree)->cmd, (*lin_tree)->args, (*lin_tree)->bracket_lvl);
+		// printf("generated new node: %s %s %d\n", (*lin_tree)->cmd, (*lin_tree)->args, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
 		// printf("after insert\n");
 		// debug_printtree(sub, 0);
 		prev_bracket_lvl = (*lin_tree)->bracket_lvl;
 		// printf("prev_bracket_lvl: %d\n", prev_bracket_lvl);
-		printf("lin tree pinters: %p\n", (*lin_tree)->left);
-		(*lin_tree) = (*lin_tree)->left;
+		// printf("lin tree pinters: %p\n", (*lin_tree)->left);
+		if (!(*lin_tree)->left)
+			(*lin_tree) = NULL;
+		else
+			(*lin_tree) = (*lin_tree)->left;
 		// printf("lin_tree is now: %s %s %d\n", (*lin_tree)->cmd, (*lin_tree)->args, (*lin_tree)->bracket_lvl);
 		if (!(*lin_tree))
 			return (sub);
@@ -75,7 +78,7 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 	else
 	{
 		// printf("node is null: %d\n", (*lin_tree) == NULL);
-		printf("in second if\n");
+		// printf("in second if\n");
 		new = build_subtree(NULL, lin_tree, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
 		prev_bracket_lvl = (*lin_tree)->bracket_lvl;
