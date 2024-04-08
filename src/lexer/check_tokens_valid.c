@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/02 14:11:35 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 16:26:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_tokens_valid(t_token *tokens)
 		return (ft_fprintf(2, "%s: %s '%s'\n", NAME, SYNT_MSG, tokens->content),
 			258);
 	if (ft_strcmp(tokens->content, ".") == 0 && !tokens->next)
-		return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 2);
+		return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
 	current = tokens;
 	exit_code = 0;
 	while (current && exit_code == 0)
@@ -50,7 +50,7 @@ static int	check_and_or_pipe_redir_out_append(t_token *current)
 	if (current->type == AND || current->type == OR || current->type == PIPE)
 	{
 		if (!current->next)
-			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNT_MSG), 2);
+			return (ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYNT_MSG), 2);
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE)
 			return (ft_fprintf(2, "%s: %s '%s'\n",
@@ -59,7 +59,7 @@ static int	check_and_or_pipe_redir_out_append(t_token *current)
 	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
 	{
 		if (!current->next)
-			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNT_MSG), 2);
+			return (ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYNT_MSG), 2);
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE || current->next->type == REDIR_IN
 			|| current->next->type == REDIR_OUT
@@ -76,7 +76,7 @@ static int	check_redir_in_heredoc(t_token *current)
 	if (current->type == REDIR_IN || current->type == HEREDOC)
 	{
 		if (!current->next)
-			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNT_MSG), 258);
+			return (ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYNT_MSG), 2);
 		if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE || current->next->type == REDIR_IN
 			|| current->next->type == REDIR_OUT
@@ -103,7 +103,7 @@ static int	check_echo(t_token *current)
 		else if (current->next && (current->next->type == LEFT_BRACKET
 				|| current->next->type == RIGHT_BRACKET))
 		{
-			ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNT_MSG);
+			ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYNT_MSG);
 			return (258);
 		}
 	}
@@ -115,7 +115,7 @@ static int	check_brackets(t_token *current)
 	if (current->type == LEFT_BRACKET)
 	{
 		if (!current->next)
-			return (ft_fprintf(2, "%s: %s '\\n'\n", NAME, SYNT_MSG), 258);
+			return (ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYNT_MSG), 258);
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE || current->next->type == REDIR_IN
 			|| current->next->type == REDIR_OUT
