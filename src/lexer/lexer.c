@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 18:42:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 18:57:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,10 @@ int	lexer(t_app_data *app_data)
 
 	if (check_input(app_data->input) == 1)
 		return (free_for_next_call(app_data, NULL), 1);
-	tokens = tokenize(app_data->input);
+	tokens = tokenize(app_data->input, &tmp);
 	if (!tokens)
 		return (free_for_next_call(app_data, NULL), 1);
-	check_tokens_valid(tokens, &tmp);
+	// tmp = check_tokens_valid(tokens);
 	if (tmp != 0)
 	{
 		app_data->last_exit_code = tmp;

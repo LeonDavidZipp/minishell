@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 18:34:42 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 18:56:25 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ t_token	*join_arg_tokens(t_token *tokens)
 		{
 			prev_cmd = true;
 			tokens = tokens->next;
+			if (!tokens)
+				break ;
 		}
 		if (tokens->type == REDIR_APPEND || tokens->type == AND
 				|| tokens->type == OR || tokens->type == REDIR_OUT
