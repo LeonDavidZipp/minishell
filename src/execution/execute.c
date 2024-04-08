@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 17:02:09 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:16:17 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@
 
 // handle . error
 // heredoc ctrl d cant't exit on a line where something is written
+// /bin/rm -f echo: echo needs to be as argument of /bin/rm -f in the tree instead of as command
+
+// problem with node type, when for example there is ls -l echo, echo should be an argument of ls -l but it is a separate command
+
+// handle cases where you expand a variable like export T="echo test" and then you run $T it should run echo test but that is a problem because we expand right before we execute the command
+// muss mir was schlaues überlegen
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
@@ -396,6 +402,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	char	*cmd_node;
 	char	*tmp;
 	int		fd;
+	int		i;
 
 	if (ast->err_val != 0)
 	{
@@ -421,7 +428,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		arg_arr = split(cmd_node);
 	if (!arg_arr)
 		return 1;
-	int i = 0; // need to put that loop in a separate function
+	i = 0;
 	while (arg_arr[i])
 	{
 		char *temp = expand_and_remove(arg_arr[i], app->last_exit_code, app->env_vars);

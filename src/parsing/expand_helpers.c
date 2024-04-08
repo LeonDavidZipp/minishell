@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 16:09:41 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 16:46:45 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,12 +60,20 @@ int	get_new_size(char *input, int exit_code, char **env_vars, int flag)
 	return (size);
 }
 
-int	is_valid_dollar(char *input, int i)
+int	is_valid_dollar(char *input, int i, bool *quotes)
 {
-	if (input[i + 1] == '?' || ft_isalnum(input[i + 1]) || input[i + 1] == '_')
+	(void)quotes;
+	if (input[i] != '\0' && (input[i + 1] == '?' || ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
 		return (1);
-	if ((input[i + 1] == '\"' || input[i + 1] == '\'') && ((ft_isalnum(input[i + 2]) || input[i + 2] == '_')))
-		return (1);
+	if (input[i] != '\0' && (input[i + 1] == '\"' || input[i + 1] == '\''))
+	{
+		while(input[i])
+		{
+			if (ft_isalnum(input[i]) || input[i] == '_')
+				return (1);
+			i++;
+		}
+	}
 	return (0);
 }
 
@@ -80,8 +88,8 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes)
 		size += ft_dec_len(i[2]);
 		i[0] += 2;
 	}
-	else if ((input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0]))
-		|| (input[i[0]] == '~' && !quotes[0] && !quotes[1]))
+	else if ((input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0], quotes))
+		|| (input[i[0]] == '~' && !quotes[0] && !quotes[1] && (is_space(input[i[0] + 1]) || input[i[0] + 1] == '/')))
 	{
 		i[0]++;
 		size += env_var_size(input, i, env_vars);

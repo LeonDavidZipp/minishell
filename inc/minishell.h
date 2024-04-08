@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 17:02:25 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 15:24:53 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,6 +214,6 @@ bool		match(char *pattern, char *string);
 char		*get_pattern(char *input, int *i, int *position, int *start);
 char		*expand_and_remove(char *str, int exit_code, char **env_vars);
 char		*ft_getenv(char *name, char **env_vars);
-int			is_valid_dollar(char *input, int i);
+int			is_valid_dollar(char *input, int i, bool *quotes);
 
 #endif

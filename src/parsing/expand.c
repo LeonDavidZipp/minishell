@@ -21,13 +21,16 @@ int	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		if (match(pattern, entry->d_name))
+		if (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.'))
 		{
-			i[2] = 0;
-			flag = true;
-			while (entry->d_name[i[2]])
-				(*output)[i[1]++] = entry->d_name[i[2]++];
-			(*output)[i[1]++] = ' ';
+			if (match(pattern, entry->d_name))
+			{
+				i[2] = 0;
+				flag = true;
+				while (entry->d_name[i[2]])
+					(*output)[i[1]++] = entry->d_name[i[2]++];
+				(*output)[i[1]++] = ' ';
+			}
 		}
 		entry = readdir(dir);
 	}
@@ -71,8 +74,9 @@ int	handle_wildcard(char *input, char **output, int *i)
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
-	if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0]))
-		|| (data->input[data->i[0]] == '~' && !data->quotes[0] && !data->quotes[1]))
+	if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0], data->quotes))
+		|| (data->input[data->i[0]] == '~' && !data->quotes[0] && !data->quotes[1]
+			&& (is_space(data->input[data->i[0] + 1]) || data->input[data->i[0] + 1] == '/')))
 	{
 		if (!handle_dollar(data))
 			return ;
