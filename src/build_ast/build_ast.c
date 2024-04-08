@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 17:35:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 15:19:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,10 @@ t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
 	{
 		new = build_subtree(NULL, &lin_tree, lin_tree->bracket_lvl);
 		ast = insert_node(ast, new);
+		// debug_printtree(new, 0);
 		if (!lin_tree)
 			return (ast);
-		ast = build_ast(ast, lin_tree->left, lin_tree->bracket_lvl);
+		ast = build_ast(ast, lin_tree, lin_tree->bracket_lvl);
 	}
 	return (ast);
 }
@@ -44,18 +45,23 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 				int bracket_lvl)
 {
 	t_treenode	*new;
+	int			prev_bracket_lvl;
 
-	if (!(*lin_tree) || (*lin_tree)->bracket_lvl < bracket_lvl)
+	// printf("start of build_subtree\n");
+	if (!(*lin_tree)) // || ((*lin_tree)->bracket_lvl < bracket_lvl))
+		return (sub);
+	if ((*lin_tree)->bracket_lvl < bracket_lvl)
 		return (sub);
 	if ((*lin_tree)->bracket_lvl == bracket_lvl)
 	{
 		new = new_treenode((*lin_tree)->cmd, (*lin_tree)->args,
 				(*lin_tree)->cmd_type, (*lin_tree)->bracket_lvl);
 		sub = insert_node(sub, new);
-		*lin_tree = (*lin_tree)->left;
 		if (!(*lin_tree))
 			return (sub);
-		sub = build_subtree(sub, lin_tree, (*lin_tree)->bracket_lvl);
+		prev_bracket_lvl = (*lin_tree)->bracket_lvl;
+		(*lin_tree) = (*lin_tree)->left;
+		sub = build_subtree(sub, lin_tree, prev_bracket_lvl);
 	}
 	else
 	{
@@ -63,7 +69,9 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 		sub = insert_node(sub, new);
 		if (!(*lin_tree))
 			return (sub);
-		sub = build_subtree(sub, lin_tree, (*lin_tree)->bracket_lvl);
+		prev_bracket_lvl = (*lin_tree)->bracket_lvl;
+		(*lin_tree) = (*lin_tree)->left;
+		sub = build_subtree(sub, lin_tree, prev_bracket_lvl);
 	}
 	return (sub);
 }

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/13 14:52:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 11:18:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,33 +110,3 @@ static void	join_tokens_helper(t_token **join, t_token **prev,
 		*tokens = (*tokens)->next;
 	}
 }
-
-// int	main(void)
-// {
-// 	t_token	*token1 = malloc(sizeof(t_token));
-// 	token1->content = ft_strdup("cd");
-// 	token1->type = CMD;
-// 	token1->next = malloc(sizeof(t_token));
-// 	token1->next->content = ft_strdup("hello");
-// 	token1->next->type = ARG;
-// 	token1->next->next = malloc(sizeof(t_token));
-// 	token1->next->next->content = ft_strdup("echo");
-// 	token1->next->next->type = CMD;
-// 	token1->next->next->next = malloc(sizeof(t_token));
-// 	token1->next->next->next->content = ft_strdup("hi");
-// 	token1->next->next->next->type = ARG;
-// 	token1->next->next->next->next = malloc(sizeof(t_token));
-// 	token1->next->next->next->next->content = ft_strdup("cd");
-// 	token1->next->next->next->next->type = CMD;
-// 	token1->next->next->next->next->next = malloc(sizeof(t_token));
-// 	token1->next->next->next->next->next->content = ft_strdup("&&");
-// 	token1->next->next->next->next->next->type = AND;
-// 	token1->next->next->next->next->next->next = NULL;
-// 	t_token	*token2 = join_after_echo(token1);
-// 	while (token2)
-// 	{
-// 		printf("|%s|\n", token2->content);
-// 		token2 = token2->next;
-// 	}
-// 	return (0);
-// }

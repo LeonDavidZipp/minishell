@@ -71,6 +71,15 @@ int	handle_wildcard(char *input, char **output, int *i)
 	return (1);
 }
 
+// if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0])));
+// handle in quotes
+// if ((data->input[data->i[0]] == '~' && !data->quotes[0] && !data->quotes[1]));
+// if ((data->input[data->i[0]] == '~')
+// handle before
+// 		&& ((data->i[0] == 0 || ft_isspace(data->input[data->i[0] - 1]))
+// handle after
+// 			&& ((data->i[0] < ft_strlen(data->input) - 1 && (ft_isspace(data->input[data->i[0] + 1]) || data->input[data->i[0] + 1] == '\0')))))
+
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
