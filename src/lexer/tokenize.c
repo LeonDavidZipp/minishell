@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 17:31:31 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:41:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static t_token		*new_token(char *content, t_token *prev);
 
-t_token	*tokenize(char *input)
+t_token	*tokenize(char *input, int *exit_code)
 {
 	char			**token_contents;
 	t_token			*current;
@@ -40,7 +40,9 @@ t_token	*tokenize(char *input)
 	ft_free_2d_arr((void **)token_contents);
 	first = remove_after_cd(first);
 	first = switch_tokens_for_redir(first);
-	return (join_after_ls(join_after_echo(join_arg_tokens(first))));
+	*exit_code = check_tokens_valid(first);
+	// return (join_after_ls(join_after_echo(join_arg_tokens(first))));
+	return (join_arg_tokens(first));
 }
 
 void	free_tokens(t_token *token)
