@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/08 11:24:49 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/09 15:14:49 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -51,7 +51,7 @@ parsing/expand_helpers.c \
 parsing/expand.c \
 parsing/expand2.c \
 parsing/mix_helpers.c \
-parsing/need_name.c \
+parsing/expand_and_remove.c \
 parsing/split_helpers.c \
 parsing/split.c \
 signals/signal_handler.c \

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 13:05:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 17:19:07 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ t_envvar	**split_env_vars(char *envp)
 		return (ft_free_2d_arr((void **)keys_values), NULL);
 	len = -1;
 	while (keys_values[++len])
+	{
+		keys_values[len] = remove_quotes_in_place(keys_values[len]);
 		env_vars[len] = split_env_var(keys_values[len]);
+	}
 	ft_free_2d_arr((void **)keys_values);
 	return (env_vars);
 }
@@ -40,14 +43,18 @@ t_envvar	*split_env_var(char *envp)
 {
 	t_envvar	*result;
 	int			len1;
-	
 
 	result = (t_envvar *)malloc(sizeof(t_envvar));
 	if (!envp || !result)
 		return (NULL);
+	if (envp[0] == '=')
+	{
+		result->key = ft_strdup(envp);
+		result->value = NULL;
+		result->includes_equal = false;
+		return (result);
+	}
 	len1 = 0;
-	if (envp[len1] == '=')
-		len1++;
 	while (envp[len1] && envp[len1] != '=')
 		len1++;
 	result->key = ft_substr(envp, 0, len1);
@@ -56,10 +63,7 @@ t_envvar	*split_env_var(char *envp)
 	if (envp[len1] && envp[len1] == '=' && !envp[len1 + 1])
 		result->value = ft_strdup("");
 	else if (envp[len1] && envp[len1] == '=' && envp[len1 + 1])
-	{
 		result->value = ft_substr(envp, len1 + 1, ft_strlen(envp) - len1);
-		result->value = ft_ntrim_in_place(result->value, "\"\'", 1);
-	}
 	return (result);
 }
 
@@ -122,9 +126,13 @@ static int	count_substr(char *s, char c)
 	quote = false;
 	while (s[++i])
 	{
+		if ((s[i] == '\"' && !quote) && (i == 0 || !dquote))
+			count++;
 		if (s[i] == '\"' && !quote)
 			dquote = !dquote;
-		else if (s[i] == '\'' && !dquote)
+		if ((s[i] == '\'' && !dquote) && (i == 0 || !quote))
+			count++;
+		if (s[i] == '\'' && !dquote)
 			quote = !quote;
 		if (!quote && !dquote
 			&& ((i == 0 && s[i] != c) || (s[i] != c && s[i - 1] == c)))

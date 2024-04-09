@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:51:31 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/05 14:51:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 14:50:28 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	builtin_env(char *var_string, char ***env_vars)
 		// while (vars[++i])
 		// 	*env_vars = update_env_vars(&vars[i], &exit_code, *env_vars);
 		// free_vars(vars);
-		ft_fprintf(2, "env: No aguments allowed\n");
+		ft_fprintf(2, "env: No arguments allowed\n");
 		return (1);
 	}
 	i = 0;

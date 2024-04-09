@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/07 14:48:31 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:07:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,8 @@ bool	var_name_valid(char *key)
 	while (key[++i])
 	{
 		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (false);
+		else if (key[i] == '=')
 			return (false);
 	}
 	return (true);
