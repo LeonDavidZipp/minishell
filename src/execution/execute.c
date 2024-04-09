@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 12:16:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 15:25:28 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,8 +161,11 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 	char	*new_del;
 	bool	should_expand;
 	int		i;
+	int		flags[2];
 
 	i = 0;
+	flags[0] = 1;
+	flags[1] = 0;
 	g_exit_signal = 2;
 	should_expand = true;
 	while (delimiter[i] != '\0')
@@ -184,7 +187,7 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 			break ;
 		free(tmp);
 		if (should_expand)
-			expanded = expand(line, app->last_exit_code, app->env_vars, 1);
+			expanded = expand(line, app->last_exit_code, app->env_vars, flags);
 		else
 			expanded = ft_strdup(line);
 		if (!expanded)
@@ -347,7 +350,7 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 	int			tmp_fd;
 	char		*tmp;
 
-	tmp = expand_and_remove(node->args, app->last_exit_code, app->env_vars);
+	tmp = expand_and_remove(node->args, app->last_exit_code, app->env_vars, 0);
 	if (node->cmd_type == REDIR_IN)
 	{
 		tmp_fd = open(tmp, O_RDONLY);
@@ -401,6 +404,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	char	**arg_arr;
 	char	*cmd_node;
 	char	*tmp;
+	char	*temp;
 	int		fd;
 	int		i;
 
@@ -421,8 +425,15 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		tmp = ft_strjoin(cmd_node, ast->args);
 		if (!tmp)
 			return (free(cmd_node), 1);
-		arg_arr = split(tmp);
+		int flags[2];
+		flags[0] = 0;
+		flags[1] = 1;
+		temp = expand(tmp, app->last_exit_code, app->env_vars, flags);
+		if (!temp)
+			return (free(cmd_node), free(tmp), 1);
+		arg_arr = split(temp);
 		free(tmp);
+		free(temp);
 	}
 	else
 		arg_arr = split(cmd_node);
@@ -431,7 +442,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	i = 0;
 	while (arg_arr[i])
 	{
-		char *temp = expand_and_remove(arg_arr[i], app->last_exit_code, app->env_vars);
+		temp = expand_and_remove(arg_arr[i], app->last_exit_code, app->env_vars, 0);
 		if (!temp)
 			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), 1);
 		free(arg_arr[i]);
@@ -510,12 +521,12 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 			close(ast->out_fd);
 		return (1);
 	}
-	cmd = expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars);
+	cmd = expand_and_remove(ast->cmd, app->last_exit_code, app->env_vars, 0);
 	if (!cmd)
 		return (1);
 	if (ast->args)
 	{
-		args = expand_and_remove(ast->args, app->last_exit_code, app->env_vars);
+		args = expand_and_remove(ast->args, app->last_exit_code, app->env_vars, 0);
 		if (!args)
 			return (free(cmd), 1);
 	}
@@ -545,6 +556,13 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		if (pid == 0)
 		{
 			exit_code = execute_cmd(cmd, args, ast->args, app);
+			// int fd = 3;
+			// while (fd < FD_SETSIZE)
+			// {
+			// 	if (fd != STDIN_FILENO && fd != STDOUT_FILENO)
+			// 		close(fd);
+			// 	fd++;
+			// }
 			exit(exit_code);
 		}
 		else

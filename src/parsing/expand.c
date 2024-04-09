@@ -21,7 +21,7 @@ int	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		if (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.'))
+		if (pattern[0] == '.' || (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
 		{
 			if (match(pattern, entry->d_name))
 			{
@@ -49,9 +49,14 @@ int	handle_wildcard(char *input, char **output, int *i)
 
 	flag = false;
 	start = 0;
-	pattern = get_pattern(input, &i[0], &position, &start);
+	char *tmp = get_pattern(input, &i[0], &position, &start);
+	if (!tmp)
+		return (free(output), 0);
+	// printf("tmp: %s\n", tmp);
+	pattern = remove_quotes(tmp);
 	if (!pattern)
 		return (free(output), 0);
+	// printf("pattern: %s\n", pattern);
 	dir = opendir(".");
 	if (dir == NULL)
 		return (free(output), 0);
@@ -83,15 +88,15 @@ int	handle_wildcard(char *input, char **output, int *i)
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
-	if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0], data->quotes))
+	if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0], data->quotes) && data->flags[1] == 0)
 		|| (data->input[data->i[0]] == '~' && !data->quotes[0] && !data->quotes[1]
-			&& (is_space(data->input[data->i[0] + 1]) || data->input[data->i[0] + 1] == '/')))
+			&& (is_space(data->input[data->i[0] + 1]) || data->input[data->i[0] + 1] == '/') && data->flags[1] == 0))
 	{
 		if (!handle_dollar(data))
 			return ;
 	}
 	else if (data->input[data->i[0]] == '*' && !data->quotes[0]
-		&& !data->quotes[1] && data->flag == 0)
+		&& !data->quotes[1] && data->flags[0] == 0)
 	{
 		if (!handle_wildcard(data->input, data->output, data->i))
 			return ;
@@ -109,7 +114,7 @@ static	void	init_vars(int *i, bool *quotes)
 	quotes[1] = false;
 }
 
-char	*expand(char *input, int exit_code, char **env_vars, int flag)
+char	*expand(char *input, int exit_code, char **env_vars, int *flags)
 {
 	char		*output;
 	int			size;
@@ -119,12 +124,12 @@ char	*expand(char *input, int exit_code, char **env_vars, int flag)
 
 	init_vars(i, quotes);
 	data.env_vars = env_vars;
-	data.flag = flag;
+	data.flags = flags;
 	data.exit_code = exit_code;
 	data.i = i;
 	data.quotes = quotes;
 	data.input = input;
-	size = get_new_size(input, exit_code, env_vars, flag);
+	size = get_new_size(input, exit_code, env_vars, flags);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);

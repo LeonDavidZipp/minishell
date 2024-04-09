@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 12:17:14 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 14:49:31 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ typedef struct s_expand
 	bool				*quotes;
 	char				**env_vars;
 	int					exit_code;
-	int					flag;
+	int					*flags;
 }		t_expand;
 
 // signal handling
@@ -205,13 +205,13 @@ int			lexer(t_app_data *app_data);
 int			execute(t_app_data *app, t_treenode *ast);
 
 // expansion
-char		*expand(char *input, int exit_code, char **env_vars, int flag);
+char		*expand(char *input, int exit_code, char **env_vars, int *flags);
 int			handle_dollar(t_expand *data);
 void		handle_quotes(char c, bool *s_quote, bool *d_quote);
-int			get_new_size(char *input, int exit_code, char **env_vars, int flag);
+int			get_new_size(char *input, int exit_code, char **env_vars, int *flags);
 bool		match(char *pattern, char *string);
 char		*get_pattern(char *input, int *i, int *position, int *start);
-char		*expand_and_remove(char *str, int exit_code, char **env_vars);
+char		*expand_and_remove(char *str, int exit_code, char **env_vars, int flag);
 char		*ft_getenv(char *name, char **env_vars);
 int			is_valid_dollar(char *input, int i, bool *quotes);
 

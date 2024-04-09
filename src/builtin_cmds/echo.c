@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/07 18:32:09 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 14:53:58 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	builtin_echo(char *args, int out_fd, t_app_data *app)
 	n_in_string = false;
 	if (args[0] == '\"' || args[0] == '\'')
 	{
-		expanded = expand_and_remove(args, app->last_exit_code, app->env_vars);
+		expanded = expand_and_remove(args, app->last_exit_code, app->env_vars, 0);
 		n_in_string = true;
 	}
 	if (ft_strlen(args) >= 3 && ft_strncmp(args, "-n", 2) == 0 && !n_in_string)
@@ -35,7 +35,7 @@ int	builtin_echo(char *args, int out_fd, t_app_data *app)
 		return (ft_fprintf(out_fd, "%s\n", expanded), free(expanded), 0);
 	else
 	{
-		expanded = expand_and_remove(args, app->last_exit_code, app->env_vars);
+		expanded = expand_and_remove(args, app->last_exit_code, app->env_vars, 0);
 		return (ft_fprintf(out_fd, "%s\n", expanded), free(expanded), 0);
 	}
 }
@@ -46,7 +46,7 @@ int	handle_n_flag(char *args, int out_fd, t_app_data *app)
 	char		*expanded;
 
 	temp = remove_n_flags(args);
-	expanded = expand_and_remove(temp, app->last_exit_code, app->env_vars);
+	expanded = expand_and_remove(temp, app->last_exit_code, app->env_vars, 0);
 	if (ft_strcmp(args, temp) != 0)
 		ft_fprintf(out_fd, "%s", expanded);
 	else

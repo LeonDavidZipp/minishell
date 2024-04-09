@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/28 15:37:14 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 14:47:44 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,17 @@ char	*remove_quotes(char *str)
 	return (output);
 }
 
-char	*expand_and_remove(char *str, int exit_code, char **env_vars)
+char	*expand_and_remove(char *str, int exit_code, char **env_vars, int flag)
 {
 	char	*expanded;
 	char	*result;
+	int		flags[2];
 
 	if (!str)
 		return (NULL);
-	expanded = expand(str, exit_code, env_vars, 0);
+	flags[0] = 0;
+	flags[1] = flag;
+	expanded = expand(str, exit_code, env_vars, flags);
 	if (!expanded)
 		return (NULL);
 	result = remove_quotes(expanded);

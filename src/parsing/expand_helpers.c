@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 16:46:45 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:38:21 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,15 +41,16 @@ char	*ft_getenv(char *name, char **env_vars)
 	return (NULL);
 }
 
-int	get_new_size(char *input, int exit_code, char **env_vars, int flag)
+int	get_new_size(char *input, int exit_code, char **env_vars, int *flags)
 {
-	int		i[3];
+	int		i[4];
 	int		size;
 	bool	quotes[2];
 
 	i[0] = 0;
-	i[1] = flag;
-	i[2] = exit_code;
+	i[1] = flags[0];
+	i[2] = flags[1];
+	i[3] = exit_code;
 	size = 0;
 	quotes[0] = false;
 	quotes[1] = false;
@@ -59,6 +60,8 @@ int	get_new_size(char *input, int exit_code, char **env_vars, int flag)
 	}
 	return (size);
 }
+
+ // || input[i] == '\'' || (input[i] == '\"' && !quotes[1]) // fixes some cases but breaks others (added to the if condition in the while loop)
 
 int	is_valid_dollar(char *input, int i, bool *quotes)
 {
@@ -83,13 +86,13 @@ int	calculate_size(char *input, int *i, char **env_vars, bool *quotes)
 
 	size = 0;
 	handle_quotes(input[i[0]], &quotes[0], &quotes[1]);
-	if (input[i[0]] == '$' && input[i[0] + 1] == '?' && !quotes[0])
+	if (input[i[0]] == '$' && input[i[0] + 1] == '?' && !quotes[0] && i[2] == 0)
 	{
-		size += ft_dec_len(i[2]);
+		size += ft_dec_len(i[3]);
 		i[0] += 2;
 	}
-	else if ((input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0], quotes))
-		|| (input[i[0]] == '~' && !quotes[0] && !quotes[1] && (is_space(input[i[0] + 1]) || input[i[0] + 1] == '/')))
+	else if ((input[i[0]] == '$' && !quotes[0] && is_valid_dollar(input, i[0], quotes) && i[2] == 0)
+		|| (input[i[0]] == '~' && !quotes[0] && !quotes[1] && (is_space(input[i[0] + 1]) || input[i[0] + 1] == '/') && i[2] == 0))
 	{
 		i[0]++;
 		size += env_var_size(input, i, env_vars);
@@ -141,7 +144,10 @@ int	wildcard_size(char *input, int *i)
 
 	size = 0;
 	start = 0;
-	pattern = get_pattern(input, &i[0], &position, &start);
+	char *tmp = get_pattern(input, &i[0], &position, &start);
+	if (!tmp)
+		return (0);
+	pattern = remove_quotes(tmp);
 	if (!pattern)
 		return (0);
 	dir = opendir(".");
