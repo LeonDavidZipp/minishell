@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 16:16:17 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 11:39:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -411,7 +411,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 			close(ast->in_fd);
 		if (ast->out_fd != 1)
 			close(ast->out_fd);
-		return 1;
+		return (1);
 	}
 	cmd_node = ft_strjoin(ast->cmd, " ");
 	if (!cmd_node)
@@ -487,7 +487,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	}
 	free(cmd_node);
 	ft_free_2d_arr((void **)arg_arr);
-	return 0;
+	return (0);
 }
 
 static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);

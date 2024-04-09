@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 18:43:51 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 10:58:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 
 # define NAME "babash"
 # define PROMPT "\033[1;36mbabash \033[1;32m→  \033[0m"
-# define SYNT_MSG "syntax error near unexpected token"
+# define SYN_MSG "syntax error near unexpected token"
 # define INVALID_ID "not a valid identifier"
 # define DOT_MSG ": .: filename argument required\n"
 # define DOT_MSG2 ".: usage: . filename [arguments]\n"
