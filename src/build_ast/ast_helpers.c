@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ast_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/07 21:37:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 18:36:37 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void	debug_printtree(t_treenode *root, int tabs)
 	if (root)
 	{
 		debug_print_tabs(tabs);
-		printf("\033[1;3%dmcontent: %s, args: %s, prio: %d, type: %d, br_lvl: %d \033[0m\n", 1 + tabs,
+		printf("\033[1;3%dmcontent: %s, args: %s, prio: %d, type: %d, br_lvl: %d, in_fd: %d, out_fd: %d \033[0m\n", 1 + tabs,
 			root->cmd, root->args, priority(root->cmd, root->bracket_lvl),
-			root->cmd_type, root->bracket_lvl);
+			root->cmd_type, root->bracket_lvl, root->in_fd, root->out_fd);
 		debug_print_tabs(tabs);
 		printf("\033[1;3%dmleft:\n", 1 + tabs);
 		debug_printtree(root->left, tabs + 1);
