@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 10:45:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 12:11:52 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,12 @@ int	lexer(t_app_data *app_data)
 	t_treenode	*ast;
 	int			tmp;
 
-	app_data->last_exit_code = check_input(app_data->input);
-	if (app_data->last_exit_code != 0)
+	tmp = check_input(app_data->input);
+	if (tmp != 0)
+	{
+		app_data->last_exit_code = tmp;
 		return (free_for_next_call(app_data, NULL), 1);
+	}
 	tokens = tokenize(app_data->input, &tmp);
 	if (!tokens)
 		return (free_for_next_call(app_data, NULL), 1);
