@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 17:43:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/09 16:35:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static void	print_vars(char **env_vars, int fd);
 int	builtin_export(char *var_string, char ***env_vars, int fd)
 {
 	t_envvar	**vars;
-	char		*temp;
+	// char		*temp;
 	int			i;
 	int			exit_code;
 
@@ -37,11 +37,12 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 	// printf("key: %s\n", vars[0]->key);
 	while (vars[++i])
 	{
-		temp = expand_and_remove(vars[i]->key, exit_code, *env_vars);
-		// printf("new key: %s\n", temp);
-		// printf("hi\n");
-		free(vars[i]->key);
-		vars[i]->key = temp;
+		// temp = expand_and_remove(vars[i]->key, exit_code, *env_vars);
+		// printf("key: %s\n", temp);
+		// // printf("new key: %s\n", temp);
+		// // printf("hi\n");
+		// free(vars[i]->key);
+		// vars[i]->key = temp;
 		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
 	}
 	// printf("after while\n");

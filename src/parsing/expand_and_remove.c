@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   need_name.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/28 15:37:14 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 15:13:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ char	*remove_quotes(char *str)
 	}
 	output[i[1]] = '\0';
 	return (output);
+}
+
+char	*remove_quotes_in_place(char *str)
+{
+	char	*result;
+
+	result = remove_quotes(str);
+	free(str);
+	return (result);
 }
 
 char	*expand_and_remove(char *str, int exit_code, char **env_vars)
