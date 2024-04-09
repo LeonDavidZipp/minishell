@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 17:28:58 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/08 18:43:51 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,8 @@ void		rearrange_following_element(t_token **current, t_token **before_first);
 t_treenode	*switch_heredocs(t_treenode *lintree);
 
 // tokenization
-t_token		*tokenize(char *input);
+// t_token		*tokenize(char *input);
+t_token		*tokenize(char *input, int *exit_code);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 t_token		*join_after_ls(t_token *tokens);

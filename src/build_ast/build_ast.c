@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 15:19:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 15:21:02 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
 	{
 		new = build_subtree(NULL, &lin_tree, lin_tree->bracket_lvl);
 		ast = insert_node(ast, new);
-		// debug_printtree(new, 0);
 		if (!lin_tree)
 			return (ast);
 		ast = build_ast(ast, lin_tree, lin_tree->bracket_lvl);
@@ -47,10 +46,7 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 	t_treenode	*new;
 	int			prev_bracket_lvl;
 
-	// printf("start of build_subtree\n");
-	if (!(*lin_tree)) // || ((*lin_tree)->bracket_lvl < bracket_lvl))
-		return (sub);
-	if ((*lin_tree)->bracket_lvl < bracket_lvl)
+	if (!(*lin_tree) || (*lin_tree)->bracket_lvl < bracket_lvl)
 		return (sub);
 	if ((*lin_tree)->bracket_lvl == bracket_lvl)
 	{

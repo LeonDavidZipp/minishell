@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/18 14:47:38 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 11:05:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/08 15:32:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,21 @@ static void	init_flags(bool *flags)
 {
 	flags[0] = false;
 	flags[1] = false;
+}
+
+static int	return_error(int bracket_1, int bracket_2, int s_quote, int d_quote)
+{
+	if (bracket_2 > bracket_1)
+	{
+		ft_fprintf(2, "%s: syntax error near unexpected token ')'\n", NAME);
+		return (2);
+	}
+	if (s_quote % 2 != 0 || d_quote % 2 != 0 || bracket_1 != bracket_2)
+	{
+		ft_fprintf(2, "%s: invalid input: quotes or brackets not closed\n", NAME);
+		return (2);
+	}
+	return (0);
 }
 
 int	check_input(char *str)
@@ -49,10 +64,14 @@ int	check_input(char *str)
 			bracket_2++;
 		str++;
 	}
-	if (s_quote % 2 != 0 || d_quote % 2 != 0 || bracket_1 != bracket_2)
-		return (ft_fprintf(2, "%s: invalid input: "
-				"quotes or brackets not closed\n", NAME), 1);
-	return (0);
+	// if (bracket_2 > bracket_1)
+	// 	return (ft_fprintf(2,
+	// 			"%s: syntax error near unexpected token ')'\n", NAME), 1);
+	// if (s_quote % 2 != 0 || d_quote % 2 != 0 || bracket_1 != bracket_2)
+	// 	return (ft_fprintf(2, "%s: invalid input: "
+	// 			"quotes or brackets not closed\n", NAME), 1);
+	return (return_error(bracket_1, bracket_2, s_quote, d_quote));
+	// return (0);
 }
 
 // int	main(void)

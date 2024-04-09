@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 17:31:17 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/09 10:45:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,13 @@ int	lexer(t_app_data *app_data)
 	t_treenode	*ast;
 	int			tmp;
 
-	if (check_input(app_data->input) == 1)
+	app_data->last_exit_code = check_input(app_data->input);
+	if (app_data->last_exit_code != 0)
 		return (free_for_next_call(app_data, NULL), 1);
-	tokens = tokenize(app_data->input);
+	tokens = tokenize(app_data->input, &tmp);
 	if (!tokens)
 		return (free_for_next_call(app_data, NULL), 1);
-	tmp = check_tokens_valid(tokens);
+	// tmp = check_tokens_valid(tokens);
 	if (tmp != 0)
 	{
 		app_data->last_exit_code = tmp;
@@ -34,7 +35,6 @@ int	lexer(t_app_data *app_data)
 		return (free_for_next_call(app_data, NULL), 1);
 	}
 	intermediate_tree = switch_heredocs(combine_cmds_args(tokens));
-	// debug_printtree(intermediate_tree, 0);
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		return (free_for_next_call(app_data, NULL), 1);
