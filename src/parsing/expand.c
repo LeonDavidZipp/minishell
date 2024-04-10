@@ -12,23 +12,37 @@
 
 #include "../../inc/minishell.h"
 
+int	empty_entry(char *entry);
+
 int	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 {
 	bool			flag;
+	bool			s_quote;
+	bool			d_quote;
 	struct dirent	*entry;
+	int				j;
 
 	flag = false;
+	s_quote = false;
+	d_quote = false;
 	entry = readdir(dir);
+	j = 0;
 	while (entry != NULL)
 	{
-		if (pattern[0] == '.' || (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
+		while (pattern[j] == '\'' || pattern[j] == '"')
+			j++;
+		if (pattern[j] == '.' || (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
 		{
-			if (match(pattern, entry->d_name))
+			if (match(pattern, entry->d_name, s_quote, d_quote))
 			{
 				i[2] = 0;
 				flag = true;
+				if (empty_entry(entry->d_name))
+					(*output)[i[1]++] = '"';
 				while (entry->d_name[i[2]])
 					(*output)[i[1]++] = entry->d_name[i[2]++];
+				if (empty_entry(entry->d_name))
+					(*output)[i[1]++] = '"';
 				(*output)[i[1]++] = ' ';
 			}
 		}
@@ -49,14 +63,9 @@ int	handle_wildcard(char *input, char **output, int *i)
 
 	flag = false;
 	start = 0;
-	char *tmp = get_pattern(input, &i[0], &position, &start);
-	if (!tmp)
-		return (free(output), 0);
-	// printf("tmp: %s\n", tmp);
-	pattern = remove_quotes(tmp);
+	pattern = get_pattern(input, &i[0], &position, &start);
 	if (!pattern)
 		return (free(output), 0);
-	// printf("pattern: %s\n", pattern);
 	dir = opendir(".");
 	if (dir == NULL)
 		return (free(output), 0);

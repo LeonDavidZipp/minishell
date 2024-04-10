@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 16:59:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/10 18:13:08 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,7 +209,7 @@ char		*expand(char *input, int exit_code, char **env_vars, int *flags);
 int			handle_dollar(t_expand *data);
 void		handle_quotes(char c, bool *s_quote, bool *d_quote);
 int			get_new_size(char *input, int exit_code, char **env_vars, int *flags);
-bool		match(char *pattern, char *string);
+bool		match(char *pattern, char *string, bool s_quote, bool d_quote);
 char		*get_pattern(char *input, int *i, int *position, int *start);
 char		*remove_quotes_in_place(char *str);
 char		*expand_and_remove(char *str, int exit_code, char **env_vars, int flag);
