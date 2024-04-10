@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 17:22:52 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:11:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@ static void	print_vars(char **env_vars, int fd);
 int	builtin_export(char *var_string, char ***env_vars, int fd)
 {
 	t_envvar	**vars;
-	// char		*temp;
 	int			i;
 	int			exit_code;
 
-	// printf("var_string: %s\n", var_string);
 	exit_code = 0;
 	if (!var_string)
 	{
@@ -29,23 +27,13 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 		return (exit_code);
 	}
 	vars = split_env_vars(var_string);
-	// printf("length: %d\n", ft_null_terminated_arr_len((void **)vars));
 	if (!vars)
 		return (1);
 	i = -1;
-	// printf("before while\n");
-	// printf("key: %s\n", vars[0]->key);
 	while (vars[++i])
 	{
-		// temp = expand_and_remove(vars[i]->key, exit_code, *env_vars, 0);
-		// printf("key: %s\n", temp);
-		// // printf("new key: %s\n", temp);
-		// // printf("hi\n");
-		// free(vars[i]->key);
-		// vars[i]->key = temp;
 		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
 	}
-	// printf("after while\n");
 	free_vars(vars);
 	return (exit_code);
 }
