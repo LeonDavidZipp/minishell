@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 16:38:21 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:10:10 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,8 +60,6 @@ int	get_new_size(char *input, int exit_code, char **env_vars, int *flags)
 	}
 	return (size);
 }
-
- // || input[i] == '\'' || (input[i] == '\"' && !quotes[1]) // fixes some cases but breaks others (added to the if condition in the while loop)
 
 int	is_valid_dollar(char *input, int i, bool *quotes)
 {
@@ -144,10 +142,7 @@ int	wildcard_size(char *input, int *i)
 
 	size = 0;
 	start = 0;
-	char *tmp = get_pattern(input, &i[0], &position, &start);
-	if (!tmp)
-		return (0);
-	pattern = remove_quotes(tmp);
+	pattern = get_pattern(input, i, &position, &start);
 	if (!pattern)
 		return (0);
 	dir = opendir(".");
@@ -161,25 +156,54 @@ int	wildcard_size(char *input, int *i)
 	return (size);
 }
 
+// maybe add . checks in calc_wildcard_size, right now sometimes too much is counted
+
+int	empty_entry(char *entry)
+{
+	int		i;
+
+	i = 0;
+	while (entry[i])
+	{
+		if (entry[i] != ' ')
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 int	calc_wildcard_size(DIR *dir, char *pattern, int position)
 {
 	struct dirent	*entry;
 	int				size;
 	bool			flag;
+	bool			s_quote;
+	bool			d_quote;
+	int				i;
 
 	flag = false;
+	s_quote = false;
+	d_quote = false;
 	size = 0;
+	i = 0;
 	entry = readdir(dir);
 	while (entry != NULL)
 	{
-		if (match(pattern, entry->d_name))
+		while (pattern[i] == '\'' || pattern[i] == '"')
+			i++;
+		if (pattern[i] == '.' || (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
 		{
-			if (!flag)
+			if (match(pattern, entry->d_name, s_quote, d_quote))
 			{
-				size -= position;
-				flag = true;
+				if (!flag)
+				{
+					size -= position;
+					flag = true;
+				}
+				size += ft_strlen(entry->d_name) + 1;
+				if (empty_entry(entry->d_name))
+					size += 2;
 			}
-			size += ft_strlen(entry->d_name) + 1;
 		}
 		entry = readdir(dir);
 	}

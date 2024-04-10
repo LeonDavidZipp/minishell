@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 15:25:28 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:07:01 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,7 @@
 // bash: /bin/echo test1: No such file or directory instead of command not found error
 // probably can be included in the find_path function
 
-// handle . error
 // heredoc ctrl d cant't exit on a line where something is written
-// /bin/rm -f echo: echo needs to be as argument of /bin/rm -f in the tree instead of as command
-
-// problem with node type, when for example there is ls -l echo, echo should be an argument of ls -l but it is a separate command
 
 // handle cases where you expand a variable like export T="echo test" and then you run $T it should run echo test but that is a problem because we expand right before we execute the command
 // muss mir was schlaues überlegen
@@ -556,13 +552,13 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 		if (pid == 0)
 		{
 			exit_code = execute_cmd(cmd, args, ast->args, app);
-			// int fd = 3;
-			// while (fd < FD_SETSIZE)
-			// {
-			// 	if (fd != STDIN_FILENO && fd != STDOUT_FILENO)
-			// 		close(fd);
-			// 	fd++;
-			// }
+			int fd = 3;
+			while (fd < FD_SETSIZE)
+			{
+				if (fd != STDIN_FILENO && fd != STDOUT_FILENO)
+					close(fd);
+				fd++;
+			}
 			exit(exit_code);
 		}
 		else
