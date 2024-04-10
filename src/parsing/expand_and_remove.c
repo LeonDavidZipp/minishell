@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_and_remove.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/09 17:28:20 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:59:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,14 @@ char	*expand_and_remove(char *str, int exit_code, char **env_vars, int flag)
 	if (!result)
 		return (free(expanded), NULL);
 	free(expanded);
+	return (result);
+}
+
+char *expand_and_remove_in_place(char *str, int exit_code, char **env_vars, int flag)
+{
+	char	*result;
+
+	result = expand_and_remove(str, exit_code, env_vars, flag);
+	free(str);
 	return (result);
 }

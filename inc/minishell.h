@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 17:22:01 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/10 16:59:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,8 @@ bool		match(char *pattern, char *string);
 char		*get_pattern(char *input, int *i, int *position, int *start);
 char		*remove_quotes_in_place(char *str);
 char		*expand_and_remove(char *str, int exit_code, char **env_vars, int flag);
+char 		*expand_and_remove_in_place(char *str, int exit_code,
+				char **env_vars, int flag);
 char		*ft_getenv(char *name, char **env_vars);
 int			is_valid_dollar(char *input, int i, bool *quotes);
 
