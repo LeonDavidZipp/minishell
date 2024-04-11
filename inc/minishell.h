@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 16:29:22 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 17:00:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ t_treenode	*new_treenode(char *cmd, char *args,
 				t_tokentype cmd_type, int bracket_lvl);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
-bool		node_is_operator(char *cmd);
+bool		node_is_operator(t_tokentype type);
 int			priority(char *cmd, int bracket_lvl);
 
 // lexer

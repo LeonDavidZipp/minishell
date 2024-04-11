@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ast_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 18:36:37 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:00:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-bool	node_is_operator(char *cmd)
+bool	node_is_operator(t_tokentype type)
 {
-	return (ft_strcmp(cmd, "|") == 0 || ft_strcmp(cmd, "||") == 0
-		|| ft_strcmp(cmd, "&&") == 0 || ft_strcmp(cmd, ">") == 0
-		|| ft_strcmp(cmd, ">>") == 0 || ft_strcmp(cmd, "<") == 0
-		|| ft_strcmp(cmd, "<<") == 0);
+	return (type == PIPE || type == OR || type == AND || type == REDIR_OUT
+		|| type == REDIR_APPEND || type == REDIR_IN || type == HEREDOC
+		|| type == LEFT_BRACKET || type == RIGHT_BRACKET);
 }
 
 int	priority(char *cmd, int bracket_lvl)

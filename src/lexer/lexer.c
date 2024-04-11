@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:52:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 16:43:44 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 16:52:54 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ int	lexer(t_app_data *app_data)
 		return (free_for_next_call(app_data, NULL), 1);
 	}
 	intermediate_tree = switch_heredocs(combine_cmds_args(tokens));
+	// debug_printtree(intermediate_tree, 0);
 	free_tokens(tokens);
 	if (!intermediate_tree)
 		return (free_for_next_call(app_data, NULL), 1);

@@ -6,17 +6,17 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/11 16:42:02 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/11 16:45:27 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
 CC := gcc
-# CFLAGS := -Wextra -Wall -Werror -g
-# LDFLAGS := -lreadline
-CFLAGS := -Wextra -Wall -Werror -fsanitize=address -fsanitize=undefined
-LDFLAGS := -lreadline -fsanitize=address -fsanitize=undefined
+CFLAGS := -Wextra -Wall -Werror -g
+LDFLAGS := -lreadline
+# CFLAGS := -Wextra -Wall -Werror -fsanitize=address -fsanitize=undefined
+# LDFLAGS := -lreadline -fsanitize=address -fsanitize=undefined
 
 
 OBJDIR = ./obj

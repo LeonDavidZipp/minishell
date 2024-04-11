@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_ast.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 15:56:31 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:00:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,9 +102,7 @@ static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
 {
 	if (!root)
 		return (node);
-	if (node_is_operator(node->cmd)
-		// && node->cmd_type != REDIR_APPEND && node->cmd_type != REDIR_IN
-		// && node->cmd_type != REDIR_OUT && node->cmd_type != HEREDOC
+	if(node_is_operator(node->cmd_type)
 		&& priority(node->cmd, node->bracket_lvl)
 		>= priority(root->cmd, root->bracket_lvl))
 	{
