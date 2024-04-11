@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 17:07:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 08:28:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 			new_var = ft_strdup((*var)->key);
 		env_vars = ft_recalloc(env_vars, len + 2, len, sizeof(char *));
 		if (!env_vars)
-			return (NULL);
+			return (free(new_var), NULL);
 		env_vars[len] = ft_strjoin(new_var, (*var)->value);
 		free(new_var);
 	}

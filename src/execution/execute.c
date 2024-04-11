@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 16:31:18 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:51:30 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	execute(t_app_data *app, t_treenode *ast)
 
 	ret = 0;
 	pid_list = NULL;
+	ret = 0;
 	setup_fd(ast, app, &ret);
 	if (ret == 2 || g_exit_signal == 2)
 	{
@@ -630,7 +631,8 @@ static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 	else if (ft_strcmp(cmd, "exit") == 0)
 		builtin_exit(app, args);
 	else if (ft_strcmp(cmd, "export") == 0)
-		exit_code = builtin_export(ast_args, &app->env_vars, STDOUT_FILENO);
+		// exit_code = builtin_export(ast_args, &app->env_vars, STDOUT_FILENO);
+		exit_code = builtin_export(ast_args, &app, STDOUT_FILENO);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		exit_code = builtin_unset(args, app->env_vars);
 	else

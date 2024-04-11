@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 18:11:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 17:45:36 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,14 +146,16 @@ int			builtin_env(char *var_string, char ***env_vars);
 int			builtin_echo(char *args, int out_fd, t_app_data *app);
 void		builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
-int			builtin_export(char *var_string, char ***env_vars, int fd);
+int			builtin_export(char *var_string, t_app_data **app_data, int fd);
+// int			builtin_export(char *var_string, char ***env_vars, int fd);
 
 // environment variables
 char		**init_envp(char **env_vars);
 char		**update_env_vars(t_envvar **var, int *exit_code, char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
 int			unset_env_vars(char *keys_string, char ***env_vars);
-t_envvar	**split_env_vars(char *envp);
+// t_envvar	**split_env_vars(char *envp);
+t_envvar	**split_env_vars(char *envp, t_app_data **app_data);
 t_envvar	*split_env_var(char *envp);
 void		free_vars(t_envvar **vars);
 bool		var_name_valid(char *key);
@@ -195,7 +197,7 @@ t_treenode	*new_treenode(char *cmd, char *args,
 				t_tokentype cmd_type, int bracket_lvl);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
-bool		node_is_operator(char *cmd);
+bool		node_is_operator(t_tokentype type);
 int			priority(char *cmd, int bracket_lvl);
 
 // lexer
