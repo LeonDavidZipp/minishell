@@ -37,11 +37,11 @@ int	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 			{
 				i[2] = 0;
 				flag = true;
-				if (empty_entry(entry->d_name))
+				if (empty_entry(entry->d_name) == 1 || empty_entry(entry->d_name) == 3)
 					(*output)[i[1]++] = '"';
 				while (entry->d_name[i[2]])
 					(*output)[i[1]++] = entry->d_name[i[2]++];
-				if (empty_entry(entry->d_name))
+				if (empty_entry(entry->d_name) == 2 || empty_entry(entry->d_name) == 3)
 					(*output)[i[1]++] = '"';
 				(*output)[i[1]++] = ' ';
 			}
@@ -84,15 +84,6 @@ int	handle_wildcard(char *input, char **output, int *i)
 	free(pattern);
 	return (1);
 }
-
-// if ((data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0])));
-// handle in quotes
-// if ((data->input[data->i[0]] == '~' && !data->quotes[0] && !data->quotes[1]));
-// if ((data->input[data->i[0]] == '~')
-// handle before
-// 		&& ((data->i[0] == 0 || ft_isspace(data->input[data->i[0] - 1]))
-// handle after
-// 			&& ((data->i[0] < ft_strlen(data->input) - 1 && (ft_isspace(data->input[data->i[0] + 1]) || data->input[data->i[0] + 1] == '\0')))))
 
 void	handle_character(t_expand *data)
 {
