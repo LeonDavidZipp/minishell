@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 18:08:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/10 18:16:32 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ int	builtin_echo(char *args, int out_fd, t_app_data *app)
 	int		i;
 	int		len;
 
+	if (!args)
+	{
+		ft_fprintf(out_fd, "\n");
+		return (0);
+	}
 	args_split = split(args);
 	if (!args_split)
 		return (1);

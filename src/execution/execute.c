@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 18:07:01 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 16:24:03 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ int			handle_heredoc(t_treenode *node, t_app_data *app);
 int			is_builtin(char *cmd);
 int			is_redir(t_tokentype type);
 
-void	set_error_vars(t_treenode *node, char *err)
+void	set_error_vars(t_treenode *node, char *err, int val)
 {
-	node->err_val = errno;
+	node->err_val = val;
 	node->err = err;
 }
 
@@ -55,6 +55,7 @@ int	execute(t_app_data *app, t_treenode *ast)
 	t_pid_list	*pid_list;
 	int		ret;
 
+	ret = 0;
 	pid_list = NULL;
 	setup_fd(ast, app, &ret);
 	if (ret == 2 || g_exit_signal == 2)
@@ -254,12 +255,12 @@ int	handle_heredoc(t_treenode *node, t_app_data *app)
 	if (pipe(pipe_fd) == -1)
 	{
 		if (!node->left)
-			return (set_error_vars(node, "heredoc pipe error"), 1);
+			return (set_error_vars(node, "heredoc pipe error", errno), 1);
 		cmd_node = find_cmd_node(node->left);
 		if (cmd_node->cmd_type != CMD)
-			set_error_vars(node, "heredoc pipe error");
+			set_error_vars(node, "heredoc pipe error", errno);
 		else
-			set_error_vars(cmd_node, "heredoc pipe error");
+			set_error_vars(cmd_node, "heredoc pipe error", errno);
 	}
 	if (read_input(node->args, pipe_fd[1], app))
 	{
@@ -286,20 +287,20 @@ int	handle_heredoc(t_treenode *node, t_app_data *app)
 	return (0);
 }
 
-void	set_err(t_treenode *node, char *err)
+void	set_err(t_treenode *node, char *err, int val)
 {
 	t_treenode	*cmd_node;
 
 	if (!node->left)
 	{
-		set_error_vars(node, err);
+		set_error_vars(node, err, val);
 		return ;
 	}
 	cmd_node = find_cmd_node(node->left);
 	if (cmd_node->cmd_type != CMD)
-		set_error_vars(node, err);
+		set_error_vars(node, err, val);
 	else
-		set_error_vars(cmd_node, err);
+		set_error_vars(cmd_node, err, val);
 	return ;
 }
 
@@ -341,17 +342,42 @@ void	set_fd(t_treenode *node, int fd, int flag)
 	}
 }
 
+int	ambigious_redirect(char *str)
+{
+	int		i;
+	bool	s_quote;
+	bool	d_quote;
+
+	i = 0;
+	s_quote = false;
+	d_quote = false;
+	while (str[i])
+	{
+		handle_quotes(str[i], &s_quote, &d_quote);
+		if (str[i] == ' ' && !s_quote && !d_quote)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 int	setup_redir(t_treenode *node, t_app_data *app)
 {
 	int			tmp_fd;
 	char		*tmp;
 
-	tmp = expand_and_remove(node->args, app->last_exit_code, app->env_vars, 0);
+	int flags[2] = {0, 0};
+	char *tmp2 = expand(node->args, app->last_exit_code, app->env_vars, flags);
+	if (!tmp2)
+		return (1);
+	if (ambigious_redirect(tmp2))
+		return (set_err(node, ft_strdup(node->args), -1), free(tmp2), 1);
+	tmp = remove_quotes_in_place(tmp2);
 	if (node->cmd_type == REDIR_IN)
 	{
 		tmp_fd = open(tmp, O_RDONLY);
 		if (tmp_fd == -1)
-			return (set_err(node, tmp), 1);
+			return (set_err(node, tmp, errno), 1);
 		else
 			set_fd(node, tmp_fd, 2);
 	}
@@ -364,7 +390,7 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 		else
 			tmp_fd = open(tmp, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (tmp_fd == -1)
-			return (set_err(node, tmp), 1);
+			return (set_err(node, tmp, errno), 1);
 		else
 			set_fd(node, tmp_fd, 1);
 	}
@@ -406,7 +432,10 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 
 	if (ast->err_val != 0)
 	{
-		ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		if (ast->err_val == -1)
+			ft_fprintf(2, "%s: %s: ambiguous redirect\n", NAME, ast->err);
+		else
+			ft_fprintf(2, "%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		if (ast->in_fd != 0)
 			close(ast->in_fd);
 		if (ast->out_fd != 1)
@@ -510,7 +539,10 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 
 	if (ast->err_val != 0)
 	{
-		ft_fprintf(2,"%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
+		if (ast->err_val == -1)
+			ft_fprintf(2,"%s: %s: ambiguous redirect\n", NAME, ast->err);
+		else
+			ft_fprintf(2,"%s: %s: %s\n", NAME, ast->err, strerror(ast->err_val));
 		if (ast->in_fd != 0)
 			close(ast->in_fd);
 		if (ast->out_fd != 1)

@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 18:10:10 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 14:16:34 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,20 +156,18 @@ int	wildcard_size(char *input, int *i)
 	return (size);
 }
 
-// maybe add . checks in calc_wildcard_size, right now sometimes too much is counted
-
-int	empty_entry(char *entry)
+int	empty_entry(char *entry) // maybe rename because it doesn't check only complete empty entries
 {
-	int		i;
+	int	len;
 
-	i = 0;
-	while (entry[i])
-	{
-		if (entry[i] != ' ')
-			return (0);
-		i++;
-	}
-	return (1);
+	len = ft_strlen(entry);
+	if (entry[0] == ' ' && entry[len - 1] == ' ')
+		return (3);
+	else if (entry[0] == ' ')
+		return (1);
+	else if (entry[len - 1] == ' ')
+		return (2);
+	return (0);
 }
 
 int	calc_wildcard_size(DIR *dir, char *pattern, int position)
@@ -201,8 +199,10 @@ int	calc_wildcard_size(DIR *dir, char *pattern, int position)
 					flag = true;
 				}
 				size += ft_strlen(entry->d_name) + 1;
-				if (empty_entry(entry->d_name))
+				if (empty_entry(entry->d_name) == 3)
 					size += 2;
+				else if (empty_entry(entry->d_name) == 1 || empty_entry(entry->d_name) == 2)
+					size++;
 			}
 		}
 		entry = readdir(dir);
