@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 17:45:15 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 17:51:31 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,9 @@
 
 // handle cases where you expand a variable like export T="echo test" and then you run $T it should run echo test but that is a problem because we expand right before we execute the command
 // muss mir was schlaues überlegen
+
+// cgerling@2-D-4 minishell % echo -n .. | ./minishell
+// (null): ..: command not found
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);

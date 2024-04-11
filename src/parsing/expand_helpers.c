@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 14:16:34 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 16:58:09 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	get_new_size(char *input, int exit_code, char **env_vars, int *flags)
 	return (size);
 }
 
-int	is_valid_dollar(char *input, int i, bool *quotes)
+int	is_valid_dollar(char *input, int i, bool *quotes) // need to modify this, doesn't work correctly yet
 {
 	(void)quotes;
 	if (input[i] != '\0' && (input[i + 1] == '?' || ft_isalnum(input[i + 1]) || input[i + 1] == '_'))
