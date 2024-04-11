@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 18:07:01 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/11 08:26:03 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ int	execute(t_app_data *app, t_treenode *ast)
 	int		ret;
 
 	pid_list = NULL;
+	ret = 0;
 	setup_fd(ast, app, &ret);
 	if (ret == 2 || g_exit_signal == 2)
 	{
