@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/09 17:19:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 17:41:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,30 @@ static int		count_substr(char *s, char c);
 static char		**split_env_var_string(char *envp, char c);
 static char		*ft_split_str(const char *s, char c, int *i);
 
-t_envvar	**split_env_vars(char *envp)
+// t_envvar	**split_env_vars(char *envp)
+// {
+// 	t_envvar	**env_vars;
+// 	char		**keys_values;
+// 	int			len;
+
+// 	keys_values = split_env_var_string(envp, ' ');
+// 	if (!keys_values)
+// 		return (NULL);
+// 	len = ft_null_terminated_arr_len((void **)keys_values);
+// 	env_vars = ft_calloc((len + 1), sizeof(t_envvar *));
+// 	if (!env_vars)
+// 		return (ft_free_2d_arr((void **)keys_values), NULL);
+// 	len = -1;
+// 	while (keys_values[++len])
+// 	{
+// 		keys_values[len] = remove_quotes_in_place(keys_values[len]);
+// 		env_vars[len] = split_env_var(keys_values[len]);
+// 	}
+// 	ft_free_2d_arr((void **)keys_values);
+// 	return (env_vars);
+// }
+
+t_envvar	**split_env_vars(char *envp, t_app_data **app_data)
 {
 	t_envvar	**env_vars;
 	char		**keys_values;
@@ -32,7 +55,8 @@ t_envvar	**split_env_vars(char *envp)
 	len = -1;
 	while (keys_values[++len])
 	{
-		keys_values[len] = remove_quotes_in_place(keys_values[len]);
+		keys_values[len] = expand_and_remove_in_place(keys_values[len],
+			(*app_data)->last_exit_code, (*app_data)->env_vars, 0);
 		env_vars[len] = split_env_var(keys_values[len]);
 	}
 	ft_free_2d_arr((void **)keys_values);

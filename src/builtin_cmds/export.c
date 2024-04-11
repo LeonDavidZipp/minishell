@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/10 13:11:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 17:44:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,31 @@
 
 static void	print_vars(char **env_vars, int fd);
 
-int	builtin_export(char *var_string, char ***env_vars, int fd)
+// int	builtin_export(char *var_string, char ***env_vars, int fd)
+// {
+// 	t_envvar	**vars;
+// 	int			i;
+// 	int			exit_code;
+
+// 	exit_code = 0;
+// 	if (!var_string)
+// 	{
+// 		print_vars(*env_vars, fd);
+// 		return (exit_code);
+// 	}
+// 	vars = split_env_vars(var_string);
+// 	if (!vars)
+// 		return (1);
+// 	i = -1;
+// 	while (vars[++i])
+// 	{
+// 		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
+// 	}
+// 	free_vars(vars);
+// 	return (exit_code);
+// }
+
+int	builtin_export(char *var_string, t_app_data **app_data, int fd)
 {
 	t_envvar	**vars;
 	int			i;
@@ -23,16 +47,17 @@ int	builtin_export(char *var_string, char ***env_vars, int fd)
 	exit_code = 0;
 	if (!var_string)
 	{
-		print_vars(*env_vars, fd);
+		print_vars((*app_data)->env_vars, fd);
 		return (exit_code);
 	}
-	vars = split_env_vars(var_string);
+	vars = split_env_vars(var_string, app_data);
 	if (!vars)
 		return (1);
 	i = -1;
 	while (vars[++i])
 	{
-		*env_vars = update_env_vars(&(vars[i]), &exit_code, *env_vars);
+		(*app_data)->env_vars = update_env_vars(&(vars[i]), &exit_code,
+			(*app_data)->env_vars);
 	}
 	free_vars(vars);
 	return (exit_code);

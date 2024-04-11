@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 16:43:17 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/11 17:45:15 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -628,7 +628,8 @@ static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 	else if (ft_strcmp(cmd, "exit") == 0)
 		builtin_exit(app, args);
 	else if (ft_strcmp(cmd, "export") == 0)
-		exit_code = builtin_export(ast_args, &app->env_vars, STDOUT_FILENO);
+		// exit_code = builtin_export(ast_args, &app->env_vars, STDOUT_FILENO);
+		exit_code = builtin_export(ast_args, &app, STDOUT_FILENO);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		exit_code = builtin_unset(args, app->env_vars);
 	else
