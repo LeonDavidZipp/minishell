@@ -6,13 +6,12 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:56:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 12:52:06 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 12:54:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// implement cd ~ and cd -
 static int	handle_minus(char ***env_vars, int *last_exit_code);
 static int	update_pwds(char ***env_vars, int *last_exit_code, bool in_minus);
 
@@ -36,7 +35,6 @@ int	builtin_cd(char *path, char ***env_vars, int *last_exit_code)
 	}
 	return (update_pwds(env_vars, last_exit_code, false));
 }
-
 
 static int	handle_minus(char ***env_vars, int *last_exit_code)
 {
