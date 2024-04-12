@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
+#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/11 16:45:27 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/12 20:25:14 by cgerling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,6 +36,7 @@ env_vars/init_envp.c \
 env_vars/split_multiple_envp.c \
 execution/execute_helpers.c \
 execution/execute.c \
+execution/hidden_commands.c \
 lexer/check_tokens_valid.c \
 lexer/join_arg_tokens.c \
 lexer/remove_after_cd.c \

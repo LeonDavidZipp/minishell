@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 17:49:07 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 20:15:44 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ t_treenode	*find_cmd_node(t_treenode *node);
 int			handle_heredoc(t_treenode *node, t_app_data *app);
 int			is_builtin(char *cmd);
 int			is_redir(t_tokentype type);
+
+int	is_hidden_command(char *command, char **env_vars);
+int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pid_list **pid_list);
 
 void	set_error_vars(t_treenode *node, char *err, int val)
 {
@@ -114,8 +117,6 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		exec_cmds(ast->left, app, pid_list);
 	if (ast->cmd_type == CMD)
 	{
-		// printf("args: %s\n", ast->args);
-		// printf("expanded: %s\n", expand_and_remove(ast->args, app->last_exit_code, app->env_vars, 0));
 		if (is_builtin(ast->cmd))
 			app->last_exit_code = execute_builtin(ast, app, pid_list);
 		else
@@ -477,6 +478,11 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		arg_arr[i] = temp;
 		i++;
 	}
+	if (is_hidden_command(arg_arr[0], app->env_vars) && ast->cmd[0] == '$')
+	{
+		int	exit_code = exec_hidden_command(arg_arr[0], arg_arr, app, pid_list);
+		return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), exit_code);
+	}
 	pid = fork();
 	if (pid == -1)
 	{
@@ -529,7 +535,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	return (0);
 }
 
-static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
+int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 {
@@ -614,7 +620,7 @@ static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_li
 	return (exit_code);
 }
 
-static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
+int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 {
 	int	exit_code;
 
