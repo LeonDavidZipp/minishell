@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_type.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 15:02:36 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 16:48:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ static t_tokentype	check_cmd_or_arg(char *content, t_tokentype prev_type)
 			|| ft_strcmp(temp, "unset") == 0
 			|| ft_strcmp(temp, "env") == 0
 			|| ft_strcmp(temp, "exit") == 0)
-		&& prev_type != CMD)
+		&& prev_type != CMD && prev_type != ARG
+		&& prev_type != REDIR_OUT && prev_type != HEREDOC)
 		return (free(temp), CMD);
 	else if (prev_type == FIRST || prev_type == PIPE || prev_type == AND
 		|| prev_type == OR || prev_type == LEFT_BRACKET)

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 18:58:24 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 16:47:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ t_token	*tokenize(char *input, int *exit_code)
 	}
 	ft_free_2d_arr((void **)token_contents);
 	first = remove_after_cd(switch_tokens_for_redir(first));
-	// first = remove_after_cd(first);
-	// first = switch_tokens_for_redir(first);
 	*exit_code = check_tokens_valid(first);
-	// return (join_after_ls(join_after_echo(join_arg_tokens(first))));
 	return (join_arg_tokens(first));
 }
 
