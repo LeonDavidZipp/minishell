@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 13:53:37 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:49:07 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,8 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		exec_cmds(ast->left, app, pid_list);
 	if (ast->cmd_type == CMD)
 	{
+		// printf("args: %s\n", ast->args);
+		// printf("expanded: %s\n", expand_and_remove(ast->args, app->last_exit_code, app->env_vars, 0));
 		if (is_builtin(ast->cmd))
 			app->last_exit_code = execute_builtin(ast, app, pid_list);
 		else
@@ -366,6 +368,8 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 	char		*tmp;
 
 	int flags[2] = {0, 0};
+	if (!node->args)
+		return (1);
 	char *tmp2 = expand(node->args, app->last_exit_code, app->env_vars, flags);
 	if (!tmp2)
 		return (1);
@@ -620,13 +624,12 @@ static int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 	else if (ft_strcmp(cmd, "pwd") == 0)
 		exit_code = builtin_pwd(args);
 	else if (ft_strcmp(cmd, "echo") == 0)
-		exit_code = builtin_echo(ast_args, STDOUT_FILENO, app);
+		exit_code = builtin_echo(ast_args, STDOUT_FILENO, &app);
 	else if (ft_strcmp(cmd, "env") == 0)
 		exit_code = builtin_env(args, &app->env_vars);
 	else if (ft_strcmp(cmd, "exit") == 0)
 		builtin_exit(app, args);
 	else if (ft_strcmp(cmd, "export") == 0)
-		// exit_code = builtin_export(ast_args, &app->env_vars, STDOUT_FILENO);
 		exit_code = builtin_export(ast_args, &app, STDOUT_FILENO);
 	else if (ft_strcmp(cmd, "unset") == 0)
 		exit_code = builtin_unset(args, app->env_vars);

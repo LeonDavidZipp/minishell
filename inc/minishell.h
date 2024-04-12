@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 17:45:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 10:57:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,18 +143,16 @@ void		exec_cmds(t_treenode *ast, t_app_data *app,
 int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
 int			builtin_pwd(char *args);
 int			builtin_env(char *var_string, char ***env_vars);
-int			builtin_echo(char *args, int out_fd, t_app_data *app);
+int			builtin_echo(char *args, int out_fd, t_app_data **app);
 void		builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
 int			builtin_export(char *var_string, t_app_data **app_data, int fd);
-// int			builtin_export(char *var_string, char ***env_vars, int fd);
 
 // environment variables
 char		**init_envp(char **env_vars);
 char		**update_env_vars(t_envvar **var, int *exit_code, char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
 int			unset_env_vars(char *keys_string, char ***env_vars);
-// t_envvar	**split_env_vars(char *envp);
 t_envvar	**split_env_vars(char *envp, t_app_data **app_data);
 t_envvar	*split_env_var(char *envp);
 void		free_vars(t_envvar **vars);
