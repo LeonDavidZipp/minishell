@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 16:58:09 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 13:54:14 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int	get_new_size(char *input, int exit_code, char **env_vars, int *flags)
 	}
 	return (size);
 }
+
+// ein dollar ohne quotes schreibt nur das dollar sign wenn nichts mehr dahinter steht ansonsten versucht es immer zu expanden???
 
 int	is_valid_dollar(char *input, int i, bool *quotes) // need to modify this, doesn't work correctly yet
 {

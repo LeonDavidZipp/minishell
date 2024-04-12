@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/11 17:49:32 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:22:32 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,17 @@ int	var_expand(t_expand *data)
 	if (value)
 	{
 		j = 0;
-			while (value[j])
+		while (value[j])
+		{
+			if (!data->quotes[1] && data->i[1] == 0 && j == 0 && value[j] == ' ')
+				j++;
+			if ((j > 0 && value[j] == ' ' && value[j - 1] == ' ' && !data->quotes[1]))
 			{
-				if ((j > 0 && value[j] == ' ' && value[j - 1] == ' ' && !data->quotes[1]))
-				{
-					j++;
-					continue ;
-				}
-				(*data->output)[(data->i[1])++] = value[j++];
+				j++;
+				continue ;
 			}
+			(*data->output)[(data->i[1])++] = value[j++];
+		}
 		free(name);
 	}
 	else
@@ -82,8 +84,6 @@ int	handle_dollar(t_expand *data)
 	}
 	else if (data->input[data->i[0]] == '$' || data->input[data->i[0]] == '~')
 	{
-		// if (!var_expand(data->input + data->i[0],
-		// 		data->output, &data->i[1], data->env_vars))
 		if (!var_expand(data))
 			return (free(*data->output), 0);
 		data->i[2] = 1;
