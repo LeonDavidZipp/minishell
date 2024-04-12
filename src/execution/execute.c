@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 17:13:28 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 18:06:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,10 @@
 // need to protect dup2 and dup!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // exit code is different for cat /dev/urandom | > out to bash
 // exit minishell when too many open fds?!
-// implement stderr redirection 2>[file]
+// implement stderr redirection 2>[file] maybe, but not necessary
 // ctrl c sets exit code to 1 used on an empty line
 
-// env needs error handling for when it is called with arguments (the subjetct states: env with no options or arguments)
 // heredoc still needs to open when a syntax error occurs
-
-// if there is time, if you type a path to a file that does not exist, the error message in bash is for example:
-// bash: /bin/echo test1: No such file or directory instead of command not found error
-// probably can be included in the find_path function
 
 // heredoc ctrl d cant't exit on a line where something is written
 
@@ -373,7 +368,7 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 	char		*tmp;
 
 	int flags[2] = {0, 0};
-	if (node->args == NULL)
+	if (!node->args)
 		return (1);
 	char *tmp2 = expand(node->args, app->last_exit_code, app->env_vars, flags);
 	if (!tmp2)
