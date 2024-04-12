@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/12 10:47:51 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 12:51:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ int	var_expand(t_expand *data)
 
 int	handle_dollar(t_expand *data)
 {
-	printf("handle_dollar\n");
 	if (data->input[data->i[0]] == '$' && data->input[data->i[0] + 1] == '?')
 	{
 		if (!exit_code_expand(data->output, &data->i[1], data->exit_code))
