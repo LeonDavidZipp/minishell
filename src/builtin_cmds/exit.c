@@ -6,17 +6,17 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 10:27:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 10:57:42 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void	free_app_data(t_app_data **app);
-static void	handle_first_arg_non_number(t_app_data **app, char **arg_arr);
-static void	handle_too_many_args(t_app_data **app, char **arg_arr);
+static void	free_app_data(t_app_data *app);
+static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr);
+static void	handle_too_many_args(t_app_data *app, char **arg_arr);
 
-void	builtin_exit(t_app_data **app, char *args)
+void	builtin_exit(t_app_data *app, char *args)
 {
 	// free memory!!!!!!!!!!!!!!!!
 	// free memory!!!!!!!!!!!!!!!!
@@ -44,15 +44,15 @@ void	builtin_exit(t_app_data **app, char *args)
 	}
 }
 
-static void	free_app_data(t_app_data **app_data)
+static void	free_app_data(t_app_data *app_data)
 {
-	ft_free_2d_arr((void **)(*app_data)->env_vars);
-	(*app_data)->env_vars = NULL;
-	free((*app_data)->input);
-	(*app_data)->input = NULL;
+	ft_free_2d_arr((void **)app_data->env_vars);
+	app_data->env_vars = NULL;
+	free(app_data->input);
+	app_data->input = NULL;
 }
 
-static void	handle_first_arg_non_number(t_app_data **app, char **arg_arr)
+static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 {
 	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
 			NAME, arg_arr[0]);
@@ -61,7 +61,7 @@ static void	handle_first_arg_non_number(t_app_data **app, char **arg_arr)
 	exit(255);
 }
 
-static void	handle_too_many_args(t_app_data **app, char **arg_arr)
+static void	handle_too_many_args(t_app_data *app, char **arg_arr)
 {
 	ft_fprintf(2, "%s: exit: too many arguments\n", NAME);
 	ft_free_2d_arr((void **)arg_arr);

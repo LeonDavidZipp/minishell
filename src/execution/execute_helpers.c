@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/08 15:07:42 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 12:07:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ char	*find_path(char *command, char **envp)
 		return (ft_fprintf(2, "%s: %s: %s\n", NAME, command, strerror(errno)), NULL);
 	}
 	temp = ft_split(search_path_variable(envp), ':');
+	if (!temp)
+		return (ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command), NULL);
 	i = 0;
 	while (temp[i] != NULL)
 	{

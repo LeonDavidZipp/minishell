@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 10:23:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 11:03:15 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ int	builtin_echo(char *args, int out_fd, t_app_data **app)
 	int		len;
 
 	if (!args)
-	{
-		ft_fprintf(out_fd, "\n");
-		return (0);
-	}
+		return (ft_fprintf(out_fd, "\n"), 0);
 	args_split = split(args);
 	if (!args_split)
 		return (1);
@@ -49,6 +46,5 @@ int	builtin_echo(char *args, int out_fd, t_app_data **app)
 	}
 	if (!n_flag)
 		ft_fprintf(out_fd, "\n");
-	ft_free_2d_arr((void **)args_split);
-	return (0);
+	return (ft_free_2d_arr((void **)args_split), 0);
 }
