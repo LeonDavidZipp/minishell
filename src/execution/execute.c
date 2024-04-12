@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 10:58:15 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 17:13:28 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -373,6 +373,8 @@ int	setup_redir(t_treenode *node, t_app_data *app)
 	char		*tmp;
 
 	int flags[2] = {0, 0};
+	if (node->args == NULL)
+		return (1);
 	char *tmp2 = expand(node->args, app->last_exit_code, app->env_vars, flags);
 	if (!tmp2)
 		return (1);
