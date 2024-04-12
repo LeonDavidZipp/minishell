@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 16:42:47 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/12 10:23:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	builtin_echo(char *args, int out_fd, t_app_data *app)
+int	builtin_echo(char *args, int out_fd, t_app_data **app)
 {
 	char	**args_split;
 	bool	n_flag;
@@ -35,7 +35,7 @@ int	builtin_echo(char *args, int out_fd, t_app_data *app)
 	while (args_split[++i])
 	{
 		args_split[i] = expand_and_remove_in_place(args_split[i],
-							app->last_exit_code, app->env_vars, 0);
+							(*app)->last_exit_code, (*app)->env_vars, 0);
 		if (!non_flag && args_split[i][0] == '-' && args_split[i][1] == 'n'
 			&& ft_str_includes_only(&args_split[i][2], "n"))
 			n_flag = true;
