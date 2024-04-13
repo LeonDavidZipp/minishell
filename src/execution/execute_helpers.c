@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/12 17:07:29 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/12 19:07:27 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,40 @@ char	*find_path(char *command, char **envp)
 	}
 	ft_free_2d_arr((void **)temp);
 	return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
+}
+
+char	*find_path_no_err(char *command, char **envp)
+{
+	char	*path;
+	char	**temp;
+	int		i;
+
+	if (command == NULL || *command == '\0')
+		return (NULL);
+	if (ft_strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
+		return (NULL);
+	}
+	temp = ft_split(search_path_variable(envp), ':');
+	if (!temp)
+		return (NULL);
+	i = 0;
+	while (temp[i] != NULL)
+	{
+		path = ft_strjoin(temp[i], "/");
+		path = ft_join_in_place(path, command);
+		if (access(path, X_OK) == 0)
+		{
+			ft_free_2d_arr((void **)temp);
+			return (path);
+		}
+		free(path);
+		i++;
+	}
+	ft_free_2d_arr((void **)temp);
+	return (NULL);
 }
 
 int	is_builtin(char *cmd)
