@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 17:23:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 17:28:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	unset_env_vars(char *keys_string, char ***env_vars)
 	i = -1;
 	while (keys[++i])
 	{
-		if (var_name_valid(keys[i], false))
+		if (var_name_valid(keys[i], false) == 0)
 			unset_env_var(keys[i], env_vars);
 		else
 		{
