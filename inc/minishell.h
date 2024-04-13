@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 16:40:23 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 17:20:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 # define SYN_MSG "syntax error near unexpected token"
 # define SYN_MSG "syntax error near unexpected token"
 # define INVALID_ID "not a valid identifier"
+# define INVALID_OP "invalid option"
 # define DOT_MSG ": .: filename argument required\n"
 # define DOT_MSG2 ".: usage: . filename [arguments]\n"
 
