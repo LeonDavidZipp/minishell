@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 17:41:35 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 16:48:21 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,34 @@ t_envvar	**split_env_vars(char *envp, t_app_data **app_data)
 	return (env_vars);
 }
 
+// t_envvar	*split_env_var(char *envp)
+// {
+// 	t_envvar	*result;
+// 	int			len1;
+
+// 	result = (t_envvar *)malloc(sizeof(t_envvar));
+// 	if (!envp || !result)
+// 		return (NULL);
+// 	if (envp[0] == '=')
+// 	{
+// 		result->key = ft_strdup(envp);
+// 		result->value = NULL;
+// 		result->includes_equal = false;
+// 		return (result);
+// 	}
+// 	len1 = 0;
+// 	while (envp[len1] && envp[len1] != '=')
+// 		len1++;
+// 	result->key = ft_substr(envp, 0, len1);
+// 	result->value = NULL;
+// 	result->includes_equal = (envp[len1] && envp[len1] == '=');
+// 	if (envp[len1] && envp[len1] == '=' && !envp[len1 + 1])
+// 		result->value = ft_strdup("");
+// 	else if (envp[len1] && envp[len1] == '=' && envp[len1 + 1])
+// 		result->value = ft_substr(envp, len1 + 1, ft_strlen(envp) - len1);
+// 	return (result);
+// }
+
 t_envvar	*split_env_var(char *envp)
 {
 	t_envvar	*result;
@@ -71,17 +99,34 @@ t_envvar	*split_env_var(char *envp)
 	result = (t_envvar *)malloc(sizeof(t_envvar));
 	if (!envp || !result)
 		return (NULL);
-	if (envp[0] == '=')
+	if (envp[0] == '=' || envp[0] == '+')
 	{
 		result->key = ft_strdup(envp);
 		result->value = NULL;
 		result->includes_equal = false;
+		result->includes_plus = false;
 		return (result);
 	}
 	len1 = 0;
+	result->includes_plus = false;
 	while (envp[len1] && envp[len1] != '=')
+	{
+		if (envp[len1] == '+' && envp[len1 + 1] && envp[len1 + 1] == '=')
+			result->includes_plus = true;
+		else if (envp[len1] == '+')
+		{
+			result->key = ft_strdup(envp);
+			result->value = NULL;
+			result->includes_equal = false;
+			result->includes_plus = false;
+			return (result);
+		}
 		len1++;
-	result->key = ft_substr(envp, 0, len1);
+	}
+	if (result->includes_plus == false)
+		result->key = ft_substr(envp, 0, len1);
+	else
+		result->key = ft_substr(envp, 0, len1 - 1);
 	result->value = NULL;
 	result->includes_equal = (envp[len1] && envp[len1] == '=');
 	if (envp[len1] && envp[len1] == '=' && !envp[len1 + 1])

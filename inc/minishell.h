@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 10:57:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 16:40:23 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ typedef struct s_envvar
 	char				*key;
 	char				*value;
 	bool				includes_equal;
+	bool				includes_plus;
 }			t_envvar;
 
 typedef struct s_expand
@@ -156,7 +157,7 @@ int			unset_env_vars(char *keys_string, char ***env_vars);
 t_envvar	**split_env_vars(char *envp, t_app_data **app_data);
 t_envvar	*split_env_var(char *envp);
 void		free_vars(t_envvar **vars);
-bool		var_name_valid(char *key);
+// bool		var_name_valid(char *key);
 
 // parsing && input handling
 int			is_space(char c);

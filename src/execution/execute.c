@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 11:51:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 15:58:42 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		exec_cmds(ast->left, app, pid_list);
 	if (ast->cmd_type == CMD)
 	{
+		// printf("%s is builtin: %d\n", ast->cmd, is_builtin(ast->cmd));
 		if (is_builtin(ast->cmd))
 			app->last_exit_code = execute_builtin(ast, app, pid_list);
 		else
@@ -446,7 +447,9 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 			close(ast->out_fd);
 		return (1);
 	}
+	// ast->cmd = expand_and_remove_in_place(ast->cmd, app->last_exit_code, app->env_vars, 0);
 	cmd_node = ft_strjoin(ast->cmd, " ");
+	// cmd_node = ft_strjoin(expand_and_remove_in_place(ast->cmd, app->last_exit_code, app->env_vars, 0), " ");
 	if (!cmd_node)
 		return (1);
 	if (ast->args)

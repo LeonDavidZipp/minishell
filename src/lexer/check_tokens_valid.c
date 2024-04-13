@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 14:09:15 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 14:09:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ static int	check_and_or_pipe_redir_out_append(t_token *current)
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE)
 			return (ft_fprintf(2, "%s: %s '%s'\n",
-					NAME, SYN_MSG, current->next->content), 2);
+					NAME, SYN_MSG, current->next->content), 127);
 	}
 	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
 	{
