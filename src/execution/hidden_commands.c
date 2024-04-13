@@ -17,7 +17,9 @@ int	is_hidden_command(char *command, char **env_vars)
 
 	// printf("command: |%s|\n", command);
 	// changed by lzipp
-	if (ft_strlen(command) == 0)
+	if (!command)
+		return (0);
+	else if (ft_strlen(command) == 0)
 		return (2);
 	// end of change
 	i = 0;

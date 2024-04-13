@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 11:01:15 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/13 11:51:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -481,8 +481,18 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	if (is_hidden_command(arg_arr[0], app->env_vars) && ast->cmd[0] == '$')
 	{
 		// changed by lzipp
-		if (is_hidden_command(arg_arr[0], app->env_vars) == 2)
+		if (is_hidden_command(arg_arr[0], app->env_vars) == 2 && !arg_arr[1])
 			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), 0);
+		else if (is_hidden_command(arg_arr[0], app->env_vars) == 2 && arg_arr[1])
+		{
+			int	exit_code = exec_hidden_command(arg_arr[1], arg_arr, app, pid_list);
+			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), exit_code);
+		}
+		// int i = -1;
+		// while (arg_arr[++i])
+		// {
+		// 	printf("arg_arr[%d]: %s\n", i, arg_arr[i]);
+		// }
 		// end of change
 		int	exit_code = exec_hidden_command(arg_arr[0], arg_arr, app, pid_list);
 		return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), exit_code);
