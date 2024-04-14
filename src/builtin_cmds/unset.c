@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 11:54:39 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:13:25 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 14:40:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,29 +24,3 @@ int	builtin_unset(char *keys, char **env_vars)
 	exit_code = unset_multiple_env_vars(keys, &env_vars);
 	return (exit_code);
 }
-
-// int	main(void)
-// {
-//     t_env_var	*env_vars;
-
-//     env_vars = NULL;
-//     update_env_vars("TEST1", "test1", &env_vars);
-//     update_env_vars("TEST2", "test2", &env_vars);
-//     update_env_vars("TEST3", "test3", &env_vars);
-//     t_env_var	*temp = env_vars;
-//     while (temp)
-//     {
-//         printf("%s=%s\n", temp->key, temp->value);
-//         temp = temp->next;
-//     }
-//     printf("----------------\n");
-//     builtin_unset("TEST1 TEST2", &env_vars);
-//     temp = env_vars;
-//     while (temp)
-//     {
-//         printf("%s=%s\n", temp->key, temp->value);
-//         temp = temp->next;
-//     }
-//     printf("----------------\n");
-//     return (0);
-// }

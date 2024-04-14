@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
+#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/12 20:25:14 by cgerling         ###   ########.fr        #
+#    Updated: 2024/04/14 14:39:51 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,8 +31,8 @@ builtin_cmds/exit.c \
 builtin_cmds/export.c \
 builtin_cmds/pwd.c \
 builtin_cmds/unset.c \
+env_vars/env_var_helpers.c \
 env_vars/env_vars.c \
-env_vars/init_envp.c \
 env_vars/split_multiple_envp.c \
 execution/execute_helpers.c \
 execution/execute.c \
