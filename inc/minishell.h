@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 11:33:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 14:13:25 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ int			builtin_export(char *var_string, t_app_data **app_data, int fd);
 char		**init_envp(char **env_vars);
 char		**update_env_vars(t_envvar **var, int *exit_code, char **env_vars);
 void		unset_env_var(char *key, char ***env_vars);
-int			unset_env_vars(char *keys_string, char ***env_vars);
+int			unset_multiple_env_vars(char *keys_string, char ***env_vars);
 t_envvar	**split_env_vars(char *envp, t_app_data **app_data);
 t_envvar	*split_env_var(char *envp);
 void		free_vars(t_envvar **vars);

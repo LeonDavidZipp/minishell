@@ -1,14 +1,14 @@
 # mstest m | grep ❌ | grep "minishell("
 123:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(2)  bash(127) ]  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:319  
 140:  STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(1)  bash(0) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:360                               irrelevant: our env is not allowed to take args
-224:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(127) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:552  
-231:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:566  
-29:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_pipelines.sh:96  
-35:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(141)  bash(1) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_pipelines.sh:142  
+224:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(127) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:552                             irrelevant: we are not allowed to handle ";"
+231:  STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(1)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:566                               fixed: without breaking anything else
+29:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_pipelines.sh:96                               probably ignore: this would need complete restructuring of token validatation and execution
+35:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(141)  bash(1) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_pipelines.sh:142                            irrelevant: our exit code 141 is even better then the bashes, since pipe error specified instead of general error
 10:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(1) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_redirs.sh:22                                  fixed: without breaking anything else
-7:    STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(2)  bash(0) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:19  
-26:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(126)  bash(127) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:84  
-17:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(127)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:37  
-20:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43  
-21:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46  
-22:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49 
+7:    STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(2)  bash(0) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:19                                   
+26:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(126)  bash(127) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:84                               
+17:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(127)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:37                         
+20:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43                           
+21:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46                           
+22:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49                           

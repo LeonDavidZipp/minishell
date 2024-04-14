@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 17:28:33 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 14:13:25 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 		ft_fprintf(2, "%s: export: `%s': %s\n", NAME, (*var)->key, INVALID_ID);
 		*exit_code = 1;
 	}
-	else
+	else if ((*var)->key[0] && (*var)->key[1])
 	{
 		ft_fprintf(2, "%s: export: `%c%c': %s\n", NAME, (*var)->key[0], (*var)->key[1], INVALID_OP);
 		ft_fprintf(2, "export: usage: export [-nf] [name[=value] ...] or export -p\n");
@@ -104,7 +104,7 @@ void	unset_env_var(char *key, char ***env_vars)
 	}
 }
 
-int	unset_env_vars(char *keys_string, char ***env_vars)
+int	unset_multiple_env_vars(char *keys_string, char ***env_vars)
 {
 	char	**keys;
 	int		i;
@@ -117,12 +117,15 @@ int	unset_env_vars(char *keys_string, char ***env_vars)
 	i = -1;
 	while (keys[++i])
 	{
-		if (var_name_valid(keys[i], false) == 0)
+		exit_code = var_name_valid(keys[i], false);
+		if (exit_code == 0)
 			unset_env_var(keys[i], env_vars);
-		else
-		{
+		else if (exit_code == 1)
 			ft_fprintf(2, "%s: unset: `%s': %s\n", NAME, keys[i], INVALID_ID);
-			exit_code = 1;
+		else if (keys[i][0] && keys[i][1] && exit_code == 2)
+		{
+			ft_fprintf(2, "%s: unset: `%c%c': %s\n", NAME, keys[i][0], keys[i][2], INVALID_OP);
+			ft_fprintf(2, "unset: usage: unset [-f] [-v] [name ...]\n");
 		}
 	}
 	ft_free_2d_arr((void **)keys);
