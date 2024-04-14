@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:47:43 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 16:23:01 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ t_envvar	*split_env_var(char *envp);
 void		free_vars(t_envvar **vars);
 int			var_name_valid(char *key, bool includes_equal);
 void		handle_non_zero(char **key, int *exit_code);
+t_envvar	*fill_result(t_envvar *result, char *envp);
+t_envvar	*fill_result2(t_envvar *result, char *envp, int len);
 
 // parsing && input handling
 int			is_space(char c);
@@ -185,7 +187,6 @@ void		rearrange_following_element(t_token **current,
 t_treenode	*switch_heredocs(t_treenode *lintree);
 
 // tokenization
-// t_token		*tokenize(char *input);
 t_token		*tokenize(char *input, int *exit_code);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);

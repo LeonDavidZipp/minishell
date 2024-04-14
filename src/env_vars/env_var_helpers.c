@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:45:28 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:46:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 16:23:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,28 @@ void	handle_non_zero(char **key, int *exit_code)
 		ft_fprintf(2, "%s: export: `%c%c': %s\n%s%s", NAME, (*key)[0],
 			(*key)[1], INVALID_OP, EXPORT_USG, EXPORT_USG2);
 	}
+}
+
+t_envvar	*fill_result(t_envvar *result, char *envp)
+{
+	result->key = ft_strdup(envp);
+	result->value = NULL;
+	result->includes_equal = false;
+	result->includes_plus = false;
+	return (result);
+}
+
+t_envvar	*fill_result2(t_envvar *result, char *envp, int len)
+{
+	if (result->includes_plus == false)
+		result->key = ft_substr(envp, 0, len);
+	else
+		result->key = ft_substr(envp, 0, len - 1);
+	result->value = NULL;
+	result->includes_equal = (envp[len] && envp[len] == '=');
+	if (envp[len] && envp[len] == '=' && !envp[len + 1])
+		result->value = ft_strdup("");
+	else if (envp[len] && envp[len] == '=' && envp[len + 1])
+		result->value = ft_substr(envp, len + 1, ft_strlen(envp) - len);
+	return (result);
 }

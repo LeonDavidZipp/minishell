@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 16:18:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 16:23:52 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,12 @@ t_envvar	**split_env_vars(char *envp, t_app_data **app_data)
 	while (keys_values[++len])
 	{
 		keys_values[len] = expand_and_remove_in_place(keys_values[len],
-			(*app_data)->last_exit_code, (*app_data)->env_vars, 0);
+				(*app_data)->last_exit_code, (*app_data)->env_vars, 0);
 		env_vars[len] = split_env_var(keys_values[len]);
 	}
 	ft_free_2d_arr((void **)keys_values);
 	return (env_vars);
 }
-
-static t_envvar	*fill_result2(t_envvar *result, char *envp, int len);
-static t_envvar	*fill_result(t_envvar *result, char *envp);
 
 t_envvar	*split_env_var(char *envp)
 {
@@ -52,7 +49,7 @@ t_envvar	*split_env_var(char *envp)
 	if (!envp || !result)
 		return (NULL);
 	if (envp[0] == '=' || envp[0] == '+')
-		return(fill_result(result, envp));
+		return (fill_result(result, envp));
 	len = 0;
 	result->includes_plus = false;
 	while (envp[len] && envp[len] != '=')
@@ -60,36 +57,10 @@ t_envvar	*split_env_var(char *envp)
 		if (envp[len] == '+' && envp[len + 1] && envp[len + 1] == '=')
 			result->includes_plus = true;
 		else if (envp[len] == '+')
-			return(fill_result(result, envp));
+			return (fill_result(result, envp));
 		len++;
 	}
 	return (fill_result2(result, envp, len));
-}
-
-static t_envvar	*fill_result(t_envvar *result, char *envp)
-{
-	result->key = ft_strdup(envp);
-	result->value = NULL;
-	result->includes_equal = false;
-	result->includes_plus = false;
-	return (result);
-}
-
-static t_envvar	*fill_result2(t_envvar *result, char *envp, int len)
-{
-	if (result->includes_plus == false)
-		result->key = ft_substr(envp, 0, len);
-	else
-		result->key = ft_substr(envp, 0, len - 1);
-
-	result->value = NULL;
-	result->includes_equal = (envp[len] && envp[len] == '=');
-
-	if (envp[len] && envp[len] == '=' && !envp[len + 1])
-		result->value = ft_strdup("");
-	else if (envp[len] && envp[len] == '=' && envp[len + 1])
-		result->value = ft_substr(envp, len + 1, ft_strlen(envp) - len);
-	return (result);
 }
 
 static char	**split_env_var_string(char *envp, char c)
