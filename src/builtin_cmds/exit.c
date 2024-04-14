@@ -6,15 +6,17 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 10:57:42 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 11:18:17 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static void	free_app_data(t_app_data *app);
-static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr);
-static void	handle_too_many_args(t_app_data *app, char **arg_arr);
+// static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr);
+// static void	handle_too_many_args(t_app_data *app, char **arg_arr);
+static void	handle_first_arg_non_number(char **arg_arr);
+static void	handle_too_many_args(char **arg_arr);
 
 void	builtin_exit(t_app_data *app, char *args)
 {
@@ -33,9 +35,11 @@ void	builtin_exit(t_app_data *app, char *args)
 	if (!arg_arr)
 		exit(1) ;
 	if (!ft_str_isnumber(arg_arr[0]))
-		handle_first_arg_non_number(app, arg_arr);
+		// handle_first_arg_non_number(app, arg_arr);
+		handle_first_arg_non_number(arg_arr);
 	else if (ft_null_terminated_arr_len((void **)arg_arr) > 1)
-		handle_too_many_args(app, arg_arr);
+		// handle_too_many_args(app, arg_arr);
+		handle_too_many_args(arg_arr);
 	else
 	{
 	free_app_data(app);
@@ -52,19 +56,34 @@ static void	free_app_data(t_app_data *app_data)
 	app_data->input = NULL;
 }
 
-static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
+// static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
+// {
+// 	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
+// 			NAME, arg_arr[0]);
+// 	ft_free_2d_arr((void **)arg_arr);
+// 	free_app_data(app);
+// 	exit(255);
+// }
+
+// static void	handle_too_many_args(t_app_data *app, char **arg_arr)
+// {
+// 	ft_fprintf(2, "%s: exit: too many arguments\n", NAME);
+// 	ft_free_2d_arr((void **)arg_arr);
+// 	free_app_data(app);
+// 	exit(1);
+// }
+
+static void	handle_first_arg_non_number(char **arg_arr)
 {
+	// ft_printf("exit\n");
 	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
 			NAME, arg_arr[0]);
 	ft_free_2d_arr((void **)arg_arr);
-	free_app_data(app);
-	exit(255);
 }
 
-static void	handle_too_many_args(t_app_data *app, char **arg_arr)
+static void	handle_too_many_args(char **arg_arr)
 {
+	// ft_printf("exit\n");
 	ft_fprintf(2, "%s: exit: too many arguments\n", NAME);
 	ft_free_2d_arr((void **)arg_arr);
-	free_app_data(app);
-	exit(1);
 }
