@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:41:22 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 14:45:44 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@
 # define INVALID_OP "invalid option"
 # define DOT_MSG ": .: filename argument required\n"
 # define DOT_MSG2 ".: usage: . filename [arguments]\n"
+# define UNSET_USG "unset: usage: unset [-f] [-v] [name ...]\n"
+# define EXPORT_USG "export: usage: export [-nf] "
+# define EXPORT_USG2 "[name[=value] ...] or export -p\n"
 
 # define LEXER_ERR "Error: Failed to tokenize input\n"
 # define PARSER_ERR "Error: Failed to parse input\n"

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:45:28 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:37:47 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 14:46:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,7 @@ void	handle_non_zero(char **key, int *exit_code)
 		ft_fprintf(2, "%s: export: `%s': %s\n", NAME, *key, INVALID_ID);
 	else if ((*key)[0] && (*key)[1] && *exit_code == 2)
 	{
-		ft_fprintf(2, "%s: export: `%c%c': %s\n", NAME, (*key)[0],
-			(*key)[1], INVALID_OP);
-		ft_fprintf(2, "export: usage: export"
-			"[-nf] [name[=value] ...] or export -p\n");
+		ft_fprintf(2, "%s: export: `%c%c': %s\n%s%s", NAME, (*key)[0],
+			(*key)[1], INVALID_OP, EXPORT_USG, EXPORT_USG2);
 	}
 }
