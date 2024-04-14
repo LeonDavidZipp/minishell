@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:13:25 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 14:16:38 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,6 +126,7 @@ int	unset_multiple_env_vars(char *keys_string, char ***env_vars)
 		{
 			ft_fprintf(2, "%s: unset: `%c%c': %s\n", NAME, keys[i][0], keys[i][2], INVALID_OP);
 			ft_fprintf(2, "unset: usage: unset [-f] [-v] [name ...]\n");
+			break ;
 		}
 	}
 	ft_free_2d_arr((void **)keys);
