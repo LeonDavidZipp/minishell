@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 14:25:50 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 17:42:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int argc, char **argv, char **envp)
 	// print_logo();
 	while (true)
 	{
+		// printf("first exit code: %d\n", app_data.last_exit_code);
 		g_exit_signal = 0;
 		get_input(&app_data);
 		if (!isatty(fileno(stdin)) && app_data.input == NULL)
@@ -40,7 +41,9 @@ int	main(int argc, char **argv, char **envp)
 		if (app_data.input == NULL)
 			continue ;
 		lexer(&app_data);
+		// printf("second exit code: %d\n", app_data.last_exit_code);
 	}
+	// printf("before return exit code: %d\n", app_data.last_exit_code);
 	return (app_data.last_exit_code);
 }
 
