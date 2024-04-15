@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 14:09:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 12:15:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	check_tokens_valid(t_token *t)
 
 	if (t->type == OR || t->type == AND || t->type == PIPE)
 		return (ft_fprintf(2, "%s: %s '%s'\n", NAME, SYN_MSG, t->content), 258);
-	else if (ft_strcmp(t->content, ".") == 0 && !t->next)
-		return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
-	else if (ft_strcmp(t->content, "..") == 0 && !t->next)
-		return (ft_fprintf(2, "%s: ..: command not found\n"), 127);
+	// else if (ft_strcmp(t->content, ".") == 0 && !t->next)
+	// 	return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
+	// else if (ft_strcmp(t->content, "..") == 0 && !t->next)
+	// 	return (ft_fprintf(2, "%s: ..: command not found\n"), 127);
 	cur = t;
 	exit_code = 0;
 	while (cur && exit_code == 0)
@@ -46,28 +46,31 @@ int	check_tokens_valid(t_token *t)
 	return (exit_code);
 }
 
-static int	check_and_or_pipe_redir_out_append(t_token *current)
+static int	check_and_or_pipe_redir_out_append(t_token *cur)
 {
-	if (current->type == AND || current->type == OR || current->type == PIPE)
+	if (cur->type == AND || cur->type == OR || cur->type == PIPE)
 	{
-		if (!current->next)
+		if (!cur->next)
 			return (ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYN_MSG), 2);
-		else if (current->next->type == AND || current->next->type == OR
-			|| current->next->type == PIPE)
+		else if (cur->next->type == AND || cur->next->type == OR
+			|| cur->next->type == PIPE)
 			return (ft_fprintf(2, "%s: %s '%s'\n",
-					NAME, SYN_MSG, current->next->content), 127);
+					NAME, SYN_MSG, cur->next->content), 2);
 	}
-	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
+	else if (cur->type == REDIR_OUT && cur->next && cur->next->type == PIPE)
+		return (ft_fprintf(2, "%s: %s '%s'\n",
+				NAME, SYN_MSG, cur->next->content), 127);
+	else if (cur->type == REDIR_OUT || cur->type == REDIR_APPEND)
 	{
-		if (!current->next)
+		if (!cur->next)
 			return (ft_fprintf(2, "%s: %s 'newline'\n", NAME, SYN_MSG), 2);
-		else if (current->next->type == AND || current->next->type == OR
-			|| current->next->type == PIPE || current->next->type == REDIR_IN
-			|| current->next->type == REDIR_OUT
-			|| current->next->type == REDIR_APPEND
-			|| current->next->type == HEREDOC)
+		else if (cur->next->type == AND || cur->next->type == OR
+			|| cur->next->type == PIPE || cur->next->type == REDIR_IN
+			|| cur->next->type == REDIR_OUT
+			|| cur->next->type == REDIR_APPEND
+			|| cur->next->type == HEREDOC)
 			return (ft_fprintf(2, "%s: %s '%s'\n",
-					NAME, SYN_MSG, current->next->content), 2);
+					NAME, SYN_MSG, cur->next->content), 2);
 	}
 	return (0);
 }
