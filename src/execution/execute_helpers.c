@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/14 17:47:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 12:45:55 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*find_path(char *command, char **envp)
 	{
 		// return (ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command), NULL);
 		// changed by lzipp
-		printf("here\n");
+		// printf("here\n");
 		ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command);
 		exit(1);
 		// end of change
