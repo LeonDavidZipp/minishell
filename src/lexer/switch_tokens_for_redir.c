@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/06 14:41:35 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:25:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 	return (reassign_type(tokens));
 }
 
-static bool	rearrange(bool *first_rearrange, t_token **before_first, t_token **tokens,
-		t_token **current)
+static bool	rearrange(bool *first_rearrange, t_token **before_first,
+		t_token **tokens, t_token **current)
 {
 	if (!*before_first && rearrange_condition(*current))
 	{
@@ -57,14 +57,14 @@ static bool	rearrange(bool *first_rearrange, t_token **before_first, t_token **t
 			*tokens = *before_first;
 			*first_rearrange = false;
 		}
-		return true;
+		return (true);
 	}
 	else if (*before_first && rearrange_condition(*current))
 	{
 		rearrange_following_element(current, before_first);
-		return true;
+		return (true);
 	}
-	return false;
+	return (false);
 }
 
 static void	skip_tokens(t_token **before_first, t_token **current)
