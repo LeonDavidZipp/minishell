@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 12:15:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 12:19:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,10 @@ int	check_tokens_valid(t_token *t)
 
 	if (t->type == OR || t->type == AND || t->type == PIPE)
 		return (ft_fprintf(2, "%s: %s '%s'\n", NAME, SYN_MSG, t->content), 258);
+	// else if (ft_strcmp(t->content, ".") == 0 && !t->next)
+	// 	return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
+	// else if (ft_strcmp(t->content, "..") == 0 && !t->next)
+	// 	return (ft_fprintf(2, "%s: ..: command not found\n"), 127);
 	// else if (ft_strcmp(t->content, ".") == 0 && !t->next)
 	// 	return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
 	// else if (ft_strcmp(t->content, "..") == 0 && !t->next)
