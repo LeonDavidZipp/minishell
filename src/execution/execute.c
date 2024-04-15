@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 11:31:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 12:15:52 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,9 @@ int	execute(t_app_data *app, t_treenode *ast)
 	}
 	// debug_printtree(ast, 0);
 	exec_cmds(ast, app, &pid_list);
-	wait_and_free(app, &pid_list);
+	// printf("last exit code before wait: %d\n", app->last_exit_code);
+	if (pid_list)
+		wait_and_free(app, &pid_list);
 	return (0);
 }
 
@@ -117,7 +119,6 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		exec_cmds(ast->left, app, pid_list);
 	if (ast->cmd_type == CMD)
 	{
-		// printf("%s is builtin: %d\n", ast->cmd, is_builtin(ast->cmd));
 		if (is_builtin(ast->cmd))
 			app->last_exit_code = execute_builtin(ast, app, pid_list);
 		else
@@ -529,6 +530,16 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		stat(arg_arr[0], &path_stat);
 		if (S_ISDIR(path_stat.st_mode))
 		{
+			if (ft_strcmp(arg_arr[0], ".") == 0)
+			{
+				ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2);
+				exit(127);
+			}
+			if (ft_strcmp(arg_arr[0], "..") == 0)
+			{
+				ft_fprintf(2, "%s: ..: command not found\n", NAME);
+				exit(127);
+			}
 			ft_fprintf(2, "%s: %s: is a directory\n", NAME, arg_arr[0]);
 			exit(126);
 		}

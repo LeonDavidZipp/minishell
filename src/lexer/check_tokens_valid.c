@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_tokens_valid.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 22:01:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/13 14:09:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 11:24:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ int	check_tokens_valid(t_token *t)
 
 	if (t->type == OR || t->type == AND || t->type == PIPE)
 		return (ft_fprintf(2, "%s: %s '%s'\n", NAME, SYN_MSG, t->content), 258);
-	else if (ft_strcmp(t->content, ".") == 0 && !t->next)
-		return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
-	else if (ft_strcmp(t->content, "..") == 0 && !t->next)
-		return (ft_fprintf(2, "%s: ..: command not found\n"), 127);
+	// else if (ft_strcmp(t->content, ".") == 0 && !t->next)
+	// 	return (ft_fprintf(2, "%s%s%s", NAME, DOT_MSG, DOT_MSG2), 127);
+	// else if (ft_strcmp(t->content, "..") == 0 && !t->next)
+	// 	return (ft_fprintf(2, "%s: ..: command not found\n"), 127);
 	cur = t;
 	exit_code = 0;
 	while (cur && exit_code == 0)
@@ -55,7 +55,7 @@ static int	check_and_or_pipe_redir_out_append(t_token *current)
 		else if (current->next->type == AND || current->next->type == OR
 			|| current->next->type == PIPE)
 			return (ft_fprintf(2, "%s: %s '%s'\n",
-					NAME, SYN_MSG, current->next->content), 127);
+					NAME, SYN_MSG, current->next->content), 2);
 	}
 	else if (current->type == REDIR_OUT || current->type == REDIR_APPEND)
 	{
