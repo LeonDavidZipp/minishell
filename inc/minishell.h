@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:29:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:37:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,13 +52,18 @@ typedef enum e_tokentype
 	PIPE,
 	AND,
 	OR,
-	REDIR_OUT, // >
-	REDIR_IN, // <
-	REDIR_APPEND, // >>
-	HEREDOC, // <<
+	REDIR_OUT,
+	REDIR_IN,
+	REDIR_APPEND,
+	HEREDOC,
 	CMD,
 	ARG
 }			t_tokentype;
+
+// REDIR_OUT, // >
+// REDIR_IN, // <
+// REDIR_APPEND, // >>
+// HEREDOC, // <<
 
 typedef struct s_token
 {
