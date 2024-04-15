@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 12:15:52 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:10:51 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,7 @@ int	execute(t_app_data *app, t_treenode *ast)
 	}
 	// debug_printtree(ast, 0);
 	exec_cmds(ast, app, &pid_list);
-	// printf("last exit code before wait: %d\n", app->last_exit_code);
-	if (pid_list)
-		wait_and_free(app, &pid_list);
+	wait_and_free(app, &pid_list);
 	return (0);
 }
 
@@ -78,23 +76,26 @@ void	wait_and_free(t_app_data *app, t_pid_list **pid_list)
 	t_pid_list	*tmp;
 	t_pid_list	*next;
 	int			status;
+	int			exit_code;
 
-	(void)app;
 	g_exit_signal = 1;
 	tmp = *pid_list;
+	exit_code = 0;
 	while (tmp)
 	{
 		waitpid(tmp->pid, &status, 0);
 		if (WIFEXITED(status))
-			app->last_exit_code = WEXITSTATUS(status);
+			exit_code = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			app->last_exit_code = 128 + WTERMSIG(status);
+			exit_code = 128 + WTERMSIG(status);
 		}
 		next = tmp->next;
 		free(tmp);
 		tmp = next;
 	}
+	if (app->last_exit_code == 0)
+		app->last_exit_code = exit_code;
 	*pid_list = NULL;
 	g_exit_signal = 0;
 }
@@ -217,7 +218,6 @@ int	setup_fd(t_treenode *node, t_app_data *app, int *ret)
 		if (pipe(pipe_fd) == -1)
 		{
 			ft_fprintf(2, "%s: pipe error: %s\n", NAME, strerror(errno));
-			exit(1); // if we exit here, ret can be removed
 			*ret = 2;
 			return (2);
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_and_remove.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:52:00 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/10 16:59:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:35:31 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ char	*remove_quotes(char *str)
 	while (str[i[0]])
 	{
 		handle_quotes(str[i[0]], &flags[0], &flags[1]);
-		if (str[i[0]] == '\'' && !flags[1])
+		if ((str[i[0]] == '\'' && !flags[1]) || (str[i[0]] == '\"' && !flags[0]))
 		{
 			i[0]++;
 			continue ;
 		}
-		if (str[i[0]] == '\"' && !flags[0])
+		if (str[i[0]] == '\t' && (flags[0] || flags[1]))
 		{
 			i[0]++;
 			continue ;
