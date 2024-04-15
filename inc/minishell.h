@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 16:23:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:29:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,26 +41,6 @@
 # define UNSET_USG "unset: usage: unset [-f] [-v] [name ...]\n"
 # define EXPORT_USG "export: usage: export [-nf] "
 # define EXPORT_USG2 "[name[=value] ...] or export -p\n"
-
-# define LEXER_ERR "Error: Failed to tokenize input\n"
-# define PARSER_ERR "Error: Failed to parse input\n"
-# define EXEC_ERR "Error: Failed to execute command\n"
-# define FORK_ERR "Error: Failed to fork process\n"
-# define PIPE_ERR "Error: Failed to create pipe\n"
-# define REDIR_ERR "Error: Failed to redirect\n"
-# define CMD_NOT_FOUND "Error: Command not found\n"
-# define CMD_NOT_EXEC "Error: Command not executable\n"
-# define CMD_NOT_DIR "Error: Command is a directory\n"
-# define CMD_NOT_FILE "Error: Command is not a file\n"
-# define CMD_NOT_PERM "Error: Permission denied\n"
-# define CMD_NOT_PIPE "Error: Pipe failed\n"
-# define CMD_NOT_CLOSE "Error: Failed to close file descriptor\n"
-# define CMD_NOT_DUP "Error: Failed to duplicate file descriptor\n"
-# define CMD_NOT_WAIT "Error: Failed to wait for child process\n"
-# define CMD_NOT_SIGNAL "Error: Failed to handle signal\n"
-# define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
-# define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
-# define CMD_NOT_EXIT "Error: Failed to exit\n"
 
 extern int	g_exit_signal;
 
@@ -148,7 +128,6 @@ int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
 int			builtin_pwd(char *args);
 int			builtin_env(char *var_string, char ***env_vars);
 int			builtin_echo(char *args, int out_fd, t_app_data **app);
-// void		builtin_exit(t_app_data *app, char *args);
 int			builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
 int			builtin_export(char *var_string, t_app_data **app_data, int fd);

@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 17:42:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:27:12 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static void	get_input(t_app_data *app_data)
 {
 	char	*input;
 
-	// (void)app_data;
 	if (isatty(fileno(stdin)))
 		input = readline(PROMPT);
 	else
@@ -82,7 +81,6 @@ static void	get_input(t_app_data *app_data)
 	add_history(input);
 	app_data->input = input;
 }
-
 static void	init_app_data(t_app_data *app_data, char **envp)
 {
 	app_data->env_vars = init_envp(envp);
