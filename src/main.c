@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 17:42:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 19:00:33 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	main(int argc, char **argv, char **envp)
 			break ;
 		if (app_data.input == NULL)
 			continue ;
+		// printf("input: %s\n", app_data.input);
 		lexer(&app_data);
 		// printf("second exit code: %d\n", app_data.last_exit_code);
 	}
@@ -51,7 +52,6 @@ static void	get_input(t_app_data *app_data)
 {
 	char	*input;
 
-	// (void)app_data;
 	if (isatty(fileno(stdin)))
 		input = readline(PROMPT);
 	else
@@ -82,12 +82,12 @@ static void	get_input(t_app_data *app_data)
 	add_history(input);
 	app_data->input = input;
 }
-
 static void	init_app_data(t_app_data *app_data, char **envp)
 {
 	app_data->env_vars = init_envp(envp);
 	app_data->last_exit_code = 0;
 	app_data->input = NULL;
+	app_data->noninteractive = !isatty(fileno(stdin));
 }
 
 // static void	print_logo(void)

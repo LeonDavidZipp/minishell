@@ -1,12 +1,13 @@
 #include "../../inc/minishell.h"
 
-int			is_builtin(char *cmd);
-char		*find_path_no_err(char *command, char **envp);
-char		*find_path(char *command, char **envp);
-int			execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
-int			hidden_builtin(char *hidden_command, t_app_data *app);
-int			hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list);
-int			add_to_pid_list(pid_t pid, t_pid_list **pidlist);
+int		is_builtin_no_expand(char *cmd);
+int		is_builtin(char *cmd, int exit_code, char **env_vars);
+char	*find_path_no_err(char *command, char **envp);
+char	*find_path(char *command, char **envp);
+int		execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
+int		hidden_builtin(char *hidden_command, t_app_data *app);
+int		hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list);
+int		add_to_pid_list(pid_t pid, t_pid_list **pidlist);
 
 int	is_hidden_command(char *command, char **env_vars)
 {
@@ -37,7 +38,7 @@ int	is_hidden_command(char *command, char **env_vars)
 	{
 		// printf("hidden command\n");
 		potencial_command = ft_substr(command, 0, i);
-		if (is_builtin(potencial_command))
+		if (is_builtin_no_expand(potencial_command))
 		{
 			free(potencial_command);
 			return (1);
@@ -77,7 +78,7 @@ int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pi
 	}
 	else
 		tmp = ft_strdup(hidden_command);
-	if (is_builtin(check))
+	if (is_builtin_no_expand(check))
 	{
 		exit_code = hidden_builtin(tmp, app);
 		return (free(check), free(tmp), exit_code);

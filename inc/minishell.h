@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 16:23:01 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:59:57 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,26 +42,6 @@
 # define EXPORT_USG "export: usage: export [-nf] "
 # define EXPORT_USG2 "[name[=value] ...] or export -p\n"
 
-# define LEXER_ERR "Error: Failed to tokenize input\n"
-# define PARSER_ERR "Error: Failed to parse input\n"
-# define EXEC_ERR "Error: Failed to execute command\n"
-# define FORK_ERR "Error: Failed to fork process\n"
-# define PIPE_ERR "Error: Failed to create pipe\n"
-# define REDIR_ERR "Error: Failed to redirect\n"
-# define CMD_NOT_FOUND "Error: Command not found\n"
-# define CMD_NOT_EXEC "Error: Command not executable\n"
-# define CMD_NOT_DIR "Error: Command is a directory\n"
-# define CMD_NOT_FILE "Error: Command is not a file\n"
-# define CMD_NOT_PERM "Error: Permission denied\n"
-# define CMD_NOT_PIPE "Error: Pipe failed\n"
-# define CMD_NOT_CLOSE "Error: Failed to close file descriptor\n"
-# define CMD_NOT_DUP "Error: Failed to duplicate file descriptor\n"
-# define CMD_NOT_WAIT "Error: Failed to wait for child process\n"
-# define CMD_NOT_SIGNAL "Error: Failed to handle signal\n"
-# define CMD_NOT_ENV "Error: Failed to handle envpment variable\n"
-# define CMD_NOT_MALLOC "Error: Failed to allocate memory\n"
-# define CMD_NOT_EXIT "Error: Failed to exit\n"
-
 extern int	g_exit_signal;
 
 typedef enum e_tokentype
@@ -72,13 +52,18 @@ typedef enum e_tokentype
 	PIPE,
 	AND,
 	OR,
-	REDIR_OUT, // >
-	REDIR_IN, // <
-	REDIR_APPEND, // >>
-	HEREDOC, // <<
+	REDIR_OUT,
+	REDIR_IN,
+	REDIR_APPEND,
+	HEREDOC,
 	CMD,
 	ARG
 }			t_tokentype;
+
+// REDIR_OUT, // >
+// REDIR_IN, // <
+// REDIR_APPEND, // >>
+// HEREDOC, // <<
 
 typedef struct s_token
 {
@@ -109,6 +94,7 @@ typedef struct s_app_data
 	char				**env_vars;
 	int					last_exit_code;
 	char				*input;
+	int					noninteractive;
 }			t_app_data;
 
 typedef struct s_pid_list
@@ -148,7 +134,6 @@ int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
 int			builtin_pwd(char *args);
 int			builtin_env(char *var_string, char ***env_vars);
 int			builtin_echo(char *args, int out_fd, t_app_data **app);
-// void		builtin_exit(t_app_data *app, char *args);
 int			builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
 int			builtin_export(char *var_string, t_app_data **app_data, int fd);
@@ -187,14 +172,14 @@ void		rearrange_following_element(t_token **current,
 t_treenode	*switch_heredocs(t_treenode *lintree);
 
 // tokenization
-t_token		*tokenize(char *input, int *exit_code);
+t_token		*tokenize(char *input, int *exit_code, int *err_loc);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*join_after_echo(t_token *tokens);
 t_token		*join_after_ls(t_token *tokens);
 t_token		*remove_after_cd(t_token *tokens);
 void		free_tokens(t_token *token);
 t_tokentype	token_type(char *content, t_tokentype prev_type);
-int			check_tokens_valid(t_token *tokens);
+int			check_tokens_valid(t_token *tokens, int *err_loc);
 
 // abstract syntax tree
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);

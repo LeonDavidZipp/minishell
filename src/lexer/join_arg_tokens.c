@@ -6,60 +6,23 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 11:00:18 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 17:28:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:24:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void process_tokens(t_token **tokens, t_token **join, t_token **prev,
+static void	process_tokens(t_token **tokens, t_token **join, t_token **prev,
 				bool *prev_cmd);
 static void	join_tokens_helper(t_token **join, t_token **prev,
 				t_token **tokens);
-
-// t_token	*join_arg_tokens(t_token *tokens)
-// {
-// 	t_token		*first;
-// 	t_token		*prev;
-// 	t_token		*join;
-// 	bool 		prev_cmd;
-
-// 	first = tokens;
-// 	prev = NULL;
-// 	join = NULL;
-// 	prev_cmd = false;
-// 	while (tokens)
-// 	{
-// 		if (tokens->type == CMD && prev_cmd == false)
-// 		{
-// 			prev_cmd = true;
-// 			tokens = tokens->next;
-// 			if (!tokens)
-// 				break ;
-// 		}
-// 		if (node_is_operator(tokens->type))
-// 			prev_cmd = false;
-// 		if (prev_cmd == true)
-// 			join_tokens_helper(&join, &prev, &tokens);
-// 		else
-// 		{
-// 			join = NULL;
-// 			prev = tokens;
-// 			prev->next = tokens->next;
-// 			tokens = tokens->next;
-// 		}
-// 		if (first == tokens && tokens->type == ARG)
-// 			first = join;
-// 	}
-// 	return (first);
-// }
 
 t_token	*join_arg_tokens(t_token *tokens)
 {
 	t_token		*first;
 	t_token		*prev;
 	t_token		*join;
-	bool 		prev_cmd;
+	bool		prev_cmd;
 
 	first = tokens;
 	prev = NULL;
@@ -80,7 +43,7 @@ t_token	*join_arg_tokens(t_token *tokens)
 		if (first == tokens && tokens->type == ARG)
 			first = join;
 	}
-	return first;
+	return (first);
 }
 
 void	process_tokens(t_token **tokens, t_token **join, t_token **prev,

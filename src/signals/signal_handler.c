@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/08 10:41:07 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/15 14:31:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,10 @@ void	signal_handler(void)
 
 void	handle_ctrl_c(int signal)
 {
-	char eof = 4;
+	char	eof;
+
 	(void)signal;
+	eof = 4;
 	printf("\n");
 	if (g_exit_signal == 0)
 	{

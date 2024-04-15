@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/15 14:18:47 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:52:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,21 @@ char	*find_path_no_err(char *command, char **envp)
 	return (NULL);
 }
 
-int	is_builtin(char *cmd)
+int	is_builtin(char *cmd, int exit_code, char **env_vars)
+{
+	char	*tmp;
+
+	tmp = expand_and_remove(cmd, exit_code, env_vars, 0);
+	if (ft_strcmp(tmp, "cd") == 0 || ft_strcmp(tmp, "pwd") == 0
+		|| ft_strcmp(tmp, "echo") == 0 || ft_strcmp(tmp, "env") == 0
+		|| ft_strcmp(tmp, "exit") == 0 || ft_strcmp(tmp, "export") == 0
+		|| ft_strcmp(tmp, "unset") == 0)
+		return (free(tmp), 1);
+	free(tmp);
+	return (0);
+}
+
+int	is_builtin_no_expand(char *cmd)
 {
 	char	*tmp;
 

@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 14:21:13 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 16:47:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 18:15:24 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static t_token		*new_token(char *content, t_token *prev);
+t_token		*new_token(char *content, t_token *prev);
 
-t_token	*tokenize(char *input, int *exit_code)
+t_token	*tokenize(char *input, int *exit_code, int *err_loc)
 {
 	char			**token_contents;
 	t_token			*current;
@@ -39,7 +39,7 @@ t_token	*tokenize(char *input, int *exit_code)
 	}
 	ft_free_2d_arr((void **)token_contents);
 	first = remove_after_cd(switch_tokens_for_redir(first));
-	*exit_code = check_tokens_valid(first);
+	*exit_code = check_tokens_valid(first, err_loc);
 	return (join_arg_tokens(first));
 }
 
@@ -56,7 +56,7 @@ void	free_tokens(t_token *token)
 	}
 }
 
-static t_token	*new_token(char *content, t_token *prev)
+t_token	*new_token(char *content, t_token *prev)
 {
 	t_token		*token;
 

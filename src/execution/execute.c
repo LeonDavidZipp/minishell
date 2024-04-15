@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:10:51 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/15 16:50:56 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ char		*find_path(char *command, char **envp);
 void		wait_and_free(t_app_data *app, t_pid_list **pid_list);
 t_treenode	*find_cmd_node(t_treenode *node);
 int			handle_heredoc(t_treenode *node, t_app_data *app);
-int			is_builtin(char *cmd);
+// int			is_builtin(char *cmd);
+int		is_builtin(char *cmd, int exit_code, char **env_vars);
 int			is_redir(t_tokentype type);
 
 int	is_hidden_command(char *command, char **env_vars);
@@ -120,7 +121,7 @@ void exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		exec_cmds(ast->left, app, pid_list);
 	if (ast->cmd_type == CMD)
 	{
-		if (is_builtin(ast->cmd))
+		if (is_builtin(ast->cmd, app->last_exit_code, app->env_vars))
 			app->last_exit_code = execute_builtin(ast, app, pid_list);
 		else
 			app->last_exit_code = execute_execve(ast, app, pid_list);

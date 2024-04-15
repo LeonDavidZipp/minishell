@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/25 15:28:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 16:48:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/15 14:25:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ t_tokentype	token_type(char *content, t_tokentype prev_type)
 static t_tokentype	check_cmd_or_arg(char *content, t_tokentype prev_type)
 {
 	char	*temp;
+
 	temp = remove_quotes(content);
 	if ((ft_strcmp(temp, "echo") == 0 || ft_strcmp(temp, "cd") == 0
 			|| ft_strcmp(temp, "pwd") == 0
