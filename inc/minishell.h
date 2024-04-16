@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 14:17:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:12:33 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,5 +213,8 @@ int			is_valid_dollar(char *input, int i, bool *quotes);
 int			wildcard_size(char *input, int *i);
 int			empty_entry(char *entry);
 int			calc_wildcard_size(DIR *dir, char *pattern, int position);
+int			process_dir_entries(DIR *dir, char *pattern, char **output,
+				int *i);
+int			handle_wildcard(char *input, char **output, int *i);
 
 #endif

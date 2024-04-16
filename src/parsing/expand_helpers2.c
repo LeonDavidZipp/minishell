@@ -6,11 +6,14 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:02:42 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 14:19:58 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 16:01:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static void	handle_pattern(bool *flag, int *size, int position,
+				struct dirent **entry);
 
 int	wildcard_size(char *input, int *i)
 {
@@ -55,13 +58,9 @@ int	calc_wildcard_size(DIR *dir, char *pattern, int position)
 	struct dirent	*entry;
 	int				size;
 	bool			flag;
-	bool			s_quote;
-	bool			d_quote;
 	int				i;
 
 	flag = false;
-	s_quote = false;
-	d_quote = false;
 	size = 0;
 	i = 0;
 	entry = readdir(dir);
@@ -69,23 +68,55 @@ int	calc_wildcard_size(DIR *dir, char *pattern, int position)
 	{
 		while (pattern[i] == '\'' || pattern[i] == '"')
 			i++;
-		if (pattern[i] == '.' || (entry->d_name[0] != '.' || (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
+		if (pattern[i] == '.' || (entry->d_name[0] != '.'
+				|| (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
 		{
-			if (match(pattern, entry->d_name, s_quote, d_quote))
-			{
-				if (!flag)
-				{
-					size -= position;
-					flag = true;
-				}
-				size += ft_strlen(entry->d_name) + 1;
-				if (empty_entry(entry->d_name) == 3)
-					size += 2;
-				else if (empty_entry(entry->d_name) == 1 || empty_entry(entry->d_name) == 2)
-					size++;
-			}
+			if (match(pattern, entry->d_name, false, false))
+				handle_pattern(&flag, &size, position, &entry);
 		}
 		entry = readdir(dir);
 	}
 	return (size);
+}
+
+int	handle_wildcard(char *input, char **output, int *i)
+{
+	DIR				*dir;
+	char			*pattern;
+	int				position;
+	int				start;
+
+	start = 0;
+	pattern = get_pattern(input, &i[0], &position, &start);
+	if (!pattern)
+		return (free(output), 0);
+	dir = opendir(".");
+	if (dir == NULL)
+		return (free(output), 0);
+	i[1] -= position;
+	if (!process_dir_entries(dir, pattern, output, i))
+	{
+		while (!is_space(input[start]))
+			(*output)[i[1]++] = input[start++];
+		i[1]++;
+	}
+	closedir(dir);
+	free(pattern);
+	return (1);
+}
+
+static void	handle_pattern(bool *flag, int *size, int position,
+				struct dirent **entry)
+{
+	if (!(*flag))
+	{
+		*size -= position;
+		*flag = true;
+	}
+	(*size) += ft_strlen((*entry)->d_name) + 1;
+	if (empty_entry((*entry)->d_name) == 3)
+		(*size) += 2;
+	else if (empty_entry((*entry)->d_name) == 1
+		|| empty_entry((*entry)->d_name) == 2)
+		(*size)++;
 }

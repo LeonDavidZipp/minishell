@@ -6,13 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 21:41:13 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/16 14:33:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 15:34:57 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	handle_wildcard(char **pattern, char **string,
+static bool	handle_wildcard2(char **pattern, char **string,
 				bool *s_quote, bool *d_quote);
 
 void	handle_quotes(char c, bool *s_quote, bool *d_quote)
@@ -63,7 +63,7 @@ bool	match(char *pattern, char *string, bool s_quote, bool d_quote)
 			continue ;
 		}
 		if (!s_quote && !d_quote && *pattern == '*')
-			return (handle_wildcard(&pattern, &string, &s_quote, &d_quote));
+			return (handle_wildcard2(&pattern, &string, &s_quote, &d_quote));
 		else if (*pattern == *string)
 		{
 			pattern++;
@@ -79,7 +79,7 @@ bool	match(char *pattern, char *string, bool s_quote, bool d_quote)
 	return (*pattern == *string);
 }
 
-static bool	handle_wildcard(char **pattern, char **string,
+static bool	handle_wildcard2(char **pattern, char **string,
 				bool *s_quote, bool *d_quote)
 {
 	while (**pattern == '*')
