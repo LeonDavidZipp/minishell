@@ -16,27 +16,22 @@ int	is_hidden_command(char *command, char **env_vars)
 	char	*potencial_path;
 	char	*potencial_command;
 
-	// printf("command: |%s|\n", command);
-	// changed by lzipp
 	if (!command)
 		return (0);
 	else if (ft_strlen(command) == 0)
 		return (2);
-	// end of change
-	i = 0;
+	i = -1;
 	flag = false;
-	while (command[i])
+	while (command[++i])
 	{
 		if (command[i] == ' ')
 		{
 			flag = true;
 			break ;
 		}
-		i++;
 	}
 	if (flag)
 	{
-		// printf("hidden command\n");
 		potencial_command = ft_substr(command, 0, i);
 		if (is_builtin_no_expand(potencial_command))
 		{
@@ -51,11 +46,11 @@ int	is_hidden_command(char *command, char **env_vars)
 			return (1);
 		}
 	}
-	// printf("no hidden command\n");
 	return (0);
 }
 
-int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pid_list **pid_list)
+int	exec_hidden_command(char *hidden_command, char **args,
+		t_app_data *app, t_pid_list **pid_list)
 {
 	char	*check;
 	char	*tmp;
@@ -66,14 +61,13 @@ int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pi
 	while (hidden_command[i] && hidden_command[i] != ' ')
 		i++;
 	check = ft_substr(hidden_command, 0, i);
-	i = 0;
+	i = -1;
 	if (args[1])
 	{
-		while (args[i])
+		while (args[++i])
 		{
 			tmp = ft_strjoin(hidden_command, " "); // NULL checks
 			tmp = ft_join_in_place(tmp, args[i]);
-			i++;
 		}
 	}
 	else
@@ -102,7 +96,8 @@ int	hidden_builtin(char *hidden_command, t_app_data *app)
 		i++;
 	command = ft_substr(hidden_command, 0, i); // NULL checks
 	args = ft_strdup(hidden_command + i);
-	exp_args = expand_and_remove(args, app->last_exit_code, app->env_vars, 0);
+	exp_args = expand_and_remove(args, app->last_exit_code,
+		app->env_vars, 0);
 	exit_code = execute_cmd(command, exp_args, args, app);
 	free(command);
 	free(args);
@@ -121,13 +116,15 @@ int	hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list)
 
 	flags[0] = 0;
 	flags[1] = 1;
-	tmp = expand(hidden_command, app->last_exit_code, app->env_vars, flags); // NULL checks
+	tmp = expand(hidden_command, app->last_exit_code,
+		app->env_vars, flags); // NULL checks
 	arg_arr = split(tmp);
 	free(tmp);
 	i = 0;
 	while (arg_arr[i])
 	{
-		tmp = expand_and_remove(arg_arr[i], app->last_exit_code, app->env_vars, 0);
+		tmp = expand_and_remove(arg_arr[i], app->last_exit_code,
+			app->env_vars, 0);
 		if (!tmp)
 			return (ft_free_2d_arr((void **)arg_arr), 1);
 		free(arg_arr[i]);
@@ -152,7 +149,8 @@ int	hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list)
 		if (access(arg_arr[0], X_OK) == 0)
 			execve(arg_arr[0], arg_arr, app->env_vars);
 		else
-			execve(find_path(arg_arr[0], app->env_vars, &flag), arg_arr, app->env_vars);
+			execve(find_path(arg_arr[0], app->env_vars, &flag), arg_arr,
+				app->env_vars);
 		exit(127);
 	}
 	else
