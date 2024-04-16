@@ -8,8 +8,8 @@
 ;   30:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:96    									hidden command not working | fixed
 ;   50:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:147   									hidden command not working | fixed
 ;   67:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:189   									irrelevant ???
-;   78:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:219   									hidden command not working | fixed
-;   79:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:222   									hidden command not working | irrelevant
+;  78:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:219   									hidden command not working | fixed
+; 79:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/10_parsing_hell.sh:222   									hidden command not working | irrelevant | fixed
 ;   27:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:59   										irrelevant
 ;   28:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:61   										irrelevant
 ;   29:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_builtins.sh:63   										irrelevant
@@ -33,11 +33,11 @@
 ;   21:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:59  											irrelevant ???: output the same, could recreate the error | fixed
 ;   95:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_correction.sh:204  										irrelevant ???: output the same
 ;   11:   STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_path_check.sh:43  										irrelevant: env not allowed to take args
-  12:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_path_check.sh:47  										NEEDS FIXING ???: permission denied in minishell is 127, but 126 in bash
-;   20:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43  			NEEDS FiXING: DONT KNOW ERROR | fixed
-;   21:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46  			NEEDS FiXING: DONT KNOW ERROR | fixed
-;   22:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49  			NEEDS FiXING: DONT KNOW ERROR | fixed
-  10:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/9_go_wild.sh:30  											NEEDS FIXING ???: bash removes tabs, minishell keeps them. is fixable
+;  12:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_path_check.sh:47  										NEEDS FIXING ???: permission denied in minishell is 127, but 126 in bash | fixed
+;  20:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:43  			NEEDS FiXING: DONT KNOW ERROR | fixed
+; 21:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:46  			NEEDS FiXING: DONT KNOW ERROR | fixed
+;  22:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(2) ]  /Users/lzipp/42_minishell_tester/cmds/mand/8_syntax_errors.sh:49  			NEEDS FiXING: DONT KNOW ERROR | fixed
+;  10:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/9_go_wild.sh:30  											NEEDS FIXING ???: bash removes tabs, minishell keeps them. is fixable | fixed but error was different than removing tabs
 ;   12:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/9_go_wild.sh:40  											irrelevant: brew in path / no difference
 ;   13:   STD_OUT: ❌  STD_ERR: ❌  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/9_go_wild.sh:46  											irrelevant: env not allowed to take args
 ;   14:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/9_go_wild.sh:49  											irrelevant: env not allowed to take args
