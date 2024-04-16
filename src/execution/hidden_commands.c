@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 18:02:08 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 18:18:26 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 18:20:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,14 @@ int	hidden_builtin(char *hidden_command, t_app_data *app)
 	i = 0;
 	while (hidden_command[i] && hidden_command[i] != ' ')
 		i++;
-	command = ft_substr(hidden_command, 0, i); // NULL checks
+	command = ft_substr(hidden_command, 0, i);
 	args = ft_strdup(hidden_command + i);
+	if (!command || !args)
+		return (free(command), free(args), 1);
 	exp_args = expand_and_remove(args, app->last_exit_code,
 		app->env_vars, 0);
+	if (!exp_args)
+		return (free(command), free(args), 1);
 	exit_code = execute_cmd(command, exp_args, args, app);
 	free(command);
 	free(args);
