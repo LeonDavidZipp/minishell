@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 19:00:33 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 11:53:24 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,18 +33,14 @@ int	main(int argc, char **argv, char **envp)
 	// print_logo();
 	while (true)
 	{
-		// printf("first exit code: %d\n", app_data.last_exit_code);
 		g_exit_signal = 0;
 		get_input(&app_data);
 		if (!isatty(fileno(stdin)) && app_data.input == NULL)
 			break ;
 		if (app_data.input == NULL)
 			continue ;
-		// printf("input: %s\n", app_data.input);
 		lexer(&app_data);
-		// printf("second exit code: %d\n", app_data.last_exit_code);
 	}
-	// printf("before return exit code: %d\n", app_data.last_exit_code);
 	return (app_data.last_exit_code);
 }
 
@@ -52,6 +48,8 @@ static void	get_input(t_app_data *app_data)
 {
 	char	*input;
 
+	
+	// remove this after testing
 	if (isatty(fileno(stdin)))
 		input = readline(PROMPT);
 	else
@@ -63,6 +61,7 @@ static void	get_input(t_app_data *app_data)
 		input = ft_strtrim(line, "\n");
 		free(line);
 	}
+	// end of remove
 	// input = readline(PROMPT);
 	if (input && ft_strlen(input) == 0)
 	{

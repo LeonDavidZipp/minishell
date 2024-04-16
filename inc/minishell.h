@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 18:59:57 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:04:46 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,12 +174,10 @@ t_treenode	*switch_heredocs(t_treenode *lintree);
 // tokenization
 t_token		*tokenize(char *input, int *exit_code, int *err_loc);
 t_token		*join_arg_tokens(t_token *tokens);
-t_token		*join_after_echo(t_token *tokens);
-t_token		*join_after_ls(t_token *tokens);
 t_token		*remove_after_cd(t_token *tokens);
-void		free_tokens(t_token *token);
 t_tokentype	token_type(char *content, t_tokentype prev_type);
 int			check_tokens_valid(t_token *tokens, int *err_loc);
+void		free_tokens(t_token *token);
 
 // abstract syntax tree
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
@@ -212,5 +210,8 @@ char		*expand_and_remove_in_place(char *str, int exit_code,
 				char **env_vars, int flag);
 char		*ft_getenv(char *name, char **env_vars);
 int			is_valid_dollar(char *input, int i, bool *quotes);
+int			wildcard_size(char *input, int *i);
+int			empty_entry(char *entry);
+int			calc_wildcard_size(DIR *dir, char *pattern, int position);
 
 #endif

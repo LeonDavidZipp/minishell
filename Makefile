@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
+#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/15 18:38:01 by cgerling         ###   ########.fr        #
+#    Updated: 2024/04/16 14:03:56 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ lexer/token_type.c \
 lexer/tokenize.c \
 parsing/check_input.c \
 parsing/expand_helpers.c \
+parsing/expand_helpers2.c \
 parsing/expand.c \
 parsing/expand2.c \
 parsing/mix_helpers.c \
