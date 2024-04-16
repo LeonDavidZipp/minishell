@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 12:48:17 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 17:00:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 16:24:08 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 						int bracket_lvl);
-static t_treenode	*insert_node(t_treenode *root, t_treenode *node);
+static void			adjust_values(t_treenode **lin_tree,
+						int *prev_bracket_lvl);
 
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl)
 {
@@ -55,8 +56,7 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 		sub = insert_node(sub, new);
 		if (!(*lin_tree))
 			return (sub);
-		prev_bracket_lvl = (*lin_tree)->bracket_lvl;
-		(*lin_tree) = (*lin_tree)->left;
+		adjust_values(lin_tree, &prev_bracket_lvl);
 		sub = build_subtree(sub, lin_tree, prev_bracket_lvl);
 	}
 	else
@@ -65,11 +65,16 @@ static t_treenode	*build_subtree(t_treenode *sub, t_treenode **lin_tree,
 		sub = insert_node(sub, new);
 		if (!(*lin_tree))
 			return (sub);
-		prev_bracket_lvl = (*lin_tree)->bracket_lvl;
-		(*lin_tree) = (*lin_tree)->left;
+		adjust_values(lin_tree, &prev_bracket_lvl);
 		sub = build_subtree(sub, lin_tree, prev_bracket_lvl);
 	}
 	return (sub);
+}
+
+static void	adjust_values(t_treenode **lin_tree, int *prev_bracket_lvl)
+{
+	*prev_bracket_lvl = (*lin_tree)->bracket_lvl;
+	(*lin_tree) = (*lin_tree)->left;
 }
 
 t_treenode	*new_treenode(char *cmd, char *args,
@@ -96,21 +101,6 @@ t_treenode	*new_treenode(char *cmd, char *args,
 	node->out_type = 0;
 	node->pipe = false;
 	return (node);
-}
-
-static t_treenode	*insert_node(t_treenode *root, t_treenode *node)
-{
-	if (!root)
-		return (node);
-	if(node_is_operator(node->cmd_type)
-		&& priority(node->cmd, node->bracket_lvl)
-		>= priority(root->cmd, root->bracket_lvl))
-	{
-		node->left = root;
-		return (node);
-	}
-	root->right = insert_node(root->right, node);
-	return (root);
 }
 
 void	free_treenodes(t_treenode *node)

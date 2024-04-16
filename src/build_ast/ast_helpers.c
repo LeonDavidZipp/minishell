@@ -6,11 +6,26 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 14:18:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/11 17:00:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 16:24:32 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+t_treenode	*insert_node(t_treenode *root, t_treenode *node)
+{
+	if (!root)
+		return (node);
+	if (node_is_operator(node->cmd_type)
+		&& priority(node->cmd, node->bracket_lvl)
+		>= priority(root->cmd, root->bracket_lvl))
+	{
+		node->left = root;
+		return (node);
+	}
+	root->right = insert_node(root->right, node);
+	return (root);
+}
 
 bool	node_is_operator(t_tokentype type)
 {
@@ -51,7 +66,8 @@ void	debug_printtree(t_treenode *root, int tabs)
 	if (root)
 	{
 		debug_print_tabs(tabs);
-		printf("\033[1;3%dmcontent: %s, args: %s, prio: %d, type: %d, br_lvl: %d, in_fd: %d, out_fd: %d \033[0m\n", 1 + tabs,
+		printf("\033[1;3%dmcontent: %s, args: %s, prio: %d, type: %d,"
+			" br_lvl: %d, in_fd: %d, out_fd: %d \033[0m\n", 1 + tabs,
 			root->cmd, root->args, priority(root->cmd, root->bracket_lvl),
 			root->cmd_type, root->bracket_lvl, root->in_fd, root->out_fd);
 		debug_print_tabs(tabs);
