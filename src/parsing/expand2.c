@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/16 14:50:41 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 14:51:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static void	process_value(t_expand **data, char **value_ref, char **name)
 				&& !(*data)->quotes[1])
 			{
 				j++;
-				continue;
+				continue ;
 			}
 			(*(*data)->output)[((*data)->i[1])++] = value[j++];
 		}
