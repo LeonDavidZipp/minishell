@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 16:17:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 18:24:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,9 @@ void		prepare_heredoc_check(char *input, int err_loc);
 
 // execution
 int			execute(t_app_data *app, t_treenode *ast);
+int			is_hidden_command(char *command, char **env_vars);
+int			exec_hidden_command(char *hidden_command, char **args,
+				t_app_data *app, t_pid_list **pid_list);
 
 // expansion
 char		*expand(char *input, int exit_code, char **env_vars, int *flags);
