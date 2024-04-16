@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 18:02:08 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 18:04:00 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 18:18:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int		hidden_execve(char *hidden_command, t_app_data *app,
 int		add_to_pid_list(pid_t pid, t_pid_list **pidlist);
 static int	handle_potential_cmd(bool flag, int i, char **command,
 				char ***env_vars);
+static char	*fill_tmp(char ***args, char **hidden_command);
 
 int	is_hidden_command(char *command, char **env_vars)
 {
@@ -85,17 +86,12 @@ int	exec_hidden_command(char *hidden_command, char **args,
 	while (hidden_command[i] && hidden_command[i] != ' ')
 		i++;
 	check = ft_substr(hidden_command, 0, i);
-	i = -1;
 	if (args[1])
-	{
-		while (args[++i])
-		{
-			tmp = ft_strjoin(hidden_command, " "); // NULL checks
-			tmp = ft_join_in_place(tmp, args[i]);
-		}
-	}
+		tmp = fill_tmp(&args, &hidden_command);
 	else
 		tmp = ft_strdup(hidden_command);
+	if (!tmp)
+		return (free(check), 1);
 	if (is_builtin_no_expand(check))
 	{
 		exit_code = hidden_builtin(tmp, app);
@@ -106,6 +102,21 @@ int	exec_hidden_command(char *hidden_command, char **args,
 	return (free(tmp), exit_code);
 }
 
+static char	*fill_tmp(char ***args, char **hidden_command)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = NULL;
+	while ((*args)[i])
+	{
+		tmp = ft_strjoin(*hidden_command, " ");
+		tmp = ft_join_in_place(tmp, (*args)[i]);
+		i++;
+	}
+	return (tmp);
+}
 
 int	hidden_builtin(char *hidden_command, t_app_data *app)
 {
