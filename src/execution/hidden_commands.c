@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   hidden_commands.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/04/16 18:02:08 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/16 18:04:00 by lzipp            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../../inc/minishell.h"
 
 int		is_builtin_no_expand(char *cmd);
@@ -6,15 +18,16 @@ char	*find_path_no_err(char *command, char **envp);
 char	*find_path(char *command, char **envp, bool *flag);
 int		execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
 int		hidden_builtin(char *hidden_command, t_app_data *app);
-int		hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list);
+int		hidden_execve(char *hidden_command, t_app_data *app,
+				t_pid_list **pid_list);
 int		add_to_pid_list(pid_t pid, t_pid_list **pidlist);
+static int	handle_potential_cmd(bool flag, int i, char **command,
+				char ***env_vars);
 
 int	is_hidden_command(char *command, char **env_vars)
 {
 	int		i;
 	bool	flag;
-	char	*potencial_path;
-	char	*potencial_command;
 
 	if (!command)
 		return (0);
@@ -30,19 +43,30 @@ int	is_hidden_command(char *command, char **env_vars)
 			break ;
 		}
 	}
+	if (handle_potential_cmd(flag, i, &command, &env_vars) == 1)
+		return (1);
+	return (0);
+}
+
+static int	handle_potential_cmd(bool flag, int i, char **command,
+				char ***env_vars)
+{
+	char	*potential_path;
+	char	*potential_command;
+
 	if (flag)
 	{
-		potencial_command = ft_substr(command, 0, i);
-		if (is_builtin_no_expand(potencial_command))
+		potential_command = ft_substr(*command, 0, i);
+		if (is_builtin_no_expand(potential_command))
 		{
-			free(potencial_command);
+			free(potential_command);
 			return (1);
 		}
-		potencial_path = find_path_no_err(potencial_command, env_vars);
-		if (potencial_path)
+		potential_path = find_path_no_err(potential_command, *env_vars);
+		if (potential_path)
 		{
-			free(potencial_command);
-			free(potencial_path);
+			free(potential_command);
+			free(potential_path);
 			return (1);
 		}
 	}
