@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 16:50:56 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:49:38 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -657,7 +657,7 @@ int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app)
 	if (ft_strcmp(cmd, "cd") == 0)
 		exit_code = builtin_cd(args, &app->env_vars, &app->last_exit_code);
 	else if (ft_strcmp(cmd, "pwd") == 0)
-		exit_code = builtin_pwd(args);
+		exit_code = builtin_pwd(args, STDOUT_FILENO);
 	else if (ft_strcmp(cmd, "echo") == 0)
 		exit_code = builtin_echo(ast_args, STDOUT_FILENO, &app);
 	else if (ft_strcmp(cmd, "env") == 0)

@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 18:59:57 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 12:48:40 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,7 +131,7 @@ void		exec_cmds(t_treenode *ast, t_app_data *app,
 
 // built-in commands
 int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
-int			builtin_pwd(char *args);
+int			builtin_pwd(char *args, int fd);
 int			builtin_env(char *var_string, char ***env_vars);
 int			builtin_echo(char *args, int out_fd, t_app_data **app);
 int			builtin_exit(t_app_data *app, char *args);
