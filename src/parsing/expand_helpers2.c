@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 14:02:42 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 14:02:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 14:19:58 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	wildcard_size(char *input, int *i)
 	return (size);
 }
 
-int	empty_entry(char *entry) // maybe rename because it doesn't check only complete empty entries
+int	empty_entry(char *entry)
 {
 	int	len;
 

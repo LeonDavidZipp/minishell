@@ -3,31 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   mix_helpers.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 21:41:13 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/11 12:41:17 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:33:20 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	is_operator(char c, char d)
-{
-	if (c == d && (c == '|' || c == '&' || c == '<' || c == '>'))
-		return (2);
-	else if (((c == '|' && d != '|') || (c == '<' && d != '<')
-		|| (c == '>' && d != '>') || c == '(' || c == ')'))
-		return (1);
-	return (0);
-}
-
-int	is_space(char c)
-{
-	if (c == ' ' || c == '\t' || c == '\0')
-		return (1);
-	return (0);
-}
+static bool	handle_wildcard(char **pattern, char **string,
+				bool *s_quote, bool *d_quote);
 
 void	handle_quotes(char c, bool *s_quote, bool *d_quote)
 {
@@ -46,7 +32,6 @@ char	*get_pattern(char *input, int *i, int *position, int *start)
 	bool	d_quote;
 
 	tmp = *i;
-	end = 0;
 	s_quote = false;
 	d_quote = false;
 	while (*i >= 0 && (!is_space(input[*i]) || s_quote || d_quote))
@@ -64,8 +49,6 @@ char	*get_pattern(char *input, int *i, int *position, int *start)
 	}
 	end = *i;
 	pattern = ft_substr(input, *start, end - *start);
-	if (!pattern)
-		return (NULL);
 	return (pattern);
 }
 
@@ -80,18 +63,7 @@ bool	match(char *pattern, char *string, bool s_quote, bool d_quote)
 			continue ;
 		}
 		if (!s_quote && !d_quote && *pattern == '*')
-		{
-			while (*pattern == '*')
-				pattern++;
-			while (*string)
-			{
-				
-				if (match(pattern, string, s_quote, d_quote))
-					return (true);
-				string++;
-			}
-			return (match(pattern, string, s_quote, d_quote));
-		}
+			return (handle_wildcard(&pattern, &string, &s_quote, &d_quote));
 		else if (*pattern == *string)
 		{
 			pattern++;
@@ -101,7 +73,22 @@ bool	match(char *pattern, char *string, bool s_quote, bool d_quote)
 			return (false);
 	}
 	handle_quotes(*pattern, &s_quote, &d_quote);
-	while (*pattern == '\'' || *pattern == '"' || (*pattern == '*' && !s_quote && !d_quote))
+	while (*pattern == '\'' || *pattern == '"' || (*pattern == '*'
+			&& !s_quote && !d_quote))
 		pattern++;
 	return (*pattern == *string);
+}
+
+static bool	handle_wildcard(char **pattern, char **string,
+				bool *s_quote, bool *d_quote)
+{
+	while (**pattern == '*')
+		(*pattern)++;
+	while (**string)
+	{
+		if (match(*pattern, *string, *s_quote, *d_quote))
+			return (true);
+		(*string)++;
+	}
+	return (match(*pattern, *string, *s_quote, *d_quote));
 }
