@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 15:12:33 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 16:11:10 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,6 +172,7 @@ void		rearrange_following_element(t_token **current,
 t_treenode	*switch_heredocs(t_treenode *lintree);
 
 // tokenization
+t_token		*new_token(char *content, t_token *prev);
 t_token		*tokenize(char *input, int *exit_code, int *err_loc);
 t_token		*join_arg_tokens(t_token *tokens);
 t_token		*remove_after_cd(t_token *tokens);
@@ -191,6 +192,7 @@ int			priority(char *cmd, int bracket_lvl);
 
 // lexer
 int			lexer(t_app_data *app_data);
+void		prepare_heredoc_check(char *input, int err_loc);
 
 // execution
 int			execute(t_app_data *app, t_treenode *ast);
