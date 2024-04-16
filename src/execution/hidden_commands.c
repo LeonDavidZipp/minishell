@@ -3,7 +3,7 @@
 int		is_builtin_no_expand(char *cmd);
 int		is_builtin(char *cmd, int exit_code, char **env_vars);
 char	*find_path_no_err(char *command, char **envp);
-char	*find_path(char *command, char **envp);
+char	*find_path(char *command, char **envp, bool *flag);
 int		execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
 int		hidden_builtin(char *hidden_command, t_app_data *app);
 int		hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list);
@@ -117,6 +117,7 @@ int	hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list)
 	char	**arg_arr;
 	int		i;
 	int 	flags[2];
+	bool	flag = false;
 
 	flags[0] = 0;
 	flags[1] = 1;
@@ -151,7 +152,7 @@ int	hidden_execve(char *hidden_command, t_app_data *app, t_pid_list **pid_list)
 		if (access(arg_arr[0], X_OK) == 0)
 			execve(arg_arr[0], arg_arr, app->env_vars);
 		else
-			execve(find_path(arg_arr[0], app->env_vars), arg_arr, app->env_vars);
+			execve(find_path(arg_arr[0], app->env_vars, &flag), arg_arr, app->env_vars);
 		exit(127);
 	}
 	else

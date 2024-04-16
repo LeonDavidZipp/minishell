@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 12:49:38 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 15:43:06 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,30 +16,19 @@
 // norminette!!!!!!!
 // need to protect dup2 and dup!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // exit code is different for cat /dev/urandom | > out to bash
-// exit minishell when too many open fds?!
-// implement stderr redirection 2>[file] maybe, but not necessary
 // ctrl c sets exit code to 1 used on an empty line
 
-// heredoc still needs to open when a syntax error occurs
-
 // heredoc ctrl d cant't exit on a line where something is written
-
-// handle cases where you expand a variable like export T="echo test" and then you run $T it should run echo test but that is a problem because we expand right before we execute the command
-// muss mir was schlaues überlegen
-
-// cgerling@2-D-4 minishell % echo -n .. | ./minishell
-// (null): ..: command not found
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 void		exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 int			setup_redir(t_treenode *node, t_app_data *app);
 int			setup_fd(t_treenode *node, t_app_data *app, int *ret);
-char		*find_path(char *command, char **envp);
+char		*find_path(char *command, char **envp, bool *flag);
 void		wait_and_free(t_app_data *app, t_pid_list **pid_list);
 t_treenode	*find_cmd_node(t_treenode *node);
 int			handle_heredoc(t_treenode *node, t_app_data *app);
-// int			is_builtin(char *cmd);
 int		is_builtin(char *cmd, int exit_code, char **env_vars);
 int			is_redir(t_tokentype type);
 
@@ -436,6 +425,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	char	*temp;
 	int		fd;
 	int		i;
+	bool	flag = false;
 
 	if (ast->err_val != 0)
 	{
@@ -449,9 +439,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 			close(ast->out_fd);
 		return (1);
 	}
-	// ast->cmd = expand_and_remove_in_place(ast->cmd, app->last_exit_code, app->env_vars, 0);
 	cmd_node = ft_strjoin(ast->cmd, " ");
-	// cmd_node = ft_strjoin(expand_and_remove_in_place(ast->cmd, app->last_exit_code, app->env_vars, 0), " ");
 	if (!cmd_node)
 		return (1);
 	if (ast->args)
@@ -461,11 +449,15 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 			return (free(cmd_node), 1);
 		int flags[2];
 		flags[0] = 0;
-		flags[1] = 1;
+		flags[1] = 0;
 		temp = expand(tmp, app->last_exit_code, app->env_vars, flags);
 		if (!temp)
 			return (free(cmd_node), free(tmp), 1);
-		arg_arr = split(temp);
+		free(tmp);
+		tmp = expand(temp, app->last_exit_code, app->env_vars, flags);
+		if (!tmp)
+			return (free(cmd_node), free(temp), 1);
+		arg_arr = split(tmp);
 		free(tmp);
 		free(temp);
 	}
@@ -485,7 +477,6 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	}
 	if (is_hidden_command(arg_arr[0], app->env_vars) && ast->cmd[0] == '$')
 	{
-		// changed by lzipp
 		if (is_hidden_command(arg_arr[0], app->env_vars) == 2 && !arg_arr[1])
 			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), 0);
 		else if (is_hidden_command(arg_arr[0], app->env_vars) == 2 && arg_arr[1])
@@ -493,12 +484,6 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 			int	exit_code = exec_hidden_command(arg_arr[1], arg_arr, app, pid_list);
 			return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), exit_code);
 		}
-		// int i = -1;
-		// while (arg_arr[++i])
-		// {
-		// 	printf("arg_arr[%d]: %s\n", i, arg_arr[i]);
-		// }
-		// end of change
 		int	exit_code = exec_hidden_command(arg_arr[0], arg_arr, app, pid_list);
 		return (free(cmd_node), ft_free_2d_arr((void **)arg_arr), exit_code);
 	}
@@ -547,7 +532,9 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 		if (access(arg_arr[0], X_OK) == 0)
 			execve(arg_arr[0], arg_arr, app->env_vars);
 		else
-			execve(find_path(arg_arr[0], app->env_vars), arg_arr, app->env_vars);
+			execve(find_path(arg_arr[0], app->env_vars, &flag), arg_arr, app->env_vars);
+		if (flag)
+			exit(126);
 		exit(127);
 	}
 	else

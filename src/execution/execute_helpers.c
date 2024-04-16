@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/15 16:52:29 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/16 14:26:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*search_path_variable(char **envp)
 	return (path);
 }
 
-char	*find_path(char *command, char **envp)
+char	*find_path(char *command, char **envp, bool *flag)
 {
 	char	*path;
 	char	**temp;
@@ -47,11 +47,23 @@ char	*find_path(char *command, char **envp)
 	{
 		if (access(command, X_OK) == 0)
 			return (ft_strdup(command));
+		if (errno == EACCES)
+			*flag = true;
 		return (ft_fprintf(2, "%s: %s: %s\n", NAME, command, strerror(errno)), NULL);
 	}
 	temp = ft_split(search_path_variable(envp), ':');
 	if (!temp)
 	{
+		struct stat path_stat;
+		stat(command, &path_stat);
+		if (S_ISREG(path_stat.st_mode))
+		{
+			if (access(command, X_OK) == 0)
+				return (ft_strdup(command));
+			if (errno == EACCES)
+				*flag = true;
+			return (ft_fprintf(2, "%s: %s: %s\n", NAME, command, strerror(errno)), NULL);
+		}
 		ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command);
 		exit(1);
 	}
