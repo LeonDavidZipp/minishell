@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 12:55:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 11:46:51 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	builtin_export(char *var_string, t_app_data **app_data, int fd)
 	while (vars[++i])
 	{
 		(*app_data)->env_vars = update_env_vars(&(vars[i]), &exit_code,
-			(*app_data)->env_vars);
+				(*app_data)->env_vars);
 	}
 	free_vars(vars);
 	return (exit_code);
