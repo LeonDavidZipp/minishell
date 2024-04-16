@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:24:10 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 11:34:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 12:49:11 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int	builtin_pwd(char *args)
+int	builtin_pwd(char *args, int fd)
 {
 	char	*pwd;
 
@@ -25,7 +25,7 @@ int	builtin_pwd(char *args)
 	}
 	else
 	{
-		printf("%s\n", pwd);
+		ft_fprintf(fd, "%s\n", pwd);
 		free(pwd);
 	}
 	return (0);

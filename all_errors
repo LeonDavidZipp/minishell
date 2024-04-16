@@ -29,8 +29,8 @@
 ;   41:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_pipelines.sh:166  										irrelevant ???: no difference in output
 ;   10:   STD_OUT: ✅  STD_ERR: ✅  EXIT_CODE: ❌ [ minishell(0)  bash(1) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_redirs.sh:22  					NEEDS FIXING: wrong exit code!!! | fixed
 ;   7:    STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ❌ [ minishell(2)  bash(0) ]  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:19  					irrelevant: quotes dont need to be handled like this!
-;   19:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:50  											irrelevant ???: output the same
-;   21:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:59  											irrelevant ???: output the same
+;   19:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:50  											irrelevant ???: output the same, could recreate the error | fixed
+;   21:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/1_scmds.sh:59  											irrelevant ???: output the same, could recreate the error | fixed
 ;   95:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_correction.sh:204  										irrelevant ???: output the same
 ;   11:   STD_OUT: ✅  STD_ERR: ❌  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_path_check.sh:43  										irrelevant: env not allowed to take args
   12:   STD_OUT: ❌  STD_ERR: ✅  EXIT_CODE: ✅  /Users/lzipp/42_minishell_tester/cmds/mand/2_path_check.sh:47  										NEEDS FIXING ???: permission denied in minishell is 127, but 126 in bash
