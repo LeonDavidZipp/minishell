@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 16:18:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:52:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 {
 	// ft_printf("exit\n");
 	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
-			NAME, arg_arr[0]);
+		NAME, arg_arr[0]);
 	ft_free_2d_arr((void **)arg_arr);
 	free_app_data(app);
 	exit(255);
