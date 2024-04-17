@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 16:34:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:37:22 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -467,7 +467,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	else
 		arg_arr = split(cmd_node);
 	if (!arg_arr)
-		return 1;
+		return (free(cmd_node), 1);
 	i = 0;
 	while (arg_arr[i])
 	{
@@ -494,7 +494,7 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	if (pid == -1)
 	{
 		ft_fprintf(2, "%s: fork error: %s\n", NAME, strerror(errno));
-		return 1;
+		return (free(cmd_node), 1);
 	}
 	if (pid == 0)
 	{
