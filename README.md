@@ -44,6 +44,3 @@ leaks.
 ## Bonus
 ### && and ||
 ### * for current working dir
-
-=======
->>>>>>> 22-grammar-checker
