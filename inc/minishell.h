@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 16:23:52 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/17 15:27:41 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,7 @@ typedef struct s_execve
 	char				*cmd_node;
 	char				*tmp;
 	char				*temp;
+	char				*path;
 	int					i;
 	int					flags[2];
 	bool				flag;
