@@ -322,3 +322,101 @@ int	setup_fd(t_treenode *node, t_app_data *app, int *ret)
 	return (0);
 }
 
+void	heredoc_pipe_fail(t_treenode *node)
+{
+	t_treenode	*cmd_node;
+
+	if (!node->left)
+	{
+		set_error_vars(node, "heredoc pipe error", errno);
+		return ;
+	}
+	cmd_node = find_cmd_node(node->left);
+	if (cmd_node->cmd_type != CMD)
+		set_error_vars(node, "heredoc pipe error", errno);
+	else
+		set_error_vars(cmd_node, "heredoc pipe error", errno);
+}
+
+int	handle_cmd_node(t_treenode *cmd_node, int tmp_fd)
+{
+	if (cmd_node->cmd_type != CMD)
+		return (close(tmp_fd), 1);
+	if (cmd_node->in_type == 1)
+		close(tmp_fd);
+	else
+	{
+		cmd_node->in_fd = tmp_fd;
+		cmd_node->in_type = 2;
+	}
+	return (0);
+}
+
+int	handle_heredoc(t_treenode *node, t_app_data *app)
+{
+	int			tmp_fd;
+	int			pipe_fd[2];
+	t_treenode	*cmd_node;
+
+	if (pipe(pipe_fd) == -1)
+	{
+		heredoc_pipe_fail(node);
+		return (1);
+	}
+	if (read_input(node->args, pipe_fd[1], app))
+	{
+		close(pipe_fd[0]);
+		close(pipe_fd[1]);
+		return (1);
+	}
+	tmp_fd = pipe_fd[0];
+	if (!node->left)
+	{
+		close(tmp_fd);
+		return (1);
+	}
+	cmd_node = find_cmd_node(node->left);
+	return (handle_cmd_node(cmd_node, tmp_fd));
+}
+
+void	handle_in_fd(t_treenode *cmd_node, int fd)
+{
+	if (cmd_node->in_type == 1 || cmd_node->in_type == 2)
+		close(fd);
+	else
+	{
+		if (cmd_node->in_fd != STDIN_FILENO)
+			close(cmd_node->in_fd);
+		cmd_node->in_fd = fd;
+		cmd_node->in_type = 1;
+	}
+}
+
+void	set_fd(t_treenode *node, int fd, int flag)
+{
+	t_treenode	*cmd_node;
+	
+	if (!node->left)
+	{
+		close(fd);
+		return ;
+	}
+	cmd_node = find_cmd_node(node->left);
+	if (cmd_node && cmd_node->cmd_type != CMD)
+		close(fd);
+	if (cmd_node && flag == 1)
+	{
+		if (cmd_node->out_type == 1)
+			close(fd);
+		else
+		{
+			if (cmd_node->out_fd != STDOUT_FILENO)
+				close(cmd_node->out_fd);
+			cmd_node->out_fd = fd;
+			cmd_node->out_type = 1;
+		}
+	}
+	else
+		handle_in_fd(cmd_node, fd);
+}
+

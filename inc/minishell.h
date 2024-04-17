@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:56:43 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:23:52 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,30 @@ typedef struct s_expand
 	char				**env_vars;
 	int					exit_code;
 	int					*flags;
-}		t_expand;
+}			t_expand;
+
+typedef struct s_builtin
+{
+	char				*cmd;
+	char				*args;
+	int 				exit_code;
+	int					stdin_fd;
+	int					stdout_fd;
+	pid_t				pid;
+}			t_builtin;
+
+typedef struct s_execve
+{
+	pid_t				pid;
+	char				**arg_arr;
+	char				*cmd_node;
+	char				*tmp;
+	char				*temp;
+	int					i;
+	int					flags[2];
+	bool				flag;
+	struct stat			path_stat;
+}			t_execve;
 
 // signal handling
 void		signal_handler(void);
@@ -128,8 +151,6 @@ void		signal_handler(void);
 // temporary
 int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
-void		exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
-int			setup_redir(t_treenode *node, t_app_data *app);
 int			setup_fd(t_treenode *node, t_app_data *app, int *ret);
 char		*find_path(char *command, char **envp, bool *flag);
 void		wait_and_free(t_app_data *app, t_pid_list **pid_list);
@@ -142,6 +163,7 @@ void	set_error_vars(t_treenode *node, char *err, int val);
 void	set_err(t_treenode *node, char *err, int val);
 int	ambigious_redirect(char *str);
 int	add_to_pid_list(pid_t pid, t_pid_list **pidlist);
+void	set_fd(t_treenode *node, int fd, int flag);
 
 int	is_hidden_command(char *command, char **env_vars);
 int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pid_list **pid_list);
@@ -150,6 +172,10 @@ int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
 // execution
 void		exec_cmds(t_treenode *ast, t_app_data *app,
 				t_pid_list **pid_list);
+int			setup_redir(t_treenode *node, t_app_data *app);
+void		close_fds_loop(void);
+void		handle_error(t_treenode *ast);
+int			handle_fds_dup2(t_treenode *ast);
 
 // built-in commands
 int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
