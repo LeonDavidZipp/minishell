@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/15 14:21:21 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:29:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ char	**split(char *input)
 	while (count[2] < count[3])
 	{
 		if (!process_token(new_input, count, flags, tokens))
-			return (free(new_input), free(tokens), NULL);
+			return (free(new_input), NULL);
 	}
 	free(new_input);
 	return (tokens);
