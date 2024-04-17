@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
+#    By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/16 18:25:08 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/17 14:35:31 by cgerling         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,9 @@ execution/execute_helpers.c \
 execution/execute.c \
 execution/hidden_execve.c \
 execution/hidden_execve_helpers.c \
+execution/dings.c \
+execution/setup_redir.c \
+execution/exec_builtin.c \
 lexer/check_tokens_valid.c \
 lexer/heredoc.c \
 lexer/join_arg_tokens.c \

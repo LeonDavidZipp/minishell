@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 11:09:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 13:57:39 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ char	*find_path(char *command, char **envp, bool *flag)
 	if (!temp)
 	{
 		struct stat path_stat;
-		stat(command, &path_stat);
+		stat(command, &path_stat); // check for stat failure
 		if (S_ISREG(path_stat.st_mode))
 		{
 			if (access(command, X_OK) == 0)
