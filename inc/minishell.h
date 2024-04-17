@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:06:46 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:13:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,11 +197,19 @@ void		prepare_heredoc_check(char *input, int err_loc);
 
 // execution
 int			execute(t_app_data *app, t_treenode *ast);
+int			execute_cmd(char *cmd, char *args, char *ast_args,
+				t_app_data *app);
 int			is_hidden_command(char *command, char **env_vars);
 int			exec_hidden_command(char *hidden_command, char **args,
 				t_app_data *app, t_pid_list **pid_list);
 int			add_to_pid_list(pid_t pid, t_pid_list **pidlist);
 char		*find_path(char *command, char **envp, bool *flag);
+char		*find_path_no_err(char *command, char **envp);
+int			is_builtin(char *cmd, int exit_code, char **env_vars);
+int			is_builtin_no_expand(char *cmd);
+int			hidden_builtin(char *hidden_command, t_app_data *app);
+int			hidden_execve(char *hidden_command, t_app_data *app,
+				t_pid_list **pid_list);
 
 // expansion
 char		*expand(char *input, int exit_code, char **env_vars, int *flags);

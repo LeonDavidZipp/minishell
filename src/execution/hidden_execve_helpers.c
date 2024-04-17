@@ -6,21 +6,12 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 18:02:08 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 18:23:02 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:13:48 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-int		is_builtin_no_expand(char *cmd);
-int		is_builtin(char *cmd, int exit_code, char **env_vars);
-char	*find_path_no_err(char *command, char **envp);
-char	*find_path(char *command, char **envp, bool *flag);
-int		execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
-int		hidden_builtin(char *hidden_command, t_app_data *app);
-int		hidden_execve(char *hidden_command, t_app_data *app,
-				t_pid_list **pid_list);
-int		add_to_pid_list(pid_t pid, t_pid_list **pidlist);
 static int	handle_potential_cmd(bool flag, int i, char **command,
 				char ***env_vars);
 static char	*fill_tmp(char ***args, char **hidden_command);

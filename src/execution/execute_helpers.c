@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   execute_helpers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/16 14:26:41 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:09:16 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-// remove path not found error, should just go through the code and print the error at the end of find_path
+// remove path not found error, should just go through
+// the code and print the error at the end of find_path
 
 char	*search_path_variable(char **envp)
 {

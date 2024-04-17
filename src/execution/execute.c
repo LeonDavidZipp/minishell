@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 15:43:06 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/17 11:13:36 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -550,8 +550,6 @@ static int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_lis
 	ft_free_2d_arr((void **)arg_arr);
 	return (0);
 }
-
-int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
 
 static int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 {
