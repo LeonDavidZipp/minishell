@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:13:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:15:54 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,13 +183,13 @@ void		free_tokens(t_token *token);
 // abstract syntax tree
 t_treenode	*build_ast(t_treenode *ast, t_treenode *lin_tree, int bracket_lvl);
 t_treenode	*combine_cmds_args(t_token *tokens);
+t_treenode	*insert_node(t_treenode *root, t_treenode *node);
 t_treenode	*new_treenode(char *cmd, char *args,
 				t_tokentype cmd_type, int bracket_lvl);
 void		free_treenodes(t_treenode *node);
 void		debug_printtree(t_treenode *root, int tabs);
 bool		node_is_operator(t_tokentype type);
 int			priority(char *cmd, int bracket_lvl);
-t_treenode	*insert_node(t_treenode *root, t_treenode *node);
 
 // lexer
 int			lexer(t_app_data *app_data);
