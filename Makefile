@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/17 15:57:19 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/17 18:51:26 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,9 +39,14 @@ execution/execute_helpers.c \
 execution/execute.c \
 execution/hidden_execve.c \
 execution/hidden_execve_helpers.c \
-execution/dings.c \
-execution/setup_redir.c \
+execution/setup_fds.c \
 execution/exec_builtin.c \
+execution/exec_execve.c \
+execution/exec_execve_helpers.c \
+execution/heredoc.c \
+execution/heredoc_helpers.c \
+execution/setup_helpers.c \
+execution/execute_helpers2.c \
 lexer/check_tokens_valid.c \
 lexer/heredoc.c \
 lexer/join_arg_tokens.c \

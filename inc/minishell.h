@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 17:40:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:51:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ typedef struct s_builtin
 {
 	char				*cmd;
 	char				*args;
-	int 				exit_code;
+	int					exit_code;
 	int					stdin_fd;
 	int					stdout_fd;
 	pid_t				pid;
@@ -148,35 +148,6 @@ typedef struct s_execve
 
 // signal handling
 void		signal_handler(void);
-
-// temporary
-int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
-int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
-int			setup_fd(t_treenode *node, t_app_data *app, int *ret);
-char		*find_path(char *command, char **envp, bool *flag);
-void		wait_and_free(t_app_data *app, t_pid_list **pid_list);
-t_treenode	*find_cmd_node(t_treenode *node);
-int			handle_heredoc(t_treenode *node, t_app_data *app);
-int		is_builtin(char *cmd, int exit_code, char **env_vars);
-int			is_redir(t_tokentype type);
-int		read_input(char *delimiter, int write_fd, t_app_data *app);
-void	set_error_vars(t_treenode *node, char *err, int val);
-void	set_err(t_treenode *node, char *err, int val);
-int	ambigious_redirect(char *str);
-int	add_to_pid_list(pid_t pid, t_pid_list **pidlist);
-void	set_fd(t_treenode *node, int fd, int flag);
-
-int	is_hidden_command(char *command, char **env_vars);
-int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pid_list **pid_list);
-int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
-
-// execution
-void		exec_cmds(t_treenode *ast, t_app_data *app,
-				t_pid_list **pid_list);
-int			setup_redir(t_treenode *node, t_app_data *app);
-void		close_fds_loop(void);
-void		handle_error(t_treenode *ast);
-int			handle_fds_dup2(t_treenode *ast);
 
 // built-in commands
 int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
@@ -249,6 +220,7 @@ void		prepare_heredoc_check(char *input, int err_loc);
 int			execute(t_app_data *app, t_treenode *ast);
 int			execute_cmd(char *cmd, char *args, char *ast_args,
 				t_app_data *app);
+void		exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
 int			is_hidden_command(char *command, char **env_vars);
 int			exec_hidden_command(char *hidden_command, char **args,
 				t_app_data *app, t_pid_list **pid_list);
@@ -260,6 +232,32 @@ int			is_builtin_no_expand(char *cmd);
 int			hidden_builtin(char *hidden_command, t_app_data *app);
 int			hidden_execve(char *hidden_command, t_app_data *app,
 				t_pid_list **pid_list);
+int			handle_heredoc(t_treenode *node, t_app_data *app);
+void		wait_and_free(t_app_data *app, t_pid_list **pid_list);
+int			add_to_pid_list(pid_t pid, t_pid_list **pidlist);
+int			handle_fds_dup2(t_treenode *ast);
+void		handle_error(t_treenode *ast);
+t_treenode	*find_cmd_node(t_treenode *node);
+int			setup_fd(t_treenode *node, t_app_data *app, int *ret);
+void		set_err(t_treenode *node, char *err, int val);
+void		set_fd(t_treenode *node, int fd, int flag);
+int			execute_builtin(t_treenode *ast, t_app_data *app,
+				t_pid_list **pid_list);
+int			execute_execve(t_treenode *ast, t_app_data *app,
+				t_pid_list **pid_list);
+int			is_redir(t_tokentype type);
+void		set_err(t_treenode *node, char *err, int val);
+void		set_fd(t_treenode *node, int fd, int flag);
+int			ambigious_redirect(char *str);
+void		close_fds_loop(void);
+int			ambigious_redirect(char *str);
+void		set_error_vars(t_treenode *node, char *err, int val);
+char		**set_args(t_execve *var, t_treenode *ast, t_app_data *app);
+int			exp_rem_arg_arr(t_execve *var, t_app_data *app);
+void		handle_stat(t_execve *var);
+char		*process_delimiter(char *delimiter, int *i);
+int			check_delimiter(char **line, char *new_del);
+char		*exp_or_cpy(char *line, int flag, int *exp_flags, t_app_data *app);
 
 // expansion
 char		*expand(char *input, int exit_code, char **env_vars, int *flags);
