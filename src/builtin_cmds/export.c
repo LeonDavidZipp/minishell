@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:03:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:20:54 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,7 @@ static void	print_vars(char **env_vars, int fd)
 		if (var->value)
 			ft_fprintf(fd, "\"%s\"", var->value);
 		ft_fprintf(fd, "\n");
-		free(var->key);
-		free(var->value);
-		free(var);
+		free_var(var);
 	}
 }
 
