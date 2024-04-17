@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 15:13:27 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 17:34:52 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,16 +117,31 @@ int	exp_rem_arg_arr(t_execve *var, t_app_data *app)
 void	child_process(t_treenode *ast, t_execve *var, t_app_data *app)
 {
 	if (handle_fds_dup2(ast))
-			exit(1);
+		exit(1);
 	close_fds_loop();
 	handle_stat(var);
 	if (access(var->arg_arr[0], X_OK) == 0)
 		execve(var->arg_arr[0], var->arg_arr, app->env_vars);
 	else
-		execve(find_path(var->arg_arr[0], app->env_vars, &var->flag), var->arg_arr, app->env_vars);
+	{
+		var->path = find_path(var->arg_arr[0], app->env_vars, &var->flag);
+		if (var->path)
+			execve(var->path, var->arg_arr, app->env_vars);
+	}
 	if (var->flag)
 		exit(126);
 	exit(127);
+}
+
+int	parent_process(t_treenode *ast, t_execve *var, t_pid_list **pid_list)
+{
+	if (add_to_pid_list(var->pid, pid_list))
+		return (free(var->cmd_node), ft_free_2d_arr((void **)var->arg_arr), 1);
+	if (ast->in_fd != 0)
+		close(ast->in_fd);
+	if (ast->out_fd != 1)
+		close(ast->out_fd);
+	return (0);
 }
 
 int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
@@ -162,16 +177,10 @@ int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
 		child_process(ast, &var, app);
 	else
 	{
-		if (add_to_pid_list(var.pid, pid_list))
-			return (free(var.cmd_node), ft_free_2d_arr((void **)var.arg_arr), 1);
-		if (ast->in_fd != 0)
-			close(ast->in_fd);
-		if (ast->out_fd != 1)
-			close(ast->out_fd);
+		if (parent_process(ast, &var, pid_list))
+			return (1);
 	}
-	free(var.cmd_node);
-	ft_free_2d_arr((void **)var.arg_arr);
-	return (0);
+	return (free(var.cmd_node), ft_free_2d_arr((void **)var.arg_arr), 0);
 }
 
 void	close_fds_loop(void) // also using this in builtin

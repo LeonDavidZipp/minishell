@@ -6,7 +6,11 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/04/17 17:01:25 by lzipp            ###   ########.fr       */
+=======
+/*   Updated: 2024/04/17 15:27:41 by lzipp            ###   ########.fr       */
+>>>>>>> remotes/origin/5-command-execution
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +143,7 @@ typedef struct s_execve
 	char				*cmd_node;
 	char				*tmp;
 	char				*temp;
+	char				*path;
 	int					i;
 	int					flags[2];
 	bool				flag;
