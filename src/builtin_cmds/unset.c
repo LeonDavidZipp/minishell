@@ -1,38 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:31:20 by lzipp            ###   ########.fr       */
+/*   Created: 2024/02/22 11:54:39 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/14 14:40:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void		handle_ctrl_c(int signal);
-
-void	signal_handler(void)
+int	builtin_unset(char *keys, char **env_vars)
 {
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
-}
+	int			exit_code;
 
-void	handle_ctrl_c(int signal)
-{
-	char	eof;
-
-	(void)signal;
-	eof = 4;
-	printf("\n");
-	if (g_exit_signal == 0)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (g_exit_signal == 2)
-		ioctl(0, TIOCSTI, &eof);
+	exit_code = 0;
+	if (!keys)
+		return (exit_code);
+	if (ft_strcmp(keys, "") == 0)
+		return (ft_fprintf(2, "%s: unset: `""': %s\n", NAME, INVALID_ID), 1);
+	exit_code = unset_multiple_env_vars(keys, &env_vars);
+	return (exit_code);
 }

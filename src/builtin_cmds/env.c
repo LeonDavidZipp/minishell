@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:31:20 by lzipp            ###   ########.fr       */
+/*   Created: 2024/02/22 11:51:31 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/12 12:55:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void		handle_ctrl_c(int signal);
-
-void	signal_handler(void)
+int	builtin_env(char *var_string, char ***env_vars)
 {
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
-}
+	int			i;
+	int			exit_code;
 
-void	handle_ctrl_c(int signal)
-{
-	char	eof;
-
-	(void)signal;
-	eof = 4;
-	printf("\n");
-	if (g_exit_signal == 0)
+	exit_code = 0;
+	if (var_string)
+		return (ft_fprintf(2, "env: No arguments allowed\n"), 1);
+	i = 0;
+	while ((*env_vars)[i])
 	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
+		if ((*env_vars)[i] && ft_count_char((*env_vars)[i], '=') > 0)
+			printf("%s\n", (*env_vars)[i]);
+		i++;
 	}
-	else if (g_exit_signal == 2)
-		ioctl(0, TIOCSTI, &eof);
+	return (exit_code);
 }

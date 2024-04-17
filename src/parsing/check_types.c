@@ -1,38 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handler.c                                   :+:      :+:    :+:   */
+/*   check_types.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:31:20 by lzipp            ###   ########.fr       */
+/*   Created: 2024/04/16 14:33:28 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/16 14:33:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static void		handle_ctrl_c(int signal);
-
-void	signal_handler(void)
+int	is_operator(char c, char d)
 {
-	signal(SIGINT, handle_ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	if (c == d && (c == '|' || c == '&' || c == '<' || c == '>'))
+		return (2);
+	else if (((c == '|' && d != '|') || (c == '<' && d != '<')
+			|| (c == '>' && d != '>') || c == '(' || c == ')'))
+		return (1);
+	return (0);
 }
 
-void	handle_ctrl_c(int signal)
+int	is_space(char c)
 {
-	char	eof;
-
-	(void)signal;
-	eof = 4;
-	printf("\n");
-	if (g_exit_signal == 0)
-	{
-		rl_on_new_line();
-		rl_replace_line("", 0);
-		rl_redisplay();
-	}
-	else if (g_exit_signal == 2)
-		ioctl(0, TIOCSTI, &eof);
+	if (c == ' ' || c == '\t' || c == '\0')
+		return (1);
+	return (0);
 }

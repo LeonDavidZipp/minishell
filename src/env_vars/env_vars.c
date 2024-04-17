@@ -3,139 +3,137 @@
 /*                                                        :::      ::::::::   */
 /*   env_vars.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 13:19:56 by lzipp             #+#    #+#             */
-/*   Updated: 2024/02/16 18:15:00 by lzipp            ###   ########.fr       */
+/*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/17 11:12:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-void	update_env_vars(char *key, char *value, t_env_var **env_vars)
+static bool		update_existing_env_var(t_envvar **var, int *exit_code,
+					char ***env_vars_ptr);
+static char		*determine_value(t_envvar **var, char ***env_vars_ptr);
+
+char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 {
-	t_env_var	*temp;
-	t_env_var	*new_var;
+	char	*new_var;
+	int		len;
 
-	temp = *env_vars;
-	if (!temp)
+	if (update_existing_env_var(var, exit_code, &env_vars))
+		return (env_vars);
+	len = ft_null_terminated_arr_len((void **)env_vars);
+	*exit_code = var_name_valid((*var)->key, (*var)->includes_equal);
+	if (*exit_code == 0)
 	{
-		*env_vars = new_env_var(key, value);
-		return ;
+		if ((*var)->includes_equal)
+			new_var = ft_strjoin((*var)->key, "=");
+		else
+			new_var = ft_strdup((*var)->key);
+		env_vars = ft_recalloc(env_vars, len + 2, len, sizeof(char *));
+		if (!env_vars)
+			return (free(new_var), NULL);
+		env_vars[len] = ft_strjoin(new_var, (*var)->value);
+		free(new_var);
 	}
-	while (temp)
-	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
-		{
-			free(temp->value);
-			temp->value = ft_strdup(value);
-			return ;
-		}
-		if (temp->next == NULL)
-			break ;
-		temp = temp->next;
-	}
-	new_var = new_env_var(key, value);
-	temp->next = new_var;
-}
-
-t_env_var	*copy_env_vars(t_env_var *env_vars)
-{
-	t_env_var	*new_env_vars;
-	t_env_var	*temp;
-
-	new_env_vars = NULL;
-	temp = env_vars;
-	while (temp)
-	{
-		update_env_vars(temp->key, temp->value, &new_env_vars);
-		temp = temp->next;
-	}
-	return (new_env_vars);
-}
-
-t_env_var	*new_env_var(char *key, char *value)
-{
-	t_env_var	*env_var;
-
-	env_var = (t_env_var *)malloc(sizeof(t_env_var));
-	if (!env_var)
-		return (NULL);
-	env_var->key = ft_strdup(key);
-	if (!env_var->key)
-	{
-		free(env_var);
-		return (NULL);
-	}
-	if (!value)
-		env_var->value = ft_strdup("");
 	else
-		env_var->value = ft_strdup(value);
-	env_var->next = NULL;
-	return (env_var);
+		handle_non_zero(&(*var)->key, exit_code);
+	return (env_vars);
 }
 
-void	unset_env_var(char *key, t_env_var **env_vars)
+void	unset_env_var(char *key, char ***env_vars)
 {
-	t_env_var	*temp;
-	t_env_var	*prev;
+	int		i;
+	int		j;
 
-	temp = *env_vars;
-	prev = NULL;
-	while (temp)
+	i = -1;
+	while ((*env_vars)[++i])
 	{
-		if (ft_strncmp(temp->key, key, ft_strlen(key)) == 0)
+		if (ft_strncmp((*env_vars)[i], key, ft_strlen(key)) == 0)
 		{
-			if (!prev)
-				*env_vars = temp->next;
-			else
-				prev->next = temp->next;
-			free(temp->key);
-			free(temp->value);
-			free(temp);
-			return ;
+			free((*env_vars)[i]);
+			j = i;
+			while ((*env_vars)[j])
+			{
+				(*env_vars)[j] = (*env_vars)[j + 1];
+				j++;
+			}
+			break ;
 		}
-		prev = temp;
-		temp = temp->next;
 	}
 }
 
-void	free_env_vars(t_env_var *env_var)
+int	unset_multiple_env_vars(char *keys_string, char ***env_vars)
 {
-	t_env_var	*temp;
+	char	**keys;
+	int		i;
+	int		exit_code;
 
-	while (env_var)
+	exit_code = 0;
+	keys = ft_split(keys_string, ' ');
+	if (!keys)
+		return (1);
+	i = -1;
+	while (keys[++i])
 	{
-		temp = env_var->next;
-		free(env_var->key);
-		free(env_var->value);
-		free(env_var);
-		env_var = temp;
+		exit_code = var_name_valid(keys[i], false);
+		if (exit_code == 0)
+			unset_env_var(keys[i], env_vars);
+		else if (exit_code == 1)
+			ft_fprintf(2, "%s: unset: `%s': %s\n", NAME, keys[i], INVALID_ID);
+		else if (keys[i][0] && keys[i][1] && exit_code == 2)
+		{
+			ft_fprintf(2, "%s: unset: `%c%c': %s\n%s", NAME, keys[i][0],
+				keys[i][2], INVALID_OP, UNSET_USG);
+			break ;
+		}
 	}
+	ft_free_2d_arr((void **)keys);
+	return (exit_code);
 }
 
-// int	main(void)
-// {
-// 	t_env_var	*env_vars;
-// 	t_env_var	*new_env_vars;
-// 	t_env_var	*temp;
+static bool	update_existing_env_var(t_envvar **var, int *exit_code,
+				char ***env_vars_ptr)
+{
+	int			i;
+	char		*new_var;
+	char		**env_vars;
+	char		*value;
 
-// 	env_vars = NULL;
-// 	update_env_vars("key1", "value1", &env_vars);
-// 	update_env_vars("key2", "value2", &env_vars);
-// 	update_env_vars("key3", "value3", &env_vars);
-// 	update_env_vars("key4", "value4", &env_vars);
-// 	temp = env_vars;
-// 	while (temp)
-// 	{
-// 		printf("key: %s, value: %s\n", temp->key, temp->value);
-// 		temp = temp->next;
-// 	}
-// 	new_env_vars = copy_env_vars(env_vars);
-// 	temp = new_env_vars;
-// 	while (temp)
-// 	{
-// 		printf("key: %s, value: %s\n", temp->key, temp->value);
-// 		temp = temp->next;
-// 	}
-// }
+	*exit_code = 0;
+	env_vars = *env_vars_ptr;
+	i = -1;
+	while (env_vars[++i])
+	{
+		if (ft_strncmp(env_vars[i], (*var)->key, ft_strlen((*var)->key)) == 0
+			&& (*var)->includes_equal)
+		{
+			value = determine_value(var, env_vars_ptr);
+			free(env_vars[i]);
+			new_var = ft_strjoin((*var)->key, "=");
+			env_vars[i] = ft_strjoin(new_var, value);
+			return (free(value), free(new_var), true);
+		}
+		else if (ft_strncmp(env_vars[i], (*var)->key,
+				ft_strlen((*var)->key)) == 0 && !(*var)->includes_equal)
+			return (true);
+	}
+	return (false);
+}
+
+static char	*determine_value(t_envvar **var, char ***env_vars_ptr)
+{
+	char		*value;
+	char		**env_vars;
+
+	env_vars = *env_vars_ptr;
+	if ((*var)->includes_plus)
+	{
+		value = ft_getenv((*var)->key, env_vars);
+		value = ft_join_in_place(value, (*var)->value);
+	}
+	else
+		value = ft_strdup((*var)->value);
+	return (value);
+}

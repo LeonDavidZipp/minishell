@@ -45,5 +45,4 @@ leaks.
 
 ## Bonus
 ### && and ||
-### * for currend working dir
-
+### * for current working dir
