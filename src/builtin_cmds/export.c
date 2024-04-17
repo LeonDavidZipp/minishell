@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 17:06:33 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 11:46:51 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:03:39 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,16 +60,19 @@ static void	print_vars(char **env_vars, int fd)
 	}
 }
 
+void	free_var(t_envvar *var)
+{
+	free(var->key);
+	free(var->value);
+	free(var);
+}
+
 void	free_vars(t_envvar **vars)
 {
 	int	i;
 
 	i = -1;
 	while (vars[++i])
-	{
-		free(vars[i]->key);
-		free(vars[i]->value);
-		free(vars[i]);
-	}
+		free_var(vars[i]);
 	free(vars);
 }

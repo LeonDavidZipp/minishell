@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:15:54 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:03:54 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void		unset_env_var(char *key, char ***env_vars);
 int			unset_multiple_env_vars(char *keys_string, char ***env_vars);
 t_envvar	**split_env_vars(char *envp, t_app_data **app_data);
 t_envvar	*split_env_var(char *envp);
+void		free_var(t_envvar *var);
 void		free_vars(t_envvar **vars);
 int			var_name_valid(char *key, bool includes_equal);
 void		handle_non_zero(char **key, int *exit_code);

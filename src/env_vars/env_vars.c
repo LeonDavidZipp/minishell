@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 14:56:25 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:12:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,7 @@ static bool	update_existing_env_var(t_envvar **var, int *exit_code,
 			free(env_vars[i]);
 			new_var = ft_strjoin((*var)->key, "=");
 			env_vars[i] = ft_strjoin(new_var, value);
-			free(new_var);
-			return (true);
+			return (free(value), free(new_var), true);
 		}
 		else if (ft_strncmp(env_vars[i], (*var)->key,
 				ft_strlen((*var)->key)) == 0 && !(*var)->includes_equal)

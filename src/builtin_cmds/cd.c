@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:56:02 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/12 12:54:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:19:14 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,15 @@ static int	handle_minus(char ***env_vars, int *last_exit_code)
 	if (!pwd)
 	{
 		ft_fprintf(2, "%s: cd: PWD not set\n", NAME);
-		return (1);
+		return (free(oldpwd), 1);
 	}
 	if (chdir(oldpwd) == -1)
 	{
 		ft_fprintf(2, "%s: cd: %s: %s\n", NAME, oldpwd, strerror(errno));
-		return (1);
+		return (free(pwd), free(oldpwd), 1);
 	}
 	update_pwds(env_vars, last_exit_code, true);
-	return (0);
+	return (free(pwd), free(oldpwd), 0);
 }
 
 static int	update_pwds(char ***env_vars, int *last_exit_code, bool in_minus)
@@ -83,7 +83,9 @@ static int	update_pwds(char ***env_vars, int *last_exit_code, bool in_minus)
 	free(oldpwd_string);
 	*env_vars = update_env_vars(&new_pwd, last_exit_code, *env_vars);
 	*env_vars = update_env_vars(&new_oldpwd, last_exit_code, *env_vars);
+	free_var(new_oldpwd);
 	if (in_minus)
 		ft_fprintf(1, "%s\n", new_pwd->value);
+	free_var(new_pwd);
 	return (*last_exit_code != 0);
 }
