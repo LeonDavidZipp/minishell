@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/16 18:02:08 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:13:48 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 11:14:50 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ int	hidden_builtin(char *hidden_command, t_app_data *app)
 	if (!command || !args)
 		return (free(command), free(args), 1);
 	exp_args = expand_and_remove(args, app->last_exit_code,
-		app->env_vars, 0);
+			app->env_vars, 0);
 	if (!exp_args)
 		return (free(command), free(args), 1);
 	exit_code = execute_cmd(command, exp_args, args, app);
