@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:17:23 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 11:44:52 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 10:56:34 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ int	builtin_echo(char *args, int out_fd, t_app_data **app)
 	flags[1] = 0;
 	tmp = expand(args, (*app)->last_exit_code, (*app)->env_vars, flags);
 	args_split = split(tmp);
+	free(tmp);
 	if (!args_split)
 		return (1);
 	if (!print_args(app, &args_split, out_fd))
