@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:25:12 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:22:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static bool		rearrange(bool *first_rearrange, t_token **before_first,
 t_token	*switch_tokens_for_redir(t_token *tokens)
 {
 	t_token			*current;
-	bool			first_rearrange;
 	t_token			*before_first;
+	bool			first_rearrange;
 
 	current = tokens;
 	first_rearrange = true;
