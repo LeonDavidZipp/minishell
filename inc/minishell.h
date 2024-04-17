@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 16:17:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/16 17:47:41 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,6 +124,28 @@ typedef struct s_expand
 
 // signal handling
 void		signal_handler(void);
+
+// temporary
+int	execute_builtin(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
+int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
+void		exec_cmds(t_treenode *ast, t_app_data *app, t_pid_list **pid_list);
+int			setup_redir(t_treenode *node, t_app_data *app);
+int			setup_fd(t_treenode *node, t_app_data *app, int *ret);
+char		*find_path(char *command, char **envp, bool *flag);
+void		wait_and_free(t_app_data *app, t_pid_list **pid_list);
+t_treenode	*find_cmd_node(t_treenode *node);
+int			handle_heredoc(t_treenode *node, t_app_data *app);
+int		is_builtin(char *cmd, int exit_code, char **env_vars);
+int			is_redir(t_tokentype type);
+int		read_input(char *delimiter, int write_fd, t_app_data *app);
+void	set_error_vars(t_treenode *node, char *err, int val);
+void	set_err(t_treenode *node, char *err, int val);
+int	ambigious_redirect(char *str);
+int	add_to_pid_list(pid_t pid, t_pid_list **pidlist);
+
+int	is_hidden_command(char *command, char **env_vars);
+int	exec_hidden_command(char *hidden_command, char **args, t_app_data *app, t_pid_list **pid_list);
+int	execute_cmd(char *cmd, char *args, char *ast_args, t_app_data *app);
 
 // execution
 void		exec_cmds(t_treenode *ast, t_app_data *app,
