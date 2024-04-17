@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 11:39:16 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:18:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,8 @@ static void		handle_split_fail(t_app_data *app, char **arg_arr);
 
 int	builtin_exit(t_app_data *app, char *args)
 {
-	// free memory!!!!!!!!!!!!!!!!
-	// free memory!!!!!!!!!!!!!!!!
-	// free memory!!!!!!!!!!!!!!!!
 	char		**arg_arr;
+	int			exit_code;
 
 	if (!args)
 	{
@@ -40,8 +38,10 @@ int	builtin_exit(t_app_data *app, char *args)
 	else
 	{
 		// printf("exit\n");
+		exit_code = ft_atoi(arg_arr[0]) % 256;
+		ft_free_2d_arr((void **)arg_arr);
 		free_app_data(app);
-		exit(ft_atoi(arg_arr[0]) % 256);
+		exit(exit_code);
 	}
 	return (0);
 }
