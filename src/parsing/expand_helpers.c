@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:05:35 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/16 14:02:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:27:26 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,5 +136,6 @@ int	env_var_size(char *input, int *i, char **env_vars)
 	else
 		size = 0;
 	free(name);
+	free(value);
 	return (size);
 }
