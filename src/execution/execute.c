@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 16:58:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 15:13:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,15 +118,15 @@ void	child_process(t_treenode *ast, t_execve *var, t_app_data *app)
 {
 	if (handle_fds_dup2(ast))
 			exit(1);
-		close_fds_loop();
-		handle_stat(var);
-		if (access(var->arg_arr[0], X_OK) == 0)
-			execve(var->arg_arr[0], var->arg_arr, app->env_vars);
-		else
-			execve(find_path(var->arg_arr[0], app->env_vars, &var->flag), var->arg_arr, app->env_vars);
-		if (var->flag)
-			exit(126);
-		exit(127);
+	close_fds_loop();
+	handle_stat(var);
+	if (access(var->arg_arr[0], X_OK) == 0)
+		execve(var->arg_arr[0], var->arg_arr, app->env_vars);
+	else
+		execve(find_path(var->arg_arr[0], app->env_vars, &var->flag), var->arg_arr, app->env_vars);
+	if (var->flag)
+		exit(126);
+	exit(127);
 }
 
 int	execute_execve(t_treenode *ast, t_app_data *app, t_pid_list **pid_list)
