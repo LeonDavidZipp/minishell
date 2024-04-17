@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 16:34:49 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:38:49 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,8 @@ char	**split(char *input)
 	while (count[2] < count[3])
 	{
 		if (!process_token(new_input, count, flags, tokens))
-			return (free(new_input), NULL);
+			// return (free(new_input), NULL);
+			return (free(new_input), ft_free_2d_arr((void **)tokens), NULL);
 	}
 	free(new_input);
 	return (tokens);
