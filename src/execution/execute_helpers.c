@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 15:59:11 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 18:09:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,27 @@
 
 // remove path not found error, should just go through
 // the code and print the error at the end of find_path
+
+static void	*check_command_stat(char **command, bool* flag)
+{
+	struct stat		path_stat;
+
+	if (stat(*command, &path_stat) == 0)
+	{
+		if (S_ISREG(path_stat.st_mode))
+		{
+			if (access(*command, X_OK) == 0)
+				return (ft_strdup(*command));
+			if (errno == EACCES)
+				*flag = true;
+			return (ft_fprintf(2, "%s: %s: %s\n", NAME, *command,
+				strerror(errno)), NULL);
+		}
+	}
+	ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, *command);
+	exit(1);
+	return (NULL);
+}
 
 char	*search_path_variable(char **envp)
 {
@@ -54,22 +75,9 @@ char	*find_path(char *command, char **envp, bool *flag)
 	}
 	temp = ft_split(search_path_variable(envp), ':');
 	if (!temp)
-	{
-		struct stat path_stat;
-		stat(command, &path_stat); // check for stat failure
-		if (S_ISREG(path_stat.st_mode))
-		{
-			if (access(command, X_OK) == 0)
-				return (ft_strdup(command));
-			if (errno == EACCES)
-				*flag = true;
-			return (ft_fprintf(2, "%s: %s: %s\n", NAME, command, strerror(errno)), NULL);
-		}
-		ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, command);
-		exit(1);
-	}
-	i = 0;
-	while (temp[i] != NULL)
+		return (check_command_stat(&command, flag));
+	i = -1;
+	while (temp[++i] != NULL)
 	{
 		path = ft_strjoin(temp[i], "/");
 		path = ft_join_in_place(path, command);
@@ -79,7 +87,6 @@ char	*find_path(char *command, char **envp, bool *flag)
 			return (path);
 		}
 		free(path);
-		i++;
 	}
 	ft_free_2d_arr((void **)temp);
 	return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
