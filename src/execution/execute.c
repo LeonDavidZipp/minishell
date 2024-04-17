@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 12:41:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:13:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:34:36 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,7 +176,10 @@ int	read_input(char *delimiter, int write_fd, t_app_data *app)
 		tmp = ft_strtrim(line, "\n");
 		if (ft_strncmp(tmp, new_del, ft_strlen(new_del)) == 0
 			&& ft_strlen(tmp) == ft_strlen(new_del))
+		{
+			free(tmp);
 			break ;
+		}
 		free(tmp);
 		if (should_expand)
 			expanded = expand(line, app->last_exit_code, app->env_vars, flags);
