@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:52:06 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 16:25:39 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/18 11:54:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static void	process_value(t_expand **data, char **value_ref, char **name)
 	}
 	else
 		free(*name);
-	// free(*value_ref);
 }
 
 int	handle_dollar(t_expand *data)

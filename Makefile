@@ -6,7 +6,7 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/17 18:51:26 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/18 11:56:58 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ builtin_cmds/cd.c \
 builtin_cmds/echo.c \
 builtin_cmds/env.c \
 builtin_cmds/exit.c \
+builtin_cmds/exit_helpers.c \
 builtin_cmds/export.c \
 builtin_cmds/pwd.c \
 builtin_cmds/unset.c \

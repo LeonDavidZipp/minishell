@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/18 11:53:38 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/18 11:58:19 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,8 @@ static char	*read_input(void)
 	}
 	return (input);
 }
-static void get_input(t_app_data *app_data)
+
+static void	get_input(t_app_data *app_data)
 {
 	char		*input;
 

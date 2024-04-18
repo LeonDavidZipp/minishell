@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_execve.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 16:15:11 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 18:48:43 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:57:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ static void	child_process(t_treenode *ast, t_execve *var, t_app_data *app)
 	exit(127);
 }
 
-static int	parent_process(t_treenode *ast, t_execve *var, t_pid_list **pid_list)
+static int	parent_process(t_treenode *ast, t_execve *var,
+				t_pid_list **pid_list)
 {
 	if (add_to_pid_list(var->pid, pid_list))
 		return (free(var->cmd_node), ft_free_2d_arr((void **)var->arg_arr), 1);

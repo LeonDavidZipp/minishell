@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 18:51:34 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/18 11:56:22 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,6 +157,13 @@ int			builtin_echo(char *args, int out_fd, t_app_data **app);
 int			builtin_exit(t_app_data *app, char *args);
 int			builtin_unset(char *keys, char **env_vars);
 int			builtin_export(char *var_string, t_app_data **app_data, int fd);
+
+// built-in commands helpers
+void		free_app_data(t_app_data *app);
+void		handle_first_arg_non_number(t_app_data *app, char **arg_arr);
+void		handle_split_fail(t_app_data *app, char **arg_arr);
+void		print_exit(bool noninteractive);
+int			handle_too_many_args(t_app_data *app, char **arg_arr);
 
 // environment variables
 char		**init_envp(char **env_vars);
