@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/18 11:58:19 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/18 13:36:18 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	get_input(t_app_data *app_data)
 	char		*input;
 
 	input = read_input();
-	if (!input)
+	if (!input && app_data->noninteractive)
 		return ;
 	if (input && ft_strlen(input) == 0)
 	{
