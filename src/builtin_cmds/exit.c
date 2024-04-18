@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/22 12:53:27 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 18:52:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/18 11:48:56 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 static void		free_app_data(t_app_data *app);
 static void		handle_first_arg_non_number(t_app_data *app, char **arg_arr);
-static int		handle_too_many_args(char **arg_arr);
+static int		handle_too_many_args(t_app_data *app, char **arg_arr);
 static void		handle_split_fail(t_app_data *app, char **arg_arr);
+static void		print_exit(bool noninteractive);
 
 int	builtin_exit(t_app_data *app, char *args)
 {
@@ -24,7 +25,7 @@ int	builtin_exit(t_app_data *app, char *args)
 
 	if (!args)
 	{
-		// printf("exit\n");
+		print_exit(app->noninteractive);
 		free_app_data(app);
 		exit(0);
 	}
@@ -34,16 +35,22 @@ int	builtin_exit(t_app_data *app, char *args)
 	else if (!ft_str_isnumber(arg_arr[0]))
 		handle_first_arg_non_number(app, arg_arr);
 	else if (ft_null_terminated_arr_len((void **)arg_arr) > 1)
-		return (handle_too_many_args(arg_arr));
+		return (handle_too_many_args(app, arg_arr));
 	else
 	{
-		// printf("exit\n");
+		print_exit(app->noninteractive);
 		exit_code = ft_atoi(arg_arr[0]) % 256;
 		ft_free_2d_arr((void **)arg_arr);
 		free_app_data(app);
 		exit(exit_code);
 	}
 	return (0);
+}
+
+static void	print_exit(bool noninteractive)
+{
+	if (!noninteractive)
+		ft_printf("exit\n");
 }
 
 static void	free_app_data(t_app_data *app_data)
@@ -56,7 +63,7 @@ static void	free_app_data(t_app_data *app_data)
 
 static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 {
-	// ft_printf("exit\n");
+	print_exit(app->noninteractive);
 	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
 		NAME, arg_arr[0]);
 	ft_free_2d_arr((void **)arg_arr);
@@ -64,17 +71,18 @@ static void	handle_first_arg_non_number(t_app_data *app, char **arg_arr)
 	exit(255);
 }
 
-static int	handle_too_many_args(char **arg_arr)
+static int	handle_too_many_args(t_app_data *app, char **arg_arr)
 {
-	// ft_printf("exit\n");
-	ft_fprintf(2, "%s: exit: too many arguments\n", NAME);
+	print_exit(app->noninteractive);
+	ft_fprintf(2, "%s: exit: %s: numeric argument required\n",
+		NAME, arg_arr[0]);
 	ft_free_2d_arr((void **)arg_arr);
 	return (1);
 }
 
 static void	handle_split_fail(t_app_data *app, char **arg_arr)
 {
-	// ft_printf("exit\n");
+	print_exit(app->noninteractive);
 	ft_free_2d_arr((void **)arg_arr);
 	free_app_data(app);
 	exit(1);
