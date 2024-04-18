@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 12:44:39 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 18:44:46 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/18 14:41:23 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int	setup_redir(t_treenode *node, t_app_data *app)
 	tmp = remove_quotes_in_place(tmp2);
 	if (node->cmd_type == REDIR_IN)
 		return (handle_redir_in(node, tmp));
-	else if (node->cmd_type == HEREDOC && g_exit_signal != 2)
+	else if (node->cmd_type == HEREDOC)
 		return (free(tmp), handle_heredoc(node, app));
 	else if (node->cmd_type == REDIR_OUT || node->cmd_type == REDIR_APPEND)
 		return (handle_redir_out(node, tmp));

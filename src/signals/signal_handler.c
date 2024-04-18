@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 11:58:14 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/15 14:31:20 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/18 14:35:25 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ static void		handle_ctrl_c(int signal);
 
 void	signal_handler(void)
 {
+	struct termios	term;
+
+	tcgetattr(0, &term);
+	term.c_lflag &= ~ECHOCTL;
+	tcsetattr(0, TCSANOW, &term);
 	signal(SIGINT, handle_ctrl_c);
 	signal(SIGQUIT, SIG_IGN);
 }
 
 void	handle_ctrl_c(int signal)
 {
-	char	eof;
-
 	(void)signal;
-	eof = 4;
 	printf("\n");
 	if (g_exit_signal == 0)
 	{
@@ -34,5 +36,5 @@ void	handle_ctrl_c(int signal)
 		rl_redisplay();
 	}
 	else if (g_exit_signal == 2)
-		ioctl(0, TIOCSTI, &eof);
+		ioctl(0, TIOCSTI, "\4");
 }
