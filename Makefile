@@ -6,18 +6,15 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/19 11:10:37 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/22 13:04:04 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := minishell
 
-CC := gcc
-CFLAGS := -Wextra -Wall -Werror -g
+CC := cc
+CFLAGS := -Wextra -Wall -Werror
 LDFLAGS := -lreadline
-# CFLAGS := -Wextra -Wall -Werror -fsanitize=address -fsanitize=undefined
-# LDFLAGS := -lreadline -fsanitize=address -fsanitize=undefined
-
 
 OBJDIR = ./obj
 SOURCES := $(addprefix src/, \
