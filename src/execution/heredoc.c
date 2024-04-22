@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:57:09 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/17 18:42:16 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/22 10:15:37 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,26 @@ static int	handle_cmd_node(t_treenode *cmd_node, int tmp_fd);
 
 int	handle_heredoc(t_treenode *node, t_app_data *app)
 {
-	int			tmp_fd;
-	int			pipe_fd[2];
-	t_treenode	*cmd_node;
+	int					tmp_fd;
+	int					pipe_fd[2];
+	t_treenode			*cmd_node;
+	struct sigaction	act;
 
 	if (pipe(pipe_fd) == -1)
 	{
 		heredoc_pipe_fail(node);
 		return (1);
 	}
+	// block_signals();
+	// sigemptyset(&act.sa_mask);
+	// sigaddset(&act.sa_mask, SIGINT);
+	// sigaddset(&act.sa_mask, SIGQUIT);
+	
 	if (read_input(node->args, pipe_fd[1], app))
 	{
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
+		// signal_handler();
 		return (1);
 	}
 	tmp_fd = pipe_fd[0];

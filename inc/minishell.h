@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/09 19:52:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/18 11:56:22 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/19 12:14:17 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ typedef struct s_execve
 
 // signal handling
 void		signal_handler(void);
+void		block_signals(void);
 
 // built-in commands
 int			builtin_cd(char *path, char ***env_vars, int *last_exit_code);
