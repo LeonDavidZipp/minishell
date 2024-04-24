@@ -6,7 +6,7 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/18 15:35:59 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:36:29 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int	main(int argc, char **argv, char **envp)
 	{
 		g_exit_signal = 0;
 		get_input(&app_data);
-		if (!isatty(fileno(stdin)) && app_data.input == NULL)
+		if (!isatty(STDIN_FILENO) && app_data.input == NULL)
 			break ;
 		if (app_data.input == NULL)
 			continue ;
@@ -51,11 +51,11 @@ static char	*read_input(void)
 	char		*input;
 	char		*line;
 
-	if (isatty(fileno(stdin)))
+	if (isatty(STDIN_FILENO))
 		input = readline(PROMPT);
 	else
 	{
-		line = get_next_line(fileno(stdin));
+		line = get_next_line(STDIN_FILENO);
 		if (line == NULL)
 			return (NULL);
 		input = ft_strtrim(line, "\n");
@@ -95,7 +95,7 @@ static void	init_app_data(t_app_data *app_data, char **envp)
 	app_data->env_vars = init_envp(envp);
 	app_data->last_exit_code = 0;
 	app_data->input = NULL;
-	app_data->noninteractive = !isatty(fileno(stdin));
+	app_data->noninteractive = !isatty(STDIN_FILENO);
 }
 
 static void	print_logo(void)

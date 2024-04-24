@@ -6,11 +6,13 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/25 17:45:28 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/14 16:23:18 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/19 11:25:45 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static char	*increment_shlvl(char **shlvl);
 
 char	**init_envp(char **env_vars)
 {
@@ -23,44 +25,31 @@ char	**init_envp(char **env_vars)
 		return (NULL);
 	i = -1;
 	while (env_vars[++i])
-		envp[i] = ft_strdup(env_vars[i]);
+	{
+		if (ft_strncmp(env_vars[i], "SHLVL=", 6) == 0)
+			envp[i] = increment_shlvl(&(env_vars[i]));
+		else
+			envp[i] = ft_strdup(env_vars[i]);
+	}
 	return (envp);
 }
 
-int	var_name_valid(char *key, bool includes_equal)
+static char	*increment_shlvl(char **shlvl)
 {
-	int		i;
-	int		len;
+	int		shlvl_int;
+	char	*new_shlvl;
+	char	*shlvl_result;
 
-	if (!key)
-		return (1);
-	if (key[0] == '-')
-		return (2);
-	if (!ft_isalpha(key[0]) && key[0] != '_')
-		return (1);
-	i = 0;
-	len = ft_strlen(key);
-	while (key[++i])
+	if (ft_str_isdigit(*shlvl + 6))
 	{
-		if (i == len - 1 && len > 1 && includes_equal && key[i] == '+')
-			break ;
-		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (1);
-		else if (key[i] == '=')
-			return (1);
+		shlvl_int = ft_atoi(*shlvl + 6);
+		new_shlvl = ft_itoa(shlvl_int + 1);
+		shlvl_result = ft_strjoin("SHLVL=", new_shlvl);
+		free(new_shlvl);
 	}
-	return (0);
-}
-
-void	handle_non_zero(char **key, int *exit_code)
-{
-	if (*exit_code == 1)
-		ft_fprintf(2, "%s: export: `%s': %s\n", NAME, *key, INVALID_ID);
-	else if ((*key)[0] && (*key)[1] && *exit_code == 2)
-	{
-		ft_fprintf(2, "%s: export: `%c%c': %s\n%s%s", NAME, (*key)[0],
-			(*key)[1], INVALID_OP, EXPORT_USG, EXPORT_USG2);
-	}
+	else
+		shlvl_result = ft_strdup("SHLVL=1");
+	return (shlvl_result);
 }
 
 t_envvar	*fill_result(t_envvar *result, char *envp)

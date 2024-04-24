@@ -6,14 +6,15 @@
 /*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/17 17:57:09 by cgerling          #+#    #+#             */
-/*   Updated: 2024/04/18 15:17:28 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/24 16:35:36 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
 static void	heredoc_pipe_fail(t_treenode *node);
-static int	read_input(char *delimiter, int write_fd, t_app_data *app, char *buf);
+static int	read_input(char *delimiter, int write_fd,
+				t_app_data *app, char *buf);
 static void	init_read_input(int *i, int *exp_flags);
 static int	handle_cmd_node(t_treenode *cmd_node, int tmp_fd);
 
@@ -61,7 +62,8 @@ static void	heredoc_pipe_fail(t_treenode *node)
 		set_error_vars(cmd_node, "heredoc pipe error", errno);
 }
 
-static int	read_input(char *delimiter, int write_fd, t_app_data *app, char *buf)
+static int	read_input(char *delimiter, int write_fd,
+			t_app_data *app, char *buf)
 {
 	char	*line;
 	char	*tmp;
