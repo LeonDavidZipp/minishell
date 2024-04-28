@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/28 14:50:29 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/28 14:56:11 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ static bool	update_existing_env_var(t_envvar **var, int *exit_code,
 		}
 		else if (ft_strncmp(env[i], (*var)->key,
 				ft_strlen((*var)->key)) == 0 && !(*var)->includes_equal
-			&& env[i][ft_strlen((*var)->key)] == '=')
+			&& ft_strlen((*var)->key) == ft_strlen(env[i]))
 			return (true);
 	}
 	return (false);
