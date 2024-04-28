@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/19 10:30:05 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/19 11:25:36 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/28 14:35:43 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	var_name_valid(char *key, bool includes_equal)
 		else if (key[i] == '=')
 			return (1);
 	}
+	printf("key is valid: %s\n", key);
 	return (0);
 }
 

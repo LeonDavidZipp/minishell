@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/17 11:12:53 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/28 14:50:29 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,25 +98,26 @@ static bool	update_existing_env_var(t_envvar **var, int *exit_code,
 {
 	int			i;
 	char		*new_var;
-	char		**env_vars;
+	char		**env;
 	char		*value;
 
 	*exit_code = 0;
-	env_vars = *env_vars_ptr;
+	env = *env_vars_ptr;
 	i = -1;
-	while (env_vars[++i])
+	while (env[++i])
 	{
-		if (ft_strncmp(env_vars[i], (*var)->key, ft_strlen((*var)->key)) == 0
-			&& (*var)->includes_equal)
+		if (ft_strncmp(env[i], (*var)->key, ft_strlen((*var)->key)) == 0
+			&& (*var)->includes_equal && env[i][ft_strlen((*var)->key)] == '=')
 		{
 			value = determine_value(var, env_vars_ptr);
-			free(env_vars[i]);
+			free(env[i]);
 			new_var = ft_strjoin((*var)->key, "=");
-			env_vars[i] = ft_strjoin(new_var, value);
+			env[i] = ft_strjoin(new_var, value);
 			return (free(value), free(new_var), true);
 		}
-		else if (ft_strncmp(env_vars[i], (*var)->key,
-				ft_strlen((*var)->key)) == 0 && !(*var)->includes_equal)
+		else if (ft_strncmp(env[i], (*var)->key,
+				ft_strlen((*var)->key)) == 0 && !(*var)->includes_equal
+			&& env[i][ft_strlen((*var)->key)] == '=')
 			return (true);
 	}
 	return (false);
