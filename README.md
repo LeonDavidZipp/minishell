@@ -22,3 +22,11 @@ The first important step in creating our project:
 
 #### [2. Creating the Abstract Syntax Tree (AST)](https://github.com/LeonDavidZipp/minishell/tree/main/src/build_ast)
 The second step was to now build an **AST** from the previously generated tokens.
+
+![image](https://github.com/LeonDavidZipp/minishell/assets/117377515/8571c9ba-3fd7-48db-98d9-446858b97891)
+
+- the AST serves as an internal representation of the user's input commands.
+- it is built and executed using recursion
+- the tokens are inserted according to their priority as defined in bash
+- because of having to handle brackets, our tree handles the insertion of as many subtrees as required into the main tree
+- the AST facilitates the interpretation and execution of commands entered by the user within the shell environment
