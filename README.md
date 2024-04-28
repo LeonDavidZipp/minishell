@@ -1,13 +1,13 @@
 # Babash
 By Charlotte Gerlinger & Leon David Zipp
 
-<img width="510" alt="Screen Shot 2024-04-28 at 2 12 35 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/1c7bb2ca-0dc1-4958-a719-b30bd926831e">
-
 ## Description
 The **Minishell Project** at **42 Heilbronn** is a fundamental step in a 42 students' programming journey.
 It challenges students to create their own bash-inspired kernel from scratch, capable of interpreting and executing commands entered by the user.
 The project is written in C. Many students consider Minishell to be one of the two most important, if not the most important project during the
 42 curriculum.
+
+<img width="510" alt="Screen Shot 2024-04-28 at 2 12 35 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/1c7bb2ca-0dc1-4958-a719-b30bd926831e">
 
 ## The Main Learnings
 ### 1. Working as a Team
