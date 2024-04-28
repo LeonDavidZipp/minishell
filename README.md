@@ -27,6 +27,9 @@ Our main learnings considering git and Github can be described as follows:
 - using submodules
 
 ### 3. Testing
+Since bash handles a myriad commands and arrangements of operators, rigorous testing was necessary to handle as many cases as possible. To do this, we wrote our own tests and used a Minishell tester you can find [here](https://github.com/zstenger93/42_minishell_tester).
+
+<img width="580" alt="Screen Shot 2024-04-28 at 2 24 33 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/df74d95a-d620-4ae2-ba86-588d3cfa5d57">
 
 ### 4. Dockerization and Devcontainers
 
