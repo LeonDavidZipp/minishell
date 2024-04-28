@@ -2,6 +2,7 @@
 By Charlotte Gerlinger & Leon David Zipp
 
 <img width="369" alt="Screen Shot 2024-04-28 at 1 25 16 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/25d633c9-eecc-4cd9-98d6-10ad5784a834">
+<img width="510" alt="Screen Shot 2024-04-28 at 2 12 35 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/1c7bb2ca-0dc1-4958-a719-b30bd926831e">
 
 ## Description
 The **Minishell Project** at **42 Heilbronn** is a fundamental step in a 42 students' programming journey.
