@@ -31,6 +31,8 @@ Since bash handles a myriad commands and arrangements of operators, rigorous tes
 
 <img width="580" alt="Screen Shot 2024-04-28 at 2 24 33 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/df74d95a-d620-4ae2-ba86-588d3cfa5d57">
 
+Most of the failed tests are caused by homebrew being in our PATH, but not in bash's PATH! If you have the same issue in your code, simply remove brew from your PATH, but we deemed this impractical and unnecessary.
+
 ### 4. Dockerization and Devcontainers
 
 ## The 3 Pillars of Minishell
