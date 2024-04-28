@@ -68,6 +68,6 @@ The main challenges of this part:
 - executing **builtin** as well as **other commands**
 - executing **commands hidden in environment variables**
 
-### (Inofficial 4th Pillar: Memory Leakage)
+### [(Inofficial 4th Pillar: Memory Leakage)](https://github.com/LeonDavidZipp/minishell/blob/main/src/lexer/lexer.c)
 Preventing all possible leaks was a requirement as well. To do this, we **deallocated variables as soon as they were no longer needed**.
 Another valid approach would be writing a **garbage collector**, but we decided against it.
