@@ -34,6 +34,7 @@ Since bash handles a myriad commands and arrangements of operators, rigorous tes
 Most of the failed tests are caused by homebrew being in our PATH, but not in bash's PATH! If you have the same issue in your code, simply remove brew from your PATH, but we deemed this impractical and unnecessary.
 
 ### 4. Dockerization and Devcontainers
+For checking leaks and ease of other tasks, we set up a **devcontainer containing valgrind** and other useful tools. For this we also created our own **Dockerfile**.
 
 ## The 3 Pillars of Minishell
 For an **overview of all structs and non-static functions** used in the project, click [here](https://github.com/LeonDavidZipp/minishell/blob/main/inc/minishell.h)
