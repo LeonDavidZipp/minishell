@@ -9,14 +9,16 @@ It challenges students to create a simple bash-inspired shell from scratch, capa
 The project is written in C. Many students consider Minishell to be one of the two most important, if not the most important project during the
 42 curriculum.
 ### Main Learnings
+For an **overview of all structs and non-static functions** used in the projects, click [here](https://github.com/LeonDavidZipp/minishell/blob/main/inc/minishell.h)
 #### [1. Parsing & Tokenization](https://github.com/LeonDavidZipp/minishell/tree/main/src/parsing)
-The first important steps in creating our project:
-- parsing and splitting the input into tokens, such as...
+The first important step in creating our project:
+- parsing and splitting the input into **tokens** (an arrangement of characters that has an actual meaning), such as...
   - commands, e.g. ls and exit
   - operators, e.g && (AND) and || (OR)
   - redirections, e.g. > and <
   - etc.
 - rearranging these tokens according to rules defined by the original bash
-- validating the syntax of these tokens
+- validating the **syntax** of these tokens
 
-#### 2. Creating the Abstract Syntax Tree (AST)
+#### [2. Creating the Abstract Syntax Tree (AST)](https://github.com/LeonDavidZipp/minishell/tree/main/src/build_ast)
+The second step was to now build an **AST** from the previously generated tokens.
