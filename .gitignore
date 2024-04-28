@@ -57,6 +57,7 @@ dkms.conf
 .vscode/
 libtft.a
 minishell
+babash
 obj/
 .vscode
 .idea

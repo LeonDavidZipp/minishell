@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handler.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
+/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/04/22 10:05:11 by lzipp             #+#    #+#             */
-/*   Updated: 2024/04/22 10:05:15 by lzipp            ###   ########.fr       */
+/*   Created: 2024/04/24 16:34:41 by cgerling          #+#    #+#             */
+/*   Updated: 2024/04/24 16:34:45 by cgerling         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	signal_handler(void)
 
 void	handle_ctrl_c(int signal)
 {
-	char	eof;
-
 	(void)signal;
-	eof = 4;
 	printf("\n");
 	if (g_exit_signal == 0)
 	{
@@ -34,5 +31,5 @@ void	handle_ctrl_c(int signal)
 		rl_redisplay();
 	}
 	else if (g_exit_signal == 2)
-		ioctl(0, TIOCSTI, &eof);
+		ioctl(0, TIOCSTI, "\4");
 }

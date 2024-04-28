@@ -6,11 +6,11 @@
 #    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/04/22 13:04:04 by lzipp            ###   ########.fr        #
+#    Updated: 2024/04/28 14:52:14 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := minishell
+NAME := babash
 
 CC := cc
 CFLAGS := -Wextra -Wall -Werror
