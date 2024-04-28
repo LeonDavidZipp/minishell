@@ -41,6 +41,7 @@ The first important step in creating our project:
   - etc.
 - **rearranging** these tokens according to rules defined by the original bash
 - **validating the syntax** of these tokens
+- **expanding** hidden values such as **environment variables** or **wildcards**
 
 ### [2. Creating an Abstract Syntax Tree (AST)](https://github.com/LeonDavidZipp/minishell/tree/main/src/build_ast)
 The second step is to construct an **AST** from the previously generated tokens:
@@ -58,3 +59,9 @@ The execution of the command line input is the final integral part of the **Mini
 The main challenges of this part:
 - correctly opening and closing **file descriptors**
 - handling **redirections**
+- executing **builtin** as well as **other commands**
+- executing **commands hidden in environment variables**
+
+### (Inofficial 4th Pillar: Memory Leakage)
+Preventing all possible leaks was a requirement as well. To do this, we **deallocated variables as soon as they were no longer needed**.
+Another valid approach would be writing a **garbage collector**, but we decided against it.
