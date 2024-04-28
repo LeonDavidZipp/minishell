@@ -3,8 +3,8 @@ By Charlotte Gerlinger & Leon David Zipp
 
 ## Description
 The **Minishell Project** at **42 Heilbronn** is a fundamental step in a 42 students' programming journey.
-It challenges students to create their own bash-inspired kernel from scratch, capable of interpreting and executing commands entered by the user.
-The project is written in C. Many students consider Minishell to be one of the two most important, if not the most important project during the
+It challenges students to create their own **bash-inspired kernel from scratch**, capable of **interpreting and executing commands** entered by the user.
+The project is written in C. Many students consider Minishell to be one of the two most important, if not the most important project of the
 42 curriculum. The **execution of our program** starts [here](https://github.com/LeonDavidZipp/minishell/blob/main/src/lexer/lexer.c).
 
 <img width="510" alt="Screen Shot 2024-04-28 at 2 12 35 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/1c7bb2ca-0dc1-4958-a719-b30bd926831e">
@@ -27,7 +27,7 @@ Our main learnings considering git and Github can be described as follows:
 - using submodules
 
 ### 3. Testing
-Since bash handles a myriad commands and arrangements of operators, rigorous testing was necessary to handle as many cases as possible. To do this, we wrote our own tests and used a Minishell tester you can find [here](https://github.com/zstenger93/42_minishell_tester).
+Since bash handles a myriad of commands and arrangements of operators, rigorous testing was necessary to handle as many cases as possible. To do this, we wrote our own tests and used a Minishell tester you can find [here](https://github.com/zstenger93/42_minishell_tester).
 
 <img width="580" alt="Screen Shot 2024-04-28 at 2 24 33 PM" src="https://github.com/LeonDavidZipp/minishell/assets/117377515/df74d95a-d620-4ae2-ba86-588d3cfa5d57">
 
