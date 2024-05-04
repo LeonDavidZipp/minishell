@@ -6,11 +6,18 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 11:56:10 by cgerling          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/03/28 16:06:06 by lzipp            ###   ########.fr       */
+=======
+/*   Updated: 2024/04/17 18:44:12 by lzipp            ###   ########.fr       */
+>>>>>>> ff9c7fa00235e7e7620e61b21306033764e37de9
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
+
+static void	*check_command_stat(char **command, bool *flag);
+static void	*check_command_access(char **command, bool *flag);
 
 char	*search_path_variable(char **envp)
 {
@@ -29,48 +36,93 @@ char	*search_path_variable(char **envp)
 		i++;
 	}
 	if (path == NULL)
-		return (ft_fprintf(2, "%s: Error: PATH not found\n", NAME), NULL); // maybe different error?!
+		return (NULL);
 	return (path);
 }
 
-char	*find_path(char *command, char **envp)
+char	*find_path(char *command, char **envp, bool *flag)
 {
 	char	*path;
 	char	**temp;
 	int		i;
 
+	if (command == NULL || *command == '\0')
+		return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command),
+			NULL);
+	if (ft_strchr(command, '/'))
+		return (check_command_access(&command, flag));
 	temp = ft_split(search_path_variable(envp), ':');
-	i = 0;
-	while (temp[i] != NULL)
+	if (!temp)
+		return (check_command_stat(&command, flag));
+	i = -1;
+	while (temp[++i] != NULL)
 	{
 		path = ft_strjoin(temp[i], "/");
 		path = ft_join_in_place(path, command);
 		if (access(path, X_OK) == 0)
-		{
-			ft_free_2d_arr((void **)temp);
-			return (path);
-		}
+			return (ft_free_2d_arr((void **)temp), path);
 		free(path);
-		i++;
 	}
 	ft_free_2d_arr((void **)temp);
 	return (ft_fprintf(2, "%s: %s: command not found\n", NAME, command), NULL);
 }
 
-int	is_builtin(char *cmd)
+char	*find_path_no_err(char *command, char **envp)
 {
-	if (ft_strcmp(cmd, "cd") == 0 || ft_strcmp(cmd, "pwd") == 0
-		|| ft_strcmp(cmd, "echo") == 0 || ft_strcmp(cmd, "env") == 0
-		|| ft_strcmp(cmd, "exit") == 0 || ft_strcmp(cmd, "export") == 0
-		|| ft_strcmp(cmd, "unset") == 0)
-		return (1);
-	return (0);
+	char	*path;
+	char	**temp;
+	int		i;
+
+	if (command == NULL || *command == '\0')
+		return (NULL);
+	if (ft_strchr(command, '/'))
+	{
+		if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
+		return (NULL);
+	}
+	temp = ft_split(search_path_variable(envp), ':');
+	if (!temp)
+		return (NULL);
+	i = -1;
+	while (temp[++i] != NULL)
+	{
+		path = ft_strjoin(temp[i], "/");
+		path = ft_join_in_place(path, command);
+		if (access(path, X_OK) == 0)
+			return (ft_free_2d_arr((void **)temp), path);
+		free(path);
+	}
+	return (ft_free_2d_arr((void **)temp), NULL);
 }
 
-int	is_redir(t_tokentype type)
+static void	*check_command_stat(char **command, bool *flag)
 {
-	if (type == REDIR_IN || type == REDIR_OUT
-		|| type == REDIR_APPEND || type == HEREDOC)
-		return (1);
-	return (0);
+	struct stat		path_stat;
+
+	if (stat(*command, &path_stat) == 0)
+	{
+		if (S_ISREG(path_stat.st_mode))
+		{
+			if (access(*command, X_OK) == 0)
+				return (ft_strdup(*command));
+			if (errno == EACCES)
+				*flag = true;
+			return (ft_fprintf(2, "%s: %s: %s\n", NAME, *command,
+					strerror(errno)), NULL);
+		}
+	}
+	ft_fprintf(2, "%s: %s: No such file or directory\n", NAME, *command);
+	exit(1);
+	return (NULL);
+}
+
+static void	*check_command_access(char **command, bool *flag)
+{
+	if (access((*command), X_OK) == 0)
+		return (ft_strdup((*command)));
+	if (errno == EACCES)
+		*flag = true;
+	return (ft_fprintf(2, "%s: %s: %s\n", NAME, (*command), strerror(errno)),
+		NULL);
 }

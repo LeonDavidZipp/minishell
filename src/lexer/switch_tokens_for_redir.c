@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/13 14:51:59 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/19 10:33:57 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/17 16:22:00 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ static bool		rearrange(bool *first_rearrange, t_token **before_first,
 t_token	*switch_tokens_for_redir(t_token *tokens)
 {
 	t_token			*current;
-	bool			first_rearrange;
 	t_token			*before_first;
+	bool			first_rearrange;
 
 	current = tokens;
 	first_rearrange = true;
@@ -33,7 +33,8 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 			before_first = current;
 		if (rearrange(&first_rearrange, &before_first, &tokens, &current))
 			continue ;
-		if (current && (current->type == AND || current->type == OR))
+		if (current && (current->type == AND || current->type == OR
+				|| current->type == PIPE))
 		{
 			before_first = NULL;
 			first_rearrange = false;
@@ -45,8 +46,8 @@ t_token	*switch_tokens_for_redir(t_token *tokens)
 	return (reassign_type(tokens));
 }
 
-static bool	rearrange(bool *first_rearrange, t_token **before_first, t_token **tokens,
-		t_token **current)
+static bool	rearrange(bool *first_rearrange, t_token **before_first,
+		t_token **tokens, t_token **current)
 {
 	if (!*before_first && rearrange_condition(*current))
 	{
@@ -56,14 +57,14 @@ static bool	rearrange(bool *first_rearrange, t_token **before_first, t_token **t
 			*tokens = *before_first;
 			*first_rearrange = false;
 		}
-		return true;
+		return (true);
 	}
 	else if (*before_first && rearrange_condition(*current))
 	{
 		rearrange_following_element(current, before_first);
-		return true;
+		return (true);
 	}
-	return false;
+	return (false);
 }
 
 static void	skip_tokens(t_token **before_first, t_token **current)

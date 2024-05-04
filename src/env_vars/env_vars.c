@@ -5,43 +5,40 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/26 18:14:00 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 18:20:21 by lzipp            ###   ########.fr       */
+/*   Created: 2024/04/05 12:59:22 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/17 11:12:53 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-static bool	var_name_valid(char *key);
-static bool	update_existing_env_var(char *key, char *value, int inc_equal,
-				char ***env_vars_ptr);
+static bool		update_existing_env_var(t_envvar **var, int *exit_code,
+					char ***env_vars_ptr);
+static char		*determine_value(t_envvar **var, char ***env_vars_ptr);
 
 char	**update_env_vars(t_envvar **var, int *exit_code, char **env_vars)
 {
 	char	*new_var;
 	int		len;
 
-	if (update_existing_env_var((*var)->key, (*var)->value,
-			(*var)->includes_equal, &env_vars))
+	if (update_existing_env_var(var, exit_code, &env_vars))
 		return (env_vars);
 	len = ft_null_terminated_arr_len((void **)env_vars);
-	if (var_name_valid((*var)->key))
+	*exit_code = var_name_valid((*var)->key, (*var)->includes_equal);
+	if (*exit_code == 0)
 	{
 		if ((*var)->includes_equal)
 			new_var = ft_strjoin((*var)->key, "=");
 		else
 			new_var = ft_strdup((*var)->key);
-		env_vars = ft_recalloc(env_vars, len + 2, sizeof(char *));
+		env_vars = ft_recalloc(env_vars, len + 2, len, sizeof(char *));
 		if (!env_vars)
-			return (NULL);
+			return (free(new_var), NULL);
 		env_vars[len] = ft_strjoin(new_var, (*var)->value);
 		free(new_var);
 	}
 	else
-	{
-		ft_fprintf(2, "%s: export: `%s': %s\n", NAME, (*var)->key, INVALID_ID);
-		*exit_code = 1;
-	}
+		handle_non_zero(&(*var)->key, exit_code);
 	return (env_vars);
 }
 
@@ -67,60 +64,76 @@ void	unset_env_var(char *key, char ***env_vars)
 	}
 }
 
-int	unset_env_vars(char *keys_string, char ***env_vars)
+int	unset_multiple_env_vars(char *keys_string, char ***env_vars)
 {
 	char	**keys;
 	int		i;
+	int		exit_code;
 
+	exit_code = 0;
 	keys = ft_split(keys_string, ' ');
 	if (!keys)
 		return (1);
 	i = -1;
 	while (keys[++i])
 	{
-		unset_env_var(keys[i], env_vars);
+		exit_code = var_name_valid(keys[i], false);
+		if (exit_code == 0)
+			unset_env_var(keys[i], env_vars);
+		else if (exit_code == 1)
+			ft_fprintf(2, "%s: unset: `%s': %s\n", NAME, keys[i], INVALID_ID);
+		else if (keys[i][0] && keys[i][1] && exit_code == 2)
+		{
+			ft_fprintf(2, "%s: unset: `%c%c': %s\n%s", NAME, keys[i][0],
+				keys[i][2], INVALID_OP, UNSET_USG);
+			break ;
+		}
 	}
 	ft_free_2d_arr((void **)keys);
-	return (0);
+	return (exit_code);
 }
 
-static bool	update_existing_env_var(char *key, char *value, int inc_equal,
+static bool	update_existing_env_var(t_envvar **var, int *exit_code,
 				char ***env_vars_ptr)
 {
 	int			i;
 	char		*new_var;
 	char		**env_vars;
+	char		*value;
 
+	*exit_code = 0;
 	env_vars = *env_vars_ptr;
 	i = -1;
 	while (env_vars[++i])
 	{
-		if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0 && inc_equal)
+		if (ft_strncmp(env_vars[i], (*var)->key, ft_strlen((*var)->key)) == 0
+			&& (*var)->includes_equal)
 		{
+			value = determine_value(var, env_vars_ptr);
 			free(env_vars[i]);
-			new_var = ft_strjoin(key, "=");
+			new_var = ft_strjoin((*var)->key, "=");
 			env_vars[i] = ft_strjoin(new_var, value);
-			free(new_var);
-			return (true);
+			return (free(value), free(new_var), true);
 		}
-		else if (ft_strncmp(env_vars[i], key, ft_strlen(key)) == 0
-			&& !inc_equal)
+		else if (ft_strncmp(env_vars[i], (*var)->key,
+				ft_strlen((*var)->key)) == 0 && !(*var)->includes_equal)
 			return (true);
 	}
 	return (false);
 }
 
-static bool	var_name_valid(char *key)
+static char	*determine_value(t_envvar **var, char ***env_vars_ptr)
 {
-	int		i;
+	char		*value;
+	char		**env_vars;
 
-	i = 0;
-	if (!ft_isalpha(key[0]) && key[0] != '_')
-		return (false);
-	while (key[++i])
+	env_vars = *env_vars_ptr;
+	if ((*var)->includes_plus)
 	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (false);
+		value = ft_getenv((*var)->key, env_vars);
+		value = ft_join_in_place(value, (*var)->value);
 	}
-	return (true);
+	else
+		value = ft_strdup((*var)->value);
+	return (value);
 }

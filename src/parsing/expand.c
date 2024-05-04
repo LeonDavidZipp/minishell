@@ -12,59 +12,69 @@
 
 #include "../../inc/minishell.h"
 
-void	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
-{
-	struct dirent	*entry;
+static void	process_entry(int **i, bool *flag, struct dirent **entry,
+				char ***output);
 
-	entry = readdir(dir);
-	while (entry != NULL)
-	{
-		if (match(pattern, entry->d_name))
-		{
-			i[2] = 0;
-			while (entry->d_name[i[2]])
-				(*output)[i[1]++] = entry->d_name[i[2]++];
-			(*output)[i[1]++] = ' ';
-		}
-		entry = readdir(dir);
-	}
-}
-
-int	handle_wildcard(char *input, char **output, int *i)
+int	process_dir_entries(DIR *dir, char *pattern, char **output, int *i)
 {
-	DIR				*dir;
-	char			*pattern;
-	int				position;
 	bool			flag;
+	bool			s_quote;
+	bool			d_quote;
+	struct dirent	*entry;
+	int				j;
 
 	flag = false;
-	pattern = get_pattern(input, &i[0], &position);
-	if (!pattern)
-		return (free(output), 0);
-	dir = opendir(".");
-	if (dir == NULL)
-		return (free(output), 0);
-	if (!flag)
+	s_quote = false;
+	d_quote = false;
+	entry = readdir(dir);
+	j = 0;
+	while (entry != NULL)
 	{
-		i[1] -= position;
-		flag = true;
+		while (pattern[j] == '\'' || pattern[j] == '"')
+			j++;
+		if ((pattern[j] == '.' || (entry->d_name[0] != '.'
+					|| (entry->d_name[0] != '.' && entry->d_name[1] != '.')))
+			&& match(pattern, entry->d_name, s_quote, d_quote))
+			process_entry(&i, &flag, &entry, &output);
+		entry = readdir(dir);
 	}
-	process_dir_entries(dir, pattern, output, i);
-	closedir(dir);
-	free(pattern);
-	return (1);
+	if (flag)
+		return (1);
+	return (0);
+}
+
+static void	process_entry(int **i, bool *flag, struct dirent **entry,
+				char ***output)
+{
+	(*i)[2] = 0;
+	*flag = true;
+	if (empty_entry((*entry)->d_name) == 1
+		|| empty_entry((*entry)->d_name) == 3)
+		(*(*output))[(*i)[1]++] = '"';
+	while ((*entry)->d_name[(*i)[2]])
+		(*(*output))[(*i)[1]++] = (*entry)->d_name[(*i)[2]++];
+	if (empty_entry((*entry)->d_name) == 2
+		|| empty_entry((*entry)->d_name) == 3)
+		(*(*output))[(*i)[1]++] = '"';
+	(*(*output))[(*i)[1]++] = ' ';
 }
 
 void	handle_character(t_expand *data)
 {
 	handle_quotes(data->input[data->i[0]], &data->quotes[0], &data->quotes[1]);
-	if (data->input[data->i[0]] == '$' && !data->quotes[0] && is_valid_dollar(data->input, data->i[0]))
+	if ((data->input[data->i[0]] == '$' && !data->quotes[0]
+			&& is_valid_dollar(data->input, data->i[0], data->quotes)
+			&& data->flags[1] == 0)
+		|| (data->input[data->i[0]] == '~'
+			&& !data->quotes[0] && !data->quotes[1]
+			&& (is_space(data->input[data->i[0] + 1])
+				|| data->input[data->i[0] + 1] == '/') && data->flags[1] == 0))
 	{
 		if (!handle_dollar(data))
 			return ;
 	}
 	else if (data->input[data->i[0]] == '*' && !data->quotes[0]
-		&& !data->quotes[1] && data->i[3] == 0)
+		&& !data->quotes[1] && data->flags[0] == 0)
 	{
 		if (!handle_wildcard(data->input, data->output, data->i))
 			return ;
@@ -82,7 +92,7 @@ static	void	init_vars(int *i, bool *quotes)
 	quotes[1] = false;
 }
 
-char	*expand(char *input, int exit_code, char **env_vars, int flag)
+char	*expand(char *input, int exit_code, char **env_vars, int *flags)
 {
 	char		*output;
 	int			size;
@@ -92,35 +102,19 @@ char	*expand(char *input, int exit_code, char **env_vars, int flag)
 
 	init_vars(i, quotes);
 	data.env_vars = env_vars;
-	data.flag = flag;
+	data.flags = flags;
 	data.exit_code = exit_code;
 	data.i = i;
 	data.quotes = quotes;
 	data.input = input;
-	size = get_new_size(input, exit_code, env_vars, flag);
-
+	size = get_new_size(input, exit_code, env_vars, flags);
 	output = (char *)ft_calloc((size + 1), sizeof(char));
 	if (!output)
 		return (NULL);
 	data.output = &output;
 	while (input[i[0]])
-	{
 		handle_character(&data);
-	}
 	if (output != NULL)
 		output[i[1]] = '\0';
 	return (output);
 }
-
-// int	main()
-// {
-// 	// char	*input = "hello $USER your number is $? * test"; // testing
-// 	char	*input = "*.c"; // testing
-// 	char	*output = data(input, 0);
-// 	if (output)
-// 	{
-// 		printf("%s\n", output);
-// 		free(output);
-// 	}
-// 	return (0);
-// }

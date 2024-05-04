@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_envp.c                                        :+:      :+:    :+:   */
+/*   check_types.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/25 17:45:28 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/25 17:45:33 by lzipp            ###   ########.fr       */
+/*   Created: 2024/04/16 14:33:28 by lzipp             #+#    #+#             */
+/*   Updated: 2024/04/16 14:33:35 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/minishell.h"
 
-char	**init_envp(char **env_vars)
+int	is_operator(char c, char d)
 {
-	int			i;
-	char		**envp;
+	if (c == d && (c == '|' || c == '&' || c == '<' || c == '>'))
+		return (2);
+	else if (((c == '|' && d != '|') || (c == '<' && d != '<')
+			|| (c == '>' && d != '>') || c == '(' || c == ')'))
+		return (1);
+	return (0);
+}
 
-	i = -1;
-	envp = ft_calloc(ft_null_terminated_arr_len((void **)env_vars) + 1,
-			sizeof(char *));
-	if (!envp)
-		return (NULL);
-	while (env_vars[++i])
-		envp[i] = ft_strdup(env_vars[i]);
-	return (envp);
+int	is_space(char c)
+{
+	if (c == ' ' || c == '\t' || c == '\0')
+		return (1);
+	return (0);
 }

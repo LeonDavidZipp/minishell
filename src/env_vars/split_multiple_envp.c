@@ -6,7 +6,7 @@
 /*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 14:29:04 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/26 14:11:47 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/04/14 16:23:52 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int		count_substr(char *s, char c);
 static char		**split_env_var_string(char *envp, char c);
 static char		*ft_split_str(const char *s, char c, int *i);
 
-t_envvar	**split_env_vars(char *envp)
+t_envvar	**split_env_vars(char *envp, t_app_data **app_data)
 {
 	t_envvar	**env_vars;
 	char		**keys_values;
@@ -31,34 +31,36 @@ t_envvar	**split_env_vars(char *envp)
 		return (ft_free_2d_arr((void **)keys_values), NULL);
 	len = -1;
 	while (keys_values[++len])
+	{
+		keys_values[len] = expand_and_remove_in_place(keys_values[len],
+				(*app_data)->last_exit_code, (*app_data)->env_vars, 0);
 		env_vars[len] = split_env_var(keys_values[len]);
+	}
+	ft_free_2d_arr((void **)keys_values);
 	return (env_vars);
 }
 
 t_envvar	*split_env_var(char *envp)
 {
 	t_envvar	*result;
-	int			len1;
+	int			len;
 
 	result = (t_envvar *)malloc(sizeof(t_envvar));
 	if (!envp || !result)
 		return (NULL);
-	len1 = 0;
-	if (envp[len1] == '=')
-		len1++;
-	while (envp[len1] && envp[len1] != '=')
-		len1++;
-	result->key = ft_substr(envp, 0, len1);
-	result->value = NULL;
-	result->includes_equal = (envp[len1] && envp[len1] == '=');
-	if (envp[len1] && envp[len1] == '=' && !envp[len1 + 1])
-		result->value = ft_strdup("");
-	else if (envp[len1] && envp[len1] == '=' && envp[len1 + 1])
+	if (envp[0] == '=' || envp[0] == '+')
+		return (fill_result(result, envp));
+	len = 0;
+	result->includes_plus = false;
+	while (envp[len] && envp[len] != '=')
 	{
-		result->value = ft_substr(envp, len1 + 1, ft_strlen(envp) - len1);
-		result->value = ft_ntrim_in_place(result->value, "\"\'", 1);
+		if (envp[len] == '+' && envp[len + 1] && envp[len + 1] == '=')
+			result->includes_plus = true;
+		else if (envp[len] == '+')
+			return (fill_result(result, envp));
+		len++;
 	}
-	return (result);
+	return (fill_result2(result, envp, len));
 }
 
 static char	**split_env_var_string(char *envp, char c)
@@ -120,9 +122,13 @@ static int	count_substr(char *s, char c)
 	quote = false;
 	while (s[++i])
 	{
+		if ((s[i] == '\"' && !quote) && (i == 0 || !dquote))
+			count++;
 		if (s[i] == '\"' && !quote)
 			dquote = !dquote;
-		else if (s[i] == '\'' && !dquote)
+		if ((s[i] == '\'' && !dquote) && (i == 0 || !quote))
+			count++;
+		if (s[i] == '\'' && !dquote)
 			quote = !quote;
 		if (!quote && !dquote
 			&& ((i == 0 && s[i] != c) || (s[i] != c && s[i - 1] == c)))

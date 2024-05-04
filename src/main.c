@@ -3,18 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 11:24:57 by lzipp             #+#    #+#             */
-/*   Updated: 2024/03/28 16:07:07 by lzipp            ###   ########.fr       */
+/*   Updated: 2024/05/04 14:53:07 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 static void	init_app_data(t_app_data *app_data, char **envp);
-static char	*get_input(t_app_data *app_data);
-// static void	print_logo(void);
+static void	get_input(t_app_data *app_data);
 // static void	print_logo(void);
 
 int	g_exit_signal = 0;
@@ -26,7 +25,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	if (argc != 1)
 	{
-		// printf("\033[0;31mUsage: ./minishell\033[0m\n");
+		// ft_fprintf(2, "\033[0;31mUsage: ./minishell\033[0m\n");
 		return (1);
 	}
 	init_app_data(&app_data, envp);
@@ -36,33 +35,39 @@ int	main(int argc, char **argv, char **envp)
 	while (true)
 	{
 		g_exit_signal = 0;
-		app_data.input = get_input(&app_data);
+		get_input(&app_data);
+		if (!isatty(fileno(stdin)) && app_data.input == NULL)
+			break ;
 		if (app_data.input == NULL)
 			continue ;
 		lexer(&app_data);
 	}
-	return (0);
+	return (app_data.last_exit_code);
 }
 
-static char	*get_input(t_app_data *app_data)
+static void	get_input(t_app_data *app_data)
 {
 	char	*input;
 
-	(void)app_data;
+	
+	// remove this after testing
 	if (isatty(fileno(stdin)))
 		input = readline(PROMPT);
 	else
 	{
 		char *line;
 		line = get_next_line(fileno(stdin));
+		if (line == NULL)
+			return ;
 		input = ft_strtrim(line, "\n");
 		free(line);
 	}
+	// end of remove
 	// input = readline(PROMPT);
 	if (input && ft_strlen(input) == 0)
 	{
 		free(input);
-		return (NULL);
+		return ;
 	}
 	else if (input == NULL)
 	{
@@ -72,17 +77,17 @@ static char	*get_input(t_app_data *app_data)
 	else if (ft_str_isspaces(input))
 	{
 		free(input);
-		return (NULL);
+		return ;
 	}
 	add_history(input);
-	return (input);
+	app_data->input = input;
 }
-
 static void	init_app_data(t_app_data *app_data, char **envp)
 {
 	app_data->env_vars = init_envp(envp);
 	app_data->last_exit_code = 0;
 	app_data->input = NULL;
+	app_data->noninteractive = !isatty(fileno(stdin));
 }
 
 // static void	print_logo(void)

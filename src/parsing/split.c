@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cgerling <cgerling@student.42.fr>          +#+  +:+       +#+        */
+/*   By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 11:07:56 by cgerling          #+#    #+#             */
-/*   Updated: 2024/03/26 12:22:53 by cgerling         ###   ########.fr       */
+/*   Updated: 2024/04/17 16:45:27 by lzipp            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,28 +88,8 @@ char	**split(char *input)
 	while (count[2] < count[3])
 	{
 		if (!process_token(new_input, count, flags, tokens))
-			return (free(new_input), free(tokens), NULL);
+			return (free(new_input), ft_free_2d_arr((void **)tokens), NULL);
 	}
 	free(new_input);
 	return (tokens);
 }
-
-// int main()
-// {
-// 	char *input = "echo \"> >> < * ? [ ] | ; [ ] || && ( ) $  <<\"";
-// 	if (check_input(input) == 1)
-// 		return (1);
-// 	char **tokens = split(input, 0);
-// 	if (!tokens)
-// 		return 1;
-// 	for (int i = 0; tokens[i]; i++)
-// 	{
-// 		printf("%s\n", tokens[i]);
-// 	}
-// 	for (int i = 0; tokens[i]; i++)
-// 	{
-// 		free(tokens[i]);
-// 	}
-// 	free(tokens);
-// 	return 0;
-// }

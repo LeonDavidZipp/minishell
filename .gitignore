@@ -53,9 +53,10 @@ dkms.conf
 
 # others
 *.log
-*.out
 .DS_Store
 .vscode/
 libtft.a
 minishell
-*.o
+obj/
+.vscode
+.idea

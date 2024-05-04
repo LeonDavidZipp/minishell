@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: lzipp <lzipp@student.42.fr>                +#+  +:+       +#+         #
+#    By: lzipp <lzipp@student.42heilbronn.de>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/01 20:30:26 by lzipp             #+#    #+#              #
-#    Updated: 2024/03/28 16:07:20 by lzipp            ###   ########.fr        #
+#    Updated: 2024/05/04 14:52:57 by lzipp            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -31,13 +31,25 @@ builtin_cmds/exit.c \
 builtin_cmds/export.c \
 builtin_cmds/pwd.c \
 builtin_cmds/unset.c \
+env_vars/env_var_helpers.c \
 env_vars/env_vars.c \
-env_vars/init_envp.c \
 env_vars/split_multiple_envp.c \
+execution/check_types.c \
 execution/execute_helpers.c \
 execution/execute.c \
+execution/hidden_execve.c \
+execution/hidden_execve_helpers.c \
+execution/setup_fds.c \
+execution/exec_builtin.c \
+execution/exec_execve.c \
+execution/exec_execve_helpers.c \
+execution/heredoc.c \
+execution/heredoc_helpers.c \
+execution/setup_helpers.c \
+execution/execute_helpers2.c \
 lexer/check_tokens_valid.c \
-lexer/join_tokens.c \
+lexer/heredoc.c \
+lexer/join_arg_tokens.c \
 lexer/remove_after_cd.c \
 lexer/lexer.c \
 lexer/switch_heredocs.c \
@@ -46,11 +58,13 @@ lexer/switch_tokens_for_redir_2.c \
 lexer/token_type.c \
 lexer/tokenize.c \
 parsing/check_input.c \
+parsing/check_types.c \
 parsing/expand_helpers.c \
+parsing/expand_helpers2.c \
 parsing/expand.c \
 parsing/expand2.c \
 parsing/mix_helpers.c \
-parsing/need_name.c \
+parsing/expand_and_remove.c \
 parsing/split_helpers.c \
 parsing/split.c \
 signals/signal_handler.c \
